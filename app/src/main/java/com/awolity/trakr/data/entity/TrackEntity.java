@@ -44,6 +44,8 @@ public class TrackEntity {
     double maxSpeed;
     @ColumnInfo(name = "avg_speed")
     double avgSpeed;
+    @ColumnInfo(name = "is_saved")
+    int isSaved;
     String metadata;
     @Ignore
     private boolean isValidElevationData = false;
@@ -180,6 +182,22 @@ public class TrackEntity {
         if (maxSpeed == 0) {
             setMaxSpeed(avgSpeed);
         }
+    }
+
+    public int getIsSaved() {
+        return isSaved;
+    }
+
+    public void setIsSaved(int isSaved) {
+        this.isSaved = isSaved;
+    }
+
+    public boolean isValidElevationData() {
+        return isValidElevationData;
+    }
+
+    public void setValidElevationData(boolean validElevationData) {
+        isValidElevationData = validElevationData;
     }
 
     public String getMetadata() {
