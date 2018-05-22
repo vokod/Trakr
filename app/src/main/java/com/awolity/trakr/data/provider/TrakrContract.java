@@ -1,4 +1,4 @@
-package com.awolity.trakr.data;
+package com.awolity.trakr.data.provider;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;

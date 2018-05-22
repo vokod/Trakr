@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="pref_tracking_interval_labels">
+        <item>@string/pref_label_tracking_interval_1s</item>
+        <item>@string/pref_label_tracking_interval_2s</item>
+        <item>@string/pref_label_tracking_interval_5s</item>
+        <item>@string/pref_label_tracking_interval_10s</item>
+        <item>@string/pref_label_tracking_interval_20s</item>
+        <item>@string/pref_label_tracking_interval_50s</item>
+    </string-array>
+
+    <string-array name="pref_tracking_interval_values">
+        <item>@string/pref_value_tracking_interval_1s</item>
+        <item>@string/pref_value_tracking_interval_2s</item>
+        <item>@string/pref_value_tracking_interval_5s</item>
+        <item>@string/pref_value_tracking_interval_10s</item>
+        <item>@string/pref_value_tracking_interval_20s</item>
+        <item>@string/pref_value_tracking_interval_50s</item>
+    </string-array>
+
+    <string-array name="pref_tracking_distance_labels">
+        <item>@string/pref_label_tracking_distance_1m</item>
+        <item>@string/pref_label_tracking_distance_2m</item>
+        <item>@string/pref_label_tracking_distance_5m</item>
+        <item>@string/pref_label_tracking_distance_10m</item>
+        <item>@string/pref_label_tracking_distance_20m</item>
+        <item>@string/pref_label_tracking_distance_50m</item>
+    </string-array>
+
+    <string-array name="pref_tracking_distance_values">
+        <item>@string/pref_value_tracking_distance_1m</item>
+        <item>@string/pref_value_tracking_distance_2m</item>
+        <item>@string/pref_value_tracking_distance_5m</item>
+        <item>@string/pref_value_tracking_distance_10m</item>
+        <item>@string/pref_value_tracking_distance_20m</item>
+        <item>@string/pref_value_tracking_distance_50m</item>
+    </string-array>
+
+    <string-array name="pref_accuracy_labels">
+        <item>@string/pref_label_accuracy_high</item>
+        <item>@string/pref_label_accuracy_balanced</item>
+        <item>@string/pref_label_accuracy_low</item>
+        <item>@string/pref_label_accuracy_lowest</item>
+    </string-array>
+
+    <string-array name="pref_accuracy_values">
+        <item>@string/pref_value_accuracy_high</item>
+        <item>@string/pref_value_accuracy_balanced</item>
+        <item>@string/pref_value_accuracy_low</item>
+        <item>@string/pref_value_accuracy_lowest</item>
+    </string-array>
+
+    <string-array name="pref_accuracy_filter_labels">
+        <item>@string/pref_label_accuracy_filter_5</item>
+        <item>@string/pref_label_accuracy_filter_10</item>
+        <item>@string/pref_label_accuracy_filter_20</item>
+        <item>@string/pref_label_accuracy_filter_50</item>
+    </string-array>
+
+    <string-array name="pref_accuracy_filter_values">
+        <item>@string/pref_value_accuracy_filter_5</item>
+        <item>@string/pref_value_accuracy_filter_10</item>
+        <item>@string/pref_value_accuracy_filter_20</item>
+        <item>@string/pref_value_accuracy_filter_50</item>
+    </string-array>
+
+    <string-array name="pref_altitude_filter_param_labels">
+        <item>@string/pref_label_altitude_filter_param_10</item>
+        <item>@string/pref_label_altitude_filter_param_20</item>
+        <item>@string/pref_label_altitude_filter_param_30</item>
+        <item>@string/pref_label_altitude_filter_param_50</item>
+    </string-array>
+
+    <string-array name="pref_altitude_filter_param_values">
+        <item>@string/pref_value_altitude_filter_param_10</item>
+        <item>@string/pref_value_altitude_filter_param_20</item>
+        <item>@string/pref_value_altitude_filter_param_30</item>
+        <item>@string/pref_value_altitude_filter_param_50</item>
+    </string-array>
+
+
+</resources>

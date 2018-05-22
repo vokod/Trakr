@@ -2,6 +2,7 @@ package com.awolity.trakr.di;
 
 import android.content.Context;
 
+import com.awolity.trakr.repository.Repository;
 import com.awolity.trakr.utils.AppExecutors;
 
 import java.util.concurrent.Executor;
@@ -35,4 +36,9 @@ public class AppModule {
         return executors.diskIO();
     }
 
+    @Provides
+    @Singleton
+    public Repository provideRepository() {
+        return new Repository();
+    }
 }

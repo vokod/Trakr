@@ -1,11 +1,11 @@
-package com.awolity.trakr.data;
+package com.awolity.trakr.data.provider;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.awolity.trakr.data.TrakrContract.TrackEntry;
-import com.awolity.trakr.data.TrakrContract.TrackpointEntry;
+import com.awolity.trakr.data.provider.TrakrContract.TrackEntry;
+import com.awolity.trakr.data.provider.TrakrContract.TrackpointEntry;
 
 class TrakrDbHelper extends SQLiteOpenHelper {
 

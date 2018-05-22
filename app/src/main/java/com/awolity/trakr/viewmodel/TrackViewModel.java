@@ -1,0 +1,43 @@
+package com.awolity.trakr.viewmodel;
+
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModel;
+
+import com.awolity.trakr.data.entity.TrackEntity;
+import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.di.TrakrApplication;
+import com.awolity.trakr.repository.Repository;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+public class TrackViewModel extends ViewModel {
+
+    @SuppressWarnings("WeakerAccess")
+    @Inject
+    Repository repository;
+
+    private long trackId;
+
+    public void init (long trackId){
+        this.trackId = trackId;
+    }
+
+    public TrackViewModel() {
+        // MyLog.d(TAG, "TrackViewModel");
+        TrakrApplication.getInstance().getAppComponent().inject(this);
+    }
+
+    public LiveData<TrackEntity> getTrack() {
+        return repository.getTrack(trackId);
+    }
+
+    public LiveData<List<TrackpointEntity>> getTrackpointsList() {
+        return repository.getTrackpointsByTrack(trackId);
+    }
+
+    public LiveData<TrackpointEntity> getActualTrackpoint() {
+        return repository.getActualTrackpoint(trackId);
+    }
+}
