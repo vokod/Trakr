@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.awolity.trakr.R;
 
 public class PrimaryPropertyView extends ConstraintLayout {
-//
+
     protected TextView labelTextView, valueTextView, unitTextView;
     protected final Context context;
 
