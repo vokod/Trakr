@@ -15,15 +15,22 @@ class TrackRecorderStatus {
             altitudeFilterParameter, minimalDistance;
     private TrackpointEntity previousTrackpoint, actualTrackpoint;
     private AltitudeFilter altitudeFilter;
-
+// TODO: ha menetközben állítjuk a preferenciákat, akkor mi lesz? Ne lehessen állítani menetközben a preferenciákat
 
     void setupPreferences(Context context) {
+        // trackingDistance = (PreferenceUtils.getPreferenceTrackingDistance(context));
         trackingDistance = (PreferenceUtils.getPreferenceTrackingDistance(context));
+        // trackingInterval = (PreferenceUtils.getPreferenceTrackingInterval(context));
         trackingInterval = (PreferenceUtils.getPreferenceTrackingInterval(context));
+        // trackingAccuracy = (PreferenceUtils.getPreferenceGeolocationPriority(context));
         trackingAccuracy = (PreferenceUtils.getPreferenceGeolocationPriority(context));
+        // accuracyFilterParameter = (PreferenceUtils.getPreferenceAccuracyFilterParameter(context));
         accuracyFilterParameter = (PreferenceUtils.getPreferenceAccuracyFilterParameter(context));
+        // isAltitudeFiltered = (PreferenceUtils.getPreferenceAltitudeFilter(context));
         isAltitudeFiltered = (PreferenceUtils.getPreferenceAltitudeFilter(context));
+        // altitudeFilterParameter = (PreferenceUtils.getPreferenceAltitudeFilterParameter(context));
         altitudeFilterParameter = (PreferenceUtils.getPreferenceAltitudeFilterParameter(context));
+        // minimalDistance = (PreferenceUtils.getPreferenceTrackingDistance(context));
         minimalDistance = (PreferenceUtils.getPreferenceTrackingDistance(context));
 
         if (isAltitudeFiltered) {
@@ -62,7 +69,7 @@ class TrackRecorderStatus {
     }
 
     boolean isAccurateEnough() {
-        return actualTrackpoint.getAccuracy() > getAccuracyFilterParameter();
+        return actualTrackpoint.getAccuracy() < getAccuracyFilterParameter();
     }
 
     boolean isThereAPreviousTrackpoint() {

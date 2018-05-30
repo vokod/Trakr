@@ -245,7 +245,6 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     public void setStartTime(long startTime) {
-        // MyLog.d(TAG, "setStartTime: " + startTime);
         this.startTime = startTime;
     }
 

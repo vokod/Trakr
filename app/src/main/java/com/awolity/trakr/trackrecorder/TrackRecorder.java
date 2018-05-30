@@ -35,7 +35,6 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     private final Runnable uiUpdater;
     private TrackRecorderStatus status;
 
-
     @SuppressWarnings("WeakerAccess")
     @Inject
     Repository repository;
@@ -123,37 +122,37 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
     @Override
     public void onLocationChanged(Location location) {
-        //MyLog.d(TAG, "onLocationChanged");
+        MyLog.d(TAG, "onLocationChanged");
 
         status.setActualTrackpoint(createTrackPoint(location));
 
         // if accuracy is below the required level, drop the point
         if (!status.isAccurateEnough()) {
-            // MyLog.d(TAG, "onLocationChanged - accuracy is below expected - dropping trackpoint");
+            MyLog.d(TAG, "onLocationChanged - accuracy is below expected - DROPPING");
             return;
         }
 
         // filtering is only possible if there is a previous data point
         if (status.isThereAPreviousTrackpoint()) {
-            // MyLog.d(TAG, "onLocationChanged - there IS a previous trackpoint ");
+             MyLog.d(TAG, "onLocationChanged - there IS a previous trackpoint ");
 
             if (status.isDistanceFarEnoghFromPreviousTrackpoint()) {
-                MyLog.d(TAG, "onLocationChanged - the new location is away from previous, saving it");
+                MyLog.d(TAG, "onLocationChanged - the new location is away from previous, SAVING");
 
                 saveTrackAndPointToDb();
                 updateNotification(context, track);
             } else {
-               // MyLog.d(TAG, "onLocationChanged - the new location is exactly the previous, dropping it");
+                MyLog.d(TAG, "onLocationChanged - the new location is exactly the previous, DROPPING");
             }
 
         } else {
-            // MyLog.d(TAG, "onLocationChanged - there is NO previous trackpoint ");
+             MyLog.d(TAG, "onLocationChanged - there is NO previous trackpoint ");
             if (status.getActualTrackpoint().getAltitude() != 0) {
-                MyLog.d(TAG, "onLocationChanged - there is no previous trackpoint and this one has valid altitude. Saving it");
+                MyLog.d(TAG, "onLocationChanged - there is no previous trackpoint and this one has valid altitude. SAVING");
                 saveTrackAndPointToDb();
                 updateNotification(context, track);
             } else {
-                // MyLog.d(TAG, "onLocationChanged - there is no previous trackpoint and this one's altitude is 0. Dropping it");
+                MyLog.d(TAG, "onLocationChanged - there is no previous trackpoint and this one's altitude is 0. DROPPING");
             }
         }
     }

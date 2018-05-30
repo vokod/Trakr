@@ -31,7 +31,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationManag
     }
 
     public LiveData<Location> getLocation() {
-         MyLog.d(TAG, "getLocation");
+        // MyLog.d(TAG, "getLocation");
         isLocationUpdating = true;
         if (lastLocation == null) {
             lastLocation = new MutableLiveData<>();
@@ -41,7 +41,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationManag
     }
 
     public void stopLocation() {
-        MyLog.d(TAG, "stopLocation");
+        //MyLog.d(TAG, "stopLocation");
         if (isLocationUpdating) {
             locationManager.stop();
             lastLocation = null;
@@ -51,7 +51,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationManag
 
     @Override
     public void onLocationChanged(Location location) {
-         MyLog.d(TAG, "onLocationChanged");
+        // MyLog.d(TAG, "onLocationChanged");
         lastLocation.setValue(location);
     }
 }

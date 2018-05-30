@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.provider.Settings;
@@ -53,6 +54,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.ms_square.debugoverlay.DebugOverlay;
+import com.ms_square.debugoverlay.Position;
+import com.ms_square.debugoverlay.modules.LogcatModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +96,7 @@ public class MainActivity extends AppCompatActivity
         checkPermission();
         setupMapFragment();
         setupLocationViewModel();
+        setupDebugOverlay();
     }
 
     private void setupToolbar() {
@@ -318,6 +323,16 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private void setupDebugOverlay() {
+        new DebugOverlay.Builder(this.getApplication())
+                .modules(new LogcatModule())
+                .position(Position.TOP_START)
+                .allowSystemLayer(true)
+                .notification(true, MainActivity.class.getName())
+                .build()
+                .install();
+    }
+
     private void setupTrackRecorderService() {
         MyLog.d(TAG, "setupTrackRecorderService");
         serviceManager = new TrackRecorderServiceManager(this);
@@ -450,10 +465,10 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
-        } else if (id == R.id.action_list_tracks){
+        } else if (id == R.id.action_list_tracks) {
             startActivity(TrackListActivity.getStarterIntent(this));
             return true;
-        } else if(id == R.id.action_crash){
+        } else if (id == R.id.action_crash) {
             Crashlytics.getInstance().crash();
         }
         return super.onOptionsItemSelected(item);
