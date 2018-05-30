@@ -14,7 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.res.ResourcesCompat;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.view.MainActivity;
+import com.awolity.trakr.view.main.MainActivity;
 
 import java.util.List;
 
@@ -38,14 +38,14 @@ public class TrakrNotification {
 
     private static void createNotificationChannel(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManager notificationManager =
-                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            android.app.NotificationManager notificationManager =
+                    (android.app.NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             // The user-visible name of the channel.
             CharSequence name = context.getString(R.string.record_track_notification_channel_title);
             // The user-visible description of the channel.
             String description = context.getString(R.string.record_track_notification_channel_description);
 
-            int importance = NotificationManager.IMPORTANCE_LOW;
+            int importance = android.app.NotificationManager.IMPORTANCE_LOW;
             NotificationChannel channel = new NotificationChannel(CHANNEL_RECORD_TRACK_NOTIFICATION,
                     name, importance);
             // Configure the notification channel.

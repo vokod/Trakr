@@ -1,5 +1,7 @@
 package com.awolity.trakr.utils;
 
+import android.location.Location;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -88,7 +90,7 @@ public class StringUtils {
     }
 
     public static String getStartTimeAsString(long millis) {
-        Date time = new Date(millis);
+        java.util.Date time = new java.util.Date(millis);
         SimpleDateFormat sdfDate = new SimpleDateFormat("MM-dd HH:mm");
         return sdfDate.format(time);
     }

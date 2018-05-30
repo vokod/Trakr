@@ -113,5 +113,9 @@
     <!-- Track list activity -->
     <string name="title_activity_track_list">Track list</string>
 
+    <!-- Track detail activity -->
+    <string name="title_activity_track_detail">Track list</string>
+    <string name="action_export">Export track</string>
+    <string name="action_delete">Delete track</string>
 
 </resources>

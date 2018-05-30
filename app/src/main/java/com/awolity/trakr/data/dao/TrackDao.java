@@ -5,9 +5,11 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
 import com.awolity.trakr.data.entity.TrackEntity;
+import com.awolity.trakr.data.entity.TrackWithPoints;
 
 import java.util.List;
 
@@ -31,17 +33,24 @@ public interface TrackDao {
     @Query("SELECT * FROM track_table WHERE track_id = :trackId")
     LiveData<TrackEntity> loadById(long trackId);
 
-    @Query("SELECT num_of_trackpoints FROM track_table WHERE track_id = :trackId")
-    LiveData<Integer> loadNumOftrackpointsById(long trackId);
-
     @Query("SELECT * FROM track_table WHERE track_id = :trackId")
     TrackEntity loadByIdSync(long trackId);
+
+    @Transaction
+    @Query("SELECT * FROM track_table WHERE track_id = :trackId")
+    LiveData<TrackWithPoints> loadByIdWithPoints(long trackId);
+
+    @Query("SELECT num_of_trackpoints FROM track_table WHERE track_id = :trackId")
+    LiveData<Integer> loadNumOfTrackpointsById(long trackId);
 
     @Insert(onConflict = REPLACE)
     void saveAll(List<TrackEntity> trackEntities);
 
     @Delete
     void delete(TrackEntity trackEntity);
+
+    @Query("DELETE FROM track_table WHERE track_id = :trackId")
+    void delete(long trackId);
 
     @Delete
     void deleteAll(List<TrackEntity> trackEntities);

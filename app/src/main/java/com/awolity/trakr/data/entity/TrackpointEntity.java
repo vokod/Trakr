@@ -2,19 +2,22 @@ package com.awolity.trakr.data.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.location.Location;
 import android.support.annotation.NonNull;
 
+import com.google.android.gms.maps.model.LatLng;
+
 @SuppressWarnings("WeakerAccess")
 
-@Entity(tableName = "trackpoint_table"/*,
+@Entity(tableName = "trackpoint_table",
         foreignKeys =
         @ForeignKey(entity = TrackEntity.class,
                 parentColumns = "track_id",
                 childColumns = "track_id",
-                onDelete = ForeignKey.CASCADE)*/,
+                onDelete = ForeignKey.CASCADE),
         indices = {@Index(value = "track_id")})
 public class TrackpointEntity {
 
@@ -123,7 +126,6 @@ public class TrackpointEntity {
     public void setDistance(double distance) {
         this.distance = distance;
     }
-
 
     public static TrackpointEntity fromLocation(Location location){
         TrackpointEntity tp = new TrackpointEntity();

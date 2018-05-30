@@ -1,4 +1,4 @@
-package com.awolity.trakr.view;
+package com.awolity.trakr.view.main;
 
 import android.Manifest;
 import android.arch.lifecycle.Observer;
@@ -37,8 +37,11 @@ import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.Utility;
+import com.awolity.trakr.view.SettingsActivity;
+import com.awolity.trakr.view.list.TrackListActivity;
 import com.awolity.trakr.viewmodel.LocationViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -261,7 +264,7 @@ public class MainActivity extends AppCompatActivity
                         .setMessage(getResources().getString(R.string.location_permission_rationale_description))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent i = new Intent(Intent.ACTION_VIEW);
+                                Intent i = new Intent(android.content.Intent.ACTION_VIEW);
                                 i.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.gms"));
                                 startActivity(i);
                             }
@@ -269,7 +272,6 @@ public class MainActivity extends AppCompatActivity
                         .setNegativeButton(android.R.string.no, null)
                         .setIcon(R.mipmap.ic_launcher)
                         .show();
-
             } else {
                 finish();
             }
@@ -451,6 +453,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.action_list_tracks){
             startActivity(TrackListActivity.getStarterIntent(this));
             return true;
+        } else if(id == R.id.action_crash){
+            Crashlytics.getInstance().crash();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -482,6 +486,7 @@ public class MainActivity extends AppCompatActivity
         MyLog.d(TAG, "onServiceStarted");
         // TODO FAB animation
         trackFragment.start(trackId);
+        chartsFragment.start(trackId);
         setupTrackViewModel(trackId);
         status.setRecording(true);
     }
@@ -490,6 +495,7 @@ public class MainActivity extends AppCompatActivity
     public void onServiceStopped() {
         MyLog.d(TAG, "onServiceStopped");
         trackFragment.stop();
+        chartsFragment.stop();
         // TODO: status.stoprecording (ami aztán megcsinálja mindkettőt)
         status.setRecording(false);
         clearTrackOnMap();

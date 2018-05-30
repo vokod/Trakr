@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".di.TrakrApplication"
@@ -14,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.main.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,20 +26,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.TrackListActivity"
+
+        <activity
+            android:name=".view.list.TrackListActivity"
             android:label="@string/title_activity_track_list"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.MainActivity" />
+                android:value=".view.main.MainActivity" />
         </activity>
+
+        <activity android:name=".view.detail.TrackDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_activity_track_detail">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.list.TrackListActivity" />
+        </activity>
+
         <activity
             android:name=".view.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".view.MainActivity">
+            android:parentActivityName=".view.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.awolity.trakr.view.MainActivity" />
+                android:value="com.awolity.trakr.view.main.MainActivity" />
         </activity>
 
         <service android:name=".trackrecorder.TrackRecorderService" />
@@ -48,6 +62,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="18bbe06a9bdc61f2ba085a0c0e353cd1e59f5fe4" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

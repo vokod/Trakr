@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.awolity.trakr.data.entity.TrackEntity;
+import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.di.TrakrApplication;
 import com.awolity.trakr.repository.Repository;
@@ -18,19 +19,24 @@ public class TrackViewModel extends ViewModel {
     @Inject
     Repository repository;
 
+    private static final String LOG_TAG = TrackViewModel.class.getSimpleName();
     private long trackId;
 
-    public void init (long trackId){
+    public void init(long trackId) {
         this.trackId = trackId;
     }
 
     public TrackViewModel() {
-        // MyLog.d(TAG, "TrackViewModel");
+        // MyLog.d(LOG_TAG, "TrackViewModel");
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 
     public LiveData<TrackEntity> getTrack() {
         return repository.getTrack(trackId);
+    }
+
+    public LiveData<TrackWithPoints> getTrackWithPoints(){
+        return repository.getTrackWithPoints(trackId);
     }
 
     public LiveData<List<TrackpointEntity>> getTrackpointsList() {
@@ -39,5 +45,9 @@ public class TrackViewModel extends ViewModel {
 
     public LiveData<TrackpointEntity> getActualTrackpoint() {
         return repository.getActualTrackpoint(trackId);
+    }
+
+    public void deleteTrack() {
+        repository.deleteTrack(trackId);
     }
 }

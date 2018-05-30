@@ -6,7 +6,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.awolity.trakr.view.MainActivity">
+        tools:context="com.awolity.trakr.view.main.MainActivity">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"

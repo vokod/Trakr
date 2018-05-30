@@ -1,11 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.awolity.trakr.view.MainActivity">
+    tools:context="com.awolity.trakr.view.main.MainActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_crash"
+        android:orderInCategory="100"
+        android:title="crash"
         app:showAsAction="never" />
 
     <item
