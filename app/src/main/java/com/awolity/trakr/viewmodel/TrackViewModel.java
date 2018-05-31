@@ -22,13 +22,13 @@ public class TrackViewModel extends ViewModel {
     private static final String LOG_TAG = TrackViewModel.class.getSimpleName();
     private long trackId;
 
-    public void init(long trackId) {
-        this.trackId = trackId;
-    }
-
     public TrackViewModel() {
         // MyLog.d(LOG_TAG, "TrackViewModel");
         TrakrApplication.getInstance().getAppComponent().inject(this);
+    }
+
+    public void init(long trackId) {
+        this.trackId = trackId;
     }
 
     public LiveData<TrackEntity> getTrack() {

@@ -20,6 +20,7 @@
     </string-array>
 
     <string-array name="pref_tracking_distance_labels">
+        <item>@string/pref_label_tracking_distance_0m</item>
         <item>@string/pref_label_tracking_distance_1m</item>
         <item>@string/pref_label_tracking_distance_2m</item>
         <item>@string/pref_label_tracking_distance_5m</item>
@@ -29,6 +30,7 @@
     </string-array>
 
     <string-array name="pref_tracking_distance_values">
+        <item>@string/pref_value_tracking_distance_0m</item>
         <item>@string/pref_value_tracking_distance_1m</item>
         <item>@string/pref_value_tracking_distance_2m</item>
         <item>@string/pref_value_tracking_distance_5m</item>

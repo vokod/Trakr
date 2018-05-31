@@ -12,26 +12,18 @@ class TrackRecorderStatus {
     private boolean
             isAltitudeFiltered, isEverythingGoodForRecording = true;
     private int trackingDistance, trackingAccuracy, trackingInterval, accuracyFilterParameter,
-            altitudeFilterParameter, minimalDistance;
+            altitudeFilterParameter;
     private TrackpointEntity previousTrackpoint, actualTrackpoint;
     private AltitudeFilter altitudeFilter;
 // TODO: ha menetközben állítjuk a preferenciákat, akkor mi lesz? Ne lehessen állítani menetközben a preferenciákat
 
     void setupPreferences(Context context) {
-        // trackingDistance = (PreferenceUtils.getPreferenceTrackingDistance(context));
         trackingDistance = (PreferenceUtils.getPreferenceTrackingDistance(context));
-        // trackingInterval = (PreferenceUtils.getPreferenceTrackingInterval(context));
         trackingInterval = (PreferenceUtils.getPreferenceTrackingInterval(context));
-        // trackingAccuracy = (PreferenceUtils.getPreferenceGeolocationPriority(context));
         trackingAccuracy = (PreferenceUtils.getPreferenceGeolocationPriority(context));
-        // accuracyFilterParameter = (PreferenceUtils.getPreferenceAccuracyFilterParameter(context));
         accuracyFilterParameter = (PreferenceUtils.getPreferenceAccuracyFilterParameter(context));
-        // isAltitudeFiltered = (PreferenceUtils.getPreferenceAltitudeFilter(context));
         isAltitudeFiltered = (PreferenceUtils.getPreferenceAltitudeFilter(context));
-        // altitudeFilterParameter = (PreferenceUtils.getPreferenceAltitudeFilterParameter(context));
         altitudeFilterParameter = (PreferenceUtils.getPreferenceAltitudeFilterParameter(context));
-        // minimalDistance = (PreferenceUtils.getPreferenceTrackingDistance(context));
-        minimalDistance = (PreferenceUtils.getPreferenceTrackingDistance(context));
 
         if (isAltitudeFiltered) {
             altitudeFilter = new AltitudeFilter(altitudeFilterParameter);
@@ -65,7 +57,7 @@ class TrackRecorderStatus {
     }
 
     boolean isDistanceFarEnoghFromPreviousTrackpoint() {
-        return (int) actualTrackpoint.getDistance() > getMinimalDistance();
+        return (int) actualTrackpoint.getDistance() > getTrackingDistance();
     }
 
     boolean isAccurateEnough() {
@@ -102,10 +94,6 @@ class TrackRecorderStatus {
 
     int getAltitudeFilterParameter() {
         return altitudeFilterParameter;
-    }
-
-    private int getMinimalDistance() {
-        return minimalDistance;
     }
 
     TrackpointEntity getPreviousTrackpoint() {

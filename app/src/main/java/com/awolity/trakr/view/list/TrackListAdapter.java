@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.util.DiffUtil;
@@ -12,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +21,6 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.SecondaryPropertyView;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -64,7 +63,7 @@ public class TrackListAdapter
     }
 
     public void updateItems(final List<TrackEntity> newItems) {
-        MyLog.d(LOG_TAG, "updateItems");
+        // MyLog.d(LOG_TAG, "updateItems");
         final List<TrackEntity> oldItems = new ArrayList<>(this.items);
         this.items.clear();
         if (newItems != null) {
@@ -102,14 +101,14 @@ public class TrackListAdapter
 
     @Override
     public TrackItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MyLog.d(LOG_TAG, "onCreateViewHolder");
-        View v = layoutInflater.inflate(R.layout.item_track_list_new, parent, false);
+        // MyLog.d(LOG_TAG, "onCreateViewHolder");
+        View v = layoutInflater.inflate(R.layout.item_track_list, parent, false);
         return new TrackItemViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(TrackItemViewHolder holder, int position) {
-        MyLog.d(LOG_TAG, "onBindViewHolder");
+        // MyLog.d(LOG_TAG, "onBindViewHolder");
         holder.bind(items.get(position));
     }
 
@@ -124,14 +123,14 @@ public class TrackListAdapter
         private TextView titleTv;
         private ImageView initialIv;
         private SecondaryPropertyView distanceView, durationView, elevationView;
-        private ConstraintLayout itemViewConstraintLayout;
+        private FrameLayout clickOverlay;
         private MapView mapView;
         private TrackViewModel viewModel;
 
         TrackItemViewHolder(View itemView) {
             super(itemView);
-            MyLog.d(LOG_TAG, "TrackItemViewHolder");
-            itemViewConstraintLayout = itemView.findViewById(R.id.cl_item);
+            // MyLog.d(LOG_TAG, "TrackItemViewHolder");
+            clickOverlay = itemView.findViewById(R.id.fl_click_overlay);
             titleTv = itemView.findViewById(R.id.tv_title);
             initialIv = itemView.findViewById(R.id.iv_initial);
             distanceView = itemView.findViewById(R.id.spv_distance);
@@ -143,7 +142,7 @@ public class TrackListAdapter
         }
 
         void bind(TrackEntity track) {
-            MyLog.d(LOG_TAG, "bind");
+            // MyLog.d(LOG_TAG, "bind");
             this.trackItem = track;
             titleTv.setText(trackItem.getTitle());
 
@@ -168,17 +167,20 @@ public class TrackListAdapter
             durationView.setUnit("s");
             durationView.setValue(StringUtils.getElapsedTimeAsString(trackItem.getElapsedTime()));
 
+            viewModel.init(track.getTrackId());
             viewModel.getTrackWithPoints().observe(activity, new Observer<TrackWithPoints>() {
                 @Override
                 public void onChanged(@Nullable final TrackWithPoints trackWithPoints) {
-                    MyLog.d(LOG_TAG, "getTrackWithPoints() - onChanged");
+                    // MyLog.d(LOG_TAG, "getTrackWithPoints() - onChanged");
                     if (trackWithPoints != null && trackWithPoints.getTrackPoints() != null) {
-                        MyLog.d(LOG_TAG, "getTrackWithPoints() - onChanged - trackPoints != null");
+                        // MyLog.d(LOG_TAG, "getTrackWithPoints() - onChanged - trackPoints != null");
 
                         mapView.onCreate(null);
+                        mapView.setClickable(false);
                         mapView.getMapAsync(new OnMapReadyCallback() {
                             @Override
                             public void onMapReady(GoogleMap googleMap) {
+
                                 setupPolyLine(activity,googleMap,trackWithPoints);
                                 mapView.onResume();
                             }
@@ -187,7 +189,7 @@ public class TrackListAdapter
                 }
             });
 
-            itemViewConstraintLayout.setOnClickListener(new View.OnClickListener() {
+            clickOverlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     callback.onTrackItemClicked(trackItem.getTrackId());
@@ -197,7 +199,7 @@ public class TrackListAdapter
     }
 
     private static void setupPolyLine(Context context, GoogleMap googleMap, TrackWithPoints trackWithPoints) {
-        MyLog.d(LOG_TAG, "setupPolyLine");
+        // MyLog.d(LOG_TAG, "setupPolyLine");
         PolylineOptions polylineOptions = new PolylineOptions()
                 .geodesic(true)
                 .color(ContextCompat.getColor(context, R.color.colorPrimary))
@@ -212,11 +214,11 @@ public class TrackListAdapter
     }
 
     private static void moveCamera(GoogleMap googleMap, TrackWithPoints trackWithPoints) {
-        MyLog.d(LOG_TAG, "moveCamera");
+        // MyLog.d(LOG_TAG, "moveCamera");
         LatLngBounds bounds = new LatLngBounds(
                 new LatLng(trackWithPoints.getSouthestPoint(), trackWithPoints.getWesternPoint()),
                 new LatLng(trackWithPoints.getNorthestPoint(), trackWithPoints.getEasternPoint()));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
     }
 
     public interface TrackItemCallback {

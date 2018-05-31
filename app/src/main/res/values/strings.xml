@@ -73,6 +73,7 @@
     <string name="pref_title_tracking_distance">Tracking distance interval</string>
     <string name="pref_key_tracking_distance">tracking_distance</string>
 
+    <string name="pref_label_tracking_distance_0m">0m</string>
     <string name="pref_label_tracking_distance_1m">1m</string>
     <string name="pref_label_tracking_distance_2m">2m</string>
     <string name="pref_label_tracking_distance_5m">5m</string>
@@ -80,6 +81,7 @@
     <string name="pref_label_tracking_distance_20m">20m</string>
     <string name="pref_label_tracking_distance_50m">50m</string>
 
+    <string name="pref_value_tracking_distance_0m">0</string>
     <string name="pref_value_tracking_distance_1m">1</string>
     <string name="pref_value_tracking_distance_2m">2</string>
     <string name="pref_value_tracking_distance_5m">5</string>
@@ -103,15 +105,18 @@
     <string name="pref_title_accuracy_filter">Accuracy filter</string>
     <string name="pref_key_accuracy_filter">accuracy_filter</string>
 
-    <string name="pref_label_accuracy_filter_5">5</string>
-    <string name="pref_label_accuracy_filter_10">10</string>
-    <string name="pref_label_accuracy_filter_20">20</string>
-    <string name="pref_label_accuracy_filter_50">50</string>
+    <string name="pref_label_accuracy_filter_5">5m</string>
+    <string name="pref_label_accuracy_filter_10">10m</string>
+    <string name="pref_label_accuracy_filter_20">20m</string>
+    <string name="pref_label_accuracy_filter_50">50m</string>
 
     <string name="pref_value_accuracy_filter_5">5</string>
     <string name="pref_value_accuracy_filter_10">10</string>
     <string name="pref_value_accuracy_filter_20">20</string>
     <string name="pref_value_accuracy_filter_50">50</string>
+
+    <string name="pref_title_altitude_filter">Altitude filter</string>
+    <string name="pref_key_altitude_filter">altitude_filter</string>
 
     <string name="pref_title_altitude_filter_param">Altitude filter parameter</string>
     <string name="pref_key_altitude_filter_param">altitude_filter_parameter</string>

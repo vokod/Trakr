@@ -53,7 +53,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyLog.d(TAG, "onCreate");
+        // MyLog.d(TAG, "onCreate");
         //noinspection ConstantConditions
         trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
     }
@@ -61,7 +61,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        MyLog.d(TAG, "onCreateView");
+        // MyLog.d(TAG, "onCreateView");
 
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.activity_main_fragment_bottom_sheet_track, container, false);
@@ -85,7 +85,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        MyLog.d(TAG, "onActivityCreated");
+        // MyLog.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
@@ -102,7 +102,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        MyLog.d(TAG, "onSaveInstanceState");
+        // MyLog.d(TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
         outState.putString(KEY_DISTANCEVIEW_VALUE, binding.distanceView.getValue());
         outState.putString(KEY_ASCENTVIEW_VALUE, binding.ascentView.getValue());
@@ -117,7 +117,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     private long trackId = -1;
 
     public void start(long trackId) {
-        MyLog.d(TAG, "start");
+        // MyLog.d(TAG, "start");
         this.trackId = trackId;
         if(binding!=null) {
             setDataVisibility(true);
@@ -129,14 +129,14 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     public void stop() {
-        MyLog.d(TAG, "stop");
+        // MyLog.d(TAG, "stop");
         setDataVisibility(false);
         handler.removeCallbacks(uiUpdater);
         // resetData();
     }
 
     private void startObserve(long trackId) {
-        MyLog.d(TAG, "startObserve");
+        // MyLog.d(TAG, "startObserve");
         trackViewModel.init(trackId);
         trackViewModel.getTrack().observe(this, trackEntityObserver);
     }
@@ -144,16 +144,16 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     Observer<TrackEntity> trackEntityObserver = new Observer<TrackEntity>() {
         @Override
         public void onChanged(@Nullable TrackEntity trackEntity) {
-            MyLog.d(TAG, "trackEntityObserver.onChanged");
+            // MyLog.d(TAG, "trackEntityObserver.onChanged");
             if (trackEntity != null) {
-                MyLog.d(TAG, "trackEntityObserver.onChanged - track NOT null");
+                // MyLog.d(TAG, "trackEntityObserver.onChanged - track NOT null");
                 setData(trackEntity);
             }
         }
     };
 
     private void setData(TrackEntity track) {
-        MyLog.d(TAG, "setData");
+        // MyLog.d(TAG, "setData");
         setDistance(track.getDistance());
         setAscent(track.getAscent());
         setDescent(track.getDescent());
@@ -165,14 +165,14 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void updateUi() {
-        // MyLog.d(LOG_TAG, "updateUi");
+        // // MyLog.d(LOG_TAG, "updateUi");
         if (startTime != 0) {
             setElapsedTime(System.currentTimeMillis() - startTime);
         }
     }
 
     private void setDataVisibility(boolean isRecording) {
-        MyLog.d(TAG, "setDataVisibility");
+        // MyLog.d(TAG, "setDataVisibility");
         if(binding == null){
             return;
         }
@@ -202,7 +202,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void resetData() {
-        MyLog.d(TAG, "resetData");
+        // MyLog.d(TAG, "resetData");
 
         startTime = 0;
 

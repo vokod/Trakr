@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyLog.d(TAG, "onCreate");
+        //  // MyLog.d(TAG, "onCreate");
         status = new MainActivityStatus();
 
         if (savedInstanceState != null) {
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("ConstantConditions")
     private void setupBottomSheet(Bundle savedInstanceState) {
-        MyLog.d(TAG, "setupBottomSheet");
+        //  // MyLog.d(TAG, "setupBottomSheet");
         LinearLayout llBottomSheet = binding.llBottomSheet;
         final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
         BottomSheetFragmentPagerAdapter adapter =
@@ -114,24 +114,24 @@ public class MainActivity extends AppCompatActivity
         // TODO: extract resources
         if (savedInstanceState == null) {
             pointFragment = BottomSheetPointFragment.newInstance("Point");
-            MyLog.d(TAG, "setupBottomSheet - pointfragment: " + pointFragment.hashCode());
+            //  // MyLog.d(TAG, "setupBottomSheet - pointfragment: " + pointFragment.hashCode());
             trackFragment = BottomSheetTrackFragment.newInstance("Track");
-            MyLog.d(TAG, "setupBottomSheet - trackFragment: " + trackFragment.hashCode());
+            //  // MyLog.d(TAG, "setupBottomSheet - trackFragment: " + trackFragment.hashCode());
             chartsFragment = BottomSheetChartsFragment.newInstance("Charts");
-            MyLog.d(TAG, "setupBottomSheet - chartsFragment: " + chartsFragment.hashCode());
+            //  // MyLog.d(TAG, "setupBottomSheet - chartsFragment: " + chartsFragment.hashCode());
         } else {
             pointFragment = (BottomSheetPointFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, BottomSheetPointFragment.class.getName());
             pointFragment.setTitle("Point");
-            MyLog.d(TAG, "setupBottomSheet - pointfragment: " + pointFragment.hashCode());
+            //  // MyLog.d(TAG, "setupBottomSheet - pointfragment: " + pointFragment.hashCode());
             trackFragment = (BottomSheetTrackFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, BottomSheetTrackFragment.class.getName());
             trackFragment.setTitle("Track");
-            MyLog.d(TAG, "setupBottomSheet - trackFragment: " + trackFragment.hashCode());
+            //  // MyLog.d(TAG, "setupBottomSheet - trackFragment: " + trackFragment.hashCode());
             chartsFragment = (BottomSheetChartsFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, BottomSheetChartsFragment.class.getName());
             chartsFragment.setTitle("Charts");
-            MyLog.d(TAG, "setupBottomSheet - chartsFragment: " + chartsFragment.hashCode());
+            //  // MyLog.d(TAG, "setupBottomSheet - chartsFragment: " + chartsFragment.hashCode());
         }
         adapter.setFragments(new BottomSheetBaseFragment[]{pointFragment, trackFragment, chartsFragment});
         binding.viewPager.setAdapter(adapter);
@@ -204,21 +204,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void checkPermission() {
-        // MyLog.d(LOG_TAG, "checkPermission");
+        // //  // MyLog.d(LOG_TAG, "checkPermission");
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // MyLog.d(LOG_TAG, "checkPermission - permission not granted");
+            // //  // MyLog.d(LOG_TAG, "checkPermission - permission not granted");
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - should");
+                // //  // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - should");
                 new AlertDialog.Builder(this)
                         .setTitle(getResources().getString(R.string.location_permission_rationale_title))
                         .setMessage(getResources().getString(R.string.location_permission_rationale_description))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - onclick - requesting permission");
+                                // //  // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - onclick - requesting permission");
                                 ActivityCompat.requestPermissions(MainActivity.this,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                         PERMISSION_REQUEST_CODE);
@@ -227,31 +227,31 @@ public class MainActivity extends AppCompatActivity
                         .setIcon(R.mipmap.ic_launcher)
                         .show();
             } else {
-                // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - no - requesting permission");
+                // //  // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - no - requesting permission");
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         PERMISSION_REQUEST_CODE);
             }
         } else {
-            // MyLog.d(LOG_TAG, "checkPermission - permission granted");
+            // //  // MyLog.d(LOG_TAG, "checkPermission - permission granted");
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        MyLog.d(TAG, "onRequestPermissionsResult");
+        //  // MyLog.d(TAG, "onRequestPermissionsResult");
 
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    MyLog.d(TAG, "onRequestPermissionsResult - permission granted");
+                    //  // MyLog.d(TAG, "onRequestPermissionsResult - permission granted");
                     // permission was granted, yay!
                     // TODO: ?
                 } else {
-                    MyLog.d(TAG, "onRequestPermissionsResult - permission denied :(");
+                    //  // MyLog.d(TAG, "onRequestPermissionsResult - permission denied :(");
                     // permission denied, boo!
                     // TODO: ?
                 }
@@ -297,12 +297,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupLocationViewModel() {
-        MyLog.d(TAG, "setupLocationViewModel");
+        //  // MyLog.d(TAG, "setupLocationViewModel");
         locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
         locationViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
             @Override
             public void onLocationSettingsDetermined(boolean isSettingsGood) {
-                MyLog.d(TAG, "setupLocationViewModel - onLocationSettingsDetermined");
+                //  // MyLog.d(TAG, "setupLocationViewModel - onLocationSettingsDetermined");
                 if (!isSettingsGood) {
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle(getString(R.string.location_settings_rationale_title))
@@ -334,27 +334,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTrackRecorderService() {
-        MyLog.d(TAG, "setupTrackRecorderService");
+        //  // MyLog.d(TAG, "setupTrackRecorderService");
         serviceManager = new TrackRecorderServiceManager(this);
         if (TrackRecorderServiceManager.isServiceRunning(this)) {
             status.setContinueRecording();
             long trackId = PreferenceUtils.getLastRecordedTrackId(this);
-            MyLog.d(TAG, "setupTrackRecorderService - service is running. TrackId: " + trackId);
+            //  // MyLog.d(TAG, "setupTrackRecorderService - service is running. TrackId: " + trackId);
             if (trackId != PreferenceUtils.NO_LAST_RECORDED_TRACK) {
                 setupTrackViewModel(trackId);
                 trackFragment.start(trackId);
                 status.setRecording(true);
             } else {
-                MyLog.wtf(TAG, "A track is recorded, but it's ID is unknown!!!");
+                //  // MyLog.wtf(TAG, "A track is recorded, but it's ID is unknown!!!");
             }
         } else {
-            MyLog.d(TAG, "setupTrackRecorderService - service is not running");
+            //  // MyLog.d(TAG, "setupTrackRecorderService - service is not running");
         }
     }
 
     @Override
     protected void onStart() {
-        MyLog.d(TAG, "onStart");
+        //  // MyLog.d(TAG, "onStart");
         super.onStart();
         setupTrackRecorderService();
     }
@@ -362,10 +362,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        MyLog.d(TAG, "onResume");
+        //  // MyLog.d(TAG, "onResume");
         startLocationUpdates();
         if (status.isRecording() && !status.isThereACameraPosition()) {
-            MyLog.d(TAG, "onResume - centerTrackOnMap");
+            //  // MyLog.d(TAG, "onResume - centerTrackOnMap");
             centerTrackOnMap();
         }
     }
@@ -373,26 +373,26 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        MyLog.d(TAG, "onPause");
+        //  // MyLog.d(TAG, "onPause");
         stopLocationUpdates();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        MyLog.d(TAG, "onStop");
+        //  // MyLog.d(TAG, "onStop");
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        MyLog.d(TAG, "onMapReady");
+        //  // MyLog.d(TAG, "onMapReady");
         this.googleMap = googleMap;
         googleMap.getUiSettings().setMapToolbarEnabled(true);
         googleMap.getUiSettings().setCompassEnabled(true);
         try {
             googleMap.setMyLocationEnabled(true);
         } catch (SecurityException e) {
-            Log.e(TAG, e.getLocalizedMessage());
+             // MyLog.e(TAG, e.getLocalizedMessage());
         }
 
         if (status.isThereACameraPosition()) {
@@ -402,7 +402,7 @@ public class MainActivity extends AppCompatActivity
 
     private void startLocationUpdates() {
         if (Utility.isLocationEnabled(this)) {
-            MyLog.d(TAG, "startLocationUpdates");
+            //  // MyLog.d(TAG, "startLocationUpdates");
             locationViewModel.getLocation().observe(MainActivity.this, new Observer<Location>() {
                 @Override
                 public void onChanged(@Nullable Location location) {
@@ -418,10 +418,10 @@ public class MainActivity extends AppCompatActivity
         if (!status.isThereACameraPosition()) {
             // it is first start, so centered
             if (status.isRecording()) {
-                MyLog.d(TAG, "updateMap - no last position, recording");
+                //  // MyLog.d(TAG, "updateMap - no last position, recording");
                 centerTrackOnMap();
             } else {
-                MyLog.d(TAG, "updateMap - no last position, no recording");
+                //  // MyLog.d(TAG, "updateMap - no last position, no recording");
                 updateCamera(CameraPosition.fromLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), ZOOM_LEVEL_INITIAL));
             }
         }
@@ -432,23 +432,23 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updateCamera(CameraPosition cameraPosition) {
-        MyLog.d(TAG, "updateCamera");
+        //  // MyLog.d(TAG, "updateCamera");
         if (!cameraPosition.equals(status.getCameraPosition())) {
-            MyLog.d(TAG, "updateCamera - actual camera position equals saved");
+            //  // MyLog.d(TAG, "updateCamera - actual camera position equals saved");
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             status.setCameraPosition(googleMap.getCameraPosition());
         }
     }
 
     private void updateCamera(LatLngBounds bounds) {
-        MyLog.d(TAG, "updateCamera");
+        //  // MyLog.d(TAG, "updateCamera");
 
         googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
         status.setCameraPosition(googleMap.getCameraPosition());
     }
 
     protected void onRecordFabClick(@SuppressWarnings("unused") View view) {
-        MyLog.d(TAG, "onRecordFabClick");
+        //  // MyLog.d(TAG, "onRecordFabClick");
         serviceManager.startStopFabClicked();
     }
 
@@ -492,13 +492,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onCameraMove() {
-        MyLog.d(TAG, "onCameraMove");
+        //  // MyLog.d(TAG, "onCameraMove");
         status.setCameraPosition(googleMap.getCameraPosition());
     }
 
     @Override
     public void onServiceStarted(long trackId) {
-        MyLog.d(TAG, "onServiceStarted");
+        //  // MyLog.d(TAG, "onServiceStarted");
         // TODO FAB animation
         trackFragment.start(trackId);
         chartsFragment.start(trackId);
@@ -508,7 +508,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onServiceStopped() {
-        MyLog.d(TAG, "onServiceStopped");
+        //  // MyLog.d(TAG, "onServiceStopped");
         trackFragment.stop();
         chartsFragment.stop();
         // TODO: status.stoprecording (ami aztán megcsinálja mindkettőt)
@@ -520,7 +520,7 @@ public class MainActivity extends AppCompatActivity
     private TrackViewModel trackViewModel;
 
     private void setupTrackViewModel(final long trackId) {
-        MyLog.d(TAG, "setupTrackViewModel - trackId = :" + trackId);
+        //  // MyLog.d(TAG, "setupTrackViewModel - trackId = :" + trackId);
         trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
         trackViewModel.init(trackId);
         if (status.isContinueRecording()) {
@@ -533,9 +533,9 @@ public class MainActivity extends AppCompatActivity
     private Observer<List<TrackpointEntity>> trackpointsListObserver = new Observer<List<TrackpointEntity>>() {
         @Override
         public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
-            Log.d(TAG, "trackpointsListObserver - onChanged");
+             // MyLog.d(TAG, "trackpointsListObserver - onChanged");
             if (trackpointEntities != null && trackpointEntities.size() != 0) {
-                Log.d(TAG, "trackpointsListObserver - onChanged - size: " + trackpointEntities.size());
+                 // MyLog.d(TAG, "trackpointsListObserver - onChanged - size: " + trackpointEntities.size());
                 drawTrackOnMap(transformTrackpointsToLatLngs(trackpointEntities));
                 trackViewModel.getTrackpointsList().removeObserver(this);
             }
@@ -545,9 +545,9 @@ public class MainActivity extends AppCompatActivity
     private Observer<TrackpointEntity> actualTrackpointObserver = new Observer<TrackpointEntity>() {
         @Override
         public void onChanged(@Nullable TrackpointEntity trackpointEntity) {
-            Log.d(TAG, "actualTrackpointObserver - getActualTrackpoint");
+            //  // MyLog.d(TAG, "actualTrackpointObserver - getActualTrackpoint");
             if (trackpointEntity != null) {
-                Log.d(TAG, "actualTrackpointObserver - getActualTrackpoint - id: " + trackpointEntity.getTrackpointId());
+                //  // MyLog.d(TAG, "actualTrackpointObserver - getActualTrackpoint - id: " + trackpointEntity.getTrackpointId());
                 continueTrackOnMap(new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
             }
         }
@@ -557,7 +557,7 @@ public class MainActivity extends AppCompatActivity
     private Polyline polyline;
 
     private void drawTrackOnMap(List<LatLng> pointsCoordinates) {
-        MyLog.d(TAG, "drawTrackOnMap");
+        //  // MyLog.d(TAG, "drawTrackOnMap");
         setupPolyLine();
         if (googleMap != null) {
             polyline.setPoints(pointsCoordinates);
@@ -565,7 +565,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupPolyLine() {
-        MyLog.d(TAG, "setupPolyLine");
+        //  // MyLog.d(TAG, "setupPolyLine");
         polylineOptions = new PolylineOptions()
                 .geodesic(true)
                 .color(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -579,15 +579,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void clearTrackOnMap() {
-        MyLog.d(TAG, "clearTrackOnMap");
+        //  // MyLog.d(TAG, "clearTrackOnMap");
         if (polyline != null) {
-            MyLog.d(TAG, "clearTrackOnMap - removing polyline");
+            //  // MyLog.d(TAG, "clearTrackOnMap - removing polyline");
             polyline.remove();
         }
     }
 
     private void continueTrackOnMap(LatLng currentLatLng) {
-        MyLog.d(TAG, "continueTrackOnMap");
+        //  // MyLog.d(TAG, "continueTrackOnMap");
         if (polylineOptions == null) {
             setupPolyLine();
         }
@@ -597,7 +597,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void centerTrackOnMap() {
-        MyLog.d(TAG, "centerTrackOnMap");
+        //  // MyLog.d(TAG, "centerTrackOnMap");
         trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
             @Override
             public void onChanged(@Nullable TrackEntity track) {

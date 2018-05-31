@@ -62,7 +62,7 @@ public class LocationManager {
     }
 
     private void createLocationRequest() {
-         MyLog.d(TAG, "createLocationRequest");
+         // MyLog.d(TAG, "createLocationRequest");
         locationRequest = new LocationRequest();
         locationRequest.setInterval(locationRequestInterval);
         locationRequest.setFastestInterval(locationRequestFastestInterval);
@@ -70,7 +70,7 @@ public class LocationManager {
     }
 
     public void start(LocationManagerCallback locationManagerCallback) {
-         MyLog.d(TAG, "start");
+         // MyLog.d(TAG, "start");
         this.locationManagerCallback = locationManagerCallback;
         setupLocationCallback();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.context);
@@ -78,7 +78,7 @@ public class LocationManager {
     }
 
     public void stop() {
-         MyLog.d(TAG, "stop");
+         // MyLog.d(TAG, "stop");
         stopLocationUpdates();
         fusedLocationProviderClient = null;
         locationManagerCallback = null;
@@ -89,13 +89,13 @@ public class LocationManager {
     }
 
     public boolean isLocationEnabled() {
-         MyLog.d(TAG, "isLocationEnabled");
+         // MyLog.d(TAG, "isLocationEnabled");
         return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
     }
 
     public void isLocationSettingsGood(final LocationSettingsCallback callback) {
-         MyLog.d(TAG, "isLocationSettingsGood");
+         // MyLog.d(TAG, "isLocationSettingsGood");
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
 
@@ -105,7 +105,7 @@ public class LocationManager {
         task.addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                // MyLog.d(LOG_TAG, "isLocationSettingsGood - onSuccess");
+                // // MyLog.d(LOG_TAG, "isLocationSettingsGood - onSuccess");
                 // All location settings are satisfied. The client can initialize
                 // location requests here.
                 callback.onLocationSettingsDetermined(true);
@@ -120,13 +120,13 @@ public class LocationManager {
                     case CommonStatusCodes.RESOLUTION_REQUIRED:
                         // Location settings are not satisfied, but this can be fixed
                         // by showing the user a dialog.
-                        // MyLog.d(LOG_TAG, "isLocationSettingsGood - onFailure - resolution required");
+                        // // MyLog.d(LOG_TAG, "isLocationSettingsGood - onFailure - resolution required");
                         callback.onLocationSettingsDetermined(false);
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                         // Location settings are not satisfied. However, we have no way
                         // to fix the settings so we won't show the dialog.
-                        // MyLog.d(LOG_TAG, "isLocationSettingsGood - onFailure - required settings unavailable :(");
+                        // // MyLog.d(LOG_TAG, "isLocationSettingsGood - onFailure - required settings unavailable :(");
                         callback.onLocationSettingsDetermined(false);
                         break;
                 }
@@ -135,12 +135,12 @@ public class LocationManager {
     }
 
     private void setupLocationCallback() {
-         MyLog.d(TAG, "setupLocationCallback");
+         // MyLog.d(TAG, "setupLocationCallback");
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
-                // MyLog.d(LOG_TAG, "new location result");
-                // MyLog.d(LOG_TAG, "    object id: "+ id);
+                // // MyLog.d(LOG_TAG, "new location result");
+                // // MyLog.d(LOG_TAG, "    object id: "+ id);
                 for (Location location : locationResult.getLocations()) {
                     locationManagerCallback.onLocationChanged(location);
                 }
@@ -149,7 +149,7 @@ public class LocationManager {
     }
 
     private void setLocationSettings() {
-         MyLog.d(TAG, "setLocationSettings");
+         // MyLog.d(TAG, "setLocationSettings");
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
 
@@ -159,7 +159,7 @@ public class LocationManager {
         task.addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                // MyLog.d(LOG_TAG, "setLocationSettings - onSuccess");
+                // // MyLog.d(LOG_TAG, "setLocationSettings - onSuccess");
                 // All location settings are satisfied. The client can initialize
                 // location requests here.
                 isConnected = true;
@@ -169,7 +169,7 @@ public class LocationManager {
     }
 
     private void startLocationUpdates() {
-         MyLog.d(TAG, "startLocationUpdates");
+         // MyLog.d(TAG, "startLocationUpdates");
         if (isConnected) {
             try {
                 fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null /* Looper */);
@@ -183,12 +183,12 @@ public class LocationManager {
     }
 
     private void stopLocationUpdates() {
-         MyLog.d(TAG, "stopLocation");
+         // MyLog.d(TAG, "stopLocation");
         Task<Void> myTask = fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         if (myTask.isSuccessful()) {
-            // MyLog.d(LOG_TAG, "stopLocation - task successful");
+            // // MyLog.d(LOG_TAG, "stopLocation - task successful");
         } else {
-            // MyLog.d(LOG_TAG, "stopLocation - task NOT successful");
+            // // MyLog.d(LOG_TAG, "stopLocation - task NOT successful");
         }
     }
 

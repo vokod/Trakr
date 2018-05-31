@@ -129,31 +129,31 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
         // if accuracy is below the required level, drop the point
         if (!status.isAccurateEnough()) {
-            MyLog.d(TAG, "onLocationChanged - accuracy is below expected - DROPPING");
+            //MyLog.d(TAG, "    - accuracy is below expected - DROPPING");
             return;
         }
 
         // filtering is only possible if there is a previous data point
         if (status.isThereAPreviousTrackpoint()) {
-            MyLog.d(TAG, "onLocationChanged - there IS a previous trackpoint ");
+            //MyLog.d(TAG, "    - there IS a previous trackpoint ");
 
             if (status.isDistanceFarEnoghFromPreviousTrackpoint()) {
-                MyLog.d(TAG, "onLocationChanged - the new location is away from previous, SAVING");
+                MyLog.d(TAG, "        - the new location is away from previous, SAVING");
 
                 saveTrackAndPointToDb();
                 // updateNotification(context, track);
             } else {
-                MyLog.d(TAG, "onLocationChanged - the new location is exactly the previous, DROPPING");
+                //MyLog.d(TAG, "        - the new location is exactly the previous, DROPPING");
             }
 
         } else {
-            MyLog.d(TAG, "onLocationChanged - there is NO previous trackpoint ");
+            //MyLog.d(TAG, "    - there is NO previous trackpoint ");
             if (status.getActualTrackpoint().getAltitude() != 0) {
-                MyLog.d(TAG, "onLocationChanged - there is no previous trackpoint and this one has valid altitude. SAVING");
+                MyLog.d(TAG, "        - there is no previous trackpoint and this one has valid altitude. SAVING");
                 saveTrackAndPointToDb();
                 // updateNotification(context, track);
             } else {
-                MyLog.d(TAG, "onLocationChanged - there is no previous trackpoint and this one's altitude is 0. DROPPING");
+                //MyLog.d(TAG, "        - there is no previous trackpoint and this one's altitude is 0. DROPPING");
             }
         }
     }
