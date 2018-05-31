@@ -120,7 +120,7 @@ public class TrackListAdapter
     class TrackItemViewHolder extends RecyclerView.ViewHolder {
 
         private TrackEntity trackItem;
-        private TextView titleTv;
+        private TextView titleTv, dateTv;
         private ImageView initialIv;
         private SecondaryPropertyView distanceView, durationView, elevationView;
         private FrameLayout clickOverlay;
@@ -132,6 +132,7 @@ public class TrackListAdapter
             // MyLog.d(LOG_TAG, "TrackItemViewHolder");
             clickOverlay = itemView.findViewById(R.id.fl_click_overlay);
             titleTv = itemView.findViewById(R.id.tv_title);
+            dateTv = itemView.findViewById(R.id.tv_date);
             initialIv = itemView.findViewById(R.id.iv_initial);
             distanceView = itemView.findViewById(R.id.spv_distance);
             durationView = itemView.findViewById(R.id.spv_duration);
@@ -145,6 +146,7 @@ public class TrackListAdapter
             // MyLog.d(LOG_TAG, "bind");
             this.trackItem = track;
             titleTv.setText(trackItem.getTitle());
+            dateTv.setText(StringUtils.getStartTimeAsString(trackItem.getStartTime()));
 
             ColorGenerator generator = ColorGenerator.MATERIAL;
             String firstLetter = "";

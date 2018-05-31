@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".di.TrakrApplication"
@@ -27,7 +28,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.list.TrackListActivity"
             android:label="@string/title_activity_track_list"
@@ -36,15 +36,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.main.MainActivity" />
         </activity>
-
-        <activity android:name=".view.detail.TrackDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_track_detail">
+        <activity
+            android:name=".view.detail.TrackDetailActivity"
+            android:label="@string/title_activity_track_detail"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.list.TrackListActivity" />
         </activity>
-
         <activity
             android:name=".view.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -61,7 +60,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_path"/>
+                android:resource="@xml/provider_path" />
         </provider>
 
         <service android:name=".trackrecorder.TrackRecorderService" />
@@ -72,11 +71,10 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="18bbe06a9bdc61f2ba085a0c0e353cd1e59f5fe4" />
+
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

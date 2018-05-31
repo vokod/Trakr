@@ -7,12 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 
 public class TrackDetailActivity extends AppCompatActivity {
+
 
     private static final String LOG_TAG = TrackDetailActivity.class.getSimpleName();
     private static final String EXTRA_TRACK_ID = "extra_track_id";
@@ -43,6 +45,9 @@ public class TrackDetailActivity extends AppCompatActivity {
         // setContentView(R.layout.activity_track_detail);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_track_detail);
         setupToolbar();
+
+        BottomNavigationView navigation = binding.navigation;
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         setupViewModel(getIntent().getLongExtra(EXTRA_TRACK_ID, 0));
     }
@@ -117,7 +122,7 @@ public class TrackDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        getMenuInflater().inflate(R.menu.track_detail_activity_main_menu, menu);
         return true;
     }
 
@@ -134,4 +139,28 @@ public class TrackDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_map:
+
+                    return true;
+                case R.id.action_data:
+
+                    return true;
+                case R.id.action_charts:
+
+                    return true;
+            }
+            return false;
+        }
+    };
+
+
 }

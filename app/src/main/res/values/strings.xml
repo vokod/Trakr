@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Trakr</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="title_activity_main">Trakr</string>
     <string name="action_settings">Settings</string>
     <string name="action_track_list">Track list</string>
@@ -140,5 +137,9 @@
     <string name="title_activity_track_detail">Track list</string>
     <string name="action_export">Export track</string>
     <string name="action_delete">Delete track</string>
+    <string name="bottom_navigation_title_map">Map</string>
+    <string name="bottom_navigation_title_data">Data</string>
+    <string name="bottom_navigation_title_charts">Charts</string>
+
 
 </resources>
