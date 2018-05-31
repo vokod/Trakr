@@ -108,27 +108,23 @@ public class MainActivity extends AppCompatActivity
         final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
         BottomSheetFragmentPagerAdapter adapter =
                 new BottomSheetFragmentPagerAdapter(getSupportFragmentManager());
-        // TODO: extract resources
+
         if (savedInstanceState == null) {
-            pointFragment = BottomSheetPointFragment.newInstance("Point");
-            //  // MyLog.d(TAG, "setupBottomSheet - pointfragment: " + pointFragment.hashCode());
-            trackFragment = BottomSheetTrackFragment.newInstance("Track");
-            //  // MyLog.d(TAG, "setupBottomSheet - trackFragment: " + trackFragment.hashCode());
-            chartsFragment = BottomSheetChartsFragment.newInstance("Charts");
-            //  // MyLog.d(TAG, "setupBottomSheet - chartsFragment: " + chartsFragment.hashCode());
+            pointFragment = BottomSheetPointFragment.newInstance(getString(R.string.bottom_sheet_label_point));
+            trackFragment = BottomSheetTrackFragment.newInstance(getString(R.string.bottom_sheet_label_track));
+            chartsFragment = BottomSheetChartsFragment.newInstance(getString(R.string.bottom_sheet_label_charts));
         } else {
             pointFragment = (BottomSheetPointFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, BottomSheetPointFragment.class.getName());
-            pointFragment.setTitle("Point");
-            //  // MyLog.d(TAG, "setupBottomSheet - pointfragment: " + pointFragment.hashCode());
+            pointFragment.setTitle(getString(R.string.bottom_sheet_label_point));
+
             trackFragment = (BottomSheetTrackFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, BottomSheetTrackFragment.class.getName());
-            trackFragment.setTitle("Track");
-            //  // MyLog.d(TAG, "setupBottomSheet - trackFragment: " + trackFragment.hashCode());
+            trackFragment.setTitle(getString(R.string.bottom_sheet_label_track));
+
             chartsFragment = (BottomSheetChartsFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, BottomSheetChartsFragment.class.getName());
-            chartsFragment.setTitle("Charts");
-            //  // MyLog.d(TAG, "setupBottomSheet - chartsFragment: " + chartsFragment.hashCode());
+            chartsFragment.setTitle(getString(R.string.bottom_sheet_label_charts));
         }
         adapter.setFragments(new BottomSheetBaseFragment[]{pointFragment, trackFragment, chartsFragment});
         binding.viewPager.setAdapter(adapter);
@@ -246,11 +242,9 @@ public class MainActivity extends AppCompatActivity
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //  // MyLog.d(TAG, "onRequestPermissionsResult - permission granted");
                     // permission was granted, yay!
-                    // TODO: ?
                 } else {
                     //  // MyLog.d(TAG, "onRequestPermissionsResult - permission denied :(");
                     // permission denied, boo!
-                    // TODO: ?
                 }
             }
         }

@@ -158,7 +158,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
         }
     }
 
-    private void saveTrackAndPointToDb(){
+    private void saveTrackAndPointToDb() {
         saveTrackpointToDb(status.getActualTrackpoint());
         updateTrackData();
         updateTrackInDb(track);
@@ -238,12 +238,16 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     private static void updateNotification(Context context, TrackEntity track) {
         // MyLog.d(TAG, "updateNotification");
         List<String> lines = new ArrayList<>(6);
-        // TODO: extract
-        lines.add("Duration: " + StringUtils.getElapsedTimeAsString(System.currentTimeMillis() - track.getStartTime()) + "s");
-        lines.add("Distance:" + StringUtils.getDistanceAsThreeCharactersString(track.getDistance()) + "m");
-        lines.add("Ascent: " + String.format(Locale.getDefault(), "%.0f", track.getAscent()) + "m");
-        lines.add("Descent: " + String.format(Locale.getDefault(), "%.0f", track.getDescent()) + "m");
-        lines.add("Avg. speed: " + String.format(Locale.getDefault(), "%.1f", track.getAvgSpeed()) + "km/h");
+        lines.add(context.getString(R.string.record_notification_line_1,
+                StringUtils.getElapsedTimeAsString(System.currentTimeMillis() - track.getStartTime())));
+        lines.add(context.getString(R.string.record_notification_line_2,
+                StringUtils.getDistanceAsThreeCharactersString(track.getDistance())));
+        lines.add(context.getString(R.string.record_notification_line_3,
+                String.format(Locale.getDefault(), "%.0f", track.getAscent())));
+        lines.add(context.getString(R.string.record_notification_line_4,
+                String.format(Locale.getDefault(), "%.0f", track.getDescent())));
+        lines.add(context.getString(R.string.record_notification_line_5,
+                String.format(Locale.getDefault(), "%.1f", track.getAvgSpeed())));
 
         NotificationUtils.showRecordTrackNotification(context, lines);
     }

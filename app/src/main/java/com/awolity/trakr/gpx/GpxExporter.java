@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.widget.Toast;
 
+import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.notification.NotificationUtils;
@@ -30,8 +31,9 @@ public class GpxExporter {
     public static void export(final Context context, final TrackWithPoints trackWithPoints) {
 
         if (!IOUtils.isExternalStorageWritable()) {
-            // TODO: extract
-            Toast.makeText(context, "External storage not writable :( Can't export track.", Toast.LENGTH_LONG).show();
+            Toast.makeText(context,
+                    context.getString(R.string.toast_external_storage_not_writable),
+                    Toast.LENGTH_LONG).show();
             return;
         }
         IOUtils.checkCreateFolder(PATH.substring(0, PATH.length() - 1));
@@ -50,10 +52,8 @@ public class GpxExporter {
 
         GPXTrack gpxTrack = new GPXTrack();
         gpxTrack.addSegment(gpxTrackSegment);
-        gpxTrack.setType("type");
-        gpxTrack.setName("name");
-        gpxTrack.setUserDescription("description");
-        gpxTrack.setGpsComment("gpscomment");
+        gpxTrack.setName(trackWithPoints.getTitle());
+        gpxTrack.setUserDescription(trackWithPoints.getMetadata());
 
         List<GPXTrack> gpxTracks = new ArrayList<>(1);
         gpxTracks.add(gpxTrack);

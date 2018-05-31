@@ -20,7 +20,7 @@ import java.util.Locale;
 
 public class BottomSheetPointFragment extends BottomSheetBaseFragment {
 
-    private static final String TAG = BottomSheetPointFragment.class.getSimpleName();
+    private static final String LOG_TAG = BottomSheetPointFragment.class.getSimpleName();
     private ActivityMainFragmentBottomSheetPointBinding binding;
     private LocationViewModel locationViewModel;
 
@@ -44,21 +44,21 @@ public class BottomSheetPointFragment extends BottomSheetBaseFragment {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.activity_main_fragment_bottom_sheet_point, container, false);
 
-        binding.speedView.setLabel("Speed"); // TODO: extract
-        binding.speedView.setValue("0.0");
-        binding.speedView.setUnit("km/h");
+        binding.speedView.setLabel(getActivity().getString(R.string.speed_view_label)); 
+        binding.speedView.setValue(getActivity().getString(R.string.speed_view_value));
+        binding.speedView.setUnit(getActivity().getString(R.string.speed_view_unit));
 
-        binding.altitudeView.setLabel("Altitude");
-        binding.altitudeView.setValue("0");
-        binding.altitudeView.setUnit("m");
+        binding.altitudeView.setLabel(getActivity().getString(R.string.altitude_view_label));
+        binding.altitudeView.setValue(getActivity().getString(R.string.altitude_view_value));
+        binding.altitudeView.setUnit(getActivity().getString(R.string.altitude_view_unit));
 
-        binding.accuracyView.setLabel("Accuracy"); // TODO: extract
-        binding.accuracyView.setValue("-");
-        binding.accuracyView.setUnit("m");
+        binding.accuracyView.setLabel(getActivity().getString(R.string.accuracy_view_label)); 
+        binding.accuracyView.setValue(getActivity().getString(R.string.accuracy_view_value));
+        binding.accuracyView.setUnit(getActivity().getString(R.string.accuracy_view_unit));
 
-        binding.bearingView.setLabel("Bearing");
-        binding.bearingView.setValue("-");
-        binding.bearingView.setUnit("°");
+        binding.bearingView.setLabel(getActivity().getString(R.string.bearing_view_label));
+        binding.bearingView.setValue(getActivity().getString(R.string.bearing_view_value));
+        binding.bearingView.setUnit(getActivity().getString(R.string.bearing_view_unit));
 
         setupViewModel();
 

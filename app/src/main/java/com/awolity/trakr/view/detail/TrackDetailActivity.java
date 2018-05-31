@@ -109,12 +109,11 @@ public class TrackDetailActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     MyLog.d(LOG_TAG, "onRequestPermissionsResult - permission granted");
                     // permission was granted, yay!
-                    // TODO: ?
                 } else {
                     MyLog.d(LOG_TAG, "onRequestPermissionsResult - permission denied :(");
                     // permission denied, boo!
-                    // TODO: extract
-                    Toast.makeText(this, "Permission not granted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.write_permission_denied),
+                            Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -139,7 +138,6 @@ public class TrackDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

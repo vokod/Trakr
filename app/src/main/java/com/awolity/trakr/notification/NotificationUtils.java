@@ -152,7 +152,6 @@ public class NotificationUtils {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID_TRACK_EXPORT, notificationBuilder.build());
     }
-    // TODO: kiemelni az azonos kódokat
 
     public static void showExportTrackDoneNotification(Context context, String fileName, String path) {
         Intent intent = new Intent();
@@ -179,8 +178,7 @@ public class NotificationUtils {
 
         List<String> notificationLines = new ArrayList<>(2);
         notificationLines.add(context.getResources().getString(
-                R.string.export_track_done_notification_expanded_line_1,
-                fileName));
+                R.string.export_track_done_notification_expanded_line_1, fileName));
         notificationLines.add(context.getResources().getString(
                 R.string.export_track_done_notification_expanded_line_2,
                 path));

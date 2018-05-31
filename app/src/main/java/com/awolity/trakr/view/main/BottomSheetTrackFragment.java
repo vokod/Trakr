@@ -45,7 +45,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         return fragment;
     }
 
-    private static final String TAG = BottomSheetTrackFragment.class.getSimpleName();
+    private static final String LOG_TAG = BottomSheetTrackFragment.class.getSimpleName();
 
     public BottomSheetTrackFragment() {
     }
@@ -53,7 +53,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // MyLog.d(TAG, "onCreate");
+        // MyLog.d(LOG_TAG, "onCreate");
         //noinspection ConstantConditions
         trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
     }
@@ -61,7 +61,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // MyLog.d(TAG, "onCreateView");
+        // MyLog.d(LOG_TAG, "onCreateView");
 
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.activity_main_fragment_bottom_sheet_track, container, false);
@@ -85,7 +85,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        // MyLog.d(TAG, "onActivityCreated");
+        // MyLog.d(LOG_TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
@@ -102,7 +102,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        // MyLog.d(TAG, "onSaveInstanceState");
+        // MyLog.d(LOG_TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
         outState.putString(KEY_DISTANCEVIEW_VALUE, binding.distanceView.getValue());
         outState.putString(KEY_ASCENTVIEW_VALUE, binding.ascentView.getValue());
@@ -117,7 +117,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     private long trackId = -1;
 
     public void start(long trackId) {
-        // MyLog.d(TAG, "start");
+        // MyLog.d(LOG_TAG, "start");
         this.trackId = trackId;
         if(binding!=null) {
             setDataVisibility(true);
@@ -129,14 +129,14 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     public void stop() {
-        // MyLog.d(TAG, "stop");
+        // MyLog.d(LOG_TAG, "stop");
         setDataVisibility(false);
         handler.removeCallbacks(uiUpdater);
         // resetData();
     }
 
     private void startObserve(long trackId) {
-        // MyLog.d(TAG, "startObserve");
+        // MyLog.d(LOG_TAG, "startObserve");
         trackViewModel.init(trackId);
         trackViewModel.getTrack().observe(this, trackEntityObserver);
     }
@@ -144,16 +144,16 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     Observer<TrackEntity> trackEntityObserver = new Observer<TrackEntity>() {
         @Override
         public void onChanged(@Nullable TrackEntity trackEntity) {
-            // MyLog.d(TAG, "trackEntityObserver.onChanged");
+            // MyLog.d(LOG_TAG, "trackEntityObserver.onChanged");
             if (trackEntity != null) {
-                // MyLog.d(TAG, "trackEntityObserver.onChanged - track NOT null");
+                // MyLog.d(LOG_TAG, "trackEntityObserver.onChanged - track NOT null");
                 setData(trackEntity);
             }
         }
     };
 
     private void setData(TrackEntity track) {
-        // MyLog.d(TAG, "setData");
+        // MyLog.d(LOG_TAG, "setData");
         setDistance(track.getDistance());
         setAscent(track.getAscent());
         setDescent(track.getDescent());
@@ -165,14 +165,14 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void updateUi() {
-        // // MyLog.d(LOG_TAG, "updateUi");
+        // // MyLog.d(LOG_LOG_TAG, "updateUi");
         if (startTime != 0) {
             setElapsedTime(System.currentTimeMillis() - startTime);
         }
     }
 
     private void setDataVisibility(boolean isRecording) {
-        // MyLog.d(TAG, "setDataVisibility");
+        // MyLog.d(LOG_TAG, "setDataVisibility");
         if(binding == null){
             return;
         }
@@ -202,7 +202,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void resetData() {
-        // MyLog.d(TAG, "resetData");
+        // MyLog.d(LOG_TAG, "resetData");
 
         startTime = 0;
 
@@ -210,38 +210,37 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
             return;
         }
 
-        // TODO: extract
-        binding.distanceView.setValue("0.0");
-        binding.distanceView.setUnit("km");
-        binding.distanceView.setLabel("Distance");
+        binding.distanceView.setValue(getActivity().getString(R.string.distance_view_value));
+        binding.distanceView.setUnit(getActivity().getString(R.string.distance_view_unit));
+        binding.distanceView.setLabel(getActivity().getString(R.string.distance_view_label));
 
-        binding.ascentView.setValue("0");
-        binding.ascentView.setUnit("m");
-        binding.ascentView.setLabel("Ascent");
+        binding.ascentView.setValue(getActivity().getString(R.string.ascent_view_value));
+        binding.ascentView.setUnit(getActivity().getString(R.string.ascent_view_unit));
+        binding.ascentView.setLabel(getActivity().getString(R.string.ascent_view_label));
 
-        binding.descentView.setValue("0");
-        binding.descentView.setUnit("m");
-        binding.descentView.setLabel("Descent");
+        binding.descentView.setValue(getActivity().getString(R.string.descent_view_value));
+        binding.descentView.setUnit(getActivity().getString(R.string.descent_view_unit));
+        binding.descentView.setLabel(getActivity().getString(R.string.descent_view_label));
 
-        binding.elapsedTimeView.setValue("00:00");
-        binding.elapsedTimeView.setUnit("s");
-        binding.elapsedTimeView.setLabel("Duration");
+        binding.elapsedTimeView.setValue(getActivity().getString(R.string.elapsed_time_view_value));
+        binding.elapsedTimeView.setUnit(getActivity().getString(R.string.elapsed_time_view_unit));
+        binding.elapsedTimeView.setLabel(getActivity().getString(R.string.elapsed_time_view_label));
 
-        binding.minAltitudeView.setValue("0");
-        binding.minAltitudeView.setUnit("m");
-        binding.minAltitudeView.setLabel("Min. altitude");
+        binding.minAltitudeView.setValue(getActivity().getString(R.string.min_altitude_view_value));
+        binding.minAltitudeView.setUnit(getActivity().getString(R.string.min_altitude_view_unit));
+        binding.minAltitudeView.setLabel(getActivity().getString(R.string.min_altitude_view_label));
 
-        binding.maxAltitudeView.setValue("0");
-        binding.maxAltitudeView.setUnit("m");
-        binding.maxAltitudeView.setLabel("Max. altitude");
+        binding.maxAltitudeView.setValue(getActivity().getString(R.string.max_altitude_view_value));
+        binding.maxAltitudeView.setUnit(getActivity().getString(R.string.max_altitude_view_unit));
+        binding.maxAltitudeView.setLabel(getActivity().getString(R.string.max_altitude_view_label));
 
-        binding.avgSpeedView.setValue("0");
-        binding.avgSpeedView.setUnit("km/h");
-        binding.avgSpeedView.setLabel("Avg. speed");
+        binding.avgSpeedView.setValue(getActivity().getString(R.string.avg_speed_view_value));
+        binding.avgSpeedView.setUnit(getActivity().getString(R.string.avg_speed_view_unit));
+        binding.avgSpeedView.setLabel(getActivity().getString(R.string.avg_speed_view_label));
 
-        binding.maxSpeedView.setValue("0");
-        binding.maxSpeedView.setUnit("km/h");
-        binding.maxSpeedView.setLabel("Max. speed");
+        binding.maxSpeedView.setValue(getActivity().getString(R.string.max_speed_view_value));
+        binding.maxSpeedView.setUnit(getActivity().getString(R.string.max_speed_view_unit));
+        binding.maxSpeedView.setLabel(getActivity().getString(R.string.max_speed_view_label));
     }
 
     public void setStartTime(long startTime) {

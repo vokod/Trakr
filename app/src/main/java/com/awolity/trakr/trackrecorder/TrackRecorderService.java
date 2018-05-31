@@ -93,12 +93,11 @@ public class TrackRecorderService extends Service {
 
     private static List<String> getNotificationDetails(Context context) {
         List<String> lines = new ArrayList<>(6);
-        // TODO: extract
-        lines.add("Duration: 0s");
-        lines.add("Distance: 0m");
-        lines.add("Ascent: 0m");
-        lines.add("Descent: 0m");
-        lines.add("Avg. speed: -km/h");
+        lines.add(context.getString(R.string.record_notification_line_1,"0"));
+        lines.add(context.getString(R.string.record_notification_line_2,"0"));
+        lines.add(context.getString(R.string.record_notification_line_3,"0"));
+        lines.add(context.getString(R.string.record_notification_line_4,"0"));
+        lines.add(context.getString(R.string.record_notification_line_5,"-"));
         return lines;
     }
 }

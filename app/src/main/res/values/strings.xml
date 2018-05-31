@@ -1,26 +1,97 @@
 <resources>
     <string name="app_name">Trakr</string>
+
+    <!-- MainActivity -->
     <string name="title_activity_main">Trakr</string>
     <string name="action_settings">Settings</string>
     <string name="action_track_list">Track list</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="bottom_sheet_label_point">Point</string>
+    <string name="bottom_sheet_label_track">Track</string>
+    <string name="bottom_sheet_label_charts">Charts</string>
 
+    <!-- BottomSheetPointFragment -->
+    <string name="speed_view_label">Speed</string>
+    <string name="speed_view_unit">km/h</string>
+    <string name="speed_view_value">0.0</string>
 
+    <string name="accuracy_view_label">Accuracy</string>
+    <string name="accuracy_view_unit">m</string>
+    <string name="accuracy_view_value">-</string>
+
+    <string name="bearing_view_label">Bearing</string>
+    <string name="bearing_view_unit">°</string>
+    <string name="bearing_view_value">-</string>
+
+    <string name="altitude_view_label">Altitude</string>
+    <string name="altitude_view_unit">m</string>
+    <string name="altitude_view_value">0</string>
+
+    <!-- BottomSheetTrackFragment -->
+    <string name="distance_view_label">Distance</string>
+    <string name="distance_view_unit">km</string>
+    <string name="distance_view_value">0.0</string>
+
+    <string name="ascent_view_label">Ascent</string>
+    <string name="ascent_view_unit">m</string>
+    <string name="ascent_view_value">0</string>
+
+    <string name="descent_view_label">Descent</string>
+    <string name="descent_view_unit">m</string>
+    <string name="descent_view_value">0</string>
+
+    <string name="elapsed_time_view_label">Duration</string>
+    <string name="elapsed_time_view_unit">s</string>
+    <string name="elapsed_time_view_value">00:00</string>
+
+    <string name="min_altitude_view_label">Min. altitude</string>
+    <string name="min_altitude_view_unit">m</string>
+    <string name="min_altitude_view_value">0</string>
+
+    <string name="max_altitude_view_label">Max. altitude</string>
+    <string name="max_altitude_view_unit">m</string>
+    <string name="max_altitude_view_value">0</string>
+
+    <string name="max_speed_view_label">Max. speed</string>
+    <string name="max_speed_view_unit">km/h</string>
+    <string name="max_speed_view_value">0</string>
+
+    <string name="avg_speed_view_label">Avg. speed</string>
+    <string name="avg_speed_view_unit">km/h</string>
+    <string name="avg_speed_view_value">0</string>
+
+    <!-- Track list activity -->
+    <string name="title_activity_track_list">Track list</string>
+
+    <!-- Track detail activity -->
+    <string name="title_activity_track_detail">Track list</string>
+    <string name="action_export">Export track</string>
+    <string name="action_delete">Delete track</string>
+    <string name="bottom_navigation_title_map">Map</string>
+    <string name="bottom_navigation_title_data">Data</string>
+    <string name="bottom_navigation_title_charts">Charts</string>
+    <string name="write_permission_denied">Write External Storage Permission not granted</string>
+
+    <!-- SettingsActivity -->
     <string name="title_activity_settings">Settings</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- TrackRecordNotification -->
+    <string name="record_notification_line_1">Duration: %ss</string>
+    <string name="record_notification_line_2">Distance: %sm</string>
+    <string name="record_notification_line_3">Ascent: %sm</string>
+    <string name="record_notification_line_4">Descent: %sm</string>
+    <string name="record_notification_line_5">Avg. speed: %skm/h</string>
 
-    <!-- LOCATION PERMISSION RATIONALE-->
+    <!-- LOCATION PERMISSION RATIONALE -->
     <string name="location_permission_rationale_title">Location permission</string>
     <string name="location_permission_rationale_description">Trakr needs Location Permission enabled to do its magic. Please enable it.</string>
-    <!-- EXTERNAL STORAGE PERMISSION RATIONALE-->
+    <!-- EXTERNAL STORAGE PERMISSION RATIONALE -->
     <string name="external_storage_permission_rationale_title">Write external storage permission</string>
     <string name="external_storage_permission_rationale_description">Trakr needs Write External Storage Permission enabled to export tracks to GPX files. Please enable it.</string>
     <!-- LOCATION SETTINGS RATIONALE  -->
     <string name="location_settings_rationale_title">Location settings</string>
     <string name="location_settings_rationale_description">Trakr needs Location settings on to do its magic. Please switch it on.</string>
     <string name="location_settings_rationale_dismiss_action">Don\'t ask again</string>
-    <!-- TRACK RECORD NOTIFICATION-->
+    <!-- TRACK RECORD NOTIFICATION -->
     <string name="record_track_notification_channel_title">Track record notification category</string>
     <string name="record_track_notification_channel_description">This notification is shown, when Trakr is recording a track in the background.</string>
     <string name="record_track_notification_title">Recording track:</string>
@@ -130,16 +201,7 @@
 
     <string name="pref_key_last_recorded_track_id">last_recorded_track_id</string>
 
-    <!-- Track list activity -->
-    <string name="title_activity_track_list">Track list</string>
 
-    <!-- Track detail activity -->
-    <string name="title_activity_track_detail">Track list</string>
-    <string name="action_export">Export track</string>
-    <string name="action_delete">Delete track</string>
-    <string name="bottom_navigation_title_map">Map</string>
-    <string name="bottom_navigation_title_data">Data</string>
-    <string name="bottom_navigation_title_charts">Charts</string>
-
-
+    <!-- Gpx exporter -->
+    <string name="toast_external_storage_not_writable">External storage not writable :( Can\'t export track.</string>
 </resources>
