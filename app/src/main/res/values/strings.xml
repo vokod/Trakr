@@ -26,16 +26,16 @@
     <!-- TRACK RECORD NOTIFICATION-->
     <string name="record_track_notification_channel_title">Track record notification category</string>
     <string name="record_track_notification_channel_description">This notification is shown, when Trakr is recording a track in the background.</string>
-    <string name="record_track_notification_title">A track is being recorded right now</string>
+    <string name="record_track_notification_title">Recording track:</string>
     <string name="record_track_notification_description">Tap this notification for more details</string>
     <!-- TRACK EXPORT NOTIFICATION-->
     <string name="export_track_notification_channel_title">Track export notification category</string>
     <string name="export_track_notification_channel_description">This notification is shown, when Trakr is exporting a track in the background.</string>
-    <string name="export_track_notification_title">A track is being exported right now</string>
+    <string name="export_track_notification_title">Exporting track…</string>
     <string name="export_track_notification_description">Tap this notification for more details</string>
     <string name="export_track_notification_expanded_line_1">File name: %s</string>
     <string name="export_track_notification_expanded_line_2">Location: %s</string>
-    <string name="export_track_done_notification_title">A track is exported to the external memory</string>
+    <string name="export_track_done_notification_title">Exporting track done</string>
     <string name="export_track_done_notification_description">Tap this notification for more details</string>
     <string name="export_track_done_notification_expanded_line_1">File name: %s</string>
     <string name="export_track_done_notification_expanded_line_2">Location: %s</string>

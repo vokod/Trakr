@@ -1,9 +1,7 @@
 package com.awolity.trakr.di;
 
-import com.awolity.trakr.gpx.GpxExporter;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.repository.Repository;
-import com.awolity.trakr.trackrecorder.TrakrNotification;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
@@ -26,8 +24,6 @@ public interface AppComponent {
     void inject (TrackViewModel trackViewModel);
 
     void inject (TrackRecorderServiceManager serviceManager);
-
-    void inject (TrakrNotification trakrNotification);
 
     void inject (TrackListViewModel trackListViewModel);
 

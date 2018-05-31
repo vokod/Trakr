@@ -30,7 +30,7 @@ public class TrackRecorderServiceManager {
     Context context;
 
     public TrackRecorderServiceManager(final TrackRecorderServiceManagerListener listener) {
-        // MyLog.d(TAG, "TrackRecorderServiceManager");
+        // MyLog.d(LOG_TAG, "TrackRecorderServiceManager");
         TrakrApplication.getInstance().getAppComponent().inject(this);
         this.listener = listener;
 
@@ -84,7 +84,7 @@ public class TrackRecorderServiceManager {
     }
 
     public static boolean isServiceRunning(Context context) {
-        // MyLog.d(TAG, "isServiceRunning");
+        // MyLog.d(LOG_TAG, "isServiceRunning");
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (TrackRecorderService.class.getName().equals(service.service.getClassName())) {

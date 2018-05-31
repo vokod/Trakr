@@ -105,7 +105,7 @@ public class LocationManager {
         task.addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                // MyLog.d(TAG, "isLocationSettingsGood - onSuccess");
+                // MyLog.d(LOG_TAG, "isLocationSettingsGood - onSuccess");
                 // All location settings are satisfied. The client can initialize
                 // location requests here.
                 callback.onLocationSettingsDetermined(true);
@@ -120,13 +120,13 @@ public class LocationManager {
                     case CommonStatusCodes.RESOLUTION_REQUIRED:
                         // Location settings are not satisfied, but this can be fixed
                         // by showing the user a dialog.
-                        // MyLog.d(TAG, "isLocationSettingsGood - onFailure - resolution required");
+                        // MyLog.d(LOG_TAG, "isLocationSettingsGood - onFailure - resolution required");
                         callback.onLocationSettingsDetermined(false);
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                         // Location settings are not satisfied. However, we have no way
                         // to fix the settings so we won't show the dialog.
-                        // MyLog.d(TAG, "isLocationSettingsGood - onFailure - required settings unavailable :(");
+                        // MyLog.d(LOG_TAG, "isLocationSettingsGood - onFailure - required settings unavailable :(");
                         callback.onLocationSettingsDetermined(false);
                         break;
                 }
@@ -139,8 +139,8 @@ public class LocationManager {
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
-                // MyLog.d(TAG, "new location result");
-                // MyLog.d(TAG, "    object id: "+ id);
+                // MyLog.d(LOG_TAG, "new location result");
+                // MyLog.d(LOG_TAG, "    object id: "+ id);
                 for (Location location : locationResult.getLocations()) {
                     locationManagerCallback.onLocationChanged(location);
                 }
@@ -159,7 +159,7 @@ public class LocationManager {
         task.addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                // MyLog.d(TAG, "setLocationSettings - onSuccess");
+                // MyLog.d(LOG_TAG, "setLocationSettings - onSuccess");
                 // All location settings are satisfied. The client can initialize
                 // location requests here.
                 isConnected = true;
@@ -186,9 +186,9 @@ public class LocationManager {
          MyLog.d(TAG, "stopLocation");
         Task<Void> myTask = fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         if (myTask.isSuccessful()) {
-            // MyLog.d(TAG, "stopLocation - task successful");
+            // MyLog.d(LOG_TAG, "stopLocation - task successful");
         } else {
-            // MyLog.d(TAG, "stopLocation - task NOT successful");
+            // MyLog.d(LOG_TAG, "stopLocation - task NOT successful");
         }
     }
 

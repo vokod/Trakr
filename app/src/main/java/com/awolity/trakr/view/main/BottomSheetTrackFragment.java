@@ -165,7 +165,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void updateUi() {
-        // MyLog.d(TAG, "updateUi");
+        // MyLog.d(LOG_TAG, "updateUi");
         if (startTime != 0) {
             setElapsedTime(System.currentTimeMillis() - startTime);
         }

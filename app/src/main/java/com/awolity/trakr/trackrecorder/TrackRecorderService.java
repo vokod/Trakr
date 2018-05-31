@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.Binder;
 
 import com.awolity.trakr.R;
+import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.utils.MyLog;
 
 import java.util.ArrayList;
@@ -58,8 +59,8 @@ public class TrackRecorderService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        startForeground(TrakrNotification.ID_NOTIFICATION,
-                TrakrNotification.getNotification(this, getNotificationDetails(this)));
+        startForeground(NotificationUtils.NOTIFICATION_ID_TRACK_RECORD,
+                NotificationUtils.getRecordTrackNotification(this, getNotificationDetails(this)));
         startRecordTrack();
         return START_STICKY;
     }
@@ -92,7 +93,7 @@ public class TrackRecorderService extends Service {
 
     private static List<String> getNotificationDetails(Context context) {
         List<String> lines = new ArrayList<>(6);
-        lines.add(context.getString(R.string.record_track_notification_title));
+        // TODO: extract
         lines.add("Duration: 0s");
         lines.add("Distance: 0m");
         lines.add("Ascent: 0m");

@@ -11,6 +11,7 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.di.TrakrApplication;
 import com.awolity.trakr.location.LocationManager;
+import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.repository.Repository;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
@@ -134,23 +135,23 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
         // filtering is only possible if there is a previous data point
         if (status.isThereAPreviousTrackpoint()) {
-             MyLog.d(TAG, "onLocationChanged - there IS a previous trackpoint ");
+            MyLog.d(TAG, "onLocationChanged - there IS a previous trackpoint ");
 
             if (status.isDistanceFarEnoghFromPreviousTrackpoint()) {
                 MyLog.d(TAG, "onLocationChanged - the new location is away from previous, SAVING");
 
                 saveTrackAndPointToDb();
-                updateNotification(context, track);
+                // updateNotification(context, track);
             } else {
                 MyLog.d(TAG, "onLocationChanged - the new location is exactly the previous, DROPPING");
             }
 
         } else {
-             MyLog.d(TAG, "onLocationChanged - there is NO previous trackpoint ");
+            MyLog.d(TAG, "onLocationChanged - there is NO previous trackpoint ");
             if (status.getActualTrackpoint().getAltitude() != 0) {
                 MyLog.d(TAG, "onLocationChanged - there is no previous trackpoint and this one has valid altitude. SAVING");
                 saveTrackAndPointToDb();
-                updateNotification(context, track);
+                // updateNotification(context, track);
             } else {
                 MyLog.d(TAG, "onLocationChanged - there is no previous trackpoint and this one's altitude is 0. DROPPING");
             }
@@ -238,14 +239,13 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
         // MyLog.d(TAG, "updateNotification");
         List<String> lines = new ArrayList<>(6);
         // TODO: extract
-        lines.add(context.getString(R.string.record_track_notification_title));
         lines.add("Duration: " + StringUtils.getElapsedTimeAsString(System.currentTimeMillis() - track.getStartTime()) + "s");
         lines.add("Distance:" + StringUtils.getDistanceAsThreeCharactersString(track.getDistance()) + "m");
         lines.add("Ascent: " + String.format(Locale.getDefault(), "%.0f", track.getAscent()) + "m");
         lines.add("Descent: " + String.format(Locale.getDefault(), "%.0f", track.getDescent()) + "m");
         lines.add("Avg. speed: " + String.format(Locale.getDefault(), "%.1f", track.getAvgSpeed()) + "km/h");
 
-        TrakrNotification.updateNotification(context, lines);
+        NotificationUtils.showRecordTrackNotification(context, lines);
     }
 
     private static void sendTrackIdBroadcast(Context context, long trackId) {
@@ -254,6 +254,4 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
         intent.putExtra(EXTRA_TRACK_ID, trackId);
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
-
-
 }

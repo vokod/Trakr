@@ -204,21 +204,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void checkPermission() {
-        // MyLog.d(TAG, "checkPermission");
+        // MyLog.d(LOG_TAG, "checkPermission");
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // MyLog.d(TAG, "checkPermission - permission not granted");
+            // MyLog.d(LOG_TAG, "checkPermission - permission not granted");
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // MyLog.d(TAG, "checkPermission - shouldshowrationale - should");
+                // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - should");
                 new AlertDialog.Builder(this)
                         .setTitle(getResources().getString(R.string.location_permission_rationale_title))
                         .setMessage(getResources().getString(R.string.location_permission_rationale_description))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // MyLog.d(TAG, "checkPermission - shouldshowrationale - onclick - requesting permission");
+                                // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - onclick - requesting permission");
                                 ActivityCompat.requestPermissions(MainActivity.this,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                         PERMISSION_REQUEST_CODE);
@@ -227,14 +227,14 @@ public class MainActivity extends AppCompatActivity
                         .setIcon(R.mipmap.ic_launcher)
                         .show();
             } else {
-                // MyLog.d(TAG, "checkPermission - shouldshowrationale - no - requesting permission");
+                // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - no - requesting permission");
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         PERMISSION_REQUEST_CODE);
             }
         } else {
-            // MyLog.d(TAG, "checkPermission - permission granted");
+            // MyLog.d(LOG_TAG, "checkPermission - permission granted");
         }
     }
 
