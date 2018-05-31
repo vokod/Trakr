@@ -84,7 +84,6 @@ dependencies {
     debugImplementation 'com.ms-square:debugoverlay:1.1.3'
     // gpx parser
     implementation 'com.codebutchery.android:gpx_lib:1.0.3'
-
 }
 
 apply plugin: 'com.google.gms.google-services'

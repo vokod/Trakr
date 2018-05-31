@@ -16,15 +16,33 @@
     <!-- LOCATION PERMISSION RATIONALE-->
     <string name="location_permission_rationale_title">Location permission</string>
     <string name="location_permission_rationale_description">Trakr needs Location Permission enabled to do its magic. Please enable it.</string>
+    <!-- EXTERNAL STORAGE PERMISSION RATIONALE-->
+    <string name="external_storage_permission_rationale_title">Write external storage permission</string>
+    <string name="external_storage_permission_rationale_description">Trakr needs Write External Storage Permission enabled to export tracks to GPX files. Please enable it.</string>
     <!-- LOCATION SETTINGS RATIONALE  -->
     <string name="location_settings_rationale_title">Location settings</string>
     <string name="location_settings_rationale_description">Trakr needs Location settings on to do its magic. Please switch it on.</string>
     <string name="location_settings_rationale_dismiss_action">Don\'t ask again</string>
-    <!-- NOTIFICATION-->
+    <!-- TRACK RECORD NOTIFICATION-->
     <string name="record_track_notification_channel_title">Track record notification category</string>
     <string name="record_track_notification_channel_description">This notification is shown, when Trakr is recording a track in the background.</string>
     <string name="record_track_notification_title">A track is being recorded right now</string>
     <string name="record_track_notification_description">Tap this notification for more details</string>
+    <!-- TRACK EXPORT NOTIFICATION-->
+    <string name="export_track_notification_channel_title">Track export notification category</string>
+    <string name="export_track_notification_channel_description">This notification is shown, when Trakr is exporting a track in the background.</string>
+    <string name="export_track_notification_title">A track is being exported right now</string>
+    <string name="export_track_notification_description">Tap this notification for more details</string>
+    <string name="export_track_notification_expanded_line_1">File name: %s</string>
+    <string name="export_track_notification_expanded_line_2">Location: %s</string>
+    <string name="export_track_done_notification_title">A track is exported to the external memory</string>
+    <string name="export_track_done_notification_description">Tap this notification for more details</string>
+    <string name="export_track_done_notification_expanded_line_1">File name: %s</string>
+    <string name="export_track_done_notification_expanded_line_2">Location: %s</string>
+    <string name="export_track_error_notification_title">Track export error</string>
+    <string name="export_track_error_notification_description">Tap this notification for more details</string>
+    <string name="export_track_error_notification_expanded_line_1">Can\'t export %s</string>
+    <string name="export_track_error_notification_expanded_line_2">to %s</string>
 
     <!-- Strings related to Settings -->
     <string name="pref_sum_altitude_filtering">Enabling results in smoother altitude profile of tracks.</string>

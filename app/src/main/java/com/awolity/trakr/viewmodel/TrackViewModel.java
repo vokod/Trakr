@@ -50,4 +50,8 @@ public class TrackViewModel extends ViewModel {
     public void deleteTrack() {
         repository.deleteTrack(trackId);
     }
+
+    public void exportTrack(){
+        repository.exportTrack(trackId);
+    }
 }

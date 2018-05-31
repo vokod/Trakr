@@ -1,6 +1,7 @@
 package com.awolity.trakr.repository;
 
 import android.arch.lifecycle.LiveData;
+import android.content.Context;
 import android.support.annotation.WorkerThread;
 
 import com.awolity.trakr.data.dao.TrackDao;
@@ -9,6 +10,7 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.di.TrakrApplication;
+import com.awolity.trakr.gpx.GpxExporter;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -21,18 +23,29 @@ public class Repository {
 
     @Inject
     Executor discIoExecutor;
-
     @Inject
     TrackDao trackDao;
-
     @Inject
     TrackpointDao trackpointDao;
+    @Inject
+    Context context;
+    private long id;
 
     public Repository() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 
-    private long id;
+    /**
+     * TrackS methods
+     */
+
+    public LiveData<List<TrackEntity>> getTracks() {
+        return trackDao.loadAll();
+    }
+
+    /**
+     * Track methods
+     */
 
     public long saveTrack(final TrackEntity trackData) {
         // MyLog.d(LOG_TAG, "saveTrack");
@@ -66,20 +79,34 @@ public class Repository {
         return trackDao.loadById(id);
     }
 
-    public LiveData<TrackWithPoints> getTrackWithPoints(long id) {
-        // MyLog.d(LOG_TAG, "getTrack - id:" + id);
-        return trackDao.loadByIdWithPoints(id);
-    }
-
     public TrackEntity getTrackSync(long id) {
         // MyLog.d(LOG_TAG, "getTrackSync - id:" + id);
         return trackDao.loadByIdSync(id);
     }
 
-    public LiveData<Integer> getTrackNumOfTrackpoints(long id) {
+    public LiveData<TrackWithPoints> getTrackWithPoints(long id) {
+        // MyLog.d(LOG_TAG, "getTrack - id:" + id);
+        return trackDao.loadByIdWithPoints(id);
+    }
+
+    public LiveData<Integer> getNumOfTrackpoints(long id) {
         // MyLog.d(LOG_TAG, "getTrackNumOfTrackpoints - id:" + id);
         return trackDao.loadNumOfTrackpointsById(id);
     }
+
+    public void exportTrack(final long id) {
+        discIoExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                TrackWithPoints trackWithPoints = trackDao.loadByIdWithPointsSync(id);
+                GpxExporter.export(context, trackWithPoints);
+            }
+        });
+    }
+
+    /**
+     * Trackpoint methods
+     */
 
     public void saveTrackpoint(final TrackpointEntity trackpoint) {
         // MyLog.d(LOG_TAG, "saveTrackpoint");
@@ -100,11 +127,8 @@ public class Repository {
         return trackpointDao.loadActualTrackpointByTrack(id);
     }
 
-    public LiveData<List<TrackEntity>> getTracks() {
-        return trackDao.loadAll();
-    }
 
-    public void deleteTrack(final long trackId){
+    public void deleteTrack(final long trackId) {
         discIoExecutor.execute(new Runnable() {
             @Override
             public void run() {

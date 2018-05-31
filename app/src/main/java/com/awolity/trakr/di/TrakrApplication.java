@@ -2,6 +2,8 @@ package com.awolity.trakr.di;
 
 import android.app.Application;
 import android.os.StrictMode;
+
+import com.awolity.trakr.notification.NotificationUtils;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 
@@ -19,6 +21,7 @@ public class TrakrApplication extends Application {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
         getAppComponent();
+        NotificationUtils.setupNotificationChannels(this);
 
         if (false) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()

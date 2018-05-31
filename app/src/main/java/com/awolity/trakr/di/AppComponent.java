@@ -1,5 +1,6 @@
 package com.awolity.trakr.di;
 
+import com.awolity.trakr.gpx.GpxExporter;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.repository.Repository;
 import com.awolity.trakr.trackrecorder.TrakrNotification;
