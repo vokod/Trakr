@@ -6,14 +6,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
 
+import com.awolity.trakr.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 
 public class Utility {
+
+    private static final String LOG_TAG = Utility.class.getSimpleName();
 
     public static boolean isMyServiceRunning(Class<?> serviceClass, Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -42,4 +49,21 @@ public class Utility {
         return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
     }
+
+    public static void scrollMapUp(Context context, GoogleMap googleMap) {
+        googleMap.animateCamera(CameraUpdateFactory.scrollBy(0, getScrollBy(context)));
+    }
+
+    public static void scrollMapDown(Context context, GoogleMap googleMap) {
+
+        googleMap.animateCamera(CameraUpdateFactory.scrollBy(0, -getScrollBy(context)));
+    }
+
+    private static float getScrollBy(Context context) {
+        return (context.getResources().getDimension(R.dimen.bottom_sheet_height_extended)
+                - context.getResources().getDimension(R.dimen.bottom_sheet_height_collapsed))
+                / 2;
+    }
+
+
 }

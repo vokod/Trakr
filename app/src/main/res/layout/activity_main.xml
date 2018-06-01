@@ -66,8 +66,8 @@
                 android:layout_height="@dimen/bottom_sheet_header_height"
                 app:tabGravity="center"
                 app:tabMode="fixed"
-                app:tabTextColor="@color/colorPrimary"
-                app:tabSelectedTextColor="@color/colorAccent"
+                app:tabTextColor="@color/colorPrimaryDark"
+                app:tabSelectedTextColor="@color/colorPrimaryDark"
                 app:tabIndicatorColor="@color/colorAccent"
                 app:tabIndicatorHeight="5dp"/>
 

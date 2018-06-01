@@ -18,7 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.Toolbar;;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -35,6 +35,7 @@ import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
 import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.Utility;
+import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.view.SettingsActivity;
 import com.awolity.trakr.view.list.TrackListActivity;
 import com.awolity.trakr.viewmodel.LocationViewModel;
@@ -51,9 +52,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.ms_square.debugoverlay.DebugOverlay;
-import com.ms_square.debugoverlay.Position;
-import com.ms_square.debugoverlay.modules.LogcatModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,6 +127,7 @@ public class MainActivity extends AppCompatActivity
         adapter.setFragments(new BottomSheetBaseFragment[]{pointFragment, trackFragment, chartsFragment});
         binding.viewPager.setAdapter(adapter);
         binding.viewPager.setOffscreenPageLimit(2);
+
         binding.tabLayout.setupWithViewPager(binding.viewPager);
         binding.tabLayout.getTabAt(0).setIcon(R.drawable.ic_point_selected);
         binding.tabLayout.getTabAt(1).setIcon(R.drawable.ic_track);
@@ -140,12 +139,16 @@ public class MainActivity extends AppCompatActivity
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 switch (tab.getPosition()) {
                     case 0:
+                        MyLog.d(TAG, "onTabSelected - 0");
                         tab.setIcon(getResources().getDrawable(R.drawable.ic_point_selected));
+                        tab.select();
                         break;
                     case 1:
+                        MyLog.d(TAG, "onTabSelected - 1");
                         tab.setIcon(getResources().getDrawable(R.drawable.ic_track_selected));
                         break;
                     case 2:
+                        MyLog.d(TAG, "onTabSelected - 2");
                         tab.setIcon(getResources().getDrawable(R.drawable.ic_charts_selected));
                         break;
                     default:
@@ -157,12 +160,15 @@ public class MainActivity extends AppCompatActivity
             public void onTabUnselected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
+                        MyLog.d(TAG, "onTabUnselected - 0");
                         tab.setIcon(getResources().getDrawable(R.drawable.ic_point));
                         break;
                     case 1:
+                        MyLog.d(TAG, "onTabUnselected - 1");
                         tab.setIcon(getResources().getDrawable(R.drawable.ic_track));
                         break;
                     case 2:
+                        MyLog.d(TAG, "onTabUnselected - 2");
                         tab.setIcon(getResources().getDrawable(R.drawable.ic_charts));
                         break;
                     default:
@@ -181,10 +187,12 @@ public class MainActivity extends AppCompatActivity
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     if (googleMap != null) {
-                        // TODO: move camera
+                        Utility.scrollMapUp(MainActivity.this,googleMap);
                     }
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    // TODO: move camera
+                    if (googleMap != null) {
+                        Utility.scrollMapDown(MainActivity.this,googleMap);
+                    }
                 }
             }
 
@@ -314,16 +322,6 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void setupDebugOverlay() {
-        new DebugOverlay.Builder(this.getApplication())
-                .modules(new LogcatModule())
-                .position(Position.TOP_START)
-                .allowSystemLayer(true)
-                .notification(true, MainActivity.class.getName())
-                .build()
-                .install();
-    }
-
     private void setupTrackRecorderService() {
         //  // MyLog.d(TAG, "setupTrackRecorderService");
         serviceManager = new TrackRecorderServiceManager(this);
@@ -383,7 +381,7 @@ public class MainActivity extends AppCompatActivity
         try {
             googleMap.setMyLocationEnabled(true);
         } catch (SecurityException e) {
-             // MyLog.e(TAG, e.getLocalizedMessage());
+            // MyLog.e(TAG, e.getLocalizedMessage());
         }
 
         if (status.isThereACameraPosition()) {
@@ -524,9 +522,9 @@ public class MainActivity extends AppCompatActivity
     private Observer<List<TrackpointEntity>> trackpointsListObserver = new Observer<List<TrackpointEntity>>() {
         @Override
         public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
-             // MyLog.d(TAG, "trackpointsListObserver - onChanged");
+            // MyLog.d(TAG, "trackpointsListObserver - onChanged");
             if (trackpointEntities != null && trackpointEntities.size() != 0) {
-                 // MyLog.d(TAG, "trackpointsListObserver - onChanged - size: " + trackpointEntities.size());
+                // MyLog.d(TAG, "trackpointsListObserver - onChanged - size: " + trackpointEntities.size());
                 drawTrackOnMap(transformTrackpointsToLatLngs(trackpointEntities));
                 trackViewModel.getTrackpointsList().removeObserver(this);
             }

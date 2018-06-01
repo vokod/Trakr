@@ -26,7 +26,6 @@ import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
@@ -104,7 +103,7 @@ public class TrackListAdapter
     @Override
     public TrackItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // MyLog.d(LOG_TAG, "onCreateViewHolder");
-        View v = layoutInflater.inflate(R.layout.item_track_list, parent, false);
+        View v = layoutInflater.inflate(R.layout.activity_main_item_track_list, parent, false);
         return new TrackItemViewHolder(v);
     }
 
