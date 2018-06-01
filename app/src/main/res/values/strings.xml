@@ -204,4 +204,7 @@
 
     <!-- Gpx exporter -->
     <string name="toast_external_storage_not_writable">External storage not writable :( Can\'t export track.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

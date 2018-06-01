@@ -285,6 +285,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupMapFragment() {
+        // TODO: kiemelni a checkplayservicest, meg a permission checket is
+        // TODO: statikká tenni amit csak lehet
         if (checkPlayServices()) {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.mapFragment);
