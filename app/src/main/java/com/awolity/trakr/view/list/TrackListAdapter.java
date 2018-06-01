@@ -21,10 +21,12 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.SecondaryPropertyView;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
+import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
@@ -179,11 +181,13 @@ public class TrackListAdapter
 
                         mapView.onCreate(null);
                         mapView.setClickable(false);
+
                         mapView.getMapAsync(new OnMapReadyCallback() {
                             @Override
-                            public void onMapReady(GoogleMap googleMap) {
+                            public void onMapReady(final GoogleMap googleMap) {
 
-                                setupPolyLine(activity,googleMap,trackWithPoints);
+                                MyLog.d(LOG_TAG, "onMapReady: " + googleMap.hashCode());
+                                setupPolyLine(activity, googleMap, trackWithPoints);
                                 mapView.onResume();
                             }
                         });
@@ -226,6 +230,4 @@ public class TrackListAdapter
     public interface TrackItemCallback {
         void onTrackItemClicked(long trackId);
     }
-
-
 }

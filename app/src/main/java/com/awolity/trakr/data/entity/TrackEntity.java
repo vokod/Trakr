@@ -354,18 +354,18 @@ public class TrackEntity {
         Calendar cl = Calendar.getInstance();
         cl.setTimeInMillis(startTime);
         int hour = cl.get(Calendar.HOUR_OF_DAY);
-        if (hour <= 6 || hour > 21) {
+        if (hour <= 3 || hour > 21) {
             return "Night track";
-        } else if (hour > 6 && hour <= 9) {
+        } else if(hour <= 6){
+            return "Dawn track";
+        } else if (hour <= 9) {
             return "Early morning track";
-        } else if (hour > 9 && hour <= 12) {
+        } else if (hour <= 12) {
             return "Morning track";
-        } else if (hour > 12 && hour <= 18) {
+        } else if ( hour <= 18) {
             return "Afternoon track";
-        } else if (hour > 18 && hour <= 21) {
-            return "Evening track";
         } else {
-            return "invalid start time track :)";
+            return "Evening track";
         }
     }
 }

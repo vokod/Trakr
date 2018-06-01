@@ -85,5 +85,4 @@ public class GpxExporter {
         });
         printer.print(gpxDocument, PATH + fileName);
     }
-
 }

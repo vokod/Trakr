@@ -94,12 +94,27 @@ public class Repository {
         return trackDao.loadNumOfTrackpointsById(id);
     }
 
+    @WorkerThread
+    public Integer getNumOfTrackpointsSync(long id) {
+        // MyLog.d(LOG_TAG, "getTrackNumOfTrackpoints - id:" + id);
+        return trackDao.loadNumOfTrackpointsByIdSync(id);
+    }
+
     public void exportTrack(final long id) {
         discIoExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 TrackWithPoints trackWithPoints = trackDao.loadByIdWithPointsSync(id);
                 GpxExporter.export(context, trackWithPoints);
+            }
+        });
+    }
+
+    public void deleteTrack(final long trackId) {
+        discIoExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                trackDao.delete(trackId);
             }
         });
     }
@@ -125,15 +140,5 @@ public class Repository {
 
     public LiveData<TrackpointEntity> getActualTrackpoint(final long id) {
         return trackpointDao.loadActualTrackpointByTrack(id);
-    }
-
-
-    public void deleteTrack(final long trackId) {
-        discIoExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                trackDao.delete(trackId);
-            }
-        });
     }
 }

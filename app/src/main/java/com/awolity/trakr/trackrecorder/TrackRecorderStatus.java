@@ -12,12 +12,12 @@ class TrackRecorderStatus {
     private boolean
             isAltitudeFiltered, isEverythingGoodForRecording = true;
     private int trackingDistance, trackingAccuracy, trackingInterval, accuracyFilterParameter,
-            altitudeFilterParameter;
-    private TrackpointEntity previousTrackpoint, actualTrackpoint;
+            altitudeFilterParameter, numOfTrackPoints;
+    private TrackpointEntity previousSavedTrackpoint, actualSavedTrackpoint, candidateTrackpoint;
     private AltitudeFilter altitudeFilter;
 // TODO: ha menetközben állítjuk a preferenciákat, akkor mi lesz? Ne lehessen állítani menetközben a preferenciákat
 
-    void setupPreferences(Context context) {
+    public TrackRecorderStatus(Context context) {
         trackingDistance = (PreferenceUtils.getPreferenceTrackingDistance(context));
         trackingInterval = (PreferenceUtils.getPreferenceTrackingInterval(context));
         trackingAccuracy = (PreferenceUtils.getPreferenceGeolocationPriority(context));
@@ -30,42 +30,56 @@ class TrackRecorderStatus {
         }
     }
 
-    TrackpointEntity getActualTrackpoint() {
-        return actualTrackpoint;
+    TrackpointEntity getActualSavedTrackpoint() {
+        return actualSavedTrackpoint;
     }
 
-    void setActualTrackpoint(TrackpointEntity actualTrackpoint) {
-        if (this.actualTrackpoint != null) {
-            previousTrackpoint = this.actualTrackpoint;
-        }
+    void setCandidateTrackpoint(TrackpointEntity candidateTrackPoint) {
+        this.candidateTrackpoint = candidateTrackPoint;
 
-        this.actualTrackpoint = actualTrackpoint;
+        if (actualSavedTrackpoint != null) {
+            candidateTrackPoint.setDistance(getGeologicalDistance(candidateTrackPoint, actualSavedTrackpoint));
 
-        if (previousTrackpoint != null) {
-            actualTrackpoint.setDistance(getGeologicalDistance(actualTrackpoint, previousTrackpoint));
-
-            if (actualTrackpoint.getUnfilteredAltitude() == 0) {
-                actualTrackpoint.setUnfilteredAltitude(previousTrackpoint.getAltitude());
+            // ha a jelölt magassága nulla, akkor legyen inkább az előző magassága
+            if (candidateTrackPoint.getUnfilteredAltitude() == 0) {
+                candidateTrackPoint.setUnfilteredAltitude(actualSavedTrackpoint.getAltitude());
             }
 
             // apply altitude filter
             if (isAltitudeFiltered) {
-                actualTrackpoint.setAltitude(altitudeFilter.filterNext(
-                        actualTrackpoint.getUnfilteredAltitude()));
+                candidateTrackPoint.setAltitude(altitudeFilter.filterNext(
+                        candidateTrackPoint.getUnfilteredAltitude()));
             }
         }
     }
 
-    boolean isDistanceFarEnoghFromPreviousTrackpoint() {
-        return (int) actualTrackpoint.getDistance() > getTrackingDistance();
+    void saveCandidateTrackpoint() {
+        if (this.actualSavedTrackpoint != null) {
+            previousSavedTrackpoint = this.actualSavedTrackpoint;
+        }
+        actualSavedTrackpoint = candidateTrackpoint;
+        candidateTrackpoint = null;
+        numOfTrackPoints++;
+    }
+
+    int getNumOfTrackPoints(){
+        return numOfTrackPoints;
+    }
+
+    TrackpointEntity getCandidateTrackpoint(){
+        return candidateTrackpoint;
+    }
+
+    boolean isDistanceFarEnoughFromLastTrackpoint() {
+        return candidateTrackpoint.getDistance() > getTrackingDistance();
     }
 
     boolean isAccurateEnough() {
-        return actualTrackpoint.getAccuracy() < getAccuracyFilterParameter();
+        return candidateTrackpoint.getAccuracy() < getAccuracyFilterParameter();
     }
 
-    boolean isThereAPreviousTrackpoint() {
-        return previousTrackpoint != null;
+    boolean isThereASavedTrackpoint() {
+        return actualSavedTrackpoint != null;
     }
 
     boolean isEverythingGoodForRecording() {
@@ -96,8 +110,8 @@ class TrackRecorderStatus {
         return altitudeFilterParameter;
     }
 
-    TrackpointEntity getPreviousTrackpoint() {
-        return previousTrackpoint;
+    TrackpointEntity getPreviousSavedTrackpoint() {
+        return previousSavedTrackpoint;
     }
 
     private static double getGeologicalDistance(TrackpointEntity actualTrackpoint, TrackpointEntity previousTrackpoint) {

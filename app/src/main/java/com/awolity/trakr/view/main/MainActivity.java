@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity
         checkPermission();
         setupMapFragment();
         setupLocationViewModel();
-        setupDebugOverlay();
+        //setupDebugOverlay();
     }
 
     private void setupToolbar() {

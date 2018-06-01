@@ -50,9 +50,10 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
     TrackRecorder() {
         // MyLog.d(TAG, "TrackRecorder");
-        status = new TrackRecorderStatus();
         TrakrApplication.getInstance().getAppComponent().inject(this);
-        getPreferencesToStatus(context);
+
+        status = new TrackRecorderStatus(context);
+
         locationManager = new LocationManager(
                 status.getTrackingInterval(),
                 status.getTrackingInterval() / 2,
@@ -65,10 +66,6 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
                 handler.postDelayed(uiUpdater, 1000);
             }
         };
-    }
-
-    private void getPreferencesToStatus(Context context) {
-        status.setupPreferences(context);
     }
 
     void startRecording() {
@@ -119,61 +116,68 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     void stopRecording() {
         locationManager.stop();
         handler.removeCallbacks(uiUpdater);
+        checkTrackValidity();
+    }
+
+    private void checkTrackValidity() {
+        if (status.getNumOfTrackPoints() < 2) {
+            repository.deleteTrack(trackId);
+        }
     }
 
     @Override
     public void onLocationChanged(Location location) {
         MyLog.d(TAG, "onLocationChanged");
 
-        status.setActualTrackpoint(createTrackPoint(location));
+        status.setCandidateTrackpoint(createTrackPoint(location));
 
         // if accuracy is below the required level, drop the point
         if (!status.isAccurateEnough()) {
-            //MyLog.d(TAG, "    - accuracy is below expected - DROPPING");
+            MyLog.d(TAG, "    - accuracy is below expected - DROPPING");
             return;
         }
 
         // filtering is only possible if there is a previous data point
-        if (status.isThereAPreviousTrackpoint()) {
-            //MyLog.d(TAG, "    - there IS a previous trackpoint ");
+        if (status.isThereASavedTrackpoint()) {
+            MyLog.d(TAG, "    - there IS a previous trackpoint ");
 
-            if (status.isDistanceFarEnoghFromPreviousTrackpoint()) {
+            if (status.isDistanceFarEnoughFromLastTrackpoint()) {
                 MyLog.d(TAG, "        - the new location is away from previous, SAVING");
 
                 saveTrackAndPointToDb();
                 // updateNotification(context, track);
             } else {
-                //MyLog.d(TAG, "        - the new location is exactly the previous, DROPPING");
+                MyLog.d(TAG, "        - the new location is exactly the previous, DROPPING");
             }
 
         } else {
-            //MyLog.d(TAG, "    - there is NO previous trackpoint ");
-            if (status.getActualTrackpoint().getAltitude() != 0) {
+            MyLog.d(TAG, "    - there is NO previous trackpoint ");
+            if (status.getCandidateTrackpoint().getAltitude() != 0) {
                 MyLog.d(TAG, "        - there is no previous trackpoint and this one has valid altitude. SAVING");
                 saveTrackAndPointToDb();
                 // updateNotification(context, track);
             } else {
-                //MyLog.d(TAG, "        - there is no previous trackpoint and this one's altitude is 0. DROPPING");
+                MyLog.d(TAG, "        - there is no previous trackpoint and this one's altitude is 0. DROPPING");
             }
         }
     }
 
+
     private void saveTrackAndPointToDb() {
-        saveTrackpointToDb(status.getActualTrackpoint());
+        saveTrackpointToDb(status.getCandidateTrackpoint());
+        status.saveCandidateTrackpoint();
         updateTrackData();
         updateTrackInDb(track);
     }
 
     private void updateTrackData() {
-
         track.increaseNumOfTrackpoints();
-
-        if (status.isThereAPreviousTrackpoint()) {
-            track.increaseElapsedTime(status.getActualTrackpoint().getTime());
-            track.increaseDistance(status.getActualTrackpoint().getDistance());
-            track.calculateAscentDescent(status.getActualTrackpoint(), status.getPreviousTrackpoint());
+        if (status.isThereASavedTrackpoint()) {
+            track.increaseElapsedTime(status.getActualSavedTrackpoint().getTime());
+            track.increaseDistance(status.getActualSavedTrackpoint().getDistance());
+            track.calculateAscentDescent(status.getActualSavedTrackpoint(), status.getPreviousSavedTrackpoint());
             track.calculateAvgSpeed();
-            track.checkSetExtremeValues(status.getActualTrackpoint());
+            track.checkSetExtremeValues(status.getActualSavedTrackpoint());
         }
     }
 
@@ -225,7 +229,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
                 + "Altitude filter parameter: "
                 + status.getAltitudeFilterParameter()
                 + ". "
-                + "Minimum distance between two points: "
+                + "Minimum accuracy to record points: "
                 + status.getAccuracyFilterParameter()
                 + ". ";
         return metadataString;

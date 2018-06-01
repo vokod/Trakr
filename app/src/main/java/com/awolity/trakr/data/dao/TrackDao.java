@@ -47,6 +47,9 @@ public interface TrackDao {
     @Query("SELECT num_of_trackpoints FROM track_table WHERE track_id = :trackId")
     LiveData<Integer> loadNumOfTrackpointsById(long trackId);
 
+    @Query("SELECT num_of_trackpoints FROM track_table WHERE track_id = :trackId")
+    Integer loadNumOfTrackpointsByIdSync(long trackId);
+
     @Insert(onConflict = REPLACE)
     void saveAll(List<TrackEntity> trackEntities);
 

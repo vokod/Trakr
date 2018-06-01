@@ -59,6 +59,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         //noinspection ConstantConditions
         trackListAdapter = new TrackListAdapter(this);
         trackListRv.setAdapter(trackListAdapter);
+        trackListRv.setHasFixedSize(true);
 
         @SuppressWarnings("ConstantConditions")
         DividerItemDecoration dividerItemDecoration =
