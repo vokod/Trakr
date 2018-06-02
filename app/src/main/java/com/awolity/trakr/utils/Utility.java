@@ -22,16 +22,6 @@ public class Utility {
 
     private static final String LOG_TAG = Utility.class.getSimpleName();
 
-    public static boolean isMyServiceRunning(Class<?> serviceClass, Context context) {
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static Bitmap getBitmap(int drawableRes, Context context) {
         Drawable drawable = context.getResources().getDrawable(drawableRes);
         Canvas canvas = new Canvas();
@@ -50,20 +40,7 @@ public class Utility {
                 == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static void scrollMapUp(Context context, GoogleMap googleMap) {
-        googleMap.animateCamera(CameraUpdateFactory.scrollBy(0, getScrollBy(context)));
-    }
 
-    public static void scrollMapDown(Context context, GoogleMap googleMap) {
-
-        googleMap.animateCamera(CameraUpdateFactory.scrollBy(0, -getScrollBy(context)));
-    }
-
-    private static float getScrollBy(Context context) {
-        return (context.getResources().getDimension(R.dimen.bottom_sheet_height_extended)
-                - context.getResources().getDimension(R.dimen.bottom_sheet_height_collapsed))
-                / 2;
-    }
 
 
 }

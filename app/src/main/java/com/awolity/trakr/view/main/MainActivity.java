@@ -1,19 +1,16 @@
 package com.awolity.trakr.view.main;
 
-import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -40,8 +37,6 @@ import com.awolity.trakr.view.list.TrackListActivity;
 import com.awolity.trakr.viewmodel.LocationViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -52,7 +47,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -72,11 +66,14 @@ public class MainActivity extends AppCompatActivity
     private LocationViewModel locationViewModel;
     private TrackRecorderServiceManager serviceManager;
     private MainActivityStatus status;
+    @SuppressWarnings("FieldCanBeLocal")
+    private TrackViewModel trackViewModel;
+    private PolylineOptions polylineOptions;
+    private Polyline polyline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //  // MyLog.d(TAG, "onCreate");
         setContentView(R.layout.activity_main);
         status = new MainActivityStatus();
 
@@ -86,14 +83,9 @@ public class MainActivity extends AppCompatActivity
 
         setupToolbar();
         setupBottomSheet(savedInstanceState);
-        checkPermission();
+        MainActivityUtils.checkLocationPermission(this, PERMISSION_REQUEST_CODE);
         setupMapFragment();
         setupLocationViewModel();
-        //setupDebugOverlay();
-    }
-
-    private void setupWidgets(){
-
     }
 
     private void setupToolbar() {
@@ -103,7 +95,6 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("ConstantConditions")
     private void setupBottomSheet(Bundle savedInstanceState) {
-        //  // MyLog.d(TAG, "setupBottomSheet");
         LinearLayout llBottomSheet = findViewById(R.id.ll_bottom_sheet);
         final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
         BottomSheetFragmentPagerAdapter adapter =
@@ -191,11 +182,11 @@ public class MainActivity extends AppCompatActivity
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     if (googleMap != null) {
-                        Utility.scrollMapUp(MainActivity.this,googleMap);
+                        MainActivityUtils.scrollMapUp(MainActivity.this, googleMap);
                     }
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     if (googleMap != null) {
-                        Utility.scrollMapDown(MainActivity.this,googleMap);
+                        MainActivityUtils.scrollMapDown(MainActivity.this, googleMap);
                     }
                 }
             }
@@ -207,91 +198,9 @@ public class MainActivity extends AppCompatActivity
         };
         bottomSheetBehavior.setBottomSheetCallback(bottomSheetCallback);
     }
-
-    private void checkPermission() {
-        // //  // MyLog.d(LOG_TAG, "checkPermission");
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // //  // MyLog.d(LOG_TAG, "checkPermission - permission not granted");
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // //  // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - should");
-                new AlertDialog.Builder(this)
-                        .setTitle(getResources().getString(R.string.location_permission_rationale_title))
-                        .setMessage(getResources().getString(R.string.location_permission_rationale_description))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // //  // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - onclick - requesting permission");
-                                ActivityCompat.requestPermissions(MainActivity.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        PERMISSION_REQUEST_CODE);
-                            }
-                        })
-                        .setIcon(R.mipmap.ic_launcher)
-                        .show();
-            } else {
-                // //  // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - no - requesting permission");
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        PERMISSION_REQUEST_CODE);
-            }
-        } else {
-            // //  // MyLog.d(LOG_TAG, "checkPermission - permission granted");
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        //  // MyLog.d(TAG, "onRequestPermissionsResult");
-
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //  // MyLog.d(TAG, "onRequestPermissionsResult - permission granted");
-                    // permission was granted, yay!
-                } else {
-                    //  // MyLog.d(TAG, "onRequestPermissionsResult - permission denied :(");
-                    // permission denied, boo!
-                }
-            }
-        }
-    }
-
-    private boolean checkPlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                new AlertDialog.Builder(this)
-                        .setTitle(getResources().getString(R.string.location_permission_rationale_title))
-                        .setMessage(getResources().getString(R.string.location_permission_rationale_description))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent i = new Intent(android.content.Intent.ACTION_VIEW);
-                                i.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.gms"));
-                                startActivity(i);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null)
-                        .setIcon(R.mipmap.ic_launcher)
-                        .show();
-            } else {
-                finish();
-            }
-            return false;
-        }
-        return true;
-    }
-
+    
     private void setupMapFragment() {
-        // TODO: kiemelni a checkplayservicest, meg a permission checket is
-        // TODO: statikká tenni amit csak lehet
-        if (checkPlayServices()) {
+        if (MainActivityUtils.checkPlayServices(this)) {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.mapFragment);
             mapFragment.getMapAsync(this);
@@ -302,12 +211,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupLocationViewModel() {
-        //  // MyLog.d(TAG, "setupLocationViewModel");
         locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
         locationViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
             @Override
             public void onLocationSettingsDetermined(boolean isSettingsGood) {
-                //  // MyLog.d(TAG, "setupLocationViewModel - onLocationSettingsDetermined");
                 if (!isSettingsGood) {
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle(getString(R.string.location_settings_rationale_title))
@@ -329,75 +236,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTrackRecorderService() {
-        //  // MyLog.d(TAG, "setupTrackRecorderService");
         serviceManager = new TrackRecorderServiceManager(this);
         if (TrackRecorderServiceManager.isServiceRunning(this)) {
             status.setContinueRecording();
             long trackId = PreferenceUtils.getLastRecordedTrackId(this);
-            //  // MyLog.d(TAG, "setupTrackRecorderService - service is running. TrackId: " + trackId);
             if (trackId != PreferenceUtils.NO_LAST_RECORDED_TRACK) {
                 setupTrackViewModel(trackId);
                 trackFragment.start(trackId);
                 status.setRecording(true);
-            } else {
-                //  // MyLog.wtf(TAG, "A track is recorded, but it's ID is unknown!!!");
             }
-        } else {
-            //  // MyLog.d(TAG, "setupTrackRecorderService - service is not running");
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        //  // MyLog.d(TAG, "onStart");
-        super.onStart();
-        setupTrackRecorderService();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //  // MyLog.d(TAG, "onResume");
-        startLocationUpdates();
-        if (status.isRecording() && !status.isThereACameraPosition()) {
-            //  // MyLog.d(TAG, "onResume - centerTrackOnMap");
-            centerTrackOnMap();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //  // MyLog.d(TAG, "onPause");
-        stopLocationUpdates();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //  // MyLog.d(TAG, "onStop");
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        //  // MyLog.d(TAG, "onMapReady");
-        this.googleMap = googleMap;
-        googleMap.getUiSettings().setMapToolbarEnabled(true);
-        googleMap.getUiSettings().setCompassEnabled(true);
-        try {
-            googleMap.setMyLocationEnabled(true);
-        } catch (SecurityException e) {
-            // MyLog.e(TAG, e.getLocalizedMessage());
-        }
-
-        if (status.isThereACameraPosition()) {
-            updateCamera(status.getCameraPosition());
         }
     }
 
     private void startLocationUpdates() {
         if (Utility.isLocationEnabled(this)) {
-            //  // MyLog.d(TAG, "startLocationUpdates");
             locationViewModel.getLocation().observe(MainActivity.this, new Observer<Location>() {
                 @Override
                 public void onChanged(@Nullable Location location) {
@@ -413,10 +265,8 @@ public class MainActivity extends AppCompatActivity
         if (!status.isThereACameraPosition()) {
             // it is first start, so centered
             if (status.isRecording()) {
-                //  // MyLog.d(TAG, "updateMap - no last position, recording");
                 centerTrackOnMap();
             } else {
-                //  // MyLog.d(TAG, "updateMap - no last position, no recording");
                 updateCamera(CameraPosition.fromLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), ZOOM_LEVEL_INITIAL));
             }
         }
@@ -427,24 +277,154 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updateCamera(CameraPosition cameraPosition) {
-        //  // MyLog.d(TAG, "updateCamera");
         if (!cameraPosition.equals(status.getCameraPosition())) {
-            //  // MyLog.d(TAG, "updateCamera - actual camera position equals saved");
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             status.setCameraPosition(googleMap.getCameraPosition());
         }
     }
 
     private void updateCamera(LatLngBounds bounds) {
-        //  // MyLog.d(TAG, "updateCamera");
-
         googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
         status.setCameraPosition(googleMap.getCameraPosition());
     }
 
     protected void onRecordFabClick(@SuppressWarnings("unused") View view) {
-        //  // MyLog.d(TAG, "onRecordFabClick");
         serviceManager.startStopFabClicked();
+    }
+
+    private void setupTrackViewModel(final long trackId) {
+        trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
+        trackViewModel.init(trackId);
+        if (status.isContinueRecording()) {
+            trackViewModel.getTrackpointsList().observe(this, trackpointsListObserver);
+        }
+        trackViewModel.getActualTrackpoint().observe(this, actualTrackpointObserver);
+
+    }
+
+    private Observer<List<TrackpointEntity>> trackpointsListObserver = new Observer<List<TrackpointEntity>>() {
+        @Override
+        public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
+            if (trackpointEntities != null && trackpointEntities.size() != 0) {
+                drawTrackOnMap(MainActivityUtils.transformTrackpointsToLatLngs(trackpointEntities));
+                trackViewModel.getTrackpointsList().removeObserver(this);
+            }
+        }
+    };
+
+    private Observer<TrackpointEntity> actualTrackpointObserver = new Observer<TrackpointEntity>() {
+        @Override
+        public void onChanged(@Nullable TrackpointEntity trackpointEntity) {
+            if (trackpointEntity != null) {
+                continueTrackOnMap(new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
+            }
+        }
+    };
+
+    private void drawTrackOnMap(List<LatLng> pointsCoordinates) {
+        setupPolyLine();
+        if (googleMap != null) {
+            polyline.setPoints(pointsCoordinates);
+        }
+    }
+
+    private void setupPolyLine() {
+        polylineOptions = new PolylineOptions()
+                .geodesic(true)
+                .color(ContextCompat.getColor(this, R.color.colorPrimary))
+                .width(getResources().getInteger(R.integer.polyline_width))
+                .zIndex(30)
+                .visible(true);
+
+        if (googleMap != null) {
+            polyline = googleMap.addPolyline(polylineOptions);
+        }
+    }
+
+    private void clearTrackOnMap() {
+        if (polyline != null) {
+            polyline.remove();
+        }
+    }
+
+    private void continueTrackOnMap(LatLng currentLatLng) {
+        if (polylineOptions == null) {
+            setupPolyLine();
+        }
+        List<LatLng> points = polyline.getPoints();
+        points.add(currentLatLng);
+        polyline.setPoints(points);
+    }
+
+    private void centerTrackOnMap() {
+        trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
+            @Override
+            public void onChanged(@Nullable TrackEntity track) {
+                if (track != null) {
+                    if (track.getNorthestPoint() != 0 || track.getSouthestPoint() != 0
+                            || track.getWesternPoint() != 0 || track.getEasternPoint() != 0) {
+                        LatLngBounds bounds = new LatLngBounds(
+                                new LatLng(track.getSouthestPoint(), track.getWesternPoint()),
+                                new LatLng(track.getNorthestPoint(), track.getEasternPoint()));
+                        if (googleMap != null) {
+                            updateCamera(bounds);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setupTrackRecorderService();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startLocationUpdates();
+        if (status.isRecording() && !status.isThereACameraPosition()) {
+            centerTrackOnMap();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        googleMap.getUiSettings().setMapToolbarEnabled(true);
+        googleMap.getUiSettings().setCompassEnabled(true);
+        try {
+            googleMap.setMyLocationEnabled(true);
+        } catch (SecurityException e) {
+            MyLog.e(TAG, e.getLocalizedMessage());
+        }
+
+        if (status.isThereACameraPosition()) {
+            updateCamera(status.getCameraPosition());
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay!
+                } else {
+                    // permission denied, boo!
+                }
+            }
+        }
     }
 
     @Override
@@ -487,13 +467,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onCameraMove() {
-        //  // MyLog.d(TAG, "onCameraMove");
         status.setCameraPosition(googleMap.getCameraPosition());
     }
 
     @Override
     public void onServiceStarted(long trackId) {
-        //  // MyLog.d(TAG, "onServiceStarted");
         // TODO FAB animation
         trackFragment.start(trackId);
         chartsFragment.start(trackId);
@@ -503,119 +481,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onServiceStopped() {
-        //  // MyLog.d(TAG, "onServiceStopped");
         trackFragment.stop();
         chartsFragment.stop();
         // TODO: status.stoprecording (ami aztán megcsinálja mindkettőt)
         status.setRecording(false);
         clearTrackOnMap();
-    }
-
-    @SuppressWarnings("FieldCanBeLocal")
-    private TrackViewModel trackViewModel;
-
-    private void setupTrackViewModel(final long trackId) {
-        //  // MyLog.d(TAG, "setupTrackViewModel - trackId = :" + trackId);
-        trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
-        trackViewModel.init(trackId);
-        if (status.isContinueRecording()) {
-            trackViewModel.getTrackpointsList().observe(this, trackpointsListObserver);
-        }
-        trackViewModel.getActualTrackpoint().observe(this, actualTrackpointObserver);
-
-    }
-
-    private Observer<List<TrackpointEntity>> trackpointsListObserver = new Observer<List<TrackpointEntity>>() {
-        @Override
-        public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
-            // MyLog.d(TAG, "trackpointsListObserver - onChanged");
-            if (trackpointEntities != null && trackpointEntities.size() != 0) {
-                // MyLog.d(TAG, "trackpointsListObserver - onChanged - size: " + trackpointEntities.size());
-                drawTrackOnMap(transformTrackpointsToLatLngs(trackpointEntities));
-                trackViewModel.getTrackpointsList().removeObserver(this);
-            }
-        }
-    };
-
-    private Observer<TrackpointEntity> actualTrackpointObserver = new Observer<TrackpointEntity>() {
-        @Override
-        public void onChanged(@Nullable TrackpointEntity trackpointEntity) {
-            //  // MyLog.d(TAG, "actualTrackpointObserver - getActualTrackpoint");
-            if (trackpointEntity != null) {
-                //  // MyLog.d(TAG, "actualTrackpointObserver - getActualTrackpoint - id: " + trackpointEntity.getTrackpointId());
-                continueTrackOnMap(new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
-            }
-        }
-    };
-
-    private PolylineOptions polylineOptions;
-    private Polyline polyline;
-
-    private void drawTrackOnMap(List<LatLng> pointsCoordinates) {
-        //  // MyLog.d(TAG, "drawTrackOnMap");
-        setupPolyLine();
-        if (googleMap != null) {
-            polyline.setPoints(pointsCoordinates);
-        }
-    }
-
-    private void setupPolyLine() {
-        //  // MyLog.d(TAG, "setupPolyLine");
-        polylineOptions = new PolylineOptions()
-                .geodesic(true)
-                .color(ContextCompat.getColor(this, R.color.colorPrimary))
-                .width(getResources().getInteger(R.integer.polyline_width))
-                .zIndex(30)
-                .visible(true);
-
-        if (googleMap != null) {
-            polyline = googleMap.addPolyline(polylineOptions);
-        }
-    }
-
-    private void clearTrackOnMap() {
-        //  // MyLog.d(TAG, "clearTrackOnMap");
-        if (polyline != null) {
-            //  // MyLog.d(TAG, "clearTrackOnMap - removing polyline");
-            polyline.remove();
-        }
-    }
-
-    private void continueTrackOnMap(LatLng currentLatLng) {
-        //  // MyLog.d(TAG, "continueTrackOnMap");
-        if (polylineOptions == null) {
-            setupPolyLine();
-        }
-        List<LatLng> points = polyline.getPoints();
-        points.add(currentLatLng);
-        polyline.setPoints(points);
-    }
-
-    private void centerTrackOnMap() {
-        //  // MyLog.d(TAG, "centerTrackOnMap");
-        trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
-            @Override
-            public void onChanged(@Nullable TrackEntity track) {
-                if (track != null) {
-                    if (track.getNorthestPoint() != 0 || track.getSouthestPoint() != 0
-                            || track.getWesternPoint() != 0 || track.getEasternPoint() != 0) {
-                        LatLngBounds bounds = new LatLngBounds(
-                                new LatLng(track.getSouthestPoint(), track.getWesternPoint()),
-                                new LatLng(track.getNorthestPoint(), track.getEasternPoint()));
-                        if (googleMap != null) {
-                            updateCamera(bounds);
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    private static List<LatLng> transformTrackpointsToLatLngs(List<TrackpointEntity> trackpoints) {
-        List<LatLng> latLngs = new ArrayList<>(trackpoints.size());
-        for (TrackpointEntity trackpoint : trackpoints) {
-            latLngs.add(new LatLng(trackpoint.getLatitude(), trackpoint.getLongitude()));
-        }
-        return latLngs;
     }
 }
