@@ -53,7 +53,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_track_detail_fragment_map, container, false);
-        setupWidgets(view);
+        setupWidgets(view, savedInstanceState);
 
         setupViewModel();
         return view;
@@ -65,9 +65,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         setupMapView();
     }
 
-    private void setupWidgets(View view) {
+    private void setupWidgets(View view, Bundle savedInstanceState) {
         MyLog.d(LOG_TAG,"setupWidgets");
         mapView = view.findViewById(R.id.map_view);
+        mapView.onCreate(savedInstanceState);
     }
 
     private void setupMapView() {
@@ -105,5 +106,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         } catch (SecurityException e) {
             MyLog.e(LOG_TAG, e.getLocalizedMessage());
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 }
