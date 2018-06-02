@@ -127,6 +127,7 @@ public class TrackListAdapter
         private FrameLayout clickOverlay;
         private MapView mapView;
         private TrackViewModel viewModel;
+        private GoogleMap googleMap;
 
         TrackItemViewHolder(View itemView) {
             super(itemView);
@@ -141,6 +142,16 @@ public class TrackListAdapter
             mapView = itemView.findViewById(R.id.mapView);
 
             viewModel = ViewModelProviders.of(activity).get(TrackViewModel.class);
+
+            mapView.onCreate(null);
+            mapView.setClickable(false);
+            mapView.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(final GoogleMap googleMap) {
+                    MyLog.d(LOG_TAG, "onMapReady: " + googleMap.hashCode());
+                    TrackItemViewHolder.this.googleMap = googleMap;
+                }
+            });
         }
 
         void bind(TrackEntity track) {
@@ -177,19 +188,10 @@ public class TrackListAdapter
                     // MyLog.d(LOG_TAG, "getTrackWithPoints() - onChanged");
                     if (trackWithPoints != null && trackWithPoints.getTrackPoints() != null) {
                         // MyLog.d(LOG_TAG, "getTrackWithPoints() - onChanged - trackPoints != null");
-
-                        mapView.onCreate(null);
-                        mapView.setClickable(false);
-
-                        mapView.getMapAsync(new OnMapReadyCallback() {
-                            @Override
-                            public void onMapReady(final GoogleMap googleMap) {
-
-                                MyLog.d(LOG_TAG, "onMapReady: " + googleMap.hashCode());
-                                setupPolyLine(activity, googleMap, trackWithPoints);
-                                mapView.onResume();
-                            }
-                        });
+                        if(googleMap!=null) {
+                            setupPolyLine(activity, googleMap, trackWithPoints);
+                            mapView.onResume();
+                        }
                     }
                 }
             });

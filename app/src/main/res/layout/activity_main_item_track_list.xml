@@ -73,7 +73,6 @@
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
-        map:liteMode="true"
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:layout_marginEnd="8dp"
