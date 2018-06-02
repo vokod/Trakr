@@ -2,7 +2,6 @@ package com.awolity.trakr.view.main;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -10,10 +9,12 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.awolity.trakr.R;
+import com.awolity.trakr.customviews.PrimaryPropertyView;
+import com.awolity.trakr.customviews.SecondaryPropertyView;
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.databinding.ActivityMainFragmentBottomSheetTrackBinding;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
@@ -21,8 +22,6 @@ import com.awolity.trakr.viewmodel.TrackViewModel;
 import java.util.Locale;
 
 public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
-
-    private ActivityMainFragmentBottomSheetTrackBinding binding;
 
     private static final String KEY_DISTANCEVIEW_VALUE = "key_distanceView_value";
     private static final String KEY_ASCENTVIEW_VALUE = "key_ascentView_value";
@@ -38,6 +37,11 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     private long startTime;
     private TrackViewModel trackViewModel;
     private boolean isRecording;
+    private PrimaryPropertyView distanceView, ascentView, descentView;
+    private SecondaryPropertyView elapsedTimeView, minAltitudeView, maxAltitudeView, avgSpeedView,
+            maxSpeedView;
+    private TextView tvPlaceholder;
+
 
     public static BottomSheetTrackFragment newInstance(@SuppressWarnings("SameParameterValue") String title) {
         BottomSheetTrackFragment fragment = new BottomSheetTrackFragment();
@@ -62,10 +66,9 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // MyLog.d(LOG_TAG, "onCreateView");
-
-        binding = DataBindingUtil.inflate(
-                inflater, R.layout.activity_main_fragment_bottom_sheet_track, container, false);
-
+        View view = inflater.inflate(
+                R.layout.activity_main_fragment_bottom_sheet_track, container, false);
+        setupWidgets(view);
         handler = new Handler();
         uiUpdater = new Runnable() {
             @Override
@@ -77,10 +80,22 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
 
         setDataVisibility(false);
 
-        if(isRecording &&trackId != -1){
+        if (isRecording && trackId != -1) {
             start(trackId);
         }
-        return binding.getRoot();
+        return view;
+    }
+
+    private void setupWidgets(View view) {
+        distanceView = view.findViewById(R.id.distanceView);
+        ascentView = view.findViewById(R.id.ascentView);
+        descentView = view.findViewById(R.id.descentView);
+        elapsedTimeView = view.findViewById(R.id.elapsedTimeView);
+        minAltitudeView = view.findViewById(R.id.minAltitudeView);
+        maxAltitudeView = view.findViewById(R.id.maxAltitudeView);
+        avgSpeedView = view.findViewById(R.id.avgSpeedView);
+        maxSpeedView = view.findViewById(R.id.maxSpeedView);
+        tvPlaceholder = view.findViewById(R.id.tvPlaceholder);
     }
 
     @Override
@@ -89,14 +104,14 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            binding.distanceView.setValue(savedInstanceState.getString(KEY_DISTANCEVIEW_VALUE));
-            binding.ascentView.setValue(savedInstanceState.getString(KEY_ASCENTVIEW_VALUE));
-            binding.descentView.setValue(savedInstanceState.getString(KEY_DESCENTVIEW_VALUE));
-            binding.elapsedTimeView.setValue(savedInstanceState.getString(KEY_ELAPSEDVIEW_VALUE));
-            binding.minAltitudeView.setValue(savedInstanceState.getString(KEY_MINALTITUDECEVIEW_VALUE));
-            binding.maxAltitudeView.setValue(savedInstanceState.getString(KEY_MAXALTITUDEVIEW_VALUE));
-            binding.avgSpeedView.setValue(savedInstanceState.getString(KEY_AVGSPEEDVIEW_VALUE));
-            binding.maxAltitudeView.setValue(savedInstanceState.getString(KEY_MAXSPEEDVIEW_VALUE));
+            distanceView.setValue(savedInstanceState.getString(KEY_DISTANCEVIEW_VALUE));
+            ascentView.setValue(savedInstanceState.getString(KEY_ASCENTVIEW_VALUE));
+            descentView.setValue(savedInstanceState.getString(KEY_DESCENTVIEW_VALUE));
+            elapsedTimeView.setValue(savedInstanceState.getString(KEY_ELAPSEDVIEW_VALUE));
+            minAltitudeView.setValue(savedInstanceState.getString(KEY_MINALTITUDECEVIEW_VALUE));
+            maxAltitudeView.setValue(savedInstanceState.getString(KEY_MAXALTITUDEVIEW_VALUE));
+            avgSpeedView.setValue(savedInstanceState.getString(KEY_AVGSPEEDVIEW_VALUE));
+            maxSpeedView.setValue(savedInstanceState.getString(KEY_MAXSPEEDVIEW_VALUE));
         }
     }
 
@@ -104,14 +119,14 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         // MyLog.d(LOG_TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
-        outState.putString(KEY_DISTANCEVIEW_VALUE, binding.distanceView.getValue());
-        outState.putString(KEY_ASCENTVIEW_VALUE, binding.ascentView.getValue());
-        outState.putString(KEY_DESCENTVIEW_VALUE, binding.descentView.getValue());
-        outState.putString(KEY_ELAPSEDVIEW_VALUE, binding.elapsedTimeView.getValue());
-        outState.putString(KEY_MINALTITUDECEVIEW_VALUE, binding.minAltitudeView.getValue());
-        outState.putString(KEY_MAXALTITUDEVIEW_VALUE, binding.maxAltitudeView.getValue());
-        outState.putString(KEY_AVGSPEEDVIEW_VALUE, binding.avgSpeedView.getValue());
-        outState.putString(KEY_MAXSPEEDVIEW_VALUE, binding.maxAltitudeView.getValue());
+        outState.putString(KEY_DISTANCEVIEW_VALUE, distanceView.getValue());
+        outState.putString(KEY_ASCENTVIEW_VALUE, ascentView.getValue());
+        outState.putString(KEY_DESCENTVIEW_VALUE, descentView.getValue());
+        outState.putString(KEY_ELAPSEDVIEW_VALUE, elapsedTimeView.getValue());
+        outState.putString(KEY_MINALTITUDECEVIEW_VALUE, minAltitudeView.getValue());
+        outState.putString(KEY_MAXALTITUDEVIEW_VALUE, maxAltitudeView.getValue());
+        outState.putString(KEY_AVGSPEEDVIEW_VALUE, avgSpeedView.getValue());
+        outState.putString(KEY_MAXSPEEDVIEW_VALUE, maxAltitudeView.getValue());
     }
 
     private long trackId = -1;
@@ -119,12 +134,10 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     public void start(long trackId) {
         // MyLog.d(LOG_TAG, "start");
         this.trackId = trackId;
-        if(binding!=null) {
-            setDataVisibility(true);
-            startObserve(trackId);
-            setStartTime(System.currentTimeMillis());
-            uiUpdater.run();
-        }
+        setDataVisibility(true);
+        startObserve(trackId);
+        setStartTime(System.currentTimeMillis());
+        uiUpdater.run();
         isRecording = true;
     }
 
@@ -173,74 +186,67 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
 
     private void setDataVisibility(boolean isRecording) {
         // MyLog.d(LOG_TAG, "setDataVisibility");
-        if(binding == null){
-            return;
-        }
+
         // TODO: ezt valami animációval
         if (isRecording) {
             resetData();
-            binding.tvPlaceholder.setVisibility(View.INVISIBLE);
-            binding.distanceView.setVisibility(View.VISIBLE);
-            binding.ascentView.setVisibility(View.VISIBLE);
-            binding.descentView.setVisibility(View.VISIBLE);
-            binding.elapsedTimeView.setVisibility(View.VISIBLE);
-            binding.minAltitudeView.setVisibility(View.VISIBLE);
-            binding.maxAltitudeView.setVisibility(View.VISIBLE);
-            binding.avgSpeedView.setVisibility(View.VISIBLE);
-            binding.maxSpeedView.setVisibility(View.VISIBLE);
+            tvPlaceholder.setVisibility(View.INVISIBLE);
+            distanceView.setVisibility(View.VISIBLE);
+            ascentView.setVisibility(View.VISIBLE);
+            descentView.setVisibility(View.VISIBLE);
+            elapsedTimeView.setVisibility(View.VISIBLE);
+            minAltitudeView.setVisibility(View.VISIBLE);
+            maxAltitudeView.setVisibility(View.VISIBLE);
+            avgSpeedView.setVisibility(View.VISIBLE);
+            maxSpeedView.setVisibility(View.VISIBLE);
         } else {
-            binding.tvPlaceholder.setVisibility(View.VISIBLE);
-            binding.distanceView.setVisibility(View.INVISIBLE);
-            binding.ascentView.setVisibility(View.INVISIBLE);
-            binding.descentView.setVisibility(View.INVISIBLE);
-            binding.elapsedTimeView.setVisibility(View.INVISIBLE);
-            binding.minAltitudeView.setVisibility(View.INVISIBLE);
-            binding.maxAltitudeView.setVisibility(View.INVISIBLE);
-            binding.avgSpeedView.setVisibility(View.INVISIBLE);
-            binding.maxSpeedView.setVisibility(View.INVISIBLE);
+            tvPlaceholder.setVisibility(View.VISIBLE);
+            distanceView.setVisibility(View.INVISIBLE);
+            ascentView.setVisibility(View.INVISIBLE);
+            descentView.setVisibility(View.INVISIBLE);
+            elapsedTimeView.setVisibility(View.INVISIBLE);
+            minAltitudeView.setVisibility(View.INVISIBLE);
+            maxAltitudeView.setVisibility(View.INVISIBLE);
+            avgSpeedView.setVisibility(View.INVISIBLE);
+            maxSpeedView.setVisibility(View.INVISIBLE);
         }
     }
 
     private void resetData() {
         // MyLog.d(LOG_TAG, "resetData");
-
         startTime = 0;
 
-        if(binding == null){
-            return;
-        }
+        distanceView.setValue(getActivity().getString(R.string.distance_view_value));
+        distanceView.setUnit(getActivity().getString(R.string.distance_view_unit));
+        distanceView.setLabel(getActivity().getString(R.string.distance_view_label));
 
-        binding.distanceView.setValue(getActivity().getString(R.string.distance_view_value));
-        binding.distanceView.setUnit(getActivity().getString(R.string.distance_view_unit));
-        binding.distanceView.setLabel(getActivity().getString(R.string.distance_view_label));
+        ascentView.setValue(getActivity().getString(R.string.ascent_view_value));
+        ascentView.setUnit(getActivity().getString(R.string.ascent_view_unit));
+        ascentView.setLabel(getActivity().getString(R.string.ascent_view_label));
 
-        binding.ascentView.setValue(getActivity().getString(R.string.ascent_view_value));
-        binding.ascentView.setUnit(getActivity().getString(R.string.ascent_view_unit));
-        binding.ascentView.setLabel(getActivity().getString(R.string.ascent_view_label));
+        descentView.setValue(getActivity().getString(R.string.descent_view_value));
+        descentView.setUnit(getActivity().getString(R.string.descent_view_unit));
+        descentView.setLabel(getActivity().getString(R.string.descent_view_label));
 
-        binding.descentView.setValue(getActivity().getString(R.string.descent_view_value));
-        binding.descentView.setUnit(getActivity().getString(R.string.descent_view_unit));
-        binding.descentView.setLabel(getActivity().getString(R.string.descent_view_label));
+        elapsedTimeView.setValue(getActivity().getString(R.string.elapsed_time_view_value));
+        elapsedTimeView.setUnit(getActivity().getString(R.string.elapsed_time_view_unit));
+        elapsedTimeView.setLabel(getActivity().getString(R.string.elapsed_time_view_label));
 
-        binding.elapsedTimeView.setValue(getActivity().getString(R.string.elapsed_time_view_value));
-        binding.elapsedTimeView.setUnit(getActivity().getString(R.string.elapsed_time_view_unit));
-        binding.elapsedTimeView.setLabel(getActivity().getString(R.string.elapsed_time_view_label));
+        minAltitudeView.setValue(getActivity().getString(R.string.min_altitude_view_value));
+        minAltitudeView.setUnit(getActivity().getString(R.string.min_altitude_view_unit));
+        minAltitudeView.setLabel(getActivity().getString(R.string.min_altitude_view_label));
 
-        binding.minAltitudeView.setValue(getActivity().getString(R.string.min_altitude_view_value));
-        binding.minAltitudeView.setUnit(getActivity().getString(R.string.min_altitude_view_unit));
-        binding.minAltitudeView.setLabel(getActivity().getString(R.string.min_altitude_view_label));
+        maxAltitudeView.setValue(getActivity().getString(R.string.max_altitude_view_value));
+        maxAltitudeView.setUnit(getActivity().getString(R.string.max_altitude_view_unit));
+        maxAltitudeView.setLabel(getActivity().getString(R.string.max_altitude_view_label));
 
-        binding.maxAltitudeView.setValue(getActivity().getString(R.string.max_altitude_view_value));
-        binding.maxAltitudeView.setUnit(getActivity().getString(R.string.max_altitude_view_unit));
-        binding.maxAltitudeView.setLabel(getActivity().getString(R.string.max_altitude_view_label));
+        avgSpeedView.setValue(getActivity().getString(R.string.avg_speed_view_value));
+        avgSpeedView.setUnit(getActivity().getString(R.string.avg_speed_view_unit));
+        avgSpeedView.setLabel(getActivity().getString(R.string.avg_speed_view_label));
 
-        binding.avgSpeedView.setValue(getActivity().getString(R.string.avg_speed_view_value));
-        binding.avgSpeedView.setUnit(getActivity().getString(R.string.avg_speed_view_unit));
-        binding.avgSpeedView.setLabel(getActivity().getString(R.string.avg_speed_view_label));
-
-        binding.maxSpeedView.setValue(getActivity().getString(R.string.max_speed_view_value));
-        binding.maxSpeedView.setUnit(getActivity().getString(R.string.max_speed_view_unit));
-        binding.maxSpeedView.setLabel(getActivity().getString(R.string.max_speed_view_label));
+        maxSpeedView.setValue(getActivity().getString(R.string.max_speed_view_value));
+        maxSpeedView.setUnit(getActivity().getString(R.string.max_speed_view_unit));
+        maxSpeedView.setLabel(getActivity().getString(R.string.max_speed_view_label));
     }
 
     public void setStartTime(long startTime) {
@@ -248,36 +254,36 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void setDistance(double distance) {
-        binding.distanceView.setValue(StringUtils.getDistanceAsThreeCharactersString(distance));
+        distanceView.setValue(StringUtils.getDistanceAsThreeCharactersString(distance));
     }
 
     private void setAscent(double ascent) {
-        binding.ascentView.setValue(String.format(Locale.getDefault(), "%.0f", ascent));
+        ascentView.setValue(String.format(Locale.getDefault(), "%.0f", ascent));
     }
 
     private void setDescent(double descent) {
-        binding.descentView.setValue(String.format(Locale.getDefault(), "%.0f", descent));
+        descentView.setValue(String.format(Locale.getDefault(), "%.0f", descent));
     }
 
     private void setElapsedTime(long elapsedTime) {
-        binding.elapsedTimeView.setValue(StringUtils.getElapsedTimeAsString(elapsedTime));
+        elapsedTimeView.setValue(StringUtils.getElapsedTimeAsString(elapsedTime));
     }
 
     private void setMinAltitude(double minAltitude) {
         String minAltitudeString = String.format(Locale.getDefault(), "%.0f", minAltitude);
-        binding.minAltitudeView.setValue(minAltitudeString);
+        minAltitudeView.setValue(minAltitudeString);
     }
 
     private void setMaxAltitude(double maxAltitude) {
         String maxAltitudeString = String.format(Locale.getDefault(), "%.0f", maxAltitude);
-        binding.maxAltitudeView.setValue(maxAltitudeString);
+        maxAltitudeView.setValue(maxAltitudeString);
     }
 
     private void setMaxSpeed(double maxSpeed) {
-        binding.maxSpeedView.setValue(StringUtils.getSpeedAsThreeCharactersString(maxSpeed));
+        maxSpeedView.setValue(StringUtils.getSpeedAsThreeCharactersString(maxSpeed));
     }
 
     private void setAvgSpeed(double avgSpeed) {
-        binding.avgSpeedView.setValue(StringUtils.getSpeedAsThreeCharactersString(avgSpeed));
+        avgSpeedView.setValue(StringUtils.getSpeedAsThreeCharactersString(avgSpeed));
     }
 }

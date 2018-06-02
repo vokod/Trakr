@@ -2,7 +2,6 @@ package com.awolity.trakr.view.detail;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,15 +12,13 @@ import android.widget.FrameLayout;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.databinding.FragmentMapBinding;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -30,7 +27,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private long trackId;
     private TrackViewModel trackViewModel;
     private GoogleMap googleMap;
-    private FragmentMapBinding binding;
+    private MapView mapView;
 
     public MapFragment() {
     }
@@ -54,17 +51,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
-        View view = binding.getRoot();
-
+        View view =  inflater.inflate(R.layout.fragment_map, container, false);
+        setupWidgets(view);
         setupMapView();
         return view;
     }
 
+    private void setupWidgets(View view){
+        mapView = view.findViewById(R.id.mapView);
+    }
+
     private void setupMapView() {
         /* if (checkPlayServices()) {*/
-        binding.mapView.getMapAsync(this);
+        mapView.getMapAsync(this);
     }
 
     private void setupViewModel() {

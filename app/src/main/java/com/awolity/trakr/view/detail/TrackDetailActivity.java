@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,22 +15,28 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.databinding.ActivityTrackDetailBinding;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 
 public class TrackDetailActivity extends AppCompatActivity {
 
-
     private static final String LOG_TAG = TrackDetailActivity.class.getSimpleName();
+    public static final String TAG_MAP_FRAGMENT = "tag_map_fragment";
+    public static final String TAG_DATA_FRAGMENT = "tag_data_fragment";
+    public static final String TAG_CHARTS_FRAGMENT = "tag_charts_fragment";
     private static final String EXTRA_TRACK_ID = "extra_track_id";
     private static final int PERMISSION_REQUEST_CODE = 2;
+    private long trackId;
+    private android.support.v7.widget.Toolbar toolbar;
+    private BottomNavigationView bottomNavigationView;
+    private FrameLayout fragmentContainer;
 
     private TrackViewModel vm;
-    private ActivityTrackDetailBinding binding;
 
     public static Intent getStarterIntent(Context context, long trackId) {
         Intent intent = new Intent(context, TrackDetailActivity.class);
@@ -42,19 +47,20 @@ public class TrackDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setContentView(R.layout.activity_track_detail);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_track_detail);
-        setupToolbar();
+        setContentView(R.layout.activity_track_detail);
 
-        BottomNavigationView navigation = binding.navigation;
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        setupWidgets();
+        bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        setSupportActionBar(toolbar);
 
-        setupViewModel(getIntent().getLongExtra(EXTRA_TRACK_ID, 0));
+        trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
+        setupViewModel(trackId);
     }
 
-    private void setupToolbar() {
-        android.support.v7.widget.Toolbar toolbar = binding.toolbar;
-        setSupportActionBar(toolbar);
+    private void setupWidgets(){
+        toolbar = findViewById(R.id.toolbar);
+        bottomNavigationView = findViewById(R.id.navigation);
+        fragmentContainer = findViewById(R.id.fragment_container);
     }
 
     private void setupViewModel(long trackId) {
@@ -140,14 +146,22 @@ public class TrackDetailActivity extends AppCompatActivity {
     }
 
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.action_map:
-
+                    MapFragment mapFragment
+                            = (MapFragment) getSupportFragmentManager().findFragmentByTag(TAG_MAP_FRAGMENT);
+                    if (mapFragment == null) {
+                        mapFragment = MapFragment.newInstance(trackId);
+                    }
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, mapFragment)
+                            .commit();
                     return true;
                 case R.id.action_data:
 

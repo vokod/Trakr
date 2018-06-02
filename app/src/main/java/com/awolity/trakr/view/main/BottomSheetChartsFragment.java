@@ -2,17 +2,16 @@ package com.awolity.trakr.view.main;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.databinding.ActivityMainFragmentBottomSheetChartBinding;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.github.mikephil.charting.charts.LineChart;
@@ -30,11 +29,11 @@ import java.util.List;
 public class BottomSheetChartsFragment extends BottomSheetBaseFragment implements OnChartValueSelectedListener {
 
     private static final String LOG_TAG = BottomSheetChartsFragment.class.getSimpleName();
-    private ActivityMainFragmentBottomSheetChartBinding binding;
     private TrackViewModel trackViewModel;
     private boolean isRecording;
     private long trackId = -1;
     private LineChart chart;
+    private TextView placeholderTextView;
 
     public static BottomSheetChartsFragment newInstance(String title) {
         BottomSheetChartsFragment fragment = new BottomSheetChartsFragment();
@@ -56,15 +55,20 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment implement
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
-                inflater, R.layout.activity_main_fragment_bottom_sheet_chart, container, false);
-        setDataVisibility(false);
+        View view = inflater.inflate(
+                R.layout.activity_main_fragment_bottom_sheet_chart, container, false);
+        setupWidgets(view);
         setupChart();
-        return binding.getRoot();
+        setDataVisibility(false);
+        return view;
+    }
+
+    private void setupWidgets(View view) {
+        chart = view.findViewById(R.id.chart);
+        placeholderTextView = view.findViewById(R.id.tvPlaceholder);
     }
 
     private void setupChart() {
-        chart = binding.chart;
         chart.setOnChartValueSelectedListener(this);
 
         chart.setDrawGridBackground(true);
@@ -100,10 +104,8 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment implement
     public void start(long trackId) {
         // MyLog.d(LOG_TAG, "start");
         this.trackId = trackId;
-        if (binding != null) {
-            setDataVisibility(true);
-            startObserve(trackId);
-        }
+        setDataVisibility(true);
+        startObserve(trackId);
         isRecording = true;
     }
 
@@ -126,7 +128,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment implement
             if (trackWithPoints != null) {
                 // MyLog.d(LOG_TAG, "trackWithPointsObserver.onChanged - track NOT null");
                 //setData(trackEntity);
-                LineDataSet speedDataSet = new LineDataSet(prepareSpeedData(trackWithPoints),"Speed");
+                LineDataSet speedDataSet = new LineDataSet(prepareSpeedData(trackWithPoints), "Speed");
                 ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
                 dataSets.add(speedDataSet);
                 LineData data = new LineData(dataSets);
@@ -158,18 +160,15 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment implement
 
     private void setDataVisibility(boolean isRecording) {
         // MyLog.d(LOG_TAG, "setDataVisibility");
-        if (binding == null) {
-            return;
-        }
         // TODO: ezt valami animációval
         if (isRecording) {
             //resetData();
-            binding.tvPlaceholder.setVisibility(View.INVISIBLE);
-            binding.chart.setVisibility(View.VISIBLE);
+            placeholderTextView.setVisibility(View.INVISIBLE);
+            chart.setVisibility(View.VISIBLE);
 
         } else {
-            binding.tvPlaceholder.setVisibility(View.VISIBLE);
-            binding.chart.setVisibility(View.INVISIBLE);
+            placeholderTextView.setVisibility(View.VISIBLE);
+            chart.setVisibility(View.INVISIBLE);
         }
     }
 

@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.net.Uri;
 import android.provider.Settings;
@@ -16,6 +15,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;;
@@ -30,7 +30,6 @@ import android.widget.LinearLayout;
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.databinding.ActivityMainBinding;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
 import com.awolity.trakr.utils.PreferenceUtils;
@@ -66,7 +65,6 @@ public class MainActivity extends AppCompatActivity
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final float ZOOM_LEVEL_INITIAL = 15;
 
-    private ActivityMainBinding binding;
     private GoogleMap googleMap;
     private BottomSheetPointFragment pointFragment;
     private BottomSheetTrackFragment trackFragment;
@@ -79,13 +77,13 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //  // MyLog.d(TAG, "onCreate");
+        setContentView(R.layout.activity_main);
         status = new MainActivityStatus();
 
         if (savedInstanceState != null) {
             status.setCameraPosition((CameraPosition) savedInstanceState.getParcelable(KEY_CAMERA_POSITION));
         }
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setupToolbar();
         setupBottomSheet(savedInstanceState);
         checkPermission();
@@ -94,15 +92,19 @@ public class MainActivity extends AppCompatActivity
         //setupDebugOverlay();
     }
 
+    private void setupWidgets(){
+
+    }
+
     private void setupToolbar() {
-        Toolbar toolbar = binding.toolbar;
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
     @SuppressWarnings("ConstantConditions")
     private void setupBottomSheet(Bundle savedInstanceState) {
         //  // MyLog.d(TAG, "setupBottomSheet");
-        LinearLayout llBottomSheet = binding.llBottomSheet;
+        LinearLayout llBottomSheet = findViewById(R.id.ll_bottom_sheet);
         final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
         BottomSheetFragmentPagerAdapter adapter =
                 new BottomSheetFragmentPagerAdapter(getSupportFragmentManager());
@@ -125,15 +127,17 @@ public class MainActivity extends AppCompatActivity
             chartsFragment.setTitle(getString(R.string.bottom_sheet_label_charts));
         }
         adapter.setFragments(new BottomSheetBaseFragment[]{pointFragment, trackFragment, chartsFragment});
-        binding.viewPager.setAdapter(adapter);
-        binding.viewPager.setOffscreenPageLimit(2);
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(2);
 
-        binding.tabLayout.setupWithViewPager(binding.viewPager);
-        binding.tabLayout.getTabAt(0).setIcon(R.drawable.ic_point_selected);
-        binding.tabLayout.getTabAt(1).setIcon(R.drawable.ic_track);
-        binding.tabLayout.getTabAt(2).setIcon(R.drawable.ic_charts);
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_point_selected);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_track);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_charts);
 
-        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -292,7 +296,7 @@ public class MainActivity extends AppCompatActivity
                     .findFragmentById(R.id.mapFragment);
             mapFragment.getMapAsync(this);
         } else {
-            FrameLayout mapOverlay = binding.mapOverlay;
+            FrameLayout mapOverlay = findViewById(R.id.map_overlay);
             mapOverlay.setVisibility(View.INVISIBLE);
         }
     }
