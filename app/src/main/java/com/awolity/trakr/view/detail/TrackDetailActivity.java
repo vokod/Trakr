@@ -50,14 +50,14 @@ public class TrackDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_track_detail);
 
         setupWidgets();
-        bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        setupBottomSheetNavigation();
         setSupportActionBar(toolbar);
 
         trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
         setupViewModel(trackId);
     }
 
-    private void setupWidgets(){
+    private void setupWidgets() {
         toolbar = findViewById(R.id.toolbar);
         bottomNavigationView = findViewById(R.id.navigation);
         fragmentContainer = findViewById(R.id.fragment_container);
@@ -68,41 +68,35 @@ public class TrackDetailActivity extends AppCompatActivity {
         vm.init(trackId);
     }
 
-    private void checkPermission() {
-        MyLog.d(LOG_TAG, "checkPermission");
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            MyLog.d(LOG_TAG, "checkPermission - permission not granted");
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - should");
-                new AlertDialog.Builder(this)
-                        .setTitle(getResources().getString(R.string.external_storage_permission_rationale_title))
-                        .setMessage(getResources().getString(R.string.external_storage_permission_rationale_description))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - onclick - requesting permission");
-                                ActivityCompat.requestPermissions(TrackDetailActivity.this,
-                                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                        PERMISSION_REQUEST_CODE);
-                            }
-                        })
-                        .setIcon(R.mipmap.ic_launcher)
-                        .show();
-            } else {
-                MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - no - requesting permission");
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        PERMISSION_REQUEST_CODE);
+    private void setupBottomSheetNavigation() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_map:
+                        MyLog.d(LOG_TAG,"onNavigationItemSelected - action_map");
+                        MapFragment mapFragment
+                                = (MapFragment) getSupportFragmentManager().findFragmentByTag(TAG_MAP_FRAGMENT);
+                        if (mapFragment == null) {
+                            mapFragment = MapFragment.newInstance(trackId);
+                        }
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, mapFragment)
+                                .commit();
+                        return true;
+                    case R.id.action_data:
+
+                        return true;
+                    case R.id.action_charts:
+
+                        return true;
+                }
+                return false;
             }
-        } else {
-            MyLog.d(LOG_TAG, "checkPermission - permission granted");
-            vm.exportTrack();
-        }
+        });
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -115,6 +109,7 @@ public class TrackDetailActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     MyLog.d(LOG_TAG, "onRequestPermissionsResult - permission granted");
                     // permission was granted, yay!
+                    vm.exportTrack();
                 } else {
                     MyLog.d(LOG_TAG, "onRequestPermissionsResult - permission denied :(");
                     // permission denied, boo!
@@ -139,40 +134,11 @@ public class TrackDetailActivity extends AppCompatActivity {
             finish();
             return true;
         } else if (id == R.id.action_export) {
-            checkPermission();
+           if(TrackDetailActivityUtils.checkPermission(this, PERMISSION_REQUEST_CODE)){
+               vm.exportTrack();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_map:
-                    MapFragment mapFragment
-                            = (MapFragment) getSupportFragmentManager().findFragmentByTag(TAG_MAP_FRAGMENT);
-                    if (mapFragment == null) {
-                        mapFragment = MapFragment.newInstance(trackId);
-                    }
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, mapFragment)
-                            .commit();
-                    return true;
-                case R.id.action_data:
-
-                    return true;
-                case R.id.action_charts:
-
-                    return true;
-            }
-            return false;
-        }
-    };
-
-
 }

@@ -103,7 +103,7 @@ public class TrackListAdapter
     @Override
     public TrackItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // MyLog.d(LOG_TAG, "onCreateViewHolder");
-        View v = layoutInflater.inflate(R.layout.activity_main_item_track_list, parent, false);
+        View v = layoutInflater.inflate(R.layout.activity_track_list_item_track_list, parent, false);
         return new TrackItemViewHolder(v);
     }
 
@@ -158,6 +158,7 @@ public class TrackListAdapter
             // MyLog.d(LOG_TAG, "bind");
             this.trackItem = track;
             titleTv.setText(trackItem.getTitle());
+            // TODO: ezt szebben formázni
             dateTv.setText(StringUtils.getStartTimeAsString(trackItem.getStartTime()));
 
             ColorGenerator generator = ColorGenerator.MATERIAL;

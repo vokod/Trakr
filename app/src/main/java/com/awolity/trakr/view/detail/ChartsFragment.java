@@ -9,13 +9,10 @@ import android.view.ViewGroup;
 
 import com.awolity.trakr.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class DataFragment extends Fragment {
+public class ChartsFragment extends Fragment {
 
 
-    public DataFragment() {
+    public ChartsFragment() {
         // Required empty public constructor
     }
 
@@ -24,7 +21,7 @@ public class DataFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_track_detail_fragment_data, container, false);
+        return inflater.inflate(R.layout.activity_track_detail_fragment_charts, container, false);
     }
 
 }
