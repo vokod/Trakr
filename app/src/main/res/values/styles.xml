@@ -41,7 +41,6 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:layout_marginTop">36dp</item>
         <item name="android:textAllCaps">true</item>
-
     </style>
 
     <style name="SecondaryPropertyValue" parent="PrimaryPropertyValue">
@@ -55,6 +54,48 @@
     <style name="SecondaryPropertyLabel" parent="PrimaryPropertyLabel">
         <item name="android:layout_marginTop">28dp</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+
+
+
+    <style name="PrimaryPropertyValue2" parent="@android:style/TextAppearance.Large">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="PrimaryPropertyUnit2" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/secondaryText</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="PrimaryPropertyLabel2" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/secondaryText</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:layout_marginTop">36dp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="SecondaryPropertyValue2" parent="PrimaryPropertyValue">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="SecondaryPropertyUnit2" parent="PrimaryPropertyUnit">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="SecondaryPropertyLabel2" parent="PrimaryPropertyLabel">
+        <item name="android:layout_marginTop">28dp</item>
+        <item name="android:textSize">10sp</item>
     </style>
 
 

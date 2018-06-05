@@ -5,20 +5,29 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_notification" />
+
     <TextView
         android:id="@+id/tvValue"
-        style="@style/PrimaryPropertyValue"
+        style="@style/PrimaryPropertyValue2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:textAlignment="textEnd"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_icon"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="34.5" />
 
     <TextView
         android:id="@+id/tvUnit"
         android:paddingStart="4dp"
-        style="@style/PrimaryPropertyUnit"
+        style="@style/PrimaryPropertyUnit2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="textStart"
@@ -29,12 +38,13 @@
 
     <TextView
         android:id="@+id/tvLabel"
-        style="@style/PrimaryPropertyLabel"
-        android:layout_width="match_parent"
+        style="@style/PrimaryPropertyLabel2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvValue"
+        app:layout_constraintStart_toStartOf="@+id/tvValue"
+        app:layout_constraintTop_toBottomOf="@+id/tvValue"
         tools:text="Speed" />
 </android.support.constraint.ConstraintLayout>

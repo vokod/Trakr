@@ -69,8 +69,8 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
 
     private void setupViewModel() {
         MyLog.d(LOG_TAG, "setupViewModel");
-        trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
-        trackViewModel.init(trackId);
+        trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
+        //trackViewModel.init(trackId);
         trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
             @Override
             public void onChanged(@Nullable TrackWithPoints trackWithPoints) {

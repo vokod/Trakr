@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class TrackpointEntity {
 
     @NonNull
-    @PrimaryKey (autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "trackpoint_id")
     long trackpointId;
     @ColumnInfo(name = "track_id")
@@ -127,14 +127,14 @@ public class TrackpointEntity {
         this.distance = distance;
     }
 
-    public static TrackpointEntity fromLocation(Location location){
+    public static TrackpointEntity fromLocation(Location location) {
         TrackpointEntity tp = new TrackpointEntity();
         tp.setAltitude(location.getAltitude());
         tp.setAccuracy(location.getAccuracy());
         tp.setBearing(location.getBearing());
         tp.setLatitude(location.getLatitude());
         tp.setLongitude(location.getLongitude());
-        tp.setSpeed(location.getSpeed());
+        tp.setSpeed(location.getSpeed() * 3.6);
         tp.setTime(location.getTime());
         tp.setUnfilteredAltitude(location.getAltitude());
         return tp;
