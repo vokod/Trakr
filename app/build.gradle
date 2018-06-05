@@ -36,9 +36,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled = true
-    }
     buildToolsVersion '27.0.3'
 
 
@@ -80,7 +77,6 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
     // MPAndroid Chart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
-
     // gpx parser
     implementation 'com.codebutchery.android:gpx_lib:1.0.3'
 }

@@ -1,11 +1,8 @@
 package com.awolity.trakr.view.list;
 
-import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
@@ -24,14 +21,11 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
+import com.awolity.trakr.view.MapUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -98,10 +92,10 @@ public class TrackListAdapter
         }).dispatchUpdatesTo(this);
     }
 
-    private void deleteInvalidTracks(List<TrackEntity> trackEntityList){
+    private void deleteInvalidTracks(List<TrackEntity> trackEntityList) {
         Iterator<TrackEntity> iterator = trackEntityList.iterator();
-        while (iterator.hasNext()){
-            if(iterator.next().getNumOfTrackPoints()<=2){
+        while (iterator.hasNext()) {
+            if (iterator.next().getNumOfTrackPoints() <= 2) {
                 iterator.remove();
             }
         }
@@ -201,8 +195,8 @@ public class TrackListAdapter
                     // MyLog.d(LOG_TAG, "getTrackWithPoints() - onChanged");
                     if (trackWithPoints != null && trackWithPoints.getTrackPoints() != null) {
                         // MyLog.d(LOG_TAG, "getTrackWithPoints() - onChanged - trackPoints != null");
-                        if(googleMap!=null) {
-                            setupPolyLine(activity, googleMap, trackWithPoints);
+                        if (googleMap != null) {
+                            MapUtils.setupTrackPolyLine(activity, googleMap, trackWithPoints, true);
                             mapView.onResume();
                         }
                     }
@@ -218,28 +212,6 @@ public class TrackListAdapter
         }
     }
 
-    private static void setupPolyLine(Context context, GoogleMap googleMap, TrackWithPoints trackWithPoints) {
-        // MyLog.d(LOG_TAG, "setupPolyLine");
-        PolylineOptions polylineOptions = new PolylineOptions()
-                .geodesic(true)
-                .color(ContextCompat.getColor(context, R.color.colorPrimary))
-                .width(context.getResources().getInteger(R.integer.polyline_width))
-                .zIndex(30)
-                .visible(true);
-
-        if (googleMap != null) {
-            googleMap.addPolyline(polylineOptions.addAll(trackWithPoints.getPointsLatLng()));
-            moveCamera(googleMap, trackWithPoints);
-        }
-    }
-
-    private static void moveCamera(GoogleMap googleMap, TrackWithPoints trackWithPoints) {
-        // MyLog.d(LOG_TAG, "moveCamera");
-        LatLngBounds bounds = new LatLngBounds(
-                new LatLng(trackWithPoints.getSouthestPoint(), trackWithPoints.getWesternPoint()),
-                new LatLng(trackWithPoints.getNorthestPoint(), trackWithPoints.getEasternPoint()));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
-    }
 
     public interface TrackItemCallback {
         void onTrackItemClicked(long trackId);

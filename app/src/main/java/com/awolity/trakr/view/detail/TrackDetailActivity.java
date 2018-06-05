@@ -1,21 +1,15 @@
 package com.awolity.trakr.view.detail;
 
-import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -48,13 +42,13 @@ public class TrackDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_detail);
+        trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupWidgets();
         setupBottomSheetNavigation();
+        showMapFragment();
 
-
-        trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
         setupViewModel(trackId);
     }
 
@@ -74,22 +68,14 @@ public class TrackDetailActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_map:
-                        MyLog.d(LOG_TAG,"onNavigationItemSelected - action_map");
-                        MapFragment mapFragment
-                                = (MapFragment) getSupportFragmentManager().findFragmentByTag(TAG_MAP_FRAGMENT);
-                        if (mapFragment == null) {
-                            mapFragment = MapFragment.newInstance(trackId);
-                        }
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, mapFragment)
-                                .commit();
+                        MyLog.d(LOG_TAG, "onNavigationItemSelected - action_map");
+                        showMapFragment();
                         return true;
                     case R.id.action_data:
-
+                        showDataFragment();
                         return true;
                     case R.id.action_charts:
-
+                        showChartsFragment();
                         return true;
                 }
                 return false;
@@ -97,6 +83,41 @@ public class TrackDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void showMapFragment() {
+        TrackDetailActivityMapFragment mapFragment
+                = (TrackDetailActivityMapFragment) getSupportFragmentManager().findFragmentByTag(TAG_MAP_FRAGMENT);
+        if (mapFragment == null) {
+            mapFragment = TrackDetailActivityMapFragment.newInstance(trackId);
+        }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, mapFragment, TAG_MAP_FRAGMENT)
+                .commit();
+    }
+
+    private void showDataFragment() {
+        TrackDetailActivityDataFragment dataFragment
+                = (TrackDetailActivityDataFragment) getSupportFragmentManager().findFragmentByTag(TAG_DATA_FRAGMENT);
+        if (dataFragment == null) {
+            dataFragment = TrackDetailActivityDataFragment.newInstance(trackId);
+        }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, dataFragment, TAG_DATA_FRAGMENT)
+                .commit();
+    }
+
+    private void showChartsFragment() {
+        TrackDetailActivityChartsFragment chartsFragment
+                = (TrackDetailActivityChartsFragment) getSupportFragmentManager().findFragmentByTag(TAG_CHARTS_FRAGMENT);
+        if (chartsFragment == null) {
+            chartsFragment = TrackDetailActivityChartsFragment.newInstance(trackId);
+        }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, chartsFragment, TAG_CHARTS_FRAGMENT)
+                .commit();
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -134,8 +155,8 @@ public class TrackDetailActivity extends AppCompatActivity {
             finish();
             return true;
         } else if (id == R.id.action_export) {
-           if(TrackDetailActivityUtils.checkPermission(this, PERMISSION_REQUEST_CODE)){
-               vm.exportTrack();
+            if (TrackDetailActivityUtils.checkPermission(this, PERMISSION_REQUEST_CODE)) {
+                vm.exportTrack();
             }
             return true;
         }

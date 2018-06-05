@@ -67,7 +67,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
             @Override
             public void onChanged(@Nullable List<TrackEntity> trackEntities) {
                 if (trackEntities != null) {
-                    MyLog.d(LOG_TAG, "setupViewModel - onChanged");
+                    MyLog.d(LOG_TAG, "setupViewModel - onChanged - num of tracks: "+ trackEntities.size());
                     trackListAdapter.updateItems(trackEntities);
                 }
             }
