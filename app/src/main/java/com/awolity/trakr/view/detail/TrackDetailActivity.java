@@ -49,16 +49,16 @@ public class TrackDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_detail);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupWidgets();
         setupBottomSheetNavigation();
-        setSupportActionBar(toolbar);
+
 
         trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
         setupViewModel(trackId);
     }
 
     private void setupWidgets() {
-        toolbar = findViewById(R.id.toolbar);
         bottomNavigationView = findViewById(R.id.navigation);
         fragmentContainer = findViewById(R.id.fragment_container);
     }

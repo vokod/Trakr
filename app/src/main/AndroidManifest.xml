@@ -21,7 +21,7 @@
         <activity
             android:name=".view.main.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,7 +31,7 @@
         <activity
             android:name=".view.list.TrackListActivity"
             android:label="@string/title_activity_track_list"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.main.MainActivity" />
@@ -39,7 +39,7 @@
         <activity
             android:name=".view.detail.TrackDetailActivity"
             android:label="@string/title_activity_track_detail"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.list.TrackListActivity" />

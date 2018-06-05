@@ -83,16 +83,10 @@ public class MainActivity extends AppCompatActivity
             status.setCameraPosition((CameraPosition) savedInstanceState.getParcelable(KEY_CAMERA_POSITION));
         }
 
-        setupToolbar();
         setupBottomSheet(savedInstanceState);
         MainActivityUtils.checkLocationPermission(this, PERMISSION_REQUEST_CODE);
         setupMapFragment();
         setupLocationViewModel();
-    }
-
-    private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
     }
 
     @SuppressWarnings("ConstantConditions")

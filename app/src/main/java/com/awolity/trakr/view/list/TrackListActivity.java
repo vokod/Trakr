@@ -37,17 +37,10 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         MyLog.d(LOG_TAG, "onCreate");
         setContentView(R.layout.activity_track_list);
 
-        setupToolbar();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getString(R.string.title_activity_track_list));
         setupRecyclerView();
         setupViewModel();
-    }
-
-    private void setupToolbar() {
-        MyLog.d(LOG_TAG, "setupToolbar");
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle(getString(R.string.title_activity_track_list));
     }
 
     private void setupRecyclerView() {
