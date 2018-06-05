@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -54,10 +55,10 @@ public class MainActivity extends AppCompatActivity
         GoogleMap.OnCameraMoveListener,
         TrackRecorderServiceManager.TrackRecorderServiceManagerListener {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final float ZOOM_LEVEL_INITIAL = 15;
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private GoogleMap googleMap;
     private BottomSheetPointFragment pointFragment;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MyLog.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         status = new MainActivityStatus();
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("ConstantConditions")
     private void setupBottomSheet(Bundle savedInstanceState) {
+        MyLog.d(LOG_TAG, "setupBottomSheet");
         LinearLayout llBottomSheet = findViewById(R.id.ll_bottom_sheet);
         final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
         BottomSheetFragmentPagerAdapter adapter =
@@ -134,16 +137,13 @@ public class MainActivity extends AppCompatActivity
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 switch (tab.getPosition()) {
                     case 0:
-                        MyLog.d(TAG, "onTabSelected - 0");
                         tab.setIcon(getResources().getDrawable(R.drawable.ic_point_selected));
                         tab.select();
                         break;
                     case 1:
-                        MyLog.d(TAG, "onTabSelected - 1");
                         tab.setIcon(getResources().getDrawable(R.drawable.ic_track_selected));
                         break;
                     case 2:
-                        MyLog.d(TAG, "onTabSelected - 2");
                         tab.setIcon(getResources().getDrawable(R.drawable.ic_charts_selected));
                         break;
                     default:
@@ -155,15 +155,12 @@ public class MainActivity extends AppCompatActivity
             public void onTabUnselected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
-                        MyLog.d(TAG, "onTabUnselected - 0");
                         tab.setIcon(getResources().getDrawable(R.drawable.ic_point));
                         break;
                     case 1:
-                        MyLog.d(TAG, "onTabUnselected - 1");
                         tab.setIcon(getResources().getDrawable(R.drawable.ic_track));
                         break;
                     case 2:
-                        MyLog.d(TAG, "onTabUnselected - 2");
                         tab.setIcon(getResources().getDrawable(R.drawable.ic_charts));
                         break;
                     default:
@@ -200,6 +197,7 @@ public class MainActivity extends AppCompatActivity
     }
     
     private void setupMapFragment() {
+        MyLog.d(LOG_TAG, "setupMapFragment");
         if (MainActivityUtils.checkPlayServices(this)) {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.mapFragment);
@@ -236,19 +234,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTrackRecorderService() {
+        MyLog.d(LOG_TAG, "setupTrackRecorderService");
         serviceManager = new TrackRecorderServiceManager(this);
         if (TrackRecorderServiceManager.isServiceRunning(this)) {
             status.setContinueRecording();
             long trackId = PreferenceUtils.getLastRecordedTrackId(this);
             if (trackId != PreferenceUtils.NO_LAST_RECORDED_TRACK) {
                 setupTrackViewModel(trackId);
-                trackFragment.start(trackId);
+                trackFragment.startTrackDataUpdate(trackId);
                 status.setRecording(true);
             }
         }
     }
 
     private void startLocationUpdates() {
+        MyLog.d(LOG_TAG, "startLocationUpdates");
         if (Utility.isLocationEnabled(this)) {
             locationViewModel.getLocation().observe(MainActivity.this, new Observer<Location>() {
                 @Override
@@ -262,6 +262,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updateMap(Location location) {
+        MyLog.d(LOG_TAG, "updateMap");
         if (!status.isThereACameraPosition()) {
             // it is first start, so centered
             if (status.isRecording()) {
@@ -283,9 +284,15 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void updateCamera(LatLngBounds bounds) {
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
-        status.setCameraPosition(googleMap.getCameraPosition());
+    private void updateCamera(final LatLngBounds bounds) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+                status.setCameraPosition(googleMap.getCameraPosition());
+            }
+        }, 500);
     }
 
     protected void onRecordFabClick(@SuppressWarnings("unused") View view) {
@@ -404,7 +411,7 @@ public class MainActivity extends AppCompatActivity
         try {
             googleMap.setMyLocationEnabled(true);
         } catch (SecurityException e) {
-            MyLog.e(TAG, e.getLocalizedMessage());
+            MyLog.e(LOG_TAG, e.getLocalizedMessage());
         }
 
         if (status.isThereACameraPosition()) {
@@ -473,16 +480,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onServiceStarted(long trackId) {
         // TODO FAB animation
-        trackFragment.start(trackId);
-        chartsFragment.start(trackId);
+        trackFragment.startTrackDataUpdate(trackId);
+        chartsFragment.startTrackDataUpdate(trackId);
         setupTrackViewModel(trackId);
         status.setRecording(true);
     }
 
     @Override
     public void onServiceStopped() {
-        trackFragment.stop();
-        chartsFragment.stop();
+        trackFragment.stopTrackDataUpdate();
+        chartsFragment.stopTrackDataUpdate();
         // TODO: status.stoprecording (ami aztán megcsinálja mindkettőt)
         status.setRecording(false);
         clearTrackOnMap();

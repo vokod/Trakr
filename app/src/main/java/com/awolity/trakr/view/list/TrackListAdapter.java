@@ -1,5 +1,6 @@
 package com.awolity.trakr.view.list;
 
+import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -33,6 +34,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,6 +67,7 @@ public class TrackListAdapter
 
     public void updateItems(final List<TrackEntity> newItems) {
         // MyLog.d(LOG_TAG, "updateItems");
+        deleteInvalidTracks(newItems);
         final List<TrackEntity> oldItems = new ArrayList<>(this.items);
         this.items.clear();
         if (newItems != null) {
@@ -93,6 +96,15 @@ public class TrackListAdapter
                 return oldItems.get(oldItemPosition).equals(newItems.get(newItemPosition));
             }
         }).dispatchUpdatesTo(this);
+    }
+
+    private void deleteInvalidTracks(List<TrackEntity> trackEntityList){
+        Iterator<TrackEntity> iterator = trackEntityList.iterator();
+        while (iterator.hasNext()){
+            if(iterator.next().getNumOfTrackPoints()<=2){
+                iterator.remove();
+            }
+        }
     }
 
     private void remove(int id) {

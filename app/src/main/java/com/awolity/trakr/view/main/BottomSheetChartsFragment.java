@@ -60,6 +60,11 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment implement
         setupWidgets(view);
         setupChart();
         setDataVisibility(false);
+
+        if(isRecording &&trackId != -1){
+            startTrackDataUpdate(trackId);
+        }
+
         return view;
     }
 
@@ -101,42 +106,40 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment implement
         l.setDrawInside(false);
     }
 
-    public void start(long trackId) {
-        // MyLog.d(LOG_TAG, "start");
+    public void startTrackDataUpdate(long trackId) {
+        MyLog.d(LOG_TAG, "startTrackDataUpdate");
         this.trackId = trackId;
-        setDataVisibility(true);
-        startObserve(trackId);
+        if (checkViews()) {
+            setDataVisibility(true);
+            startObserve(trackId);
+        }
         isRecording = true;
     }
 
-    public void stop() {
-        // MyLog.d(LOG_TAG, "stop");
+    public void stopTrackDataUpdate() {
+        MyLog.d(LOG_TAG, "stopTrackDataUpdate");
         setDataVisibility(false);
-        // resetData();
     }
 
     private void startObserve(long trackId) {
         // MyLog.d(LOG_TAG, "startObserve");
         trackViewModel.init(trackId);
-        trackViewModel.getTrackWithPoints().observe(this, trackWithPointsObserver);
-    }
-
-    Observer<TrackWithPoints> trackWithPointsObserver = new Observer<TrackWithPoints>() {
-        @Override
-        public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-            // MyLog.d(LOG_TAG, "trackWithPointsObserver.onChanged");
-            if (trackWithPoints != null) {
-                // MyLog.d(LOG_TAG, "trackWithPointsObserver.onChanged - track NOT null");
-                //setData(trackEntity);
-                LineDataSet speedDataSet = new LineDataSet(prepareSpeedData(trackWithPoints), "Speed");
-                ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-                dataSets.add(speedDataSet);
-                LineData data = new LineData(dataSets);
-                chart.setData(data);
-                chart.invalidate();
+        trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
+            @Override
+            public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
+                // MyLog.d(LOG_TAG, "trackWithPointsObserver.onChanged");
+                if (trackWithPoints != null) {
+                    // MyLog.d(LOG_TAG, "trackWithPointsObserver.onChanged - track NOT null");
+                    LineDataSet speedDataSet = new LineDataSet(prepareSpeedData(trackWithPoints), "Speed");
+                    ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+                    dataSets.add(speedDataSet);
+                    LineData data = new LineData(dataSets);
+                    chart.setData(data);
+                    chart.invalidate();
+                }
             }
-        }
-    };
+        });
+    }
 
     private List<Entry> prepareSpeedData(TrackWithPoints trackWithPoints) {
         List<Entry> values = new ArrayList<>();
@@ -180,5 +183,9 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment implement
     @Override
     public void onNothingSelected() {
         // MyLog.d(LOG_TAG, "onNothingSelected");
+    }
+
+    private boolean checkViews() {
+        return chart != null;
     }
 }

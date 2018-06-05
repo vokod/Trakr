@@ -33,7 +33,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     private static final String KEY_MAXSPEEDVIEW_VALUE = "key_maxSpeedView_value";
 
     private Handler handler;
-    private Runnable uiUpdater;
+    private Runnable elapsedTimeUpdater;
     private long startTime;
     private TrackViewModel trackViewModel;
     private boolean isRecording;
@@ -41,7 +41,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     private SecondaryPropertyView elapsedTimeView, minAltitudeView, maxAltitudeView, avgSpeedView,
             maxSpeedView;
     private TextView tvPlaceholder;
-
+    private long trackId = -1;
 
     public static BottomSheetTrackFragment newInstance(@SuppressWarnings("SameParameterValue") String title) {
         BottomSheetTrackFragment fragment = new BottomSheetTrackFragment();
@@ -57,7 +57,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // MyLog.d(LOG_TAG, "onCreate");
+        MyLog.d(LOG_TAG, "onCreate");
         //noinspection ConstantConditions
         trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
     }
@@ -65,28 +65,24 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // MyLog.d(LOG_TAG, "onCreateView");
+        MyLog.d(LOG_TAG, "onCreateView");
         View view = inflater.inflate(
                 R.layout.activity_main_fragment_bottom_sheet_track, container, false);
+
         setupWidgets(view);
-        handler = new Handler();
-        uiUpdater = new Runnable() {
-            @Override
-            public void run() {
-                updateUi();
-                handler.postDelayed(uiUpdater, 1000);
-            }
-        };
+        setupElapsedTimeUpdater();
 
         setDataVisibility(false);
 
         if (isRecording && trackId != -1) {
-            start(trackId);
+            startTrackDataUpdate(trackId);
         }
+
         return view;
     }
 
     private void setupWidgets(View view) {
+        MyLog.d(LOG_TAG, "setupWidgets");
         distanceView = view.findViewById(R.id.distanceView);
         ascentView = view.findViewById(R.id.ascentView);
         descentView = view.findViewById(R.id.descentView);
@@ -98,9 +94,20 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         tvPlaceholder = view.findViewById(R.id.tvPlaceholder);
     }
 
+    private void setupElapsedTimeUpdater() {
+        handler = new Handler();
+        elapsedTimeUpdater = new Runnable() {
+            @Override
+            public void run() {
+                updateElapsedTime();
+                handler.postDelayed(elapsedTimeUpdater, 1000);
+            }
+        };
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        // MyLog.d(LOG_TAG, "onActivityCreated");
+        MyLog.d(LOG_TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
@@ -116,8 +123,24 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (isRecording) {
+            continueElapsedTimer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (isRecording) {
+            stopElapsedTimer();
+        }
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
-        // MyLog.d(LOG_TAG, "onSaveInstanceState");
+        MyLog.d(LOG_TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
         outState.putString(KEY_DISTANCEVIEW_VALUE, distanceView.getValue());
         outState.putString(KEY_ASCENTVIEW_VALUE, ascentView.getValue());
@@ -129,44 +152,53 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         outState.putString(KEY_MAXSPEEDVIEW_VALUE, maxAltitudeView.getValue());
     }
 
-    private long trackId = -1;
-
-    public void start(long trackId) {
-        // MyLog.d(LOG_TAG, "start");
+    public void startTrackDataUpdate(long trackId) {
+        MyLog.d(LOG_TAG, "startTrackDataUpdate");
         this.trackId = trackId;
-        setDataVisibility(true);
-        startObserve(trackId);
-        setStartTime(System.currentTimeMillis());
-        uiUpdater.run();
+        if (checkViews()) {
+            setDataVisibility(true);
+            startObserve(trackId);
+            startElapsedTimer();
+        }
         isRecording = true;
     }
 
-    public void stop() {
-        // MyLog.d(LOG_TAG, "stop");
+    public void stopTrackDataUpdate() {
+        MyLog.d(LOG_TAG, "stopTrackDataUpdate");
         setDataVisibility(false);
-        handler.removeCallbacks(uiUpdater);
-        // resetData();
+        stopElapsedTimer();
+    }
+
+    private void startElapsedTimer() {
+        setStartTime(System.currentTimeMillis());
+        continueElapsedTimer();
+    }
+
+    private void stopElapsedTimer() {
+        handler.removeCallbacks(elapsedTimeUpdater);
+    }
+
+    private void continueElapsedTimer() {
+        elapsedTimeUpdater.run();
     }
 
     private void startObserve(long trackId) {
-        // MyLog.d(LOG_TAG, "startObserve");
+        MyLog.d(LOG_TAG, "startObserve");
         trackViewModel.init(trackId);
-        trackViewModel.getTrack().observe(this, trackEntityObserver);
+        trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
+            @Override
+            public void onChanged(@Nullable TrackEntity trackEntity) {
+                MyLog.d(LOG_TAG, "trackEntityObserver.onChanged");
+                if (trackEntity != null) {
+                    // MyLog.d(LOG_TAG, "trackEntityObserver.onChanged - track NOT null");
+                    setData(trackEntity);
+                }
+            }
+        });
     }
 
-    Observer<TrackEntity> trackEntityObserver = new Observer<TrackEntity>() {
-        @Override
-        public void onChanged(@Nullable TrackEntity trackEntity) {
-            // MyLog.d(LOG_TAG, "trackEntityObserver.onChanged");
-            if (trackEntity != null) {
-                // MyLog.d(LOG_TAG, "trackEntityObserver.onChanged - track NOT null");
-                setData(trackEntity);
-            }
-        }
-    };
-
     private void setData(TrackEntity track) {
-        // MyLog.d(LOG_TAG, "setData");
+        MyLog.d(LOG_TAG, "setData");
         setDistance(track.getDistance());
         setAscent(track.getAscent());
         setDescent(track.getDescent());
@@ -177,15 +209,18 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         setStartTime(track.getStartTime());
     }
 
-    private void updateUi() {
-        // // MyLog.d(LOG_LOG_TAG, "updateUi");
+    private void updateElapsedTime() {
+        MyLog.d(LOG_TAG, "updateElapsedTime");
         if (startTime != 0) {
             setElapsedTime(System.currentTimeMillis() - startTime);
         }
     }
 
     private void setDataVisibility(boolean isRecording) {
-        // MyLog.d(LOG_TAG, "setDataVisibility");
+        MyLog.d(LOG_TAG, "setDataVisibility");
+        if (!checkViews()) {
+            return;
+        }
 
         // TODO: ezt valami animációval
         if (isRecording) {
@@ -213,7 +248,11 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void resetData() {
-        // MyLog.d(LOG_TAG, "resetData");
+        MyLog.d(LOG_TAG, "resetData");
+
+        if (!checkViews()) {
+            return;
+        }
         startTime = 0;
 
         distanceView.setValue(getActivity().getString(R.string.distance_view_value));
@@ -285,5 +324,9 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
 
     private void setAvgSpeed(double avgSpeed) {
         avgSpeedView.setValue(StringUtils.getSpeedAsThreeCharactersString(avgSpeed));
+    }
+
+    private boolean checkViews() {
+        return distanceView != null;
     }
 }

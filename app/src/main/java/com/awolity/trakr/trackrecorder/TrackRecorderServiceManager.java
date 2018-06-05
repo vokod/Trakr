@@ -41,7 +41,7 @@ public class TrackRecorderServiceManager {
             public void onReceive(Context context, Intent intent) {
                 long id = intent.getLongExtra(TrackRecorder.EXTRA_TRACK_ID, -1);
                 LocalBroadcastManager.getInstance(context).unregisterReceiver(trackIdBroadcastReceiver);
-                Log.d(TAG, "onReceive - trackId:" + id);
+                //  Log.d(TAG, "onReceive - trackId:" + id);
                 PreferenceUtils.setLastRecordedTrackId(context, id);
                 listener.onServiceStarted(id);
                 isStarted = true;
@@ -50,12 +50,12 @@ public class TrackRecorderServiceManager {
     }
 
     public void startStopFabClicked() {
-        MyLog.d(TAG, "startStopFabClicked");
+        // MyLog.d(TAG, "startStopFabClicked");
         if (isStarted) {
-            MyLog.d(TAG, "startStopFabClicked - service IS running");
+            // MyLog.d(TAG, "startStopFabClicked - service IS running");
             stopService();
         } else {
-            MyLog.d(TAG, "startStopFabClicked - service is NOT running");
+            // MyLog.d(TAG, "startStopFabClicked - service is NOT running");
             LocalBroadcastManager.getInstance(context).registerReceiver(trackIdBroadcastReceiver,
                     new IntentFilter(TrackRecorder.TRACKID_BROADCAST_NAME));
             startService();
@@ -64,7 +64,7 @@ public class TrackRecorderServiceManager {
     }
 
     private void startService() {
-        MyLog.d(TAG, "startService - enter");
+        // MyLog.d(TAG, "startService - enter");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(getServiceIntent(context));
         } else {
@@ -73,7 +73,7 @@ public class TrackRecorderServiceManager {
     }
 
     private void stopService() {
-        MyLog.d(TAG, "stopService");
+        // MyLog.d(TAG, "stopService");
         context.stopService(getServiceIntent(context));
         isStarted = false;
         listener.onServiceStopped();

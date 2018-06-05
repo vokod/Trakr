@@ -358,7 +358,7 @@ public class TrackEntity {
             return "Night track";
         } else if(hour <= 6){
             return "Dawn track";
-        } else if (hour <= 9) {
+        } else if (hour <= 8) {
             return "Early morning track";
         } else if (hour <= 12) {
             return "Morning track";
