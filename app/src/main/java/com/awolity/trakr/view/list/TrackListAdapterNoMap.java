@@ -1,18 +1,11 @@
 package com.awolity.trakr.view.list;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,14 +15,8 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.SecondaryPropertyView;
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
-import com.awolity.trakr.view.MapUtils;
-import com.awolity.trakr.viewmodel.TrackViewModel;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -137,9 +124,9 @@ public class TrackListAdapterNoMap
             super(itemView);
             MyLog.d(LOG_TAG, "TrackItemViewHolder "+ TrackItemViewHolder.this.hashCode());
             clickOverlay = itemView.findViewById(R.id.fl_click_overlay);
-            titleTv = itemView.findViewById(R.id.tv_title);
+            titleTv = itemView.findViewById(R.id.tv_title_speed);
             dateTv = itemView.findViewById(R.id.tv_date);
-            initialIv = itemView.findViewById(R.id.iv_initial);
+            initialIv = itemView.findViewById(R.id.iv_initial_speed);
             distanceView = itemView.findViewById(R.id.spv_distance);
             durationView = itemView.findViewById(R.id.spv_duration);
             elevationView = itemView.findViewById(R.id.spv_elevation);

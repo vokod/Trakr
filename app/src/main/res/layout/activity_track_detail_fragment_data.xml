@@ -21,7 +21,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/iv_initial"
+                android:id="@+id/iv_initial_speed"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginBottom="12dp"
@@ -35,14 +35,14 @@
                 app:layout_constraintVertical_chainStyle="spread_inside" />
 
             <TextView
-                android:id="@+id/tv_title"
+                android:id="@+id/tv_title_speed"
                 style="@style/TrackDetailTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@+id/tv_date"
                 app:layout_constraintEnd_toStartOf="@+id/ib_edit"
-                app:layout_constraintStart_toEndOf="@+id/iv_initial"
-                app:layout_constraintTop_toTopOf="@+id/iv_initial"
+                app:layout_constraintStart_toEndOf="@+id/iv_initial_speed"
+                app:layout_constraintTop_toTopOf="@+id/iv_initial_speed"
                 tools:text="Title text" />
 
             <TextView
@@ -50,10 +50,10 @@
                 style="@style/TrackDetailDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_initial"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_initial_speed"
                 app:layout_constraintEnd_toStartOf="@+id/ib_edit"
-                app:layout_constraintStart_toStartOf="@+id/tv_title"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                app:layout_constraintStart_toStartOf="@+id/tv_title_speed"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title_speed"
                 tools:text="Subtitle text" />
 
             <ImageButton
@@ -64,7 +64,7 @@
                 android:src="@drawable/ic_edit"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_date"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_title" />
+                app:layout_constraintTop_toTopOf="@+id/tv_title_speed" />
 
         </android.support.constraint.ConstraintLayout>
 

@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,9 +67,9 @@ public class TrackDetailActivityDataFragment extends Fragment {
     }
 
     private void setupWidgets(View view) {
-        initialImageView = view.findViewById(R.id.iv_initial);
+        initialImageView = view.findViewById(R.id.iv_initial_speed);
         editTitleImageButton = view.findViewById(R.id.ib_edit);
-        titleTextView = view.findViewById(R.id.tv_title);
+        titleTextView = view.findViewById(R.id.tv_title_speed);
         dateTextView = view.findViewById(R.id.tv_date);
         startTimePpvi = view.findViewById(R.id.ppvi_start_time);
         endTimePpvi = view.findViewById(R.id.ppvi_end_time);

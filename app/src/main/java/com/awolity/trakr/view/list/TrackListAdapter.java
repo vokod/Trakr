@@ -1,6 +1,5 @@
 package com.awolity.trakr.view.list;
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.Nullable;
@@ -143,9 +142,9 @@ public class TrackListAdapter
             super(itemView);
             MyLog.d(LOG_TAG, "TrackItemViewHolder "+ TrackItemViewHolder.this.hashCode());
             clickOverlay = itemView.findViewById(R.id.fl_click_overlay);
-            titleTv = itemView.findViewById(R.id.tv_title);
+            titleTv = itemView.findViewById(R.id.tv_title_speed);
             dateTv = itemView.findViewById(R.id.tv_date);
-            initialIv = itemView.findViewById(R.id.iv_initial);
+            initialIv = itemView.findViewById(R.id.iv_initial_speed);
             distanceView = itemView.findViewById(R.id.spv_distance);
             durationView = itemView.findViewById(R.id.spv_duration);
             elevationView = itemView.findViewById(R.id.spv_elevation);
