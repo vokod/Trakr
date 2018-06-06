@@ -2,9 +2,13 @@ package com.awolity.trakr.view.detail;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,19 +25,22 @@ import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.animation.EasingFunction;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
 
 public class TrackDetailActivityChartsFragment extends Fragment implements OnChartValueSelectedListener {
 
@@ -42,7 +49,6 @@ public class TrackDetailActivityChartsFragment extends Fragment implements OnCha
 
     private long trackId;
     private TrackViewModel trackViewModel;
-    private TextView titleTextView;
     private PrimaryPropertyViewIcon maxSpeedPpvi, avgSpeedPpvi;
     private ImageView initialImageView;
     private LineChart speedChart;
@@ -55,7 +61,8 @@ public class TrackDetailActivityChartsFragment extends Fragment implements OnCha
         return fragment;
     }
 
-    public TrackDetailActivityChartsFragment() { }
+    public TrackDetailActivityChartsFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +85,6 @@ public class TrackDetailActivityChartsFragment extends Fragment implements OnCha
 
     private void setupWidgets(View view) {
         initialImageView = view.findViewById(R.id.iv_initial);
-        titleTextView = view.findViewById(R.id.tv_title);
         maxSpeedPpvi = view.findViewById(R.id.ppvi_max_speed);
         avgSpeedPpvi = view.findViewById(R.id.ppvi_avg_speed);
         speedChart = view.findViewById(R.id.chart_speed);
@@ -90,17 +96,18 @@ public class TrackDetailActivityChartsFragment extends Fragment implements OnCha
         avgSpeedPpvi.setup("Avg.Speed", "km/h", "-", R.drawable.ic_avg_speed);
 
         speedChart.setOnChartValueSelectedListener(this);
-        speedChart.setDrawGridBackground(true);
+        // speedChart.setDrawGridBackground(false);
+        Description description = new Description();
+        description.setText("");
+        speedChart.setDescription(description);
         // TODO: grid rácsköz?
-        speedChart.getDescription().setEnabled(true);
         // TODO: description?
-        speedChart.setDrawBorders(false);
-        // TODO: megnézni
+        /*speedChart.setDrawBorders(false);
         speedChart.getAxisLeft().setEnabled(true);
         speedChart.getAxisRight().setDrawAxisLine(false);
         speedChart.getAxisRight().setDrawGridLines(false);
         speedChart.getXAxis().setDrawAxisLine(true);
-        speedChart.getXAxis().setDrawGridLines(true);
+        speedChart.getXAxis().setDrawGridLines(true);*/
         // enable touch gestures
         speedChart.setTouchEnabled(true);
         // enable scaling and dragging
@@ -109,10 +116,20 @@ public class TrackDetailActivityChartsFragment extends Fragment implements OnCha
         // if disabled, scaling can be done on x- and y-axis separately
         speedChart.setPinchZoom(false);
 
+
+        XAxis xAxis = speedChart.getXAxis();
+        //xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
+        //xAxis.setDrawGridLines(false);
+        //xAxis.setGranularity(1f); // only intervals of 1 day
+        //xAxis.setTypeface(mTfLight);
+        //xAxis.setTextSize(8);
+        //xAxis.setTextColor(ContextCompat.getColor(this, R.color.colorYellow));
+        //xAxis.setValueFormatter(new GraphTimeAxisValueFormatter(range, interval, slot));
+
         Legend l = speedChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
     }
 
@@ -123,7 +140,7 @@ public class TrackDetailActivityChartsFragment extends Fragment implements OnCha
             public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
                 if (trackWithPoints != null) {
                     setData(trackWithPoints);
-                    setChartData(trackWithPoints.getTrackPoints());
+                    setChartData(trackWithPoints);
                 }
             }
         });
@@ -137,39 +154,46 @@ public class TrackDetailActivityChartsFragment extends Fragment implements OnCha
                 .buildRound("S", generator.getColor(trackWithPoints.getTitle()));
         initialImageView.setImageDrawable(drawable);
 
-        titleTextView.setText(trackWithPoints.getTitle());
         maxSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getMaxSpeed()));
         avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getAvgSpeed()));
     }
 
-    private void setChartData(List<TrackpointEntity> trackpointEntityList){
-        LineDataSet speedDataSet = new LineDataSet(prepareSpeedData(trackpointEntityList), "Speed");
-        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+    private void setChartData(TrackWithPoints trackWithPoints) {
+        LineDataSet speedDataSet = new LineDataSet(prepareSpeedData(trackWithPoints), "Speed [km/h]");
+
+        speedDataSet.setDrawIcons(false);
+        speedDataSet.setDrawValues(false);
+        speedDataSet.setColor(Color.YELLOW);
+        speedDataSet.setDrawCircles(false);
+        speedDataSet.setLineWidth(3f);
+        speedDataSet.setValueTextSize(9f);
+        speedDataSet.setDrawFilled(true);
+        speedDataSet.setFormLineWidth(1f);
+        speedDataSet.setFormSize(15.f);
+        speedDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_accent_color);
+        speedDataSet.setFillDrawable(drawable);
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(speedDataSet);
         LineData data = new LineData(dataSets);
+
         speedChart.setData(data);
         speedChart.invalidate();
     }
 
-    private List<Entry> prepareSpeedData(List<TrackpointEntity> trackpointEntityList) {
+    private List<Entry> prepareSpeedData(TrackWithPoints trackWithPoints) {
         List<Entry> values = new ArrayList<>();
+        List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
+        long startTime = trackWithPoints.getStartTime();
 
-        long previousElapsedSeconds = 0;
-        values.add(new Entry(previousElapsedSeconds, 0));
         for (TrackpointEntity trackpointEntity : trackpointEntityList) {
-            // if we already created an entry with the same time values(second)
-            // then don't do it again
-            long elapsedSeconds = getElapsedSeconds(trackpointEntityList.get(0).getTime(), trackpointEntity.getTime());
-            if (elapsedSeconds != previousElapsedSeconds) {
-                values.add(new Entry((float) elapsedSeconds, (float) trackpointEntity.getSpeed()));
-            }
-            previousElapsedSeconds = elapsedSeconds;
+            long elapsedSeconds = (trackpointEntity.getTime() - startTime) / 1000;
+            values.add(new Entry((float) elapsedSeconds, (float) trackpointEntity.getSpeed()));
         }
+        speedChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(trackpointEntityList));
         return values;
-    }
-
-    private long getElapsedSeconds(long startTime, long pointTime) {
-        return pointTime - startTime / 1000;
     }
 
     @Override
