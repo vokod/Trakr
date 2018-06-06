@@ -16,12 +16,14 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
+import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 
 import java.util.Locale;
+
 // TODO: forgatásnál őrizze meg a fragmentet
 public class TrackDetailActivityDataFragment extends Fragment {
 
@@ -35,6 +37,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
     private TextView titleTextView, dateTextView;
     private ImageButton editTitleImageButton;
     private ImageView initialImageView;
+    private TrackEntity trackEntity;
 
     public static TrackDetailActivityDataFragment newInstance(long trackId) {
         TrackDetailActivityDataFragment fragment = new TrackDetailActivityDataFragment();
@@ -44,7 +47,8 @@ public class TrackDetailActivityDataFragment extends Fragment {
         return fragment;
     }
 
-    public TrackDetailActivityDataFragment() { }
+    public TrackDetailActivityDataFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,9 +106,17 @@ public class TrackDetailActivityDataFragment extends Fragment {
         trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
         trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
             @Override
-            public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
+            public void onChanged(@Nullable final TrackWithPoints trackWithPoints) {
                 if (trackWithPoints != null) {
                     setData(trackWithPoints);
+
+                    editTitleImageButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            EditTitleDialog dialog = EditTitleDialog.newInstance(trackWithPoints.getTitle());
+                            dialog.show(getActivity().getSupportFragmentManager(), null);
+                        }
+                    });
                 }
             }
         });

@@ -20,7 +20,8 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 
-public class TrackDetailActivity extends AppCompatActivity {
+public class TrackDetailActivity extends AppCompatActivity
+        implements EditTitleDialog.EditTitleDialogListener {
 
     private static final String LOG_TAG = TrackDetailActivity.class.getSimpleName();
     public static final String TAG_MAP_FRAGMENT = "tag_map_fragment";
@@ -31,8 +32,8 @@ public class TrackDetailActivity extends AppCompatActivity {
     private long trackId;
     private BottomNavigationView bottomNavigationView;
     private FrameLayout fragmentContainer;
-
-    private TrackViewModel vm;
+    private TrackViewModel trackViewModel;
+    private TrackEntity trackEntity;
 
     public static Intent getStarterIntent(Context context, long trackId) {
         Intent intent = new Intent(context, TrackDetailActivity.class);
@@ -61,8 +62,16 @@ public class TrackDetailActivity extends AppCompatActivity {
     }
 
     private void setupViewModel(long trackId) {
-        vm = ViewModelProviders.of(this).get(TrackViewModel.class);
-        vm.init(trackId);
+        trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
+        trackViewModel.init(trackId);
+        trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
+            @Override
+            public void onChanged(@Nullable TrackEntity trackEntity) {
+                if (trackEntity != null) {
+                    TrackDetailActivity.this.trackEntity = trackEntity;
+                }
+            }
+        });
     }
 
     private void setupBottomSheetNavigation() {
@@ -134,7 +143,7 @@ public class TrackDetailActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     MyLog.d(LOG_TAG, "onRequestPermissionsResult - permission granted");
                     // permission was granted, yay!
-                    vm.exportTrack();
+                    trackViewModel.exportTrack();
                 } else {
                     MyLog.d(LOG_TAG, "onRequestPermissionsResult - permission denied :(");
                     // permission denied, boo!
@@ -155,15 +164,21 @@ public class TrackDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_delete) {
-            vm.deleteTrack();
+            trackViewModel.deleteTrack();
             finish();
             return true;
         } else if (id == R.id.action_export) {
             if (TrackDetailActivityUtils.checkPermission(this, PERMISSION_REQUEST_CODE)) {
-                vm.exportTrack();
+                trackViewModel.exportTrack();
             }
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTitleEdited(String title) {
+        trackEntity.setTitle(title);
+        trackViewModel.updateTrack(trackEntity);
     }
 }

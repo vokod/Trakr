@@ -54,4 +54,8 @@ public class TrackViewModel extends ViewModel {
     public void exportTrack(){
         repository.exportTrack(trackId);
     }
+
+    public void updateTrack(TrackEntity trackEntity){
+        repository.updateTrack(trackEntity);
+    }
 }
