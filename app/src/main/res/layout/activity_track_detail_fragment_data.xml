@@ -11,6 +11,7 @@
         style="@style/CardView.Light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp">
@@ -20,7 +21,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/avatar_image"
+                android:id="@+id/iv_initial"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginBottom="12dp"
@@ -31,174 +32,162 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="spread_inside"
-                app:srcCompat="@drawable/ic_avatar_40dp" />
+                app:layout_constraintVertical_chainStyle="spread_inside" />
 
             <TextView
-                android:id="@+id/title_text"
+                android:id="@+id/tv_title"
+                style="@style/TrackDetailTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="4dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="#DE000000"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/avatar_image"
-                app:layout_constraintTop_toTopOf="@+id/avatar_image"
+                app:layout_constraintBottom_toTopOf="@+id/tv_date"
+                app:layout_constraintEnd_toStartOf="@+id/ib_edit"
+                app:layout_constraintStart_toEndOf="@+id/iv_initial"
+                app:layout_constraintTop_toTopOf="@+id/iv_initial"
                 tools:text="Title text" />
 
             <TextView
-                android:id="@+id/subtitle_text"
+                android:id="@+id/tv_date"
+                style="@style/TrackDetailDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="12dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="#8A000000"
-                app:layout_constraintBottom_toBottomOf="@+id/avatar_image"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/avatar_image"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_initial"
+                app:layout_constraintEnd_toStartOf="@+id/ib_edit"
+                app:layout_constraintStart_toStartOf="@+id/tv_title"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title"
                 tools:text="Subtitle text" />
+
+            <ImageButton
+                android:id="@+id/ib_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_edit"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_title" />
 
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/CardView.Light"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp">
+        android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/CardView.Light"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp">
 
-            <android.support.constraint.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5" />
+            <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.constraint.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
 
 
-            <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
-                android:id="@+id/ppvi_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
+                    android:id="@+id/ppvi_start_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
-                android:id="@+id/ppvi_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toTopOf="@+id/ppvi_duration" />
+                <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
+                    android:id="@+id/ppvi_end_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toTopOf="@+id/ppvi_start_time" />
 
-            <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
-                android:id="@+id/ppvi_ascent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ppvi_duration" />
+                <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
+                    android:id="@+id/ppvi_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ppvi_start_time" />
 
-            <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
-                android:id="@+id/ppvi_descent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toTopOf="@+id/ppvi_ascent" />
+                <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
+                    android:id="@+id/ppvi_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toTopOf="@+id/ppvi_duration" />
 
-            <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
-                android:id="@+id/ppvi_avg_speed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ppvi_ascent" />
+                <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
+                    android:id="@+id/ppvi_ascent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ppvi_duration" />
 
-            <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
-                android:id="@+id/ppvi_max_speed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toTopOf="@+id/ppvi_avg_speed" />
+                <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
+                    android:id="@+id/ppvi_descent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toTopOf="@+id/ppvi_ascent" />
 
-            <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
-                android:id="@+id/ppvi_max_altitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/action_button_1"
-                app:layout_constraintEnd_toStartOf="@+id/guideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ppvi_avg_speed" />
+                <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
+                    android:id="@+id/ppvi_avg_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ppvi_ascent" />
 
-            <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
-                android:id="@+id/ppvi_min_altitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toTopOf="@+id/ppvi_max_altitude" />
+                <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
+                    android:id="@+id/ppvi_max_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toTopOf="@+id/ppvi_avg_speed" />
 
-            <Button
-                android:id="@+id/action_button_1"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:minWidth="0dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:textColor="#DE000000"
-                tools:text="action_button_1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
+                    android:id="@+id/ppvi_max_altitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ppvi_avg_speed" />
 
-            <Button
-                android:id="@+id/action_button_2"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:minWidth="0dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:textColor="#DE000000"
-                tools:text="action_button_2"
-                app:layout_constraintStart_toEndOf="@+id/action_button_1"
-                app:layout_constraintTop_toTopOf="@+id/action_button_1" />
+                <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
+                    android:id="@+id/ppvi_min_altitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toTopOf="@+id/ppvi_max_altitude" />
 
-        </android.support.constraint.ConstraintLayout>
+            </android.support.constraint.ConstraintLayout>
 
         </android.support.v7.widget.CardView>
+    </ScrollView>
+
+
 
 
 </LinearLayout>

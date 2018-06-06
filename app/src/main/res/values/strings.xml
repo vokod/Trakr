@@ -76,7 +76,7 @@
 
     <!-- TrackRecordNotification -->
     <string name="record_notification_line_1">Duration: %ss</string>
-    <string name="record_notification_line_2">Distance: %sm</string>
+    <string name="record_notification_line_2">Distance: %skm</string>
     <string name="record_notification_line_3">Ascent: %sm</string>
     <string name="record_notification_line_4">Descent: %sm</string>
     <string name="record_notification_line_5">Avg. speed: %skm/h</string>

@@ -22,14 +22,14 @@ import java.util.List;
 
 import static android.widget.LinearLayout.VERTICAL;
 
-public class TrackListActivity extends AppCompatActivity implements TrackListAdapter.TrackItemCallback {
+public class TrackListActivity extends AppCompatActivity implements TrackListAdapterNoMap.TrackItemCallback {
 
     public static Intent getStarterIntent(Context context) {
         return new Intent(context, TrackListActivity.class);
     }
 
     private static final String LOG_TAG = TrackListActivity.class.getSimpleName();
-    private TrackListAdapter trackListAdapter;
+    private TrackListAdapterNoMap trackListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         trackListLayoutManager.setOrientation(VERTICAL);
         trackListRv.setLayoutManager(trackListLayoutManager);
         //noinspection ConstantConditions
-        trackListAdapter = new TrackListAdapter(this);
+        trackListAdapter = new TrackListAdapterNoMap(getLayoutInflater(),this);
         trackListRv.setAdapter(trackListAdapter);
         trackListRv.setHasFixedSize(true);
 

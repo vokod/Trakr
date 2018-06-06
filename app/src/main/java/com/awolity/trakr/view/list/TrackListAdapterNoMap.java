@@ -1,13 +1,14 @@
 package com.awolity.trakr.view.list;
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,20 +36,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-public class TrackListAdapter
-        extends RecyclerView.Adapter<TrackListAdapter.TrackItemViewHolder> {
+public class TrackListAdapterNoMap
+        extends RecyclerView.Adapter<TrackListAdapterNoMap.TrackItemViewHolder> {
 
-    private static final String LOG_TAG = TrackListAdapter.class.getSimpleName();
+    private static final String LOG_TAG = TrackListAdapterNoMap.class.getSimpleName();
     private final List<TrackEntity> items = new ArrayList<>();
     private final LayoutInflater layoutInflater;
     private final TrackItemCallback callback;
-    private final AppCompatActivity activity;
 
-
-    public TrackListAdapter(AppCompatActivity activity) {
-        this.activity = activity;
-        layoutInflater = activity.getLayoutInflater();
-        this.callback = (TrackItemCallback) activity;
+    public TrackListAdapterNoMap(LayoutInflater inflater, TrackItemCallback callback) {
+        layoutInflater = inflater;
+        this.callback = callback;
     }
 
     private void add(TrackEntity item) {
@@ -112,7 +110,7 @@ public class TrackListAdapter
     @Override
     public TrackItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // MyLog.d(LOG_TAG, "onCreateViewHolder");
-        View v = layoutInflater.inflate(R.layout.activity_track_list_item_track_list, parent, false);
+        View v = layoutInflater.inflate(R.layout.activity_track_list_item_track_list_no_map, parent, false);
         return new TrackItemViewHolder(v);
     }
 
@@ -134,10 +132,6 @@ public class TrackListAdapter
         private ImageView initialIv;
         private SecondaryPropertyView distanceView, durationView, elevationView;
         private FrameLayout clickOverlay;
-        private MapView mapView;
-        private TrackViewModel viewModel;
-        private GoogleMap googleMap;
-        private TrackWithPoints trackWithPoints = null;
 
         TrackItemViewHolder(View itemView) {
             super(itemView);
@@ -149,28 +143,14 @@ public class TrackListAdapter
             distanceView = itemView.findViewById(R.id.spv_distance);
             durationView = itemView.findViewById(R.id.spv_duration);
             elevationView = itemView.findViewById(R.id.spv_elevation);
-            mapView = itemView.findViewById(R.id.mapView);
-
-            viewModel = ViewModelProviders.of(activity).get(TrackViewModel.class);
-
-            mapView.onCreate(null);
-            mapView.setClickable(false);
-            mapView.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(final GoogleMap googleMap) {
-                    MyLog.d(LOG_TAG, "onMapReady: " + TrackItemViewHolder.this.hashCode());
-                    TrackItemViewHolder.this.googleMap = googleMap;
-                }
-            });
-        }
-
-        private boolean isMapLayedOut;
+            }
 
         void bind(TrackEntity track) {
              MyLog.d(LOG_TAG, "bind "+ TrackItemViewHolder.this.hashCode());
             this.trackItem = track;
             titleTv.setText(trackItem.getTitle());
-            dateTv.setText(DateUtils.getRelativeTimeSpanString(trackWithPoints.getStartTime()).toString());
+            // TODO: ezt szebben formázni
+            dateTv.setText(DateUtils.getRelativeTimeSpanString(track.getStartTime()).toString());
 
             ColorGenerator generator = ColorGenerator.MATERIAL;
             String firstLetter = "";
@@ -192,38 +172,6 @@ public class TrackListAdapter
             durationView.setLabel("Duration");
             durationView.setUnit("s");
             durationView.setValue(StringUtils.getElapsedTimeAsString(trackItem.getElapsedTime()));
-
-            viewModel.init(track.getTrackId());
-            viewModel.getTrackWithPoints().observe(activity, new Observer<TrackWithPoints>() {
-                @Override
-                public void onChanged(@Nullable final TrackWithPoints trackWithPoints) {
-                    if (trackWithPoints != null && trackWithPoints.getTrackPoints() != null) {
-                        MyLog.d(LOG_TAG, "onChanged "+ TrackItemViewHolder.this.hashCode());
-                        // MyLog.d(LOG_TAG, "getTrackWithPoints() - onChanged - trackPoints != null");
-                        TrackItemViewHolder.this.trackWithPoints = trackWithPoints;
-                        if (isMapLayedOut) {
-                            MyLog.d(LOG_TAG, "onChanged - isMapLayedout "+ TrackItemViewHolder.this.hashCode());
-                            MapUtils.setupTrackPolyLine(activity, googleMap, trackWithPoints, true);
-                            mapView.onResume();
-                        }
-                    }
-                }
-            });
-
-            if (mapView.getViewTreeObserver().isAlive()) {
-                mapView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        MyLog.d(LOG_TAG, "onGlobalLayout "+ TrackItemViewHolder.this.hashCode());
-                        isMapLayedOut = true;
-                        if (trackWithPoints != null) {
-                            MyLog.d(LOG_TAG, "onGlobalLayout trackWithPoints OK"+ TrackItemViewHolder.this.hashCode());
-                            MapUtils.setupTrackPolyLine(activity, googleMap, trackWithPoints, true);
-                            mapView.onResume();
-                        }
-                    }
-                });
-            }
 
             clickOverlay.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -7,18 +7,20 @@
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_notification" />
+        app:layout_constraintTop_toTopOf="@+id/tvValue" />
 
     <TextView
         android:id="@+id/tvValue"
-        style="@style/PrimaryPropertyValue2"
+        style="@style/PrimaryPropertyIconValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="12dp"
         android:textAlignment="textEnd"
         app:layout_constraintStart_toEndOf="@+id/iv_icon"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,24 +28,22 @@
 
     <TextView
         android:id="@+id/tvUnit"
-        android:paddingStart="4dp"
-        style="@style/PrimaryPropertyUnit2"
+        style="@style/PrimaryPropertyIconUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="4dp"
         android:textAlignment="textStart"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvValue"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvValue"
         tools:text="km/h" />
 
     <TextView
         android:id="@+id/tvLabel"
-        style="@style/PrimaryPropertyLabel2"
+        style="@style/PrimaryPropertyIconLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="-2dp"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tvValue"
         app:layout_constraintTop_toBottomOf="@+id/tvValue"
         tools:text="Speed" />

@@ -1,5 +1,6 @@
 package com.awolity.trakr.utils;
 
+import android.content.Context;
 import android.location.Location;
 
 import java.text.DateFormat;
@@ -89,9 +90,22 @@ public class StringUtils {
                 + String.format(Locale.getDefault(),"%02d", seconds);
     }
 
-    public static String getStartTimeAsString(long millis) {
+    public static String getDateTimeAsString(long millis) {
         java.util.Date time = new java.util.Date(millis);
         SimpleDateFormat sdfDate = new SimpleDateFormat("MM-dd HH:mm");
         return sdfDate.format(time);
+    }
+
+    public static String getTimeAsString(long millis) {
+        java.util.Date time = new java.util.Date(millis);
+        SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm");
+        return sdfDate.format(time);
+    }
+
+    public static String getDateAsStringLocale(long millis){
+        Date date = new Date(millis);
+        java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance(DateFormat.DEFAULT);
+        String s = dateFormat.format(date);
+        return s;
     }
 }

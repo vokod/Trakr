@@ -214,7 +214,7 @@ public class TrackEntity {
     }
 
     public void calculateAvgSpeed() {
-        setAvgSpeed(getDistance() / ((double) getElapsedTime() / 1000) / 3.6);
+        setAvgSpeed(getDistance() / ((double) getElapsedTime() / 1000) * 3.6);
     }
 
     public void calculateAscentDescent(TrackpointEntity actualTp, TrackpointEntity previousTp) {
