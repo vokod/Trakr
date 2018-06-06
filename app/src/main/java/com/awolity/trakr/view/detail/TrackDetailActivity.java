@@ -19,7 +19,7 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.viewmodel.TrackViewModel;
-
+// TODO: viewpager?
 public class TrackDetailActivity extends AppCompatActivity
         implements EditTitleDialog.EditTitleDialogListener {
 

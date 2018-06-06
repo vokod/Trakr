@@ -33,7 +33,8 @@ public class TrackDetailActivityDataFragment extends Fragment {
     private long trackId;
     private TrackViewModel trackViewModel;
     private PrimaryPropertyViewIcon durationPpvi, distancePpvi, ascentPpvi, descentPpvi,
-            maxSpeedPpvi, avgSpeedPpvi, maxAltitudePpvi, minAltitudePpvi, startTimePpvi, endTimePpvi;
+            maxSpeedPpvi, avgSpeedPpvi, maxAltitudePpvi, minAltitudePpvi, startTimePpvi,
+            endTimePpvi, avgPacePpvi, maxPacePpvi;
     private TextView titleTextView, dateTextView;
     private ImageButton editTitleImageButton;
     private ImageView initialImageView;
@@ -83,6 +84,8 @@ public class TrackDetailActivityDataFragment extends Fragment {
         descentPpvi = view.findViewById(R.id.ppvi_descent);
         maxSpeedPpvi = view.findViewById(R.id.ppvi_max_speed);
         avgSpeedPpvi = view.findViewById(R.id.ppvi_avg_speed);
+        maxPacePpvi = view.findViewById(R.id.ppvi_max_pace);
+        avgPacePpvi = view.findViewById(R.id.ppvi_avg_pace);
         maxAltitudePpvi = view.findViewById(R.id.ppvi_max_altitude);
         minAltitudePpvi = view.findViewById(R.id.ppvi_min_altitude);
     }
@@ -97,6 +100,8 @@ public class TrackDetailActivityDataFragment extends Fragment {
         descentPpvi.setup("Descent", "m", "0", R.drawable.ic_descent);
         maxSpeedPpvi.setup("Max.Speed", "km/h", "0", R.drawable.ic_max_speed);
         avgSpeedPpvi.setup("Avg.Speed", "km/h", "-", R.drawable.ic_avg_speed);
+        maxPacePpvi.setup("Max.Pace", "min/km", "0", R.drawable.ic_max_speed);
+        avgPacePpvi.setup("Avg.Pace", "min/km", "-", R.drawable.ic_avg_speed);
         maxAltitudePpvi.setup("Max.Altitude", "m", "-", R.drawable.ic_max_altitude);
         minAltitudePpvi.setup("Min.Altitude", "m", "-", R.drawable.ic_min_altitude);
         // TODO: további ötletek: max pace, avg pace, avg slope, max slope
@@ -144,6 +149,8 @@ public class TrackDetailActivityDataFragment extends Fragment {
         descentPpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getDescent()));
         maxSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getMaxSpeed()));
         avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getAvgSpeed()));
+        maxPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(60 * (1 / trackWithPoints.getMaxSpeed())));
+        avgPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(60 * (1 / trackWithPoints.getAvgSpeed())));
         minAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getMinAltitude()));
         maxAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getMaxAltitude()));
     }
