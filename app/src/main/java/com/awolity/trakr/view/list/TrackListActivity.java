@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
+import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
@@ -22,14 +23,14 @@ import java.util.List;
 
 import static android.widget.LinearLayout.VERTICAL;
 
-public class TrackListActivity extends AppCompatActivity implements TrackListAdapterNoMap.TrackItemCallback {
+public class TrackListActivity extends AppCompatActivity implements TrackListAdapter.TrackItemCallback {
 
     public static Intent getStarterIntent(Context context) {
         return new Intent(context, TrackListActivity.class);
     }
 
     private static final String LOG_TAG = TrackListActivity.class.getSimpleName();
-    private TrackListAdapterNoMap trackListAdapter;
+    private TrackListAdapter trackListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         trackListLayoutManager.setOrientation(VERTICAL);
         trackListRv.setLayoutManager(trackListLayoutManager);
         //noinspection ConstantConditions
-        trackListAdapter = new TrackListAdapterNoMap(getLayoutInflater(),this);
+        trackListAdapter = new TrackListAdapter(this, getLayoutInflater(),this);
         trackListRv.setAdapter(trackListAdapter);
         trackListRv.setHasFixedSize(true);
 
@@ -63,12 +64,20 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
     private void setupViewModel() {
         MyLog.d(LOG_TAG, "setupViewModel");
         TrackListViewModel trackListViewModel = ViewModelProviders.of(this).get(TrackListViewModel.class);
-        trackListViewModel.getTracks().observe(this, new Observer<List<TrackEntity>>() {
+      /*  trackListViewModel.getTracks().observe(this, new Observer<List<TrackEntity>>() {
             @Override
             public void onChanged(@Nullable List<TrackEntity> trackEntities) {
                 if (trackEntities != null) {
                     MyLog.d(LOG_TAG, "setupViewModel - onChanged - num of tracks: "+ trackEntities.size());
                     trackListAdapter.updateItems(trackEntities);
+                }
+            }
+        });*/
+        trackListViewModel.getTracksWithPoints().observe(this, new Observer<List<TrackWithPoints>>() {
+            @Override
+            public void onChanged(@Nullable List<TrackWithPoints> trackWithPointsList) {
+                if(trackWithPointsList!=null){
+                    trackListAdapter.updateItems(trackWithPointsList);
                 }
             }
         });

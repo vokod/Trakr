@@ -124,9 +124,9 @@ public class TrackListAdapterNoMap
             super(itemView);
             MyLog.d(LOG_TAG, "TrackItemViewHolder "+ TrackItemViewHolder.this.hashCode());
             clickOverlay = itemView.findViewById(R.id.fl_click_overlay);
-            titleTv = itemView.findViewById(R.id.tv_title_speed);
+            titleTv = itemView.findViewById(R.id.tv_title);
             dateTv = itemView.findViewById(R.id.tv_date);
-            initialIv = itemView.findViewById(R.id.iv_initial_speed);
+            initialIv = itemView.findViewById(R.id.iv_initial);
             distanceView = itemView.findViewById(R.id.spv_distance);
             durationView = itemView.findViewById(R.id.spv_duration);
             elevationView = itemView.findViewById(R.id.spv_elevation);

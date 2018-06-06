@@ -78,7 +78,7 @@ public class TrackDetailActivityChartsFragment extends Fragment implements OnCha
     }
 
     private void setupWidgets(View view) {
-        speedInitialImageView = view.findViewById(R.id.iv_initial_speed);
+        speedInitialImageView = view.findViewById(R.id.iv_initial);
         elevationInitialImageView = view.findViewById(R.id.iv_initial_elevation);
         maxSpeedPpvi = view.findViewById(R.id.ppvi_max_speed);
         avgSpeedPpvi = view.findViewById(R.id.ppvi_avg_speed);

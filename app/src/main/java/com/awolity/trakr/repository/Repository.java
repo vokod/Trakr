@@ -43,6 +43,10 @@ public class Repository {
         return trackDao.loadAll();
     }
 
+    public LiveData<List<TrackWithPoints>> getTracksWithPoints() {
+        return trackDao.loadAllWithPoints();
+    }
+
     /**
      * Track methods
      */

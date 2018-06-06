@@ -67,9 +67,9 @@ public class TrackDetailActivityDataFragment extends Fragment {
     }
 
     private void setupWidgets(View view) {
-        initialImageView = view.findViewById(R.id.iv_initial_speed);
+        initialImageView = view.findViewById(R.id.iv_initial);
         editTitleImageButton = view.findViewById(R.id.ib_edit);
-        titleTextView = view.findViewById(R.id.tv_title_speed);
+        titleTextView = view.findViewById(R.id.tv_title);
         dateTextView = view.findViewById(R.id.tv_date);
         startTimePpvi = view.findViewById(R.id.ppvi_start_time);
         endTimePpvi = view.findViewById(R.id.ppvi_end_time);

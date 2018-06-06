@@ -30,7 +30,7 @@
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/iv_initial_speed"
+                        android:id="@+id/iv_initial"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_marginStart="12dp"
@@ -41,17 +41,17 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tv_title_speed"
+                        android:id="@+id/tv_title"
                         style="@style/TrackDetailTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
                         android:layout_marginEnd="8dp"
                         android:text="Speed"
-                        app:layout_constraintBottom_toBottomOf="@+id/iv_initial_speed"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_initial"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/iv_initial_speed"
-                        app:layout_constraintTop_toTopOf="@+id/iv_initial_speed" />
+                        app:layout_constraintStart_toEndOf="@+id/iv_initial"
+                        app:layout_constraintTop_toTopOf="@+id/iv_initial" />
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/chart_speed"
@@ -62,7 +62,7 @@
                         android:layout_marginTop="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/iv_initial_speed" />
+                        app:layout_constraintTop_toBottomOf="@+id/iv_initial" />
 
                     <android.support.constraint.Guideline
                         android:id="@+id/guideline"

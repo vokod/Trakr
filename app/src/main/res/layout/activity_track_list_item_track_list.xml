@@ -9,7 +9,7 @@
     android:paddingBottom="8dp">
 
     <ImageView
-        android:id="@+id/iv_initial_speed"
+        android:id="@+id/iv_initial"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_title_speed"
+        android:id="@+id/tv_title"
         style="@style/PrimaryPropertyValue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_initial_speed"
+        app:layout_constraintStart_toEndOf="@+id/iv_initial"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Morning track" />
 
@@ -35,8 +35,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_title_speed"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_speed"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
         tools:text="TUE, 29.07.01" />
 
     <com.awolity.trakr.customviews.SecondaryPropertyView
@@ -47,8 +47,8 @@
         app:layout_constraintEnd_toStartOf="@+id/spv_duration"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@+id/tv_title_speed"
-        app:layout_constraintTop_toBottomOf="@+id/iv_initial_speed" />
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/iv_initial" />
 
     <com.awolity.trakr.customviews.SecondaryPropertyView
         android:id="@+id/spv_duration"
@@ -79,7 +79,9 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spv_distance" />
+        app:layout_constraintTop_toBottomOf="@+id/spv_distance"
+        map:mapType="normal"
+        map:liteMode="true"/>
 
     <FrameLayout
         android:id="@+id/fl_click_overlay"
