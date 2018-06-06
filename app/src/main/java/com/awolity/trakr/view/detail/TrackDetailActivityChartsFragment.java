@@ -163,7 +163,7 @@ public class TrackDetailActivityChartsFragment extends Fragment implements OnCha
 
         speedDataSet.setDrawIcons(false);
         speedDataSet.setDrawValues(false);
-        speedDataSet.setColor(Color.YELLOW);
+        speedDataSet.setColor(getResources().getColor(R.color.colorAccent));
         speedDataSet.setDrawCircles(false);
         speedDataSet.setLineWidth(3f);
         speedDataSet.setValueTextSize(9f);
@@ -187,12 +187,15 @@ public class TrackDetailActivityChartsFragment extends Fragment implements OnCha
         List<Entry> values = new ArrayList<>();
         List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
         long startTime = trackWithPoints.getStartTime();
+        long durationInSeconds=  (trackpointEntityList.get(trackpointEntityList.size() - 1).getTime()
+                - startTime)
+                / 1000;
 
         for (TrackpointEntity trackpointEntity : trackpointEntityList) {
             long elapsedSeconds = (trackpointEntity.getTime() - startTime) / 1000;
             values.add(new Entry((float) elapsedSeconds, (float) trackpointEntity.getSpeed()));
         }
-        speedChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(trackpointEntityList));
+        speedChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
         return values;
     }
 

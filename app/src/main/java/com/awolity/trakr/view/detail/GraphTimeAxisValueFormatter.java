@@ -1,6 +1,7 @@
 package com.awolity.trakr.view.detail;
 
 import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.utils.MyLog;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
@@ -8,15 +9,16 @@ import java.util.List;
 
 public class GraphTimeAxisValueFormatter implements IAxisValueFormatter {
 
+    private static final String LOG_TAG = GraphTimeAxisValueFormatter.class.getSimpleName();
     private String[] mValues;
 
-    public GraphTimeAxisValueFormatter(List<TrackpointEntity> trackPointEntities) {
-        mValues = new String[trackPointEntities.size()];
+    public GraphTimeAxisValueFormatter(long durationInSeconds) {
         Duration duration;
-        long startTime = trackPointEntities.get(0).getTime();
-        long durationInSeconds = (trackPointEntities.get(trackPointEntities.size() - 1).getTime()
-                - startTime)
-                / 1000;
+
+
+
+        mValues = new String[(int)durationInSeconds];
+
         if (durationInSeconds < 60) {// track shorter than a minute
             duration = GraphTimeAxisValueFormatter.Duration.Seconds;
         } else if (durationInSeconds < 3600) { //track shorter then an hour
@@ -25,30 +27,31 @@ public class GraphTimeAxisValueFormatter implements IAxisValueFormatter {
             duration = GraphTimeAxisValueFormatter.Duration.Hours;
         }
 
-        for (int i = 0; i < trackPointEntities.size(); i++) {
+        for (int i = 0; i < durationInSeconds; i++) {
             String s = "";
-            long pointTime = (trackPointEntities.get(i).getTime() - startTime) / 1000;
             if (duration.equals(Duration.Seconds)) {
-                s = String.valueOf(pointTime);
+                s = String.valueOf(i);
             } else if (duration.equals(Duration.Minutes)) {
-                s = String.valueOf(pointTime / 60)
+                s = String.valueOf(i / 60)
                         + ":"
-                        + String.valueOf(pointTime % 60);
+                        + String.valueOf(i % 60);
             } else if (duration.equals(Duration.Hours)) {
-                s = String.valueOf(pointTime / 3600)
+                s = String.valueOf(i / 3600)
                         + ":"
-                        + String.valueOf((pointTime % 3600) / 60)
+                        + String.valueOf((i % 3600) / 60)
                         + ":"
-                        + String.valueOf(pointTime % 60);
+                        + String.valueOf(i % 60);
             }
             mValues[i] = s;
         }
     }
 
-
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        if ( value >= 0) {
+        MyLog.d(LOG_TAG, "getFormattedValue - value: " + value);
+        if (value >= 0) {
+            String result = mValues[(int) value % mValues.length];
+            MyLog.d(LOG_TAG, "getFormattedValue - mValue: " + result);
             return mValues[(int) value % mValues.length];
         } else
             return "";

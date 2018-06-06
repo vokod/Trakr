@@ -125,9 +125,8 @@ public class TrackDetailActivityDataFragment extends Fragment {
 
         titleTextView.setText(trackWithPoints.getTitle());
         dateTextView.setText(StringUtils.getDateAsStringLocale(trackWithPoints.getStartTime()));
-       // dateTextView.setText(DateUtils.getRelativeTimeSpanString(trackWithPoints.getStartTime()).toString());
         startTimePpvi.setValue(StringUtils.getTimeAsString(trackWithPoints.getStartTime()));
-        endTimePpvi.setValue(StringUtils.getTimeAsString(trackWithPoints.getElapsedTime() + trackWithPoints.getElapsedTime()));
+        endTimePpvi.setValue(StringUtils.getTimeAsString(trackWithPoints.getStartTime() + trackWithPoints.getElapsedTime()));
         durationPpvi.setValue(StringUtils.getElapsedTimeAsString(trackWithPoints.getElapsedTime()));
         distancePpvi.setValue(StringUtils.getDistanceAsThreeCharactersString(trackWithPoints.getDistance()));
         ascentPpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getAscent()));
