@@ -71,6 +71,10 @@
     <string name="bottom_navigation_title_charts">Charts</string>
     <string name="write_permission_denied">Write External Storage Permission not granted</string>
 
+    <!-- Track detail activity - charts fragment-->
+    <string name="x_axis_time">time</string>
+    <string name="x_axis_distance">distance</string>
+
     <!-- SettingsActivity -->
     <string name="title_activity_settings">Settings</string>
 
@@ -111,6 +115,8 @@
     <string name="export_track_error_notification_description">Tap this notification for more details</string>
     <string name="export_track_error_notification_expanded_line_1">Can\'t export %s</string>
     <string name="export_track_error_notification_expanded_line_2">to %s</string>
+
+
 
     <!-- Strings related to Settings -->
     <string name="pref_sum_altitude_filtering">Enabling results in smoother altitude profile of tracks.</string>

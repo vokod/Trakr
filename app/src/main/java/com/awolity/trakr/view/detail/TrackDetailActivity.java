@@ -1,11 +1,13 @@
 package com.awolity.trakr.view.detail;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
+import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 
@@ -26,7 +29,6 @@ public class TrackDetailActivity extends AppCompatActivity {
     private static final String EXTRA_TRACK_ID = "extra_track_id";
     private static final int PERMISSION_REQUEST_CODE = 2;
     private long trackId;
-    private android.support.v7.widget.Toolbar toolbar;
     private BottomNavigationView bottomNavigationView;
     private FrameLayout fragmentContainer;
 
@@ -44,15 +46,16 @@ public class TrackDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_track_detail);
         trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupWidgets();
         setupBottomSheetNavigation();
-        showMapFragment();
+        showDataFragment();
 
         setupViewModel(trackId);
     }
 
     private void setupWidgets() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.app_name);
         bottomNavigationView = findViewById(R.id.navigation);
         fragmentContainer = findViewById(R.id.fragment_container);
     }
@@ -63,6 +66,7 @@ public class TrackDetailActivity extends AppCompatActivity {
     }
 
     private void setupBottomSheetNavigation() {
+        bottomNavigationView.setSelectedItemId(R.id.action_data);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

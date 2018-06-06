@@ -81,5 +81,9 @@
         <item>@string/pref_value_altitude_filter_param_50</item>
     </string-array>
 
+    <string-array name="x_axis_label_array">
+        <item>@string/x_axis_time</item>
+        <item>@string/x_axis_distance</item>
+    </string-array>
 
 </resources>

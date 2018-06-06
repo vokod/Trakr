@@ -78,7 +78,6 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
                 if (trackWithPoints != null) {
                     TrackDetailActivityMapFragment.this.trackWithPoints = trackWithPoints;
                     showTrack();
-
                 }
             }
         });
