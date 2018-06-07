@@ -22,10 +22,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import com.awolity.trakr.R;
+import com.awolity.trakr.activitytype.ActivityType;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
@@ -443,6 +446,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_main_menu, menu);
+
+     /*   MenuItem item = menu.findItem(R.id.activity_type_spinner);
+        Spinner spinner = (Spinner) item.getActionView();
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.activity_type_array, R.layout.activity_main_activity_type_spinner_item);
+        adapter.setDropDownViewResource(R.layout.activity_main_activity_type_spinner_item);
+        spinner.setAdapter(adapter);*/
+
         return true;
     }
 
