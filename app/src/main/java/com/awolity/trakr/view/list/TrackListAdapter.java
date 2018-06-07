@@ -17,6 +17,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.SecondaryPropertyView;
+import com.awolity.trakr.customviews.SecondaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
@@ -24,6 +25,7 @@ import com.awolity.trakr.view.MapUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.Polyline;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -110,10 +112,11 @@ public class TrackListAdapter
         private TrackWithPoints trackWithPoints;
         private TextView titleTv, dateTv;
         private ImageView initialIv;
-        private SecondaryPropertyView distanceView, durationView, elevationView;
+        private SecondaryPropertyViewIcon distanceView, durationView, elevationView;
         private FrameLayout clickOverlay;
         private MapView mapView;
         private GoogleMap googleMap;
+        private Polyline polyline;
 
         TrackItemViewHolder(View itemView) {
             super(itemView);
@@ -122,9 +125,13 @@ public class TrackListAdapter
             titleTv = itemView.findViewById(R.id.tv_title);
             dateTv = itemView.findViewById(R.id.tv_date);
             initialIv = itemView.findViewById(R.id.iv_initial);
+            // TODO: extract
             distanceView = itemView.findViewById(R.id.spv_distance);
+            distanceView.setup("Distance","km","0",R.drawable.ic_distance);
             durationView = itemView.findViewById(R.id.spv_duration);
+            durationView.setup("Duration","s","00:00",R.drawable.ic_duration);
             elevationView = itemView.findViewById(R.id.spv_elevation);
+            elevationView.setup("Elevation","mm","0",R.drawable.ic_ascent);
             mapView = itemView.findViewById(R.id.mapView);
 
             mapView.onCreate(null);
@@ -146,17 +153,9 @@ public class TrackListAdapter
             TextDrawable drawable = TextDrawable.builder()
                     .buildRound(firstLetter, generator.getColor(this.trackWithPoints.getTitle()));
             initialIv.setImageDrawable(drawable);
-            // TODO: extract
-            distanceView.setLabel("Distance");
-            distanceView.setUnit("km");
+
             distanceView.setValue(StringUtils.getDistanceAsThreeCharactersString(trackWithPoints.getDistance()));
-
-            elevationView.setLabel("Elevation");
-            elevationView.setUnit("m");
             elevationView.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getAscent()));
-
-            durationView.setLabel("Duration");
-            durationView.setUnit("s");
             durationView.setValue(StringUtils.getElapsedTimeAsString(trackWithPoints.getElapsedTime()));
 
             mapView.getMapAsync(new OnMapReadyCallback() {
@@ -164,12 +163,16 @@ public class TrackListAdapter
                 public void onMapReady(final GoogleMap googleMap) {
                     MyLog.d(LOG_TAG, "onMapReady: " + TrackItemViewHolder.this.hashCode());
                     TrackItemViewHolder.this.googleMap = googleMap;
-                    Handler handler = new android.os.Handler();
-                  /*  Runnable mapDrawer =new Runnable() {
+                   // Handler handler = new android.os.Handler();
+                  /*  Runnable mapDrawer = new Runnable() {
                         @Override
                         public void run() {*/
-                            MapUtils.setupTrackPolyLine(context, googleMap, trackWithPoints, true);
-                            mapView.onResume();
+                    if (polyline != null) {
+                        MyLog.d(LOG_TAG, "onMapReady: " + TrackItemViewHolder.this.hashCode() + " the map already contains a polyline, removing");
+                        polyline.remove();
+                    }
+                    polyline = MapUtils.setupTrackPolyLine(context, googleMap, trackWithPoints, true);
+                    mapView.onResume();
                    /*     }
                     };
                     handler.postDelayed(mapDrawer,500);*/

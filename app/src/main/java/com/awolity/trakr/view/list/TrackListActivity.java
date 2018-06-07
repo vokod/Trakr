@@ -54,25 +54,11 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         trackListAdapter = new TrackListAdapter(this, getLayoutInflater(),this);
         trackListRv.setAdapter(trackListAdapter);
         trackListRv.setHasFixedSize(true);
-
-        @SuppressWarnings("ConstantConditions")
-        DividerItemDecoration dividerItemDecoration =
-                new DividerItemDecoration(this, trackListLayoutManager.getOrientation());
-        trackListRv.addItemDecoration(dividerItemDecoration);
     }
 
     private void setupViewModel() {
         MyLog.d(LOG_TAG, "setupViewModel");
         TrackListViewModel trackListViewModel = ViewModelProviders.of(this).get(TrackListViewModel.class);
-      /*  trackListViewModel.getTracks().observe(this, new Observer<List<TrackEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<TrackEntity> trackEntities) {
-                if (trackEntities != null) {
-                    MyLog.d(LOG_TAG, "setupViewModel - onChanged - num of tracks: "+ trackEntities.size());
-                    trackListAdapter.updateItems(trackEntities);
-                }
-            }
-        });*/
         trackListViewModel.getTracksWithPoints().observe(this, new Observer<List<TrackWithPoints>>() {
             @Override
             public void onChanged(@Nullable List<TrackWithPoints> trackWithPointsList) {
