@@ -19,6 +19,7 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.viewmodel.TrackViewModel;
+
 // TODO: viewpager?
 public class TrackDetailActivity extends AppCompatActivity
         implements EditTitleDialog.EditTitleDialogListener {
@@ -63,7 +64,7 @@ public class TrackDetailActivity extends AppCompatActivity
 
     private void setupViewModel(long trackId) {
         trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
-        trackViewModel.init(trackId);
+        trackViewModel.init(trackId, TrackDetailActivity.class);
         trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
             @Override
             public void onChanged(@Nullable TrackEntity trackEntity) {

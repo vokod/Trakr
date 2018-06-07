@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
@@ -36,7 +35,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     private static final String LOG_TAG = BottomSheetChartsFragment.class.getSimpleName();
     private TrackViewModel trackViewModel;
     private boolean isRecording;
-    //private long trackId = -1;
+    private long trackId = -1;
     private LineChart chart;
     private TextView placeholderTextView;
     private TrackWithPoints trackWithPoints;
@@ -70,8 +69,8 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
         setupChartUpdater();
         setDataVisibility(false);
 
-        if (isRecording/* && trackId != -1*/) {
-            startTrackDataUpdate(/*trackId*/);
+        if (isRecording && trackId != -1) {
+            startTrackDataUpdate(trackId);
         }
 
         return view;
@@ -109,15 +108,15 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     }
 
     private void startObserve(/*long trackId*/) {
-        MyLog.d(LOG_TAG, "startObserve");
-        //trackViewModel.init(trackId);
+        // MyLog.d(LOG_TAG, "startObserve");
+       // trackViewModel.init(trackId, BottomSheetChartsFragment.class);
         trackViewModel.getTrackWithPoints().observe(getActivity(), trackWithPointsObserver);
     }
 
     private Observer<TrackWithPoints> trackWithPointsObserver = new Observer<TrackWithPoints>() {
         @Override
         public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-            MyLog.d(LOG_TAG, "trackWithPointsObserver.onChanged");
+            // MyLog.d(LOG_TAG, "trackWithPointsObserver.onChanged");
             if (trackWithPoints != null) {
                 BottomSheetChartsFragment.this.trackWithPoints = trackWithPoints;
             }
@@ -125,23 +124,23 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     };
 
     private void stopObserve() {
-        MyLog.d(LOG_TAG, "stopObserve");
+        // MyLog.d(LOG_TAG, "stopObserve");
         trackViewModel.getTrackWithPoints().removeObserver(trackWithPointsObserver);
     }
 
     private void startChartUpdater() {
-        MyLog.d(LOG_TAG, "startChartUpdater");
+        // MyLog.d(LOG_TAG, "startChartUpdater");
         chartUpdater.run();
     }
 
     private void stopChartUpdater() {
-        MyLog.d(LOG_TAG, "stopChartUpdater");
+        // MyLog.d(LOG_TAG, "stopChartUpdater");
         handler.removeCallbacks(chartUpdater);
     }
 
-    public void startTrackDataUpdate(/*long trackId*/) {
-        MyLog.d(LOG_TAG, "startTrackDataUpdate");
-      //  this.trackId = trackId;
+    public void startTrackDataUpdate(long trackId) {
+        // MyLog.d(LOG_TAG, "startTrackDataUpdate");
+        this.trackId = trackId;
         if (checkViews()) {
             setDataVisibility(true);
             startObserve(/*trackId*/);
@@ -151,23 +150,23 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     }
 
     public void stopTrackDataUpdate() {
-        MyLog.d(LOG_TAG, "stopTrackDataUpdate");
+        // MyLog.d(LOG_TAG, "stopTrackDataUpdate");
         stopObserve();
         stopChartUpdater();
         setDataVisibility(false);
     }
 
     private void updateChart() {
-        MyLog.d(LOG_TAG, "updateChart");
+        // MyLog.d(LOG_TAG, "updateChart");
         if (trackWithPoints == null) {
-            MyLog.d(LOG_TAG, "updateChart - track NULL :(");
+            // MyLog.d(LOG_TAG, "updateChart - track NULL :(");
             return;
         } else {
             if (trackWithPoints.getTrackPoints().size() < 3) {
                 return;
             }
         }
-        MyLog.d(LOG_TAG, "updateChart - track NOT null");
+        // MyLog.d(LOG_TAG, "updateChart - track NOT null");
         List<Entry> elevationValues = new ArrayList<>();
         List<Entry> speedValues = new ArrayList<>();
         List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();

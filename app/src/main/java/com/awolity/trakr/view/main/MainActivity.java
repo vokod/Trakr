@@ -34,6 +34,7 @@ import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.view.SettingsActivity;
+import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.list.TrackListActivity;
 import com.awolity.trakr.viewmodel.LocationViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity
     private TrackViewModel trackViewModel;
     private PolylineOptions polylineOptions;
     private Polyline polyline;
+    private long trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,7 +191,7 @@ public class MainActivity extends AppCompatActivity
         };
         bottomSheetBehavior.setBottomSheetCallback(bottomSheetCallback);
     }
-    
+
     private void setupMapFragment() {
         MyLog.d(LOG_TAG, "setupMapFragment");
         if (MainActivityUtils.checkPlayServices(this)) {
@@ -236,6 +238,7 @@ public class MainActivity extends AppCompatActivity
             if (trackId != PreferenceUtils.NO_LAST_RECORDED_TRACK) {
                 setupTrackViewModel(trackId);
                 trackFragment.startTrackDataUpdate(trackId);
+                chartsFragment.startTrackDataUpdate(trackId);
                 status.setRecording(true);
             }
         }
@@ -294,8 +297,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTrackViewModel(final long trackId) {
+        MyLog.d(LOG_TAG,"setupTrackViewModel");
         trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
-        trackViewModel.init(trackId);
+        trackViewModel.reset();
+        trackViewModel.init(trackId, MainActivity.class);
         if (status.isContinueRecording()) {
             trackViewModel.getTrackpointsList().observe(this, trackpointsListObserver);
         }
@@ -374,6 +379,13 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        // TODO: reuse activity
+        MyLog.d(LOG_TAG, "onNewIntent");
     }
 
     @Override
@@ -473,19 +485,26 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onServiceStarted(long trackId) {
+        MyLog.d(LOG_TAG,"onServiceStarted");
         // TODO FAB animation
-        trackFragment.startTrackDataUpdate(trackId);
-        chartsFragment.startTrackDataUpdate(/*trackId*/);
+        this.trackId = trackId;
         setupTrackViewModel(trackId);
+        trackFragment.startTrackDataUpdate(trackId);
+        chartsFragment.startTrackDataUpdate(trackId);
         status.setRecording(true);
     }
 
     @Override
     public void onServiceStopped() {
+        MyLog.d(LOG_TAG,"onServiceStopped");
         trackFragment.stopTrackDataUpdate();
         chartsFragment.stopTrackDataUpdate();
         // TODO: status.stoprecording (ami aztán megcsinálja mindkettőt)
         status.setRecording(false);
         clearTrackOnMap();
+
+        Intent intent = TrackDetailActivity.getStarterIntent(this,trackId);
+        startActivity(intent);
+        trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
     }
 }

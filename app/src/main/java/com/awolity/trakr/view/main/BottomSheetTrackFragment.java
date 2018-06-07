@@ -51,8 +51,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
 
     private static final String LOG_TAG = BottomSheetTrackFragment.class.getSimpleName();
 
-    public BottomSheetTrackFragment() {
-    }
+    public BottomSheetTrackFragment() { }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -157,7 +156,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         this.trackId = trackId;
         if (checkViews()) {
             setDataVisibility(true);
-            startObserve(trackId);
+            startObserve(/*trackId*/);
             startElapsedTimer();
         }
         isRecording = true;
@@ -183,9 +182,9 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         elapsedTimeUpdater.run();
     }
 
-    private void startObserve(long trackId) {
+    private void startObserve(/*long trackId*/) {
         MyLog.d(LOG_TAG, "startObserve");
-        trackViewModel.init(trackId);
+        //trackViewModel.init(trackId, BottomSheetTrackFragment.class);
         trackViewModel.getTrack().observe(getActivity(), trackEntityObserver);
     }
 

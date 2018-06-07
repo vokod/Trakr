@@ -40,12 +40,14 @@ public class NotificationUtils {
         notificationManager.notify(NOTIFICATION_ID_TRACK_RECORD, getRecordTrackNotification(context, lines));
     }
 
-    public static Notification getRecordTrackNotification(Context context,List<String> lines ){
+    public static Notification getRecordTrackNotification(Context context, List<String> lines) {
         Intent intent = new Intent(context, MainActivity.class);
-
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP
+                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(intent);
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID_TRACK_RECORD)

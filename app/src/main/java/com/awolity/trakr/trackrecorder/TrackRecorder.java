@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.awolity.trakr.R;
+import com.awolity.trakr.customviews.SecondaryPropertyView;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.di.TrakrApplication;
@@ -120,8 +121,13 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     }
 
     private void checkTrackValidity() {
-        if (status.getNumOfTrackPoints() < 2) {
+        if (status.getNumOfTrackPoints() == 0) {
             repository.deleteTrack(trackId);
+        }
+        if (status.getNumOfTrackPoints() == 1) {
+            // duplicate the only point
+            TrackpointEntity trackpointEntity = status.getActualSavedTrackpoint();
+            saveTrackAndPointToDb(trackpointEntity);
         }
     }
 
@@ -166,6 +172,12 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     private void saveTrackAndPointToDb() {
         saveTrackpointToDb(status.getCandidateTrackpoint());
         status.saveCandidateTrackpoint();
+        updateTrackData();
+        updateTrackInDb(track);
+    }
+
+    private void saveTrackAndPointToDb(TrackpointEntity trackpointEntity) {
+        saveTrackpointToDb(trackpointEntity);
         updateTrackData();
         updateTrackInDb(track);
     }
