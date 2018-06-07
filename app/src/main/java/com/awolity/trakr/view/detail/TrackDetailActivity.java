@@ -124,7 +124,7 @@ public class TrackDetailActivity extends AppCompatActivity
         TrackDetailActivityChartsFragment chartsFragment
                 = (TrackDetailActivityChartsFragment) getSupportFragmentManager().findFragmentByTag(TAG_CHARTS_FRAGMENT);
         if (chartsFragment == null) {
-            chartsFragment = TrackDetailActivityChartsFragment.newInstance(trackId);
+            chartsFragment = TrackDetailActivityChartsFragment.newInstance(/*trackId*/);
         }
         getSupportFragmentManager()
                 .beginTransaction()

@@ -166,6 +166,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     public void stopTrackDataUpdate() {
         MyLog.d(LOG_TAG, "stopTrackDataUpdate");
         setDataVisibility(false);
+        stopObserve();
         stopElapsedTimer();
     }
 
@@ -185,20 +186,26 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     private void startObserve(long trackId) {
         MyLog.d(LOG_TAG, "startObserve");
         trackViewModel.init(trackId);
-        trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
-            @Override
-            public void onChanged(@Nullable TrackEntity trackEntity) {
-                MyLog.d(LOG_TAG, "trackEntityObserver.onChanged");
-                if (trackEntity != null) {
-                    // MyLog.d(LOG_TAG, "trackEntityObserver.onChanged - track NOT null");
-                    setData(trackEntity);
-                }
-            }
-        });
+        trackViewModel.getTrack().observe(getActivity(), trackEntityObserver);
     }
 
+    private void stopObserve(){
+        trackViewModel.getTrack().removeObserver(trackEntityObserver);
+    }
+
+    private Observer<TrackEntity> trackEntityObserver = new Observer<TrackEntity>() {
+        @Override
+        public void onChanged(@Nullable TrackEntity trackEntity) {
+            // MyLog.d(LOG_TAG, "trackEntityObserver.onChanged");
+            if (trackEntity != null) {
+                // MyLog.d(LOG_TAG, "trackEntityObserver.onChanged - track NOT null");
+                setData(trackEntity);
+            }
+        }
+    };
+
     private void setData(TrackEntity track) {
-        MyLog.d(LOG_TAG, "setData");
+        // MyLog.d(LOG_TAG, "setData");
         setDistance(track.getDistance());
         setAscent(track.getAscent());
         setDescent(track.getDescent());
@@ -210,7 +217,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void updateElapsedTime() {
-        MyLog.d(LOG_TAG, "updateElapsedTime");
+        //MyLog.d(LOG_TAG, "updateElapsedTime");
         if (startTime != 0) {
             setElapsedTime(System.currentTimeMillis() - startTime);
         }
@@ -248,7 +255,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void resetData() {
-        MyLog.d(LOG_TAG, "resetData");
+        // MyLog.d(LOG_TAG, "resetData");
 
         if (!checkViews()) {
             return;

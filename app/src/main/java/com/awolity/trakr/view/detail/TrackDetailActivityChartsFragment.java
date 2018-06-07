@@ -42,7 +42,6 @@ public class TrackDetailActivityChartsFragment extends Fragment
     private static final String ARG_TRACK_ID = "track_id";
     private static final String LOG_TAG = TrackDetailActivityChartsFragment.class.getSimpleName();
 
-    private long trackId;
     private TrackViewModel trackViewModel;
     private PrimaryPropertyViewIcon maxSpeedPpvi, avgSpeedPpvi, ascentPpvi, descentPpvi,
             maxAltitudePpvi, minAltitudePpvi, maxPacePpvi, avgPacePpvi;
@@ -51,12 +50,10 @@ public class TrackDetailActivityChartsFragment extends Fragment
     private Spinner xAxisSpinner;
     private int xAxis = 0;
     private boolean isSpeed = true;
+    private TrackWithPoints trackWithPoints;
 
-    public static TrackDetailActivityChartsFragment newInstance(long trackId) {
+    public static TrackDetailActivityChartsFragment newInstance() {
         TrackDetailActivityChartsFragment fragment = new TrackDetailActivityChartsFragment();
-        Bundle args = new Bundle();
-        args.putLong(ARG_TRACK_ID, trackId);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -66,9 +63,6 @@ public class TrackDetailActivityChartsFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            trackId = getArguments().getLong(ARG_TRACK_ID);
-        }
     }
 
     @Override
@@ -178,7 +172,6 @@ public class TrackDetailActivityChartsFragment extends Fragment
         l.setDrawInside(false);
     }
 
-    private TrackWithPoints trackWithPoints;
 
     private void setupViewModel() {
         trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
@@ -221,6 +214,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
             values.add(new Entry((float) elapsedSeconds, (float) trackpointEntity.getAltitude()));
         }
         elevationChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
+        // TODO: extract
         LineDataSet elevationDataSet = new LineDataSet(values, "Elevation [m]");
         setElevationChartData(elevationDataSet);
     }
@@ -236,6 +230,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
             values.add(new Entry((float) rollingDistance, (float) trackpointEntity.getAltitude()));
         }
         elevationChart.getXAxis().setValueFormatter(new LargeValueFormatter());
+        // TODO: extract
         LineDataSet elevationDataSet = new LineDataSet(values, "Elevation [m]");
         setElevationChartData(elevationDataSet);
     }
@@ -253,6 +248,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
             values.add(new Entry((float) elapsedSeconds, (float) trackpointEntity.getSpeed()));
         }
         speedChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
+        // TODO: extract
         LineDataSet speedDataSet = new LineDataSet(values, "Speed [km/h]");
         setSpeedChartData(speedDataSet);
     }
@@ -268,6 +264,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
             values.add(new Entry((float) rollingDistance, (float) trackpointEntity.getSpeed()));
         }
         speedChart.getXAxis().setValueFormatter(new LargeValueFormatter());
+        // TODO: extract
         LineDataSet speedDataSet = new LineDataSet(values, "Speed [km/h]");
         setSpeedChartData(speedDataSet);
     }
@@ -295,6 +292,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
         }
         speedChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
         speedChart.getAxisLeft().setValueFormatter(new GraphTimeAxisValueFormatter((long)highestPaceValue));
+        // TODO: extract
         LineDataSet speedDataSet = new LineDataSet(values, "Pace [min/km]");
         setSpeedChartData(speedDataSet);
     }
@@ -319,6 +317,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
         }
         speedChart.getXAxis().setValueFormatter(new LargeValueFormatter());
         speedChart.getAxisLeft().setValueFormatter(new GraphTimeAxisValueFormatter((long)highestPaceValue));
+        // TODO: extract
         LineDataSet speedDataSet = new LineDataSet(values, "Speed [min/km]");
         setSpeedChartData(speedDataSet);
     }
@@ -333,7 +332,6 @@ public class TrackDetailActivityChartsFragment extends Fragment
         elevationDataSet.setDrawFilled(true);
         elevationDataSet.setFormLineWidth(1f);
         elevationDataSet.setFormSize(15.f);
-        elevationDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
 
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_primary_color);
         elevationDataSet.setFillDrawable(drawable);
@@ -355,7 +353,6 @@ public class TrackDetailActivityChartsFragment extends Fragment
         speedDataSet.setDrawFilled(true);
         speedDataSet.setFormLineWidth(1f);
         speedDataSet.setFormSize(15.f);
-        speedDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
 
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_accent_color);
         speedDataSet.setFillDrawable(drawable);

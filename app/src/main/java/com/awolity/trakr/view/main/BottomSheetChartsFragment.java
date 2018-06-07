@@ -2,11 +2,15 @@ package com.awolity.trakr.view.main;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
@@ -15,25 +19,29 @@ import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BottomSheetChartsFragment extends BottomSheetBaseFragment implements OnChartValueSelectedListener {
+public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
 
     private static final String LOG_TAG = BottomSheetChartsFragment.class.getSimpleName();
     private TrackViewModel trackViewModel;
     private boolean isRecording;
-    private long trackId = -1;
+    //private long trackId = -1;
     private LineChart chart;
     private TextView placeholderTextView;
+    private TrackWithPoints trackWithPoints;
+    private Handler handler;
+    private Runnable chartUpdater;
 
     public static BottomSheetChartsFragment newInstance(String title) {
         BottomSheetChartsFragment fragment = new BottomSheetChartsFragment();
@@ -59,13 +67,25 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment implement
                 R.layout.activity_main_fragment_bottom_sheet_chart, container, false);
         setupWidgets(view);
         setupChart();
+        setupChartUpdater();
         setDataVisibility(false);
 
-        if(isRecording &&trackId != -1){
-            startTrackDataUpdate(trackId);
+        if (isRecording/* && trackId != -1*/) {
+            startTrackDataUpdate(/*trackId*/);
         }
 
         return view;
+    }
+
+    private void setupChartUpdater() {
+        handler = new Handler();
+        chartUpdater = new Runnable() {
+            @Override
+            public void run() {
+                updateChart();
+                handler.postDelayed(chartUpdater, 10000);
+            }
+        };
     }
 
     private void setupWidgets(View view) {
@@ -74,91 +94,127 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment implement
     }
 
     private void setupChart() {
-        chart.setOnChartValueSelectedListener(this);
-
-        chart.setDrawGridBackground(true);
-        // TODO: grid rácsköz?
-        chart.getDescription().setEnabled(true);
-        // TODO: description?
-        chart.setDrawBorders(false);
-        // TODO: megnézni
-
-        chart.getAxisLeft().setEnabled(true);
-        chart.getAxisRight().setDrawAxisLine(false);
-        chart.getAxisRight().setDrawGridLines(false);
-        chart.getXAxis().setDrawAxisLine(true);
-        chart.getXAxis().setDrawGridLines(true);
-
-        // enable touch gestures
+        Description description = new Description();
+        description.setText("");
+        chart.setDescription(description);
         chart.setTouchEnabled(true);
-
-        // enable scaling and dragging
         chart.setDragEnabled(true);
         chart.setScaleEnabled(true);
-
-        // if disabled, scaling can be done on x- and y-axis separately
         chart.setPinchZoom(false);
-
         Legend l = chart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
     }
 
-    public void startTrackDataUpdate(long trackId) {
+    private void startObserve(/*long trackId*/) {
+        MyLog.d(LOG_TAG, "startObserve");
+        //trackViewModel.init(trackId);
+        trackViewModel.getTrackWithPoints().observe(getActivity(), trackWithPointsObserver);
+    }
+
+    private Observer<TrackWithPoints> trackWithPointsObserver = new Observer<TrackWithPoints>() {
+        @Override
+        public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
+            MyLog.d(LOG_TAG, "trackWithPointsObserver.onChanged");
+            if (trackWithPoints != null) {
+                BottomSheetChartsFragment.this.trackWithPoints = trackWithPoints;
+            }
+        }
+    };
+
+    private void stopObserve() {
+        MyLog.d(LOG_TAG, "stopObserve");
+        trackViewModel.getTrackWithPoints().removeObserver(trackWithPointsObserver);
+    }
+
+    private void startChartUpdater() {
+        MyLog.d(LOG_TAG, "startChartUpdater");
+        chartUpdater.run();
+    }
+
+    private void stopChartUpdater() {
+        MyLog.d(LOG_TAG, "stopChartUpdater");
+        handler.removeCallbacks(chartUpdater);
+    }
+
+    public void startTrackDataUpdate(/*long trackId*/) {
         MyLog.d(LOG_TAG, "startTrackDataUpdate");
-        this.trackId = trackId;
+      //  this.trackId = trackId;
         if (checkViews()) {
             setDataVisibility(true);
-            startObserve(trackId);
+            startObserve(/*trackId*/);
+            startChartUpdater();
         }
         isRecording = true;
     }
 
     public void stopTrackDataUpdate() {
         MyLog.d(LOG_TAG, "stopTrackDataUpdate");
+        stopObserve();
+        stopChartUpdater();
         setDataVisibility(false);
     }
 
-    private void startObserve(long trackId) {
-        // MyLog.d(LOG_TAG, "startObserve");
-        trackViewModel.init(trackId);
-        trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
-            @Override
-            public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-                // MyLog.d(LOG_TAG, "trackWithPointsObserver.onChanged");
-                if (trackWithPoints != null) {
-                    // MyLog.d(LOG_TAG, "trackWithPointsObserver.onChanged - track NOT null");
-                    LineDataSet speedDataSet = new LineDataSet(prepareSpeedData(trackWithPoints), "Speed");
-                    ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-                    dataSets.add(speedDataSet);
-                    LineData data = new LineData(dataSets);
-                    chart.setData(data);
-                    chart.invalidate();
-                }
-            }
-        });
-    }
-
-    private List<Entry> prepareSpeedData(TrackWithPoints trackWithPoints) {
-        List<Entry> values = new ArrayList<>();
-
-        long previousElapsedSeconds = 0;
-        values.add(new Entry(previousElapsedSeconds, 0));
-        for (TrackpointEntity trackpointEntity : trackWithPoints.getTrackPoints()) {
-            // if we already created an entry with the same time values(second)
-            // then don't do it again
-            long elapsedSeconds = getElapsedSeconds(trackWithPoints.getStartTime(), trackpointEntity.getTime());
-            if (elapsedSeconds != previousElapsedSeconds) {
-                values.add(new Entry((float) elapsedSeconds, (float) trackpointEntity.getSpeed()));
+    private void updateChart() {
+        MyLog.d(LOG_TAG, "updateChart");
+        if (trackWithPoints == null) {
+            MyLog.d(LOG_TAG, "updateChart - track NULL :(");
+            return;
+        } else {
+            if (trackWithPoints.getTrackPoints().size() < 3) {
+                return;
             }
         }
-        return values;
-    }
+        MyLog.d(LOG_TAG, "updateChart - track NOT null");
+        List<Entry> elevationValues = new ArrayList<>();
+        List<Entry> speedValues = new ArrayList<>();
+        List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
+        double rollingDistance = 0;
 
-    private long getElapsedSeconds(long startTime, long pointTime) {
-        return pointTime - startTime / 1000;
+        for (TrackpointEntity trackpointEntity : trackpointEntityList) {
+            rollingDistance += trackpointEntity.getDistance();
+            elevationValues.add(new Entry((float) rollingDistance, (float) trackpointEntity.getAltitude()));
+            speedValues.add(new Entry((float) rollingDistance, (float) trackpointEntity.getSpeed()));
+        }
+        chart.getXAxis().setValueFormatter(new LargeValueFormatter());
+        // TODO: extract
+        LineDataSet elevationDataSet = new LineDataSet(elevationValues, "Elevation [m]");
+        LineDataSet speedDataSet = new LineDataSet(speedValues, "Speed [km/h");
+        speedDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        chart.getAxisRight().setAxisMinimum(0);
+
+        elevationDataSet.setDrawIcons(false);
+        elevationDataSet.setDrawValues(false);
+        elevationDataSet.setColor(getResources().getColor(R.color.colorPrimary));
+        elevationDataSet.setDrawCircles(false);
+        elevationDataSet.setLineWidth(3f);
+        elevationDataSet.setValueTextSize(9f);
+        elevationDataSet.setDrawFilled(true);
+        elevationDataSet.setFormLineWidth(1f);
+        elevationDataSet.setFormSize(15.f);
+        Drawable elevationFillDrawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_primary_color);
+        elevationDataSet.setFillDrawable(elevationFillDrawable);
+
+        speedDataSet.setDrawIcons(false);
+        speedDataSet.setDrawValues(false);
+        speedDataSet.setColor(getResources().getColor(R.color.colorAccent));
+        speedDataSet.setDrawCircles(false);
+        speedDataSet.setLineWidth(3f);
+        speedDataSet.setValueTextSize(9f);
+        speedDataSet.setDrawFilled(true);
+        speedDataSet.setFormLineWidth(1f);
+        speedDataSet.setFormSize(15.f);
+        Drawable speedFillDrawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_accent_color);
+        speedDataSet.setFillDrawable(speedFillDrawable);
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(elevationDataSet);
+        dataSets.add(speedDataSet);
+        LineData data = new LineData(dataSets);
+        chart.setData(data);
+        chart.invalidate();
     }
 
     private void setDataVisibility(boolean isRecording) {
@@ -175,17 +231,23 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment implement
         }
     }
 
-    @Override
-    public void onValueSelected(Entry e, Highlight h) {
-        // MyLog.d(LOG_TAG, "onValueSelected");
-    }
-
-    @Override
-    public void onNothingSelected() {
-        // MyLog.d(LOG_TAG, "onNothingSelected");
-    }
-
     private boolean checkViews() {
         return chart != null;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (isRecording) {
+            startChartUpdater();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (isRecording) {
+            stopChartUpdater();
+        }
     }
 }

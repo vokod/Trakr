@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updateMap(Location location) {
-        MyLog.d(LOG_TAG, "updateMap");
+        // MyLog.d(LOG_TAG, "updateMap");
         if (!status.isThereACameraPosition()) {
             // it is first start, so centered
             if (status.isRecording()) {
@@ -475,7 +475,7 @@ public class MainActivity extends AppCompatActivity
     public void onServiceStarted(long trackId) {
         // TODO FAB animation
         trackFragment.startTrackDataUpdate(trackId);
-        chartsFragment.startTrackDataUpdate(trackId);
+        chartsFragment.startTrackDataUpdate(/*trackId*/);
         setupTrackViewModel(trackId);
         status.setRecording(true);
     }

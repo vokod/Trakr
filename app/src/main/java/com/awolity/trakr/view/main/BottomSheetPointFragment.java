@@ -79,14 +79,12 @@ public class BottomSheetPointFragment extends BottomSheetBaseFragment {
     public void onResume() {
         super.onResume();
         startLocationUpdates();
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
         stopLocationUpdates();
-
     }
 
     private void setupViewModel() {
@@ -95,7 +93,7 @@ public class BottomSheetPointFragment extends BottomSheetBaseFragment {
     }
 
     private void startLocationUpdates() {
-        locationViewModel.getLocation().observe(this, new Observer<Location>() {
+        locationViewModel.getLocation().observe(getActivity(), new Observer<Location>() {
             @Override
             public void onChanged(@Nullable Location location) {
                 if (location != null) {
