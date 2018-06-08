@@ -83,25 +83,9 @@ public class Repository {
         return trackDao.loadById(id);
     }
 
-    public TrackEntity getTrackSync(long id) {
-        // MyLog.d(LOG_TAG, "getTrackSync - id:" + id);
-        return trackDao.loadByIdSync(id);
-    }
-
     public LiveData<TrackWithPoints> getTrackWithPoints(long id) {
         // MyLog.d(LOG_TAG, "getTrack - id:" + id);
         return trackDao.loadByIdWithPoints(id);
-    }
-
-    public LiveData<Integer> getNumOfTrackpoints(long id) {
-        // MyLog.d(LOG_TAG, "getTrackNumOfTrackpoints - id:" + id);
-        return trackDao.loadNumOfTrackpointsById(id);
-    }
-
-    @WorkerThread
-    public Integer getNumOfTrackpointsSync(long id) {
-        // MyLog.d(LOG_TAG, "getTrackNumOfTrackpoints - id:" + id);
-        return trackDao.loadNumOfTrackpointsByIdSync(id);
     }
 
     public void exportTrack(final long id) {

@@ -149,8 +149,18 @@ public class TrackDetailActivityDataFragment extends Fragment {
         descentPpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getDescent()));
         maxSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getMaxSpeed()));
         avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getAvgSpeed()));
-        maxPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(60 * (1 / trackWithPoints.getMaxSpeed())));
-        avgPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(60 * (1 / trackWithPoints.getAvgSpeed())));
+        double maxSpeed = trackWithPoints.getMaxSpeed();
+        if (maxSpeed > 1) {
+            maxPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((60 * (1 / maxSpeed))));
+        } else {
+            maxPacePpvi.setValue("-");
+        }
+        double avgSpeed = trackWithPoints.getAvgSpeed();
+        if(avgSpeed>1){
+            avgPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((60 * (1 / avgSpeed))));
+        } else {
+            avgPacePpvi.setValue("-");
+        }
         minAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getMinAltitude()));
         maxAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getMaxAltitude()));
     }

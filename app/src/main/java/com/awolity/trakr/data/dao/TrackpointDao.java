@@ -18,16 +18,16 @@ public interface TrackpointDao {
     @Insert(onConflict = REPLACE)
     long save(TrackpointEntity trackpointEntity);
 
-    @Insert(onConflict = REPLACE)
+  /*  @Insert(onConflict = REPLACE)
     void saveAll(List<TrackpointEntity> trackpointEntities);
 
     @Delete
     void delete(TrackpointEntity trackpointEntity);
 
     @Delete
-    void deleteAll(List<TrackpointEntity> trackpointEntities);
+    void deleteAll(List<TrackpointEntity> trackpointEntities);*/
 
-    @Query("SELECT * FROM trackpoint_table")
+   /* @Query("SELECT * FROM trackpoint_table")
     LiveData<List<TrackpointEntity>> loadAll();
 
     @Query("SELECT * FROM trackpoint_table")
@@ -37,7 +37,7 @@ public interface TrackpointDao {
     LiveData<List<TrackpointEntity>> loadById(long trackId);
 
     @Query("SELECT * FROM trackpoint_table WHERE trackpoint_id = :trackId ORDER BY time")
-    List<TrackpointEntity> loadByIdSync(long trackId);
+    List<TrackpointEntity> loadByIdSync(long trackId);*/
 
     @Query("SELECT * FROM trackpoint_table WHERE track_id = :trackId ORDER BY time")
     LiveData<List<TrackpointEntity>> loadByTrack(long trackId);
@@ -45,7 +45,7 @@ public interface TrackpointDao {
     @Query("SELECT * FROM trackpoint_table WHERE track_id = :trackId ORDER BY time DESC LIMIT 1")
     LiveData<TrackpointEntity> loadActualTrackpointByTrack(long trackId);
 
-    @Query("SELECT * FROM trackpoint_table WHERE track_id = :trackId ORDER BY time")
-    List<TrackpointEntity> loadByTrackSync(long trackId);
+   /* @Query("SELECT * FROM trackpoint_table WHERE track_id = :trackId ORDER BY time")
+    List<TrackpointEntity> loadByTrackSync(long trackId);*/
 
 }

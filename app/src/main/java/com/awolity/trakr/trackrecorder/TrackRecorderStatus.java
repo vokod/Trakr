@@ -4,7 +4,6 @@ import android.content.Context;
 import android.location.Location;
 
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.track.AltitudeFilter;
 import com.awolity.trakr.utils.PreferenceUtils;
 
 class TrackRecorderStatus {

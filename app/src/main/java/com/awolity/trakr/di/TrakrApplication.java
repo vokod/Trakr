@@ -19,7 +19,7 @@ public class TrakrApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+       // Fabric.with(this, new Crashlytics());
         getAppComponent();
         NotificationUtils.setupNotificationChannels(this);
 

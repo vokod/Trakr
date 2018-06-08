@@ -240,6 +240,7 @@ public class MainActivity extends AppCompatActivity
             long trackId = PreferenceUtils.getLastRecordedTrackId(this);
             if (trackId != PreferenceUtils.NO_LAST_RECORDED_TRACK) {
                 setupTrackViewModel(trackId);
+                this.trackId = trackId;
                 trackFragment.startTrackDataUpdate(trackId);
                 chartsFragment.startTrackDataUpdate(trackId);
                 status.setRecording(true);
@@ -295,7 +296,7 @@ public class MainActivity extends AppCompatActivity
         }, 500);
     }
 
-    protected void onRecordFabClick(@SuppressWarnings("unused") View view) {
+    public void onRecordFabClick(View view) {
         serviceManager.startStopFabClicked();
     }
 
@@ -303,7 +304,7 @@ public class MainActivity extends AppCompatActivity
         MyLog.d(LOG_TAG,"setupTrackViewModel");
         trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
         trackViewModel.reset();
-        trackViewModel.init(trackId, MainActivity.class);
+        trackViewModel.init(trackId);
         if (status.isContinueRecording()) {
             trackViewModel.getTrackpointsList().observe(this, trackpointsListObserver);
         }
@@ -519,4 +520,7 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
         trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
     }
+
+
+
 }

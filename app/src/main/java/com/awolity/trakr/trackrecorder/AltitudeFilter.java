@@ -1,4 +1,4 @@
-package com.awolity.trakr.track;
+package com.awolity.trakr.trackrecorder;
 
 public class AltitudeFilter {
 

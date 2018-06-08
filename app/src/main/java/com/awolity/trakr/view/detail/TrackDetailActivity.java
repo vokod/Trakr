@@ -25,9 +25,10 @@ public class TrackDetailActivity extends AppCompatActivity
         implements EditTitleDialog.EditTitleDialogListener {
 
     private static final String LOG_TAG = TrackDetailActivity.class.getSimpleName();
-    public static final String TAG_MAP_FRAGMENT = "tag_map_fragment";
-    public static final String TAG_DATA_FRAGMENT = "tag_data_fragment";
-    public static final String TAG_CHARTS_FRAGMENT = "tag_charts_fragment";
+    private static final String TAG_MAP_FRAGMENT = "tag_map_fragment";
+    private static final String TAG_DATA_FRAGMENT = "tag_data_fragment";
+    private static final String TAG_CHARTS_FRAGMENT = "tag_charts_fragment";
+    private static final String KEY_SELECTED_FRAGMENT = "key_selected_fragment";
     private static final String EXTRA_TRACK_ID = "extra_track_id";
     private static final int PERMISSION_REQUEST_CODE = 2;
     private long trackId;
@@ -50,7 +51,24 @@ public class TrackDetailActivity extends AppCompatActivity
 
         setupWidgets();
         setupBottomSheetNavigation();
-        showDataFragment();
+        if (savedInstanceState == null) {
+            showDataFragment();
+        } else {
+            switch (savedInstanceState.getInt(KEY_SELECTED_FRAGMENT)) {
+                case R.id.action_map:
+                    showMapFragment();
+                    break;
+                case R.id.action_data:
+                    showDataFragment();
+                    break;
+                case R.id.action_charts:
+                    showChartsFragment();
+                    break;
+                default:
+                    throw new IllegalStateException("Unknown selected menu item: "
+                            + savedInstanceState.getInt(KEY_SELECTED_FRAGMENT));
+            }
+        }
 
         setupViewModel(trackId);
     }
@@ -64,7 +82,7 @@ public class TrackDetailActivity extends AppCompatActivity
 
     private void setupViewModel(long trackId) {
         trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
-        trackViewModel.init(trackId, TrackDetailActivity.class);
+        trackViewModel.init(trackId);
         trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
             @Override
             public void onChanged(@Nullable TrackEntity trackEntity) {
@@ -181,5 +199,11 @@ public class TrackDetailActivity extends AppCompatActivity
     public void onTitleEdited(String title) {
         trackEntity.setTitle(title);
         trackViewModel.updateTrack(trackEntity);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_SELECTED_FRAGMENT, bottomNavigationView.getSelectedItemId());
     }
 }

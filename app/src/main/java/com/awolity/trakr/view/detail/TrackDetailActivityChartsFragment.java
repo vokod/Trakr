@@ -172,7 +172,6 @@ public class TrackDetailActivityChartsFragment extends Fragment
         l.setDrawInside(false);
     }
 
-
     private void setupViewModel() {
         trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
         trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
@@ -195,13 +194,13 @@ public class TrackDetailActivityChartsFragment extends Fragment
         avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getAvgSpeed()));
         double maxSpeed = trackWithPoints.getMaxSpeed();
         if (maxSpeed > 1) {
-            maxPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((long)(60 * (1 / maxSpeed))));
+            maxPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((60 * (1 / maxSpeed))));
         } else {
             maxPacePpvi.setValue("-");
         }
         double avgSpeed = trackWithPoints.getAvgSpeed();
         if(avgSpeed>1){
-            avgPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((long)(60 * (1 / avgSpeed))));
+            avgPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((60 * (1 / avgSpeed))));
         } else {
             avgPacePpvi.setValue("-");
         }
@@ -212,6 +211,9 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setElevationChartDataByTime(TrackWithPoints trackWithPoints) {
+        if(trackWithPoints.getTrackPoints().size()<=2){
+            return;
+        }
         List<Entry> values = new ArrayList<>();
         List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
         long startTime = trackWithPoints.getStartTime();
@@ -230,6 +232,9 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setElevationChartDataByDistance(TrackWithPoints trackWithPoints) {
+        if(trackWithPoints.getTrackPoints().size()<=2){
+            return;
+        }
         List<Entry> values = new ArrayList<>();
         List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
         double rollingDistance = 0;
@@ -245,6 +250,9 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setSpeedChartDataByTime(TrackWithPoints trackWithPoints) {
+        if(trackWithPoints.getTrackPoints().size()<=2){
+            return;
+        }
         List<Entry> values = new ArrayList<>();
         List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
         long startTime = trackWithPoints.getStartTime();
@@ -263,6 +271,9 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setSpeedChartDataByDistance(TrackWithPoints trackWithPoints) {
+        if(trackWithPoints.getTrackPoints().size()<=2){
+            return;
+        }
         List<Entry> values = new ArrayList<>();
         List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
         //double totalDistance = trackWithPoints.getDistance();
@@ -279,6 +290,9 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setPaceChartDataByTime(TrackWithPoints trackWithPoints) {
+        if(trackWithPoints.getTrackPoints().size()<=2){
+            return;
+        }
         List<Entry> values = new ArrayList<>();
         List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
         long startTime = trackWithPoints.getStartTime();
@@ -307,6 +321,9 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setPaceChartDataByDistance(TrackWithPoints trackWithPoints) {
+        if(trackWithPoints.getTrackPoints().size()<=2){
+            return;
+        }
         List<Entry> values = new ArrayList<>();
         List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
         double rollingDistance = 0;

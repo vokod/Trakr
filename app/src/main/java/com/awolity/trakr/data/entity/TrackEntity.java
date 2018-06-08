@@ -13,6 +13,8 @@ import java.util.Calendar;
 @SuppressWarnings("WeakerAccess")
 @Entity(tableName = "track_table")
 public class TrackEntity {
+    @Ignore
+    private static final String LOG_TAG = TrackEntity.class.getSimpleName();
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
@@ -239,21 +241,27 @@ public class TrackEntity {
     }
 
     public void checkSetHighLow(double altitude) {
-        if (!isValidElevationData) {
+        MyLog.d(LOG_TAG, "checkSetHighLow");
+        if (!isValidElevationData && altitude != 0) {
+            MyLog.d(LOG_TAG, "checkSetHighLow - first valid elevation data: "+altitude);
             // there was no valid elevation data before, only 0-s
-            if (altitude != 0) {
-                // this one is not 0 finally
-                maxAltitude = altitude;
-                minAltitude = altitude;
-                isValidElevationData = true;
-            }
+            maxAltitude = altitude;
+            minAltitude = altitude;
+            isValidElevationData = true;
         } else {
+            MyLog.d(LOG_TAG, "checkSetHighLow - new valid elevation data: " +altitude);
             // we already had valid elevation data
             if (altitude > maxAltitude) {
+                MyLog.d(LOG_TAG, "checkSetHighLow -     higher then MaxAltitude, saving");
                 maxAltitude = altitude;
+            } else {
+                MyLog.d(LOG_TAG, "checkSetHighLow -     NOT higher then MaxAltitude");
             }
             if (altitude < minAltitude) {
+                MyLog.d(LOG_TAG, "checkSetHighLow -     lower then MinAltitude, saving");
                 minAltitude = altitude;
+            } else {
+                MyLog.d(LOG_TAG, "checkSetHighLow -     NOT lower then MinAltitude");
             }
         }
     }
@@ -356,13 +364,13 @@ public class TrackEntity {
         int hour = cl.get(Calendar.HOUR_OF_DAY);
         if (hour <= 3 || hour > 21) {
             return "Night track";
-        } else if(hour < 6){
+        } else if (hour < 6) {
             return "Dawn track";
         } else if (hour < 8) {
             return "Early morning track";
         } else if (hour < 12) {
             return "Morning track";
-        } else if ( hour < 18) {
+        } else if (hour < 18) {
             return "Afternoon track";
         } else {
             return "Evening track";

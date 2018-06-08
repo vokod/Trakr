@@ -48,8 +48,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
         return fragment;
     }
 
-    public BottomSheetChartsFragment() {
-    }
+    public BottomSheetChartsFragment() { }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,7 +108,6 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
 
     private void startObserve(/*long trackId*/) {
         // MyLog.d(LOG_TAG, "startObserve");
-       // trackViewModel.init(trackId, BottomSheetChartsFragment.class);
         trackViewModel.getTrackWithPoints().observe(getActivity(), trackWithPointsObserver);
     }
 
@@ -130,6 +128,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
 
     private void startChartUpdater() {
         // MyLog.d(LOG_TAG, "startChartUpdater");
+        updateChart();
         chartUpdater.run();
     }
 

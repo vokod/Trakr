@@ -29,12 +29,14 @@ public class TrackViewModel extends ViewModel {
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 
-    public void init(long trackId, Class caller) {
-        MyLog.d(LOG_TAG, "init- trackId: " + trackId + " caller: " + caller.getSimpleName());
-        if (this.trackId != NOT_SET) {
+    public void init(long trackId) {
+        MyLog.d(LOG_TAG, "init- trackId: " + trackId);
+      /*  if (this.trackId != NOT_SET) {
             throw new IllegalStateException("Viewmodel already initialised");
+        }*/
+        if (this.trackId == NOT_SET) {
+            this.trackId = trackId;
         }
-        this.trackId = trackId;
     }
 
     public void reset(){
