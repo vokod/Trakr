@@ -5,9 +5,29 @@ import com.google.android.gms.location.LocationRequest;
 
 import java.util.ArrayList;
 
-public class ActivitTypeManager {
+public class ActivityTypeManager {
 
-    public static ArrayList<ActivityType> getActivityTypes() {
+    private ArrayList<ActivityType> activityTypes;
+    private static ActivityTypeManager instance;
+
+    public static ActivityTypeManager getInstance() {
+        if(instance==null){
+            instance = new ActivityTypeManager();
+        }
+        return instance;
+    }
+
+    private ActivityTypeManager(){
+        activityTypes = createActivityTypes();
+    }
+
+    public  ArrayList<ActivityType> getActivityTypes(){
+        return activityTypes;
+    }
+
+
+    // TODO: this to a json file
+    private ArrayList<ActivityType> createActivityTypes() {
         ArrayList<ActivityType> activityTypes = new ArrayList<>();
 
         RecordParameters walkingRecordParameters = new RecordParameters(1,

@@ -30,7 +30,7 @@ public class TrackViewModel extends ViewModel {
     }
 
     public void init(long trackId) {
-        MyLog.d(LOG_TAG, "init- trackId: " + trackId);
+        // MyLog.d(LOG_TAG, "init- trackId: " + trackId);
       /*  if (this.trackId != NOT_SET) {
             throw new IllegalStateException("Viewmodel already initialised");
         }*/

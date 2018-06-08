@@ -56,7 +56,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyLog.d(LOG_TAG, "onCreate");
+        // MyLog.d(LOG_TAG, "onCreate");
         //noinspection ConstantConditions
         trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
     }
@@ -64,7 +64,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        MyLog.d(LOG_TAG, "onCreateView");
+        // MyLog.d(LOG_TAG, "onCreateView");
         View view = inflater.inflate(
                 R.layout.activity_main_fragment_bottom_sheet_track, container, false);
 
@@ -81,7 +81,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void setupWidgets(View view) {
-        MyLog.d(LOG_TAG, "setupWidgets");
+        // MyLog.d(LOG_TAG, "setupWidgets");
         distanceView = view.findViewById(R.id.distanceView);
         ascentView = view.findViewById(R.id.ascentView);
         descentView = view.findViewById(R.id.descentView);
@@ -106,7 +106,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        MyLog.d(LOG_TAG, "onActivityCreated");
+        // MyLog.d(LOG_TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
@@ -139,7 +139,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        MyLog.d(LOG_TAG, "onSaveInstanceState");
+        // MyLog.d(LOG_TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
         outState.putString(KEY_DISTANCEVIEW_VALUE, distanceView.getValue());
         outState.putString(KEY_ASCENTVIEW_VALUE, ascentView.getValue());
@@ -152,7 +152,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     public void startTrackDataUpdate(long trackId) {
-        MyLog.d(LOG_TAG, "startTrackDataUpdate");
+        // MyLog.d(LOG_TAG, "startTrackDataUpdate");
         this.trackId = trackId;
         if (checkViews()) {
             setDataVisibility(true);
@@ -163,7 +163,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     public void stopTrackDataUpdate() {
-        MyLog.d(LOG_TAG, "stopTrackDataUpdate");
+        // MyLog.d(LOG_TAG, "stopTrackDataUpdate");
         setDataVisibility(false);
         stopObserve();
         stopElapsedTimer();
@@ -183,7 +183,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void startObserve(/*long trackId*/) {
-        MyLog.d(LOG_TAG, "startObserve");
+        // MyLog.d(LOG_TAG, "startObserve");
         //trackViewModel.init(trackId, BottomSheetTrackFragment.class);
         trackViewModel.getTrack().observe(getActivity(), trackEntityObserver);
     }
@@ -223,7 +223,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void setDataVisibility(boolean isRecording) {
-        MyLog.d(LOG_TAG, "setDataVisibility");
+        // MyLog.d(LOG_TAG, "setDataVisibility");
         if (!checkViews()) {
             return;
         }

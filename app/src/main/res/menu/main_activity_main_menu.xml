@@ -20,13 +20,12 @@
         android:title="@string/action_track_list"
         app:showAsAction="ifRoom" />
 
-  <!--  <item
-        android:id="@+id/activity_type_spinner"
-        android:title="Activity"
-        app:actionViewClass="android.widget.Spinner"
-        android:orderInCategory="1"
-        android:background="#ff00"
-        app:showAsAction="always" />-->
+    <item
+        android:id="@+id/action_select_activity_type"
+        android:orderInCategory="2"
+        android:title="Select activity"
+        app:showAsAction="ifRoom" />
+
 </menu>
     <!--TODO: extract-->
 

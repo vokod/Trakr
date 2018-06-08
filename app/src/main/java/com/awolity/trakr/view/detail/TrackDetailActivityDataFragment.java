@@ -54,7 +54,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyLog.d(LOG_TAG, "onCreate - " + this.hashCode());
+        // MyLog.d(LOG_TAG, "onCreate - " + this.hashCode());
         if (getArguments() != null) {
             trackId = getArguments().getLong(ARG_TRACK_ID);
         }
@@ -128,7 +128,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
     }
 
     private void setData(TrackWithPoints trackWithPoints) {
-        MyLog.d(LOG_TAG, "setData");
+        // MyLog.d(LOG_TAG, "setData");
 
         ColorGenerator generator = ColorGenerator.MATERIAL;
         String firstLetter = "";

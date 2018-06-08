@@ -122,7 +122,7 @@ public class TrackListAdapterNoMap
 
         TrackItemViewHolder(View itemView) {
             super(itemView);
-            MyLog.d(LOG_TAG, "TrackItemViewHolder "+ TrackItemViewHolder.this.hashCode());
+            // MyLog.d(LOG_TAG, "TrackItemViewHolder "+ TrackItemViewHolder.this.hashCode());
             clickOverlay = itemView.findViewById(R.id.fl_click_overlay);
             titleTv = itemView.findViewById(R.id.tv_title);
             dateTv = itemView.findViewById(R.id.tv_date);
@@ -133,7 +133,7 @@ public class TrackListAdapterNoMap
             }
 
         void bind(TrackEntity track) {
-             MyLog.d(LOG_TAG, "bind "+ TrackItemViewHolder.this.hashCode());
+             // MyLog.d(LOG_TAG, "bind "+ TrackItemViewHolder.this.hashCode());
             this.trackItem = track;
             titleTv.setText(trackItem.getTitle());
             // TODO: ezt szebben formázni

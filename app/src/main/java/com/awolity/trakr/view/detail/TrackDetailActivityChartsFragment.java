@@ -188,7 +188,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setWidgetData(TrackWithPoints trackWithPoints) {
-        MyLog.d(LOG_TAG, "setWidgetData");
+        // MyLog.d(LOG_TAG, "setWidgetData");
 
         maxSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getMaxSpeed()));
         avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getAvgSpeed()));

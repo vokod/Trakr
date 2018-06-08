@@ -35,7 +35,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyLog.d(LOG_TAG, "onCreate");
+        // MyLog.d(LOG_TAG, "onCreate");
         setContentView(R.layout.activity_track_list);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -45,7 +45,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
     }
 
     private void setupRecyclerView() {
-        MyLog.d(LOG_TAG, "setupRecyclerView");
+        // MyLog.d(LOG_TAG, "setupRecyclerView");
         RecyclerView trackListRv = findViewById(R.id.rv_track_list);
         LinearLayoutManager trackListLayoutManager = new LinearLayoutManager(this);
         trackListLayoutManager.setOrientation(VERTICAL);
@@ -57,7 +57,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
     }
 
     private void setupViewModel() {
-        MyLog.d(LOG_TAG, "setupViewModel");
+        // MyLog.d(LOG_TAG, "setupViewModel");
         TrackListViewModel trackListViewModel = ViewModelProviders.of(this).get(TrackListViewModel.class);
         trackListViewModel.getTracksWithPoints().observe(this, new Observer<List<TrackWithPoints>>() {
             @Override
@@ -71,7 +71,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
 
     @Override
     public void onTrackItemClicked(long trackId) {
-        MyLog.d(LOG_TAG, "onTrackItemClicked");
+        // MyLog.d(LOG_TAG, "onTrackItemClicked");
         Intent intent = TrackDetailActivity.getStarterIntent(this, trackId);
         startActivity(intent);
     }

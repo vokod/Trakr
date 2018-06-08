@@ -207,7 +207,7 @@ public class TrackEntity {
     public void increaseElapsedTime(long newTime) {
         elapsedTime = newTime - startTime;
         if (elapsedTime < 0) {
-            MyLog.wtf(TAG, "WTF, elapsed time is less than 0!!!");
+            // MyLog.wtf(TAG, "WTF, elapsed time is less than 0!!!");
         }
     }
 
@@ -241,27 +241,27 @@ public class TrackEntity {
     }
 
     public void checkSetHighLow(double altitude) {
-        MyLog.d(LOG_TAG, "checkSetHighLow");
+        // MyLog.d(LOG_TAG, "checkSetHighLow");
         if (!isValidElevationData && altitude != 0) {
-            MyLog.d(LOG_TAG, "checkSetHighLow - first valid elevation data: "+altitude);
+            // MyLog.d(LOG_TAG, "checkSetHighLow - first valid elevation data: "+altitude);
             // there was no valid elevation data before, only 0-s
             maxAltitude = altitude;
             minAltitude = altitude;
             isValidElevationData = true;
         } else {
-            MyLog.d(LOG_TAG, "checkSetHighLow - new valid elevation data: " +altitude);
+            // MyLog.d(LOG_TAG, "checkSetHighLow - new valid elevation data: " +altitude);
             // we already had valid elevation data
             if (altitude > maxAltitude) {
-                MyLog.d(LOG_TAG, "checkSetHighLow -     higher then MaxAltitude, saving");
+                // MyLog.d(LOG_TAG, "checkSetHighLow -     higher then MaxAltitude, saving");
                 maxAltitude = altitude;
             } else {
-                MyLog.d(LOG_TAG, "checkSetHighLow -     NOT higher then MaxAltitude");
+                // MyLog.d(LOG_TAG, "checkSetHighLow -     NOT higher then MaxAltitude");
             }
             if (altitude < minAltitude) {
-                MyLog.d(LOG_TAG, "checkSetHighLow -     lower then MinAltitude, saving");
+                // MyLog.d(LOG_TAG, "checkSetHighLow -     lower then MinAltitude, saving");
                 minAltitude = altitude;
             } else {
-                MyLog.d(LOG_TAG, "checkSetHighLow -     NOT lower then MinAltitude");
+                // MyLog.d(LOG_TAG, "checkSetHighLow -     NOT lower then MinAltitude");
             }
         }
     }

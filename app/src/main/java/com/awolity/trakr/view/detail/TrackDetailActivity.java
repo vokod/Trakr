@@ -100,7 +100,7 @@ public class TrackDetailActivity extends AppCompatActivity
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_map:
-                        MyLog.d(LOG_TAG, "onNavigationItemSelected - action_map");
+                        // MyLog.d(LOG_TAG, "onNavigationItemSelected - action_map");
                         showMapFragment();
                         return true;
                     case R.id.action_data:
@@ -153,18 +153,18 @@ public class TrackDetailActivity extends AppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        MyLog.d(LOG_TAG, "onRequestPermissionsResult");
+        // MyLog.d(LOG_TAG, "onRequestPermissionsResult");
 
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    MyLog.d(LOG_TAG, "onRequestPermissionsResult - permission granted");
+                    // MyLog.d(LOG_TAG, "onRequestPermissionsResult - permission granted");
                     // permission was granted, yay!
                     trackViewModel.exportTrack();
                 } else {
-                    MyLog.d(LOG_TAG, "onRequestPermissionsResult - permission denied :(");
+                    // MyLog.d(LOG_TAG, "onRequestPermissionsResult - permission denied :(");
                     // permission denied, boo!
                     Toast.makeText(this, getString(R.string.write_permission_denied),
                             Toast.LENGTH_LONG).show();

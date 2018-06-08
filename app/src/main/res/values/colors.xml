@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#607D8B</color>
+    <color name="colorPrimary">#607d8b</color>
     <color name="colorPrimaryAlpha0">#00607D8B</color>
     <color name="colorPrimaryDark">#455A64</color>
     <color name="colorPrimaryLight">#cfd8dc</color>
@@ -12,6 +12,7 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
     <color name="bottom_sheet_background">#EEEEEE</color>
+    <color name="activity_main_activity_type_spinner_dropdown_item_background">#fff</color>
 
 </resources>
 

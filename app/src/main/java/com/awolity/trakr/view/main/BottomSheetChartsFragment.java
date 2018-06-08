@@ -41,6 +41,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     private TrackWithPoints trackWithPoints;
     private Handler handler;
     private Runnable chartUpdater;
+    private boolean firstRun;
 
     public static BottomSheetChartsFragment newInstance(String title) {
         BottomSheetChartsFragment fragment = new BottomSheetChartsFragment();
@@ -48,7 +49,8 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
         return fragment;
     }
 
-    public BottomSheetChartsFragment() { }
+    public BottomSheetChartsFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -117,6 +119,10 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
             // MyLog.d(LOG_TAG, "trackWithPointsObserver.onChanged");
             if (trackWithPoints != null) {
                 BottomSheetChartsFragment.this.trackWithPoints = trackWithPoints;
+                if (firstRun) {
+                    updateChart();
+                    firstRun = false;
+                }
             }
         }
     };
@@ -236,6 +242,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     @Override
     public void onStart() {
         super.onStart();
+        firstRun = true;
         if (isRecording) {
             startChartUpdater();
         }

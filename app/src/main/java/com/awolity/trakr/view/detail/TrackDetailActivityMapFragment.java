@@ -44,7 +44,7 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyLog.d(LOG_TAG, "onCreate - " + this.hashCode());
+        // MyLog.d(LOG_TAG, "onCreate - " + this.hashCode());
         if (getArguments() != null) {
             trackId = getArguments().getLong(ARG_TRACK_ID);
         }
@@ -53,7 +53,7 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        MyLog.d(LOG_TAG, "onCreateView " + this.hashCode());
+        // MyLog.d(LOG_TAG, "onCreateView " + this.hashCode());
         View view = inflater.inflate(R.layout.activity_track_detail_fragment_map, container, false);
         setupMapView(view, savedInstanceState);
         setupViewModel();
@@ -61,20 +61,20 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
     }
 
     private void setupMapView(View view, Bundle savedInstanceState) {
-        MyLog.d(LOG_TAG, "setupMapView");
+        // MyLog.d(LOG_TAG, "setupMapView");
         mapView = view.findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
     }
 
     private void setupViewModel() {
-        MyLog.d(LOG_TAG, "setupViewModel");
+        // MyLog.d(LOG_TAG, "setupViewModel");
         trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
         //trackViewModel.init(trackId);
         trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
             @Override
             public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-                MyLog.d(LOG_TAG, "onChanged");
+                // MyLog.d(LOG_TAG, "onChanged");
                 if (trackWithPoints != null) {
                     TrackDetailActivityMapFragment.this.trackWithPoints = trackWithPoints;
                     showTrack();
@@ -85,7 +85,7 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        MyLog.d(LOG_TAG, "onMapReady");
+        // MyLog.d(LOG_TAG, "onMapReady");
         this.googleMap = googleMap;
         googleMap.getUiSettings().setMapToolbarEnabled(true);
         googleMap.getUiSettings().setCompassEnabled(true);

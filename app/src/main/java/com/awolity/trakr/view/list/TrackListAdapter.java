@@ -120,7 +120,7 @@ public class TrackListAdapter
 
         TrackItemViewHolder(View itemView) {
             super(itemView);
-            MyLog.d(LOG_TAG, "TrackItemViewHolder " + TrackItemViewHolder.this.hashCode());
+            // MyLog.d(LOG_TAG, "TrackItemViewHolder " + TrackItemViewHolder.this.hashCode());
             clickOverlay = itemView.findViewById(R.id.fl_click_overlay);
             titleTv = itemView.findViewById(R.id.tv_title);
             dateTv = itemView.findViewById(R.id.tv_date);
@@ -140,7 +140,7 @@ public class TrackListAdapter
 
 
         void bind(final TrackWithPoints trackWithPoints) {
-            MyLog.d(LOG_TAG, "bind " + TrackItemViewHolder.this.hashCode());
+            // MyLog.d(LOG_TAG, "bind " + TrackItemViewHolder.this.hashCode());
             this.trackWithPoints = trackWithPoints;
             titleTv.setText(this.trackWithPoints.getTitle());
             dateTv.setText(DateUtils.getRelativeTimeSpanString(this.trackWithPoints.getStartTime()).toString());
@@ -161,14 +161,14 @@ public class TrackListAdapter
             mapView.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(final GoogleMap googleMap) {
-                    MyLog.d(LOG_TAG, "onMapReady: " + TrackItemViewHolder.this.hashCode());
+                    // MyLog.d(LOG_TAG, "onMapReady: " + TrackItemViewHolder.this.hashCode());
                     TrackItemViewHolder.this.googleMap = googleMap;
                    // Handler handler = new android.os.Handler();
                   /*  Runnable mapDrawer = new Runnable() {
                         @Override
                         public void run() {*/
                     if (polyline != null) {
-                        MyLog.d(LOG_TAG, "onMapReady: " + TrackItemViewHolder.this.hashCode() + " the map already contains a polyline, removing");
+                        // MyLog.d(LOG_TAG, "onMapReady: " + TrackItemViewHolder.this.hashCode() + " the map already contains a polyline, removing");
                         polyline.remove();
                     }
                     polyline = MapUtils.setupTrackPolyLine(context, googleMap, trackWithPoints, true);

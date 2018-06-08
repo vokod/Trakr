@@ -18,7 +18,7 @@ public class TrackDetailActivityUtils {
     private TrackDetailActivityUtils(){}
 
     static boolean checkPermission(final Activity activity, final int permissionRequestCode) {
-        MyLog.d(LOG_TAG, "checkPermission");
+        // MyLog.d(LOG_TAG, "checkPermission");
         if (ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
