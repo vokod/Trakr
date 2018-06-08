@@ -94,5 +94,6 @@ public class ActivityTypeDialogFragment extends DialogFragment
     @Override
     public void onActivityTypeItemClicked(ActivityType activityType) {
         listener.onActivityTypeSelected(activityType);
+        this.dismiss();
     }
 }

@@ -2,16 +2,19 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/activity_main_activity_type_spinner_dropdown_item_background"
-    android:padding="8dp">
+    android:background="@color/activity_main_activity_type_spinner_dropdown_item_background">
 
     <FrameLayout
         android:id="@+id/fl_initial"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/iv_icon"
@@ -23,10 +26,9 @@
 
     <TextView
         android:id="@+id/tv_title"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginStart="8dp"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/fl_initial"
         app:layout_constraintStart_toEndOf="@+id/fl_initial"
         app:layout_constraintTop_toTopOf="@+id/fl_initial"
