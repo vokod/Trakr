@@ -1,8 +1,12 @@
-<!-- drawable/walk.xml -->
+<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:height="24dp"
     android:width="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    <path android:fillColor="#fff" android:pathData="M14.12,10H19V8.2H15.38L13.38,4.87C13.08,4.37 12.54,4.03 11.92,4.03C11.74,4.03 11.58,4.06 11.42,4.11L6,5.8V11H7.8V7.33L9.91,6.67L6,22H7.8L10.67,13.89L13,17V22H14.8V15.59L12.31,11.05L13.04,8.18M14,3.8C15,3.8 15.8,3 15.8,2C15.8,1 15,0.2 14,0.2C13,0.2 12.2,1 12.2,2C12.2,3 13,3.8 14,3.8Z" />
+    android:height="24dp"
+    android:viewportHeight="24"
+    android:viewportWidth="24">
+
+    <path
+        android:fillColor="@color/colorAccent"
+        android:pathData="M 13.086,11.37 h 2.928 v -1.08 h -2.172 l -1.2,-1.998 c -0.18,-0.3 -0.504,-0.504 -0.876,-0.504 -0.108,0 -0.204,0.018 -0.3,0.048 L 8.2139996,8.85 v 3.12 h 1.08 V 9.768 L 10.56,9.372 8.2139996,18.57 h 1.08 L 11.016,13.704 12.414,15.57 v 3 h 1.08 V 14.724 L 12,12 12.438,10.278 M 13.014,7.65 c 0.6,0 1.08,-0.48 1.08,-1.08 0,-0.6 -0.48,-1.08 -1.08,-1.08 -0.6,0 -1.08,0.48 -1.08,1.08 0,0.6 0.48,1.08 1.08,1.08 z"
+        android:strokeWidth="0.60000002" />
 </vector>

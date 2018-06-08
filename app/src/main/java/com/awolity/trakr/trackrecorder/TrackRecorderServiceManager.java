@@ -1,5 +1,6 @@
 package com.awolity.trakr.trackrecorder;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -10,11 +11,13 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.awolity.trakr.di.TrakrApplication;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.PreferenceUtils;
+import com.awolity.trakr.view.main.ActivityTypeDialogFragment;
 
 import javax.inject.Inject;
 

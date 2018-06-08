@@ -211,6 +211,7 @@
     <string name="pref_value_altitude_filter_param_50">50</string>
 
     <string name="pref_key_last_recorded_track_id">last_recorded_track_id</string>
+    <string name="pref_key_activity_type">activity_type</string>
 
 
     <!-- Gpx exporter -->

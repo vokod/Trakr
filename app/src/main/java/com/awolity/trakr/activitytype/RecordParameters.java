@@ -33,4 +33,6 @@ public class RecordParameters {
     public int getAltitudeFilterParameter() {
         return altitudeFilterParameter;
     }
+
+
 }

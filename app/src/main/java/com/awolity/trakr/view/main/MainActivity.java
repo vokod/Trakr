@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity
     private PolylineOptions polylineOptions;
     private Polyline polyline;
     private long trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -445,6 +446,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_main_menu, menu);
+        this.menu = menu;
+        MenuItem activityTypeItem = menu.findItem(R.id.action_select_activity_type);
+        ActivityType activityType = PreferenceUtils.getActivityType(this);
+        if(activityType!=null) {
+            activityTypeItem.setIcon(activityType.getMenuIconResource());
+        }
         return true;
     }
 
@@ -513,9 +520,10 @@ public class MainActivity extends AppCompatActivity
         trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
     }
 
-
     @Override
     public void onActivityTypeSelected(ActivityType activityType) {
-
+        MenuItem activityTypeItem = menu.findItem(R.id.action_select_activity_type);
+        PreferenceUtils.setActivityType(this,activityType);
+        activityTypeItem.setIcon(activityType.getMenuIconResource());
     }
 }

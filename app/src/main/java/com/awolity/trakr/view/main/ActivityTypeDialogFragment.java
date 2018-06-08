@@ -4,13 +4,20 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.activitytype.ActivityType;
@@ -34,22 +41,32 @@ public class ActivityTypeDialogFragment extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Select activity type")
+                .setView(createView());
+
+        return builder.create();
+    }
+
+    public View createView() {
         final LayoutInflater inflater = getActivity().getLayoutInflater();
 
         final View view = inflater.inflate(R.layout.activity_main_dialog_activity_type, null);
 
         rv = view.findViewById(R.id.rv_activity_type);
-        rv.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        rv.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
+        rv.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(getActivity(), linearLayoutManager.getOrientation());
+        rv.addItemDecoration(dividerItemDecoration);
 
         adapter = new ActivityTypeAdapter(getActivity().getLayoutInflater(), this);
         rv.setAdapter(adapter);
+
         List<ActivityType> activityTypeList = ActivityTypeManager.getInstance().getActivityTypes();
         adapter.updateItems(activityTypeList);
 
-        builder.setTitle("Select activity type")
-                .setView(view);
-
-        return builder.create();
+        return view;
     }
 
     @Override
@@ -66,6 +83,13 @@ public class ActivityTypeDialogFragment extends DialogFragment
                     + " must implement AddPartnerDialogListener");
         }
     }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        listener = null;
+    }
+
 
     @Override
     public void onActivityTypeItemClicked(ActivityType activityType) {

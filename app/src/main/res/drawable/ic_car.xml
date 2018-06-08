@@ -1,8 +1,12 @@
-<!-- drawable/car_hatchback.xml -->
+<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:height="24dp"
     android:width="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    <path android:fillColor="#fff" android:pathData="M16,6H6L1,12V15H3A3,3 0 0,0 6,18A3,3 0 0,0 9,15H15A3,3 0 0,0 18,18A3,3 0 0,0 21,15H23V12C23,10.89 22.11,10 21,10H19L16,6M6.5,7.5H10.5V10H4.5L6.5,7.5M12,7.5H15.5L17.46,10H12V7.5M6,13.5A1.5,1.5 0 0,1 7.5,15A1.5,1.5 0 0,1 6,16.5A1.5,1.5 0 0,1 4.5,15A1.5,1.5 0 0,1 6,13.5M18,13.5A1.5,1.5 0 0,1 19.5,15A1.5,1.5 0 0,1 18,16.5A1.5,1.5 0 0,1 16.5,15A1.5,1.5 0 0,1 18,13.5Z" />
+    android:height="24dp"
+    android:viewportHeight="24"
+    android:viewportWidth="24">
+
+    <path
+        android:fillColor="@color/colorAccent"
+        android:pathData="M 14.4,8.4767591 h -6 l -3,3.5999999 v 1.8 h 1.2 a 1.8,1.8 0 0 0 1.8,1.8 1.8,1.8 0 0 0 1.8,-1.8 h 3.6 a 1.8,1.8 0 0 0 1.8,1.8 1.8,1.8 0 0 0 1.8,-1.8 h 1.2 v -1.8 c 0,-0.666 -0.534,-1.2 -1.2,-1.2 H 16.2 L 14.4,8.4767591 m -5.7,0.9 h 2.4 V 10.876759 H 7.5 L 8.7,9.3767591 m 3.3,0 h 2.1 l 1.176,1.4999999 H 12 V 9.3767591 M 8.4,12.976759 a 0.9,0.9 0 0 1 0.9,0.9 0.9,0.9 0 0 1 -0.9,0.9 0.9,0.9 0 0 1 -0.9,-0.9 0.9,0.9 0 0 1 0.9,-0.9 m 7.2,0 a 0.9,0.9 0 0 1 0.9,0.9 0.9,0.9 0 0 1 -0.9,0.9 0.9,0.9 0 0 1 -0.9,-0.9 0.9,0.9 0 0 1 0.9,-0.9 z"
+        android:strokeWidth="0.60000002" />
 </vector>

@@ -6,6 +6,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.awolity.trakr.R;
+import com.awolity.trakr.activitytype.ActivityType;
+import com.awolity.trakr.activitytype.ActivityTypeManager;
+
+import java.util.List;
 
 public class PreferenceUtils {
 
@@ -72,4 +76,24 @@ public class PreferenceUtils {
         editor.putLong(context.getString(R.string.pref_key_last_recorded_track_id), trackId);
         editor.apply();
     }
+
+    public static ActivityType getActivityType(Context context) {
+        SharedPreferences sharedpreferences =
+                PreferenceManager.getDefaultSharedPreferences(context);
+        String name = sharedpreferences.getString(context.getString(R.string.pref_key_activity_type),"");
+        List<ActivityType> activityTypeList = ActivityTypeManager.getInstance().getActivityTypes();
+        for(ActivityType activityType : activityTypeList){
+            if(activityType.getTitle().equals(name)){
+                return activityType;
+            }
+        }
+        return null;
+    }
+
+    public static void setActivityType(Context context, ActivityType activityType) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putString(context.getString(R.string.pref_key_activity_type), activityType.getTitle());
+        editor.apply();
+    }
 }
+
