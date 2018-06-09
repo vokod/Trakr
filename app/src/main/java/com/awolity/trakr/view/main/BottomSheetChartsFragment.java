@@ -187,7 +187,6 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
         LineDataSet speedDataSet = new LineDataSet(speedValues, getString(R.string.speed_chart_title));
         speedDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
         chart.getAxisRight().setAxisMinimum(0);
-        // TODO: ezek a csartok ne legyenek nagyíthatóak
 
         elevationDataSet.setDrawIcons(false);
         elevationDataSet.setDrawValues(false);

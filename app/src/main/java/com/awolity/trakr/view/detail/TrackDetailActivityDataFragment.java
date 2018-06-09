@@ -109,7 +109,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
                 getString(R.string.max_speed_view_unit),
                 getString(R.string.max_speed_view_default_value),
                 R.drawable.ic_max_speed);
-        avgSpeedPpvi.setup(getString(R.string.avg_pace_view_title),
+        avgSpeedPpvi.setup(getString(R.string.avg_speed_view_title),
                 getString(R.string.avg_speed_view_unit),
                 getString(R.string.avg_speed_view_default_value),
                 R.drawable.ic_avg_speed);

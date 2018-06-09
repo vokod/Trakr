@@ -16,11 +16,13 @@
     <string name="activity_type_driving">Driving</string>
     <string name="activity_type_flying">Flying</string>
 
+    <string name="start_recording_a_track">Start recording a track!</string>
+
     <!-- Track list activity -->
     <string name="title_activity_track_list">Track list</string>
 
     <!-- Track detail activity -->
-    <string name="title_activity_track_detail">Track list</string>
+    <string name="title_activity_track_detail">Track detail</string>
     <string name="action_export">Export track</string>
     <string name="action_delete">Delete track</string>
     <string name="bottom_navigation_title_map">Map</string>
@@ -38,11 +40,14 @@
     <string name="elevation_chart_title">Elevation [m]</string>
     <string name="speed_chart_title">Speed [km/h]</string>
     <string name="pace_chart_title">Pace [min/km]</string>
+    <string name="speed_pace">Speed/Pace</string>
+    <string name="speed">Speed</string>
+    <string name="pace">Pace</string>
+    <string name="show_values_by">Show values by:</string>
+
 
     <!-- SettingsActivity -->
     <string name="title_activity_settings">Settings</string>
-
-
 
     <!-- Data views -->
     <string name="max_speed_view_title">Max.Speed</string>
@@ -240,5 +245,6 @@
 
     <!-- Gpx exporter -->
     <string name="toast_external_storage_not_writable">External storage not writable :( Can\'t export track.</string>
+
 
 </resources>

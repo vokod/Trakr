@@ -249,6 +249,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
         }
         elevationChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
         LineDataSet elevationDataSet = new LineDataSet(values, getString(R.string.elevation_chart_title));
+        elevationDataSet.setDrawHighlightIndicators(false);
         setElevationChartData(elevationDataSet);
     }
 
@@ -266,6 +267,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
         }
         elevationChart.getXAxis().setValueFormatter(new LargeValueFormatter());
         LineDataSet elevationDataSet = new LineDataSet(values, getString(R.string.elevation_chart_title));
+        elevationDataSet.setDrawHighlightIndicators(false);
         setElevationChartData(elevationDataSet);
     }
 
@@ -286,6 +288,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
         }
         speedChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
         LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
+        speedDataSet.setDrawHighlightIndicators(false);
         setSpeedChartData(speedDataSet);
     }
 
@@ -303,8 +306,8 @@ public class TrackDetailActivityChartsFragment extends Fragment
             values.add(new Entry((float) rollingDistance, (float) trackpointEntity.getSpeed()));
         }
         speedChart.getXAxis().setValueFormatter(new LargeValueFormatter());
-
         LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
+        speedDataSet.setDrawHighlightIndicators(false);
         setSpeedChartData(speedDataSet);
     }
 
@@ -335,6 +338,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
         speedChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
         speedChart.getAxisLeft().setValueFormatter(new GraphTimeAxisValueFormatter((long) highestPaceValue));
         LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.pace_chart_title));
+        speedDataSet.setDrawHighlightIndicators(false);
         setSpeedChartData(speedDataSet);
     }
 
@@ -362,6 +366,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
         speedChart.getXAxis().setValueFormatter(new LargeValueFormatter());
         speedChart.getAxisLeft().setValueFormatter(new GraphTimeAxisValueFormatter((long) highestPaceValue));
         LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
+        speedDataSet.setDrawHighlightIndicators(false);
         setSpeedChartData(speedDataSet);
     }
 

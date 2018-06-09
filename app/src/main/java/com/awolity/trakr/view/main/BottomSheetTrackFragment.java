@@ -259,38 +259,38 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
             return;
         }
         startTime = 0;
-
+        // TODO: ezeket átállítani a másik beállító metóddal
         distanceView.setValue(getActivity().getString(R.string.distance_view_default_value));
         distanceView.setUnit(getActivity().getString(R.string.distance_view_unit));
         distanceView.setLabel(getActivity().getString(R.string.distance_view_title));
 
-        ascentView.setValue(getActivity().getString(R.string.ascent_view_value));
+        ascentView.setValue(getActivity().getString(R.string.ascent_view_default_value));
         ascentView.setUnit(getActivity().getString(R.string.ascent_view_unit));
-        ascentView.setLabel(getActivity().getString(R.string.ascent_view_label));
+        ascentView.setLabel(getActivity().getString(R.string.ascent_view_title));
 
-        descentView.setValue(getActivity().getString(R.string.descent_view_value));
+        descentView.setValue(getActivity().getString(R.string.descent_view_default_value));
         descentView.setUnit(getActivity().getString(R.string.descent_view_unit));
-        descentView.setLabel(getActivity().getString(R.string.descent_view_label));
+        descentView.setLabel(getActivity().getString(R.string.descent_view_title));
 
         elapsedTimeView.setValue(getActivity().getString(R.string.elapsed_time_view_default_value));
         elapsedTimeView.setUnit(getActivity().getString(R.string.elapsed_time_view_unit));
         elapsedTimeView.setLabel(getActivity().getString(R.string.elapsed_time_view_title));
 
-        minAltitudeView.setValue(getActivity().getString(R.string.min_altitude_view_value));
+        minAltitudeView.setValue(getActivity().getString(R.string.min_altitude_view_default_value));
         minAltitudeView.setUnit(getActivity().getString(R.string.min_altitude_view_unit));
-        minAltitudeView.setLabel(getActivity().getString(R.string.min_altitude_view_label));
+        minAltitudeView.setLabel(getActivity().getString(R.string.min_altitude_view_title));
 
-        maxAltitudeView.setValue(getActivity().getString(R.string.max_altitude_view_value));
+        maxAltitudeView.setValue(getActivity().getString(R.string.max_altitude_view_default_value));
         maxAltitudeView.setUnit(getActivity().getString(R.string.max_altitude_view_unit));
-        maxAltitudeView.setLabel(getActivity().getString(R.string.max_altitude_view_label));
+        maxAltitudeView.setLabel(getActivity().getString(R.string.max_altitude_view_title));
 
-        avgSpeedView.setValue(getActivity().getString(R.string.avg_speed_view_value));
+        avgSpeedView.setValue(getActivity().getString(R.string.avg_speed_view_default_value));
         avgSpeedView.setUnit(getActivity().getString(R.string.avg_speed_view_unit));
-        avgSpeedView.setLabel(getActivity().getString(R.string.avg_speed_view_label));
+        avgSpeedView.setLabel(getActivity().getString(R.string.avg_speed_view_title));
 
-        maxSpeedView.setValue(getActivity().getString(R.string.max_speed_view_value));
+        maxSpeedView.setValue(getActivity().getString(R.string.max_speed_view_default_value));
         maxSpeedView.setUnit(getActivity().getString(R.string.max_speed_view_unit));
-        maxSpeedView.setLabel(getActivity().getString(R.string.max_speed_view_label));
+        maxSpeedView.setLabel(getActivity().getString(R.string.max_speed_view_title));
     }
 
     public void setStartTime(long startTime) {
