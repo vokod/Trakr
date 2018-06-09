@@ -7,7 +7,7 @@
     <string name="bottom_sheet_label_point">Pont</string>
     <string name="bottom_sheet_label_track">Nyomvonal</string>
     <string name="bottom_sheet_label_charts">Diagram</string>
-    <string name="activity_type_walking">Séta</string>
+    <string name="activity_type_walking">Gyaloglás</string>
     <string name="activity_type_running">Futás</string>
     <string name="activity_type_biking">Kerékpározás</string>
     <string name="activity_type_driving">Autózás</string>

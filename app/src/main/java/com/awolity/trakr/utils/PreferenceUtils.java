@@ -81,7 +81,7 @@ public class PreferenceUtils {
         SharedPreferences sharedpreferences =
                 PreferenceManager.getDefaultSharedPreferences(context);
         String name = sharedpreferences.getString(context.getString(R.string.pref_key_activity_type),"");
-        List<ActivityType> activityTypeList = ActivityTypeManager.getInstance().getActivityTypes();
+        List<ActivityType> activityTypeList = ActivityTypeManager.getInstance(context).getActivityTypes();
         for(ActivityType activityType : activityTypeList){
             if(activityType.getTitle().equals(name)){
                 return activityType;

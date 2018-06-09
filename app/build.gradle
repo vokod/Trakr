@@ -79,8 +79,11 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     // gpx parser
     implementation 'com.codebutchery.android:gpx_lib:1.0.3'
-    // circle imageview
+    // circle imageview nem feltétlenül kell már
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    // fab
+    implementation 'com.rany.albeg.wein:spring-fab-menu:1.0.1'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

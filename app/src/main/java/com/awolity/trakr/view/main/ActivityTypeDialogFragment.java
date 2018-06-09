@@ -63,7 +63,7 @@ public class ActivityTypeDialogFragment extends DialogFragment
         adapter = new ActivityTypeAdapter(getActivity().getLayoutInflater(), this);
         rv.setAdapter(adapter);
 
-        List<ActivityType> activityTypeList = ActivityTypeManager.getInstance().getActivityTypes();
+        List<ActivityType> activityTypeList = ActivityTypeManager.getInstance(getContext()).getActivityTypes();
         adapter.updateItems(activityTypeList);
 
         return view;
