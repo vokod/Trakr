@@ -14,7 +14,6 @@ class TrackRecorderStatus {
             altitudeFilterParameter, numOfTrackPoints;
     private TrackpointEntity previousSavedTrackpoint, actualSavedTrackpoint, candidateTrackpoint;
     private AltitudeFilter altitudeFilter;
-// TODO: ha menetközben állítjuk a preferenciákat, akkor mi lesz? Ne lehessen állítani menetközben a preferenciákat
 
     public TrackRecorderStatus(Context context) {
         trackingDistance = (PreferenceUtils.getPreferenceTrackingDistance(context));

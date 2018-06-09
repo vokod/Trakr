@@ -125,14 +125,24 @@ public class TrackListAdapter
             titleTv = itemView.findViewById(R.id.tv_title);
             dateTv = itemView.findViewById(R.id.tv_date);
             initialIv = itemView.findViewById(R.id.iv_initial);
-            // TODO: extract
             distanceView = itemView.findViewById(R.id.spv_distance);
-            distanceView.setup("Distance","km","0",R.drawable.ic_distance);
             durationView = itemView.findViewById(R.id.spv_duration);
-            durationView.setup("Duration","s","00:00",R.drawable.ic_duration);
             elevationView = itemView.findViewById(R.id.spv_elevation);
-            elevationView.setup("Elevation","mm","0",R.drawable.ic_ascent);
             mapView = itemView.findViewById(R.id.mapView);
+
+            durationView.setup(context.getString(R.string.elapsed_time_view_title),
+                    context.getString(R.string.elapsed_time_view_unit),
+                    context.getString(R.string.elapsed_time_view_default_value),
+                    R.drawable.ic_duration);
+            distanceView.setup(context.getString(R.string.distance_view_title),
+                    context.getString(R.string.distance_view_unit),
+                    context.getString(R.string.distance_view_default_value),
+                    R.drawable.ic_max_speed);
+            elevationView.setup(context.getString(R.string.ascent_view_title),
+                    context.getString(R.string.ascent_view_unit),
+                    context.getString(R.string.ascent_view_default_value),
+                    R.drawable.ic_ascent);
+
 
             mapView.onCreate(null);
             mapView.setClickable(false);

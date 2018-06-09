@@ -47,16 +47,15 @@ public class EditTitleDialog extends DialogFragment {
         titleEditText = view.findViewById(R.id.et_title);
         String oldTitle = getArguments().getString(ARG_OLD_TITLE);
         titleEditText.setText(oldTitle);
-        // TODO: extract
-        builder.setTitle("Edit title")
+        builder.setTitle(getString(R.string.edit_title_dialog_title))
                 .setView(view)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.edit_title_dialog_ok),
+                        new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 });
         return builder.create();
     }
-
 
     @Override
     public void onStart() {
@@ -73,7 +72,8 @@ public class EditTitleDialog extends DialogFragment {
                         listener.onTitleEdited(enteredText);
                         wantToCloseDialog = true;
                     } else {
-                        Toast.makeText(getContext(), "Invalid title", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), R.string.edit_title_dialog_invalid_title,
+                                Toast.LENGTH_LONG).show();
                     }
                     if (wantToCloseDialog)
                         dismiss();

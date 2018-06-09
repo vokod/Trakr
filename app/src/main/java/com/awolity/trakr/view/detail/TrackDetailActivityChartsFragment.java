@@ -20,7 +20,6 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.github.mikephil.charting.charts.LineChart;
@@ -129,15 +128,38 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void resetWidgets() {
-        // TODO: extract
-        maxSpeedPpvi.setup("Max.Speed", "km/h", "0", R.drawable.ic_max_speed);
-        avgSpeedPpvi.setup("Avg.Speed", "km/h", "-", R.drawable.ic_avg_speed);
-        maxPacePpvi.setup("Max.Pace", "min/km", "0", R.drawable.ic_max_speed);
-        avgPacePpvi.setup("Avg.Pace", "min/km", "-", R.drawable.ic_avg_speed);
-        ascentPpvi.setup("Ascent", "m", "0", R.drawable.ic_ascent);
-        descentPpvi.setup("Descent", "m", "0", R.drawable.ic_descent);
-        maxAltitudePpvi.setup("Max.Altitude", "m", "-", R.drawable.ic_max_altitude);
-        minAltitudePpvi.setup("Min.Altitude", "m", "-", R.drawable.ic_min_altitude);
+        maxSpeedPpvi.setup(getString(R.string.max_speed_view_title),
+                getString(R.string.max_speed_view_unit),
+                getString(R.string.max_speed_view_default_value),
+                R.drawable.ic_max_speed);
+        avgSpeedPpvi.setup(getString(R.string.avg_pace_view_title),
+                getString(R.string.avg_speed_view_unit),
+                getString(R.string.avg_speed_view_default_value),
+                R.drawable.ic_avg_speed);
+        maxPacePpvi.setup(getString(R.string.max_pace_view_title),
+                getString(R.string.max_pace_view_unit),
+                getString(R.string.max_pace_view_default_value),
+                R.drawable.ic_max_speed);
+        avgPacePpvi.setup(getString(R.string.avg_pace_view_title),
+                getString(R.string.avg_pace_view_unit),
+                getString(R.string.avg_pace_view_default_value),
+                R.drawable.ic_avg_speed);
+        ascentPpvi.setup(getString(R.string.ascent_view_title),
+                getString(R.string.ascent_view_unit),
+                getString(R.string.ascent_view_default_value),
+                R.drawable.ic_ascent);
+        descentPpvi.setup(getString(R.string.descent_view_title),
+                getString(R.string.descent_view_unit),
+                getString(R.string.descent_view_default_value),
+                R.drawable.ic_descent);
+        maxAltitudePpvi.setup(getString(R.string.max_altitude_view_title),
+                getString(R.string.max_altitude_view_unit),
+                getString(R.string.max_altitude_view_default_value),
+                R.drawable.ic_max_altitude);
+        minAltitudePpvi.setup(getString(R.string.min_altitude_view_title),
+                getString(R.string.min_altitude_view_unit),
+                getString(R.string.min_altitude_view_default_value),
+                R.drawable.ic_min_altitude);
 
         paceCheckBox.setChecked(false);
         speedCheckBox.setChecked(true);
@@ -226,8 +248,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
             values.add(new Entry((float) elapsedSeconds, (float) trackpointEntity.getAltitude()));
         }
         elevationChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
-        // TODO: extract
-        LineDataSet elevationDataSet = new LineDataSet(values, "Elevation [m]");
+        LineDataSet elevationDataSet = new LineDataSet(values, getString(R.string.elevation_chart_title));
         setElevationChartData(elevationDataSet);
     }
 
@@ -244,8 +265,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
             values.add(new Entry((float) rollingDistance, (float) trackpointEntity.getAltitude()));
         }
         elevationChart.getXAxis().setValueFormatter(new LargeValueFormatter());
-        // TODO: extract
-        LineDataSet elevationDataSet = new LineDataSet(values, "Elevation [m]");
+        LineDataSet elevationDataSet = new LineDataSet(values, getString(R.string.elevation_chart_title));
         setElevationChartData(elevationDataSet);
     }
 
@@ -265,8 +285,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
             values.add(new Entry((float) elapsedSeconds, (float) trackpointEntity.getSpeed()));
         }
         speedChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
-        // TODO: extract
-        LineDataSet speedDataSet = new LineDataSet(values, "Speed [km/h]");
+        LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
         setSpeedChartData(speedDataSet);
     }
 
@@ -284,8 +303,8 @@ public class TrackDetailActivityChartsFragment extends Fragment
             values.add(new Entry((float) rollingDistance, (float) trackpointEntity.getSpeed()));
         }
         speedChart.getXAxis().setValueFormatter(new LargeValueFormatter());
-        // TODO: extract
-        LineDataSet speedDataSet = new LineDataSet(values, "Speed [km/h]");
+
+        LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
         setSpeedChartData(speedDataSet);
     }
 
@@ -315,8 +334,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
         }
         speedChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
         speedChart.getAxisLeft().setValueFormatter(new GraphTimeAxisValueFormatter((long) highestPaceValue));
-        // TODO: extract
-        LineDataSet speedDataSet = new LineDataSet(values, "Pace [min/km]");
+        LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.pace_chart_title));
         setSpeedChartData(speedDataSet);
     }
 
@@ -343,8 +361,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
         }
         speedChart.getXAxis().setValueFormatter(new LargeValueFormatter());
         speedChart.getAxisLeft().setValueFormatter(new GraphTimeAxisValueFormatter((long) highestPaceValue));
-        // TODO: extract
-        LineDataSet speedDataSet = new LineDataSet(values, "Speed [min/km]");
+        LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
         setSpeedChartData(speedDataSet);
     }
 

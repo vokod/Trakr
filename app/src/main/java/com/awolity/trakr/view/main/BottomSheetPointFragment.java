@@ -58,19 +58,19 @@ public class BottomSheetPointFragment extends BottomSheetBaseFragment {
         bearingView = view.findViewById(R.id.bearingView);
 
         speedView.setLabel(getActivity().getString(R.string.speed_view_label));
-        speedView.setValue(getActivity().getString(R.string.speed_view_value));
+        speedView.setValue(getActivity().getString(R.string.speed_view_default_value));
         speedView.setUnit(getActivity().getString(R.string.speed_view_unit));
 
         altitudeView.setLabel(getActivity().getString(R.string.altitude_view_label));
-        altitudeView.setValue(getActivity().getString(R.string.altitude_view_value));
+        altitudeView.setValue(getActivity().getString(R.string.altitude_view_default_value));
         altitudeView.setUnit(getActivity().getString(R.string.altitude_view_unit));
 
         accuracyView.setLabel(getActivity().getString(R.string.accuracy_view_label));
-        accuracyView.setValue(getActivity().getString(R.string.accuracy_view_value));
+        accuracyView.setValue(getActivity().getString(R.string.accuracy_view_default_value));
         accuracyView.setUnit(getActivity().getString(R.string.accuracy_view_unit));
 
         bearingView.setLabel(getActivity().getString(R.string.bearing_view_label));
-        bearingView.setValue(getActivity().getString(R.string.bearing_view_value));
+        bearingView.setValue(getActivity().getString(R.string.bearing_view_default_value));
         bearingView.setUnit(getActivity().getString(R.string.bearing_view_unit));
 
     }

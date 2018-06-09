@@ -183,11 +183,11 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
             speedValues.add(new Entry((float) rollingDistance, (float) trackpointEntity.getSpeed()));
         }
         chart.getXAxis().setValueFormatter(new LargeValueFormatter());
-        // TODO: extract
-        LineDataSet elevationDataSet = new LineDataSet(elevationValues, "Elevation [m]");
-        LineDataSet speedDataSet = new LineDataSet(speedValues, "Speed [km/h");
+        LineDataSet elevationDataSet = new LineDataSet(elevationValues, getString(R.string.elevation_chart_title));
+        LineDataSet speedDataSet = new LineDataSet(speedValues, getString(R.string.speed_chart_title));
         speedDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
         chart.getAxisRight().setAxisMinimum(0);
+        // TODO: ezek a csartok ne legyenek nagyíthatóak
 
         elevationDataSet.setDrawIcons(false);
         elevationDataSet.setDrawValues(false);

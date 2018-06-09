@@ -15,7 +15,6 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.PrimaryPropertyView;
 import com.awolity.trakr.customviews.SecondaryPropertyView;
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 
@@ -261,9 +260,9 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         }
         startTime = 0;
 
-        distanceView.setValue(getActivity().getString(R.string.distance_view_value));
+        distanceView.setValue(getActivity().getString(R.string.distance_view_default_value));
         distanceView.setUnit(getActivity().getString(R.string.distance_view_unit));
-        distanceView.setLabel(getActivity().getString(R.string.distance_view_label));
+        distanceView.setLabel(getActivity().getString(R.string.distance_view_title));
 
         ascentView.setValue(getActivity().getString(R.string.ascent_view_value));
         ascentView.setUnit(getActivity().getString(R.string.ascent_view_unit));
@@ -273,9 +272,9 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         descentView.setUnit(getActivity().getString(R.string.descent_view_unit));
         descentView.setLabel(getActivity().getString(R.string.descent_view_label));
 
-        elapsedTimeView.setValue(getActivity().getString(R.string.elapsed_time_view_value));
+        elapsedTimeView.setValue(getActivity().getString(R.string.elapsed_time_view_default_value));
         elapsedTimeView.setUnit(getActivity().getString(R.string.elapsed_time_view_unit));
-        elapsedTimeView.setLabel(getActivity().getString(R.string.elapsed_time_view_label));
+        elapsedTimeView.setLabel(getActivity().getString(R.string.elapsed_time_view_title));
 
         minAltitudeView.setValue(getActivity().getString(R.string.min_altitude_view_value));
         minAltitudeView.setUnit(getActivity().getString(R.string.min_altitude_view_unit));

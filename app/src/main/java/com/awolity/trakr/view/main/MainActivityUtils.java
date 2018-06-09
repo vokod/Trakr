@@ -88,8 +88,6 @@ public class MainActivityUtils {
                         .setNegativeButton(android.R.string.no, null)
                         .setIcon(R.mipmap.ic_launcher)
                         .show();
-            } else {
-                // TODO: what to do here?
             }
             return false;
         }

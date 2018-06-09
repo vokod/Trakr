@@ -387,7 +387,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        // TODO: reuse activity
         // MyLog.d(LOG_TAG, "onNewIntent");
     }
 
@@ -511,7 +510,6 @@ public class MainActivity extends AppCompatActivity
         // MyLog.d(LOG_TAG,"onServiceStopped");
         trackFragment.stopTrackDataUpdate();
         chartsFragment.stopTrackDataUpdate();
-        // TODO: status.stoprecording (ami aztán megcsinálja mindkettőt)
         status.setRecording(false);
         clearTrackOnMap();
 
