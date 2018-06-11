@@ -11,6 +11,12 @@
     <string name="bottom_sheet_label_charts">Charts</string>
     <string name="select_activity_type">Select activity type</string>
 
+    <string name="login_error_cancel">Sign in cancelled</string>
+    <string name="login_error_no_internet">No internet connection</string>
+    <string name="login_error_unknown_response">Unknown sign in response</string>
+    <string name="login_error_unknown_error">Unknown error</string>
+
+
     <string name="activity_type_walking">Walking</string>
     <string name="activity_type_running">Running</string>
     <string name="activity_type_biking">Biking</string>

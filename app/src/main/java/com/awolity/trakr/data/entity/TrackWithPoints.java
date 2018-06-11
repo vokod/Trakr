@@ -3,6 +3,7 @@ package com.awolity.trakr.data.entity;
 import android.arch.persistence.room.Relation;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class TrackWithPoints  extends TrackEntity{
         this.trackPoints = trackPoints;
     }
 
+    @Exclude
     public List<LatLng> getPointsLatLng(){
         List<LatLng> latLngs = new ArrayList<>(trackPoints.size());
         for(TrackpointEntity trackpointEntity : trackPoints){

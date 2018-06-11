@@ -7,8 +7,7 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.di.TrakrApplication;
-import com.awolity.trakr.repository.Repository;
-import com.awolity.trakr.utils.MyLog;
+import com.awolity.trakr.repository.TrackRepository;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class TrackViewModel extends ViewModel {
 
     @SuppressWarnings("WeakerAccess")
     @Inject
-    Repository repository;
+    TrackRepository trackRepository;
 
     public static final long NOT_SET = -1;
     private static final String LOG_TAG = TrackViewModel.class.getSimpleName();
@@ -30,51 +29,51 @@ public class TrackViewModel extends ViewModel {
     }
 
     public void init(long trackId) {
-        // MyLog.d(LOG_TAG, "init- trackId: " + trackId);
-      /*  if (this.trackId != NOT_SET) {
-            throw new IllegalStateException("Viewmodel already initialised");
-        }*/
         if (this.trackId == NOT_SET) {
             this.trackId = trackId;
         }
     }
 
-    public void reset(){
-        trackId =NOT_SET;
+    public void reset() {
+        trackId = NOT_SET;
     }
 
     public LiveData<TrackEntity> getTrack() {
         checkTrackId();
-        return repository.getTrack(trackId);
+        return trackRepository.getTrack(trackId);
     }
 
     public LiveData<TrackWithPoints> getTrackWithPoints() {
         checkTrackId();
-        return repository.getTrackWithPoints(trackId);
+        return trackRepository.getTrackWithPoints(trackId);
     }
 
     public LiveData<List<TrackpointEntity>> getTrackpointsList() {
         checkTrackId();
-        return repository.getTrackpointsByTrack(trackId);
+        return trackRepository.getTrackpointsByTrack(trackId);
     }
 
     public LiveData<TrackpointEntity> getActualTrackpoint() {
         checkTrackId();
-        return repository.getActualTrackpoint(trackId);
+        return trackRepository.getActualTrackpoint(trackId);
     }
 
     public void deleteTrack() {
         checkTrackId();
-        repository.deleteTrack(trackId);
+        trackRepository.deleteTrack(trackId);
     }
 
     public void exportTrack() {
         checkTrackId();
-        repository.exportTrack(trackId);
+        trackRepository.exportTrack(trackId);
+    }
+
+    public void saveToCloud() {
+        trackRepository.saveTrackToFirebase(trackId);
     }
 
     public void updateTrack(TrackEntity trackEntity) {
-        repository.updateTrack(trackEntity);
+        trackRepository.updateTrack(trackEntity);
     }
 
     private void checkTrackId() {
@@ -82,4 +81,6 @@ public class TrackViewModel extends ViewModel {
             throw new IllegalStateException("Viewmodel not initialised");
         }
     }
+
+
 }

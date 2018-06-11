@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import com.awolity.trakr.utils.MyLog;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 @SuppressWarnings("WeakerAccess")
 @Entity(tableName = "track_table")
@@ -20,6 +21,8 @@ public class TrackEntity {
     @NonNull
     @ColumnInfo(name = "track_id")
     long trackId;
+    @ColumnInfo(name = "firabase_id")
+    String firebaseId;
     String title;
     @ColumnInfo(name = "start_time")
     long startTime;
@@ -49,8 +52,7 @@ public class TrackEntity {
     String metadata;
     @Ignore
     private boolean isValidElevationData = false;
-    @Ignore
-    private static final String TAG = TrackEntity.class.getSimpleName();
+
 
     @NonNull
     public long getTrackId() {
@@ -59,6 +61,14 @@ public class TrackEntity {
 
     public void setTrackId(@NonNull long trackId) {
         this.trackId = trackId;
+    }
+
+    public String getFirebaseId() {
+        return firebaseId;
+    }
+
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
     }
 
     public String getTitle() {
@@ -300,62 +310,30 @@ public class TrackEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TrackEntity)) return false;
-
-        TrackEntity that = (TrackEntity) o;
-
-        if (getTrackId() != that.getTrackId()) return false;
-        if (getStartTime() != that.getStartTime()) return false;
-        if (Double.compare(that.getDistance(), getDistance()) != 0) return false;
-        if (Double.compare(that.getAscent(), getAscent()) != 0) return false;
-        if (Double.compare(that.getDescent(), getDescent()) != 0) return false;
-        if (getElapsedTime() != that.getElapsedTime()) return false;
-        if (getNumOfTrackPoints() != that.getNumOfTrackPoints()) return false;
-        if (Double.compare(that.getNorthestPoint(), getNorthestPoint()) != 0) return false;
-        if (Double.compare(that.getSouthestPoint(), getSouthestPoint()) != 0) return false;
-        if (Double.compare(that.getWesternPoint(), getWesternPoint()) != 0) return false;
-        if (Double.compare(that.getEasternPoint(), getEasternPoint()) != 0) return false;
-        if (Double.compare(that.getMinAltitude(), getMinAltitude()) != 0) return false;
-        if (Double.compare(that.getMaxAltitude(), getMaxAltitude()) != 0) return false;
-        if (Double.compare(that.getMaxSpeed(), getMaxSpeed()) != 0) return false;
-        if (Double.compare(that.getAvgSpeed(), getAvgSpeed()) != 0) return false;
-        if (getTitle() != null ? !getTitle().equals(that.getTitle()) : that.getTitle() != null)
-            return false;
-        return getMetadata() != null ? getMetadata().equals(that.getMetadata()) : that.getMetadata() == null;
+        TrackEntity entity = (TrackEntity) o;
+        return getTrackId() == entity.getTrackId() &&
+                getStartTime() == entity.getStartTime() &&
+                Double.compare(entity.getDistance(), getDistance()) == 0 &&
+                Double.compare(entity.getAscent(), getAscent()) == 0 &&
+                Double.compare(entity.getDescent(), getDescent()) == 0 &&
+                getElapsedTime() == entity.getElapsedTime() &&
+                getNumOfTrackPoints() == entity.getNumOfTrackPoints() &&
+                Double.compare(entity.getNorthestPoint(), getNorthestPoint()) == 0 &&
+                Double.compare(entity.getSouthestPoint(), getSouthestPoint()) == 0 &&
+                Double.compare(entity.getWesternPoint(), getWesternPoint()) == 0 &&
+                Double.compare(entity.getEasternPoint(), getEasternPoint()) == 0 &&
+                Double.compare(entity.getMinAltitude(), getMinAltitude()) == 0 &&
+                Double.compare(entity.getMaxAltitude(), getMaxAltitude()) == 0 &&
+                Double.compare(entity.getMaxSpeed(), getMaxSpeed()) == 0 &&
+                Double.compare(entity.getAvgSpeed(), getAvgSpeed()) == 0 &&
+                Objects.equals(getFirebaseId(), entity.getFirebaseId()) &&
+                Objects.equals(getTitle(), entity.getTitle()) &&
+                Objects.equals(getMetadata(), entity.getMetadata());
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = (int) (getTrackId() ^ (getTrackId() >>> 32));
-        result = 31 * result + (getTitle() != null ? getTitle().hashCode() : 0);
-        result = 31 * result + (int) (getStartTime() ^ (getStartTime() >>> 32));
-        temp = Double.doubleToLongBits(getDistance());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getAscent());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getDescent());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (int) (getElapsedTime() ^ (getElapsedTime() >>> 32));
-        result = 31 * result + (int) (getNumOfTrackPoints() ^ (getNumOfTrackPoints() >>> 32));
-        temp = Double.doubleToLongBits(getNorthestPoint());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getSouthestPoint());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getWesternPoint());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getEasternPoint());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getMinAltitude());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getMaxAltitude());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getMaxSpeed());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getAvgSpeed());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (getMetadata() != null ? getMetadata().hashCode() : 0);
-        return result;
+        return Objects.hash(getTrackId(), getFirebaseId(), getTitle(), getStartTime(), getDistance(), getAscent(), getDescent(), getElapsedTime(), getNumOfTrackPoints(), getNorthestPoint(), getSouthestPoint(), getWesternPoint(), getEasternPoint(), getMinAltitude(), getMaxAltitude(), getMaxSpeed(), getAvgSpeed(), getMetadata());
     }
 
     public static String getDefaultName(long startTime) {
@@ -375,5 +353,27 @@ public class TrackEntity {
         } else {
             return "Evening track";
         }
+    }
+
+    public static TrackEntity fromTrackWithPoints(TrackWithPoints trackWithPoints){
+        TrackEntity entity = new TrackEntity();
+        entity.setTrackId(trackWithPoints.getTrackId());
+        entity.setFirebaseId(trackWithPoints.getFirebaseId());
+        entity.setStartTime(trackWithPoints.getStartTime());
+        entity.setDistance(trackWithPoints.getDistance());
+        entity.setAscent(trackWithPoints.getAscent());
+        entity.setDescent(trackWithPoints.getDescent());
+        entity.setElapsedTime(trackWithPoints.getElapsedTime());
+        entity.setNumOfTrackPoints(trackWithPoints.getNumOfTrackPoints());
+        entity.setNorthestPoint(trackWithPoints.getNorthestPoint());
+        entity.setSouthestPoint(trackWithPoints.getSouthestPoint());
+        entity.setWesternPoint(trackWithPoints.getWesternPoint());
+        entity.setEasternPoint(trackWithPoints.getEasternPoint());
+        entity.setMinAltitude(trackWithPoints.getMinAltitude());
+        entity.setMaxAltitude(trackWithPoints.getMaxAltitude());
+        entity.setMaxSpeed(trackWithPoints.getMaxSpeed());
+        entity.setAvgSpeed(trackWithPoints.getAvgSpeed());
+        entity.setMetadata(trackWithPoints.getMetadata());
+        return entity;
     }
 }

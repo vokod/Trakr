@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
+import com.awolity.trakr.data.entity.TrackWithPoints;
+import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 
@@ -191,6 +193,17 @@ public class TrackDetailActivity extends AppCompatActivity
                 trackViewModel.exportTrack();
             }
             return true;
+        } else if(id == R.id.action_upload){
+            trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
+                @Override
+                public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
+                    if(trackWithPoints!=null){
+                        trackViewModel.getTrackWithPoints().removeObserver(this);
+                        TrackRepository trackRepository = new TrackRepository();
+                        trackRepository.saveTrackToFirebase(trackId);
+                    }
+                }
+            });
         }
         return super.onOptionsItemSelected(item);
     }

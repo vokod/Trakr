@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackpointEntity;
@@ -100,5 +101,9 @@ public class MainActivityUtils {
             latLngs.add(new LatLng(trackpoint.getLatitude(), trackpoint.getLongitude()));
         }
         return latLngs;
+    }
+
+    static void showToast(Context context, String s) {
+        Toast.makeText(context, s, Toast.LENGTH_LONG).show();
     }
 }

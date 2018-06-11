@@ -13,4 +13,10 @@
         android:orderInCategory="1"
         android:title="@string/action_export"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_upload"
+        android:orderInCategory="100"
+        android:title="Upload"
+        app:showAsAction="never" />
 </menu>

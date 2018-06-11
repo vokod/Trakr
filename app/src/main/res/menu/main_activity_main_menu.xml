@@ -16,5 +16,12 @@
         android:title="@string/action_select_activity"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_synchronisation"
+        android:orderInCategory="1"
+        android:title="Synchronisation"
+        app:showAsAction="never" />
+
+
 </menu>
 

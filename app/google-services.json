@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "1093038700426",
-    "firebase_url": "https://trakr2-1517837796185.firebaseio.com",
-    "project_id": "trakr2-1517837796185",
-    "storage_bucket": "trakr2-1517837796185.appspot.com"
+    "project_number": "224273733983",
+    "firebase_url": "https://trakr-1477750417143.firebaseio.com",
+    "project_id": "trakr-1477750417143",
+    "storage_bucket": "trakr-1477750417143.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1093038700426:android:c9b1c5aa1cb651ce",
+        "mobilesdk_app_id": "1:224273733983:android:c9b1c5aa1cb651ce",
         "android_client_info": {
           "package_name": "com.awolity.trakr"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1093038700426-r5k0l20s13ksmo1h4kgmgg2uva893k6d.apps.googleusercontent.com",
+          "client_id": "224273733983-unjdk5stamgfu9v8jkcc1alqrqqln9e4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.awolity.trakr",
@@ -23,17 +23,17 @@
           }
         },
         {
-          "client_id": "1093038700426-adoa2gepmbut1skb5elr0tf9f2i25cka.apps.googleusercontent.com",
+          "client_id": "224273733983-2l51ihq5agj2bg2hs91gia2oeioin1fj.apps.googleusercontent.com",
           "client_type": 3
         },
         {
-          "client_id": "1093038700426-adoa2gepmbut1skb5elr0tf9f2i25cka.apps.googleusercontent.com",
+          "client_id": "224273733983-2l51ihq5agj2bg2hs91gia2oeioin1fj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCLxH6YeMENDDQafceyuyIBQTxyg-VbRjM"
+          "current_key": "AIzaSyCViklcj1BBTFpSTTf8DnmIchxVU8vuDOM"
         }
       ],
       "services": {
@@ -44,7 +44,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1093038700426-adoa2gepmbut1skb5elr0tf9f2i25cka.apps.googleusercontent.com",
+              "client_id": "224273733983-2l51ihq5agj2bg2hs91gia2oeioin1fj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

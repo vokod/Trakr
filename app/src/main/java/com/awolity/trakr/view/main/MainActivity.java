@@ -34,8 +34,12 @@ import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.list.TrackListActivity;
+import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.LocationViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -46,6 +50,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -68,6 +73,7 @@ public class MainActivity extends AppCompatActivity
     private MainActivityStatus status;
     @SuppressWarnings("FieldCanBeLocal")
     private TrackViewModel trackViewModel;
+    private AppUserViewModel appUserViewModel;
     private PolylineOptions polylineOptions;
     private Polyline polyline;
     private long trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
@@ -88,6 +94,7 @@ public class MainActivity extends AppCompatActivity
         MainActivityUtils.checkLocationPermission(this, PERMISSION_REQUEST_CODE);
         setupMapFragment();
         setupLocationViewModel();
+        setupAppUserViewModel();
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -228,6 +235,10 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private void setupAppUserViewModel(){
+        appUserViewModel = ViewModelProviders.of(this).get(AppUserViewModel.class);
+    }
+
     private void setupTrackRecorderService() {
         // MyLog.d(LOG_TAG, "setupTrackRecorderService");
         serviceManager = new TrackRecorderServiceManager(this);
@@ -350,6 +361,8 @@ public class MainActivity extends AppCompatActivity
     private void clearTrackOnMap() {
         if (polyline != null) {
             polyline.remove();
+        } else {
+            googleMap.clear();
         }
     }
 
@@ -443,6 +456,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_main_menu, menu);
         this.menu = menu;
+
         MenuItem activityTypeItem = menu.findItem(R.id.action_select_activity_type);
         ActivityType activityType = PreferenceUtils.getActivityType(this);
         if (activityType != null) {
@@ -450,8 +464,18 @@ public class MainActivity extends AppCompatActivity
         } else {
             activityTypeItem.setIcon(R.drawable.ic_walk);
         }
+
+        MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
+        if(appUserViewModel.IsAppUserLoggedIn()){
+            synchronisationItem.setTitle("Disable track synchronisation");
+        } else {
+            synchronisationItem.setTitle("Enable track synchronisation");
+        }
+
         return true;
     }
+
+    private static final int RC_SIGN_IN = 22;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -462,8 +486,78 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.action_select_activity_type) {
             ActivityTypeDialogFragment dialog = new ActivityTypeDialogFragment();
             dialog.show(getSupportFragmentManager(), null);
+        } else if (id == R.id.action_synchronisation){
+            if(appUserViewModel.IsAppUserLoggedIn()){
+                AlertDialog.Builder builder;
+                builder = new AlertDialog.Builder(this);
+                builder.setTitle("Disable synchronisation")
+                        .setMessage("Are you sure you want to disable synchronisation and log out?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivityForResult(AuthUI.getInstance()
+                                        .createSignInIntentBuilder()
+                                        .setAvailableProviders(Arrays.asList(
+                                                new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
+                                        .build(), RC_SIGN_IN);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            } else {
+                AlertDialog.Builder builder;
+                builder = new AlertDialog.Builder(this);
+                builder.setTitle("Log in")
+                        .setMessage("you need to log in to enable track synchronsiation")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivityForResult(AuthUI.getInstance()
+                                        .createSignInIntentBuilder()
+                                        .setAvailableProviders(Arrays.asList(
+                                                new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
+                                        .build(), RC_SIGN_IN);
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .show();
+            }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            // Successfully signed in
+            if (resultCode == RESULT_OK) {
+                // TODO:
+                return;
+            } else {
+                // Sign in failed
+                if (response == null) {
+                    // UserEntity pressed back button
+                    MainActivityUtils.showToast(this, getString(R.string.login_error_cancel));
+                    return;
+                }
+
+                if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    MainActivityUtils.showToast(this,getString(R.string.login_error_no_internet));
+                    return;
+                }
+
+                if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                    MainActivityUtils.showToast(this,getString(R.string.login_error_unknown_error));
+                    return;
+                }
+            }
+            MainActivityUtils.showToast(this,getString(R.string.login_error_unknown_response));
+        }
     }
 
     @Override
@@ -505,6 +599,9 @@ public class MainActivity extends AppCompatActivity
         chartsFragment.stopTrackDataUpdate();
         status.setRecording(false);
         clearTrackOnMap();
+
+        trackViewModel.saveToCloud();
+        trackViewModel.reset();
 
         Intent intent = TrackDetailActivity.getStarterIntent(this, trackId);
         startActivity(intent);

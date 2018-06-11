@@ -7,16 +7,12 @@ import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.activitytype.ActivityType;
-import com.awolity.trakr.customviews.SecondaryPropertyView;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.di.TrakrApplication;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.notification.NotificationUtils;
-import com.awolity.trakr.repository.Repository;
-import com.awolity.trakr.utils.MyLog;
-import com.awolity.trakr.utils.PreferenceUtils;
+import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.utils.StringUtils;
 import com.google.android.gms.location.LocationRequest;
 
@@ -41,7 +37,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
     @SuppressWarnings("WeakerAccess")
     @Inject
-    Repository repository;
+    TrackRepository trackRepository;
 
     @SuppressWarnings("WeakerAccess")
     @Inject
@@ -80,7 +76,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
             @Override
             public void run() {
                 track = getBaseTrack();
-                trackId = repository.saveTrackSync(track);
+                trackId = trackRepository.saveTrackSync(track);
                 track.setTrackId(trackId);
 
                 sendTrackIdBroadcast(context, trackId);
@@ -124,7 +120,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
     private void checkTrackValidity() {
         if (status.getNumOfTrackPoints() == 0) {
-            repository.deleteTrack(trackId);
+            trackRepository.deleteTrack(trackId);
         }
         if (status.getNumOfTrackPoints() == 1) {
             // duplicate the only point
@@ -203,12 +199,12 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
     private void saveTrackpointToDb(TrackpointEntity trackpointEntity) {
         // MyLog.d(TAG, "saveTrackpointToDb");
-        repository.saveTrackpoint(trackpointEntity);
+        trackRepository.saveTrackpoint(trackpointEntity);
     }
 
     private void updateTrackInDb(TrackEntity track) {
         // MyLog.d(TAG, "updateTrackInDb - trackId:" + track.getTrackId());
-        repository.updateTrack(track);
+        trackRepository.updateTrack(track);
     }
 
     private String buildMetadataString() {
@@ -232,7 +228,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
         }
 
         String metadataString = "Activity type: " +
-                status.getActivityType().getTitle() +
+                status.getActivityType().getKey() +
                 ". Tracking interval: "
                 + locationManager.getLocationRequestInterval() / 1000
                 + "s. "

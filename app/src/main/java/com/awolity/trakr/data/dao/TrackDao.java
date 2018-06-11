@@ -27,14 +27,11 @@ public interface TrackDao {
     @Query("SELECT * FROM track_table ORDER BY start_time")
     LiveData<List<TrackEntity>> loadAll();
 
-  /*  @Query("SELECT * FROM track_table")
-    List<TrackEntity> loadAllSync();*/
+    @Query("SELECT * FROM track_table ORDER BY start_time")
+    List<TrackEntity> loadAllSync();
 
     @Query("SELECT * FROM track_table WHERE track_id = :trackId")
     LiveData<TrackEntity> loadById(long trackId);
-
-  /*  @Query("SELECT * FROM track_table WHERE track_id = :trackId")
-    TrackEntity loadByIdSync(long trackId);*/
 
     @Transaction
     @Query("SELECT * FROM track_table WHERE track_id = :trackId")
@@ -48,21 +45,7 @@ public interface TrackDao {
     @Query("SELECT * FROM track_table WHERE track_id = :trackId")
     TrackWithPoints loadByIdWithPointsSync(long trackId);
 
-  /*  @Query("SELECT num_of_trackpoints FROM track_table WHERE track_id = :trackId")
-    LiveData<Integer> loadNumOfTrackpointsById(long trackId);
-
-    @Query("SELECT num_of_trackpoints FROM track_table WHERE track_id = :trackId")
-    Integer loadNumOfTrackpointsByIdSync(long trackId);
-
-    @Insert(onConflict = REPLACE)
-    void saveAll(List<TrackEntity> trackEntities);
-
-    @Delete
-    void delete(TrackEntity trackEntity);*/
-
     @Query("DELETE FROM track_table WHERE track_id = :trackId")
     void delete(long trackId);
 
-   /* @Delete
-    void deleteAll(List<TrackEntity> trackEntities);*/
 }

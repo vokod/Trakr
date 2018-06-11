@@ -2,8 +2,7 @@ package com.awolity.trakr.di;
 
 import android.content.Context;
 
-import com.awolity.trakr.location.LocationManager;
-import com.awolity.trakr.repository.Repository;
+import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.utils.AppExecutors;
 
 import java.util.concurrent.Executor;
@@ -39,8 +38,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public Repository provideRepository() {
-        return new Repository();
+    public TrackRepository provideTrackRepository() {
+        return new TrackRepository();
     }
 
 }
