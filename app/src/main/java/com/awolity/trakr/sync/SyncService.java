@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.util.Pair;
+import android.widget.Toast;
 
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.di.TrakrApplication;
 import com.awolity.trakr.repository.TrackRepository;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,10 +32,10 @@ public class SyncService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        // TODO: get network state
+
         if (isConnected(this)) {
             final List<TrackEntity> tracksInDb = trackRepository.getTracksSync();
-            // TODO: get list of tracks in firebase
+
             trackRepository.getAllTrackEntitiesFromFirebase(new TrackRepository.GetAllTrackEntitiesFromFirebaseListener() {
                 @Override
                 public void onAllTracksLoaded(List<TrackEntity> trackEntityList) {
@@ -46,7 +48,7 @@ public class SyncService extends IntentService {
             });
 
         } else {
-            // TODO: show toast
+            Toast.makeText(this, "Can't synchronise tracks in offline state. Will try next time the app starts", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -57,7 +59,9 @@ public class SyncService extends IntentService {
     }
 
     private void downloadOnlineTracks(List<TrackEntity> onlineTracks) {
-
+        for (TrackEntity trackEntity : onlineTracks) {
+            trackRepository.saveTrackToLocalDbFromFirebase(trackEntity.getFirebaseId());
+        }
     }
 
     private static boolean isConnected(Context context) {
@@ -71,15 +75,19 @@ public class SyncService extends IntentService {
 
     private static Pair<List<TrackEntity>, List<TrackEntity>> compareTracks(List<TrackEntity> tracksInDb, List<TrackEntity> tracksInCloud) {
         List<TrackEntity> onlyOfflineTracks = new ArrayList<>(tracksInDb);
-        for (TrackEntity onLineTrack : tracksInCloud) {
-            onlyOfflineTracks.remove(onLineTrack);
+        Iterator<TrackEntity> onlyOfflineIterator = onlyOfflineTracks.iterator();
+        while (onlyOfflineIterator.hasNext()) {
+            if (!onlyOfflineIterator.next().getFirebaseId().isEmpty()) {
+                onlyOfflineIterator.remove();
+            }
         }
+
         List<TrackEntity> onlyOnlineTracks = new ArrayList<>(tracksInCloud);
         for (TrackEntity offlineTrack : tracksInDb) {
             onlyOnlineTracks.remove(offlineTrack);
         }
 
-        return new Pair<List<TrackEntity>, List<TrackEntity>>(onlyOfflineTracks, onlyOnlineTracks);
+        return new Pair<>(onlyOfflineTracks, onlyOnlineTracks);
     }
 
 }

@@ -22,6 +22,12 @@
         android:title="Synchronisation"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_sync_now"
+        android:orderInCategory="100"
+        android:title="Sync now"
+        app:showAsAction="never" />
+
 
 </menu>
 

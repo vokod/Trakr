@@ -117,6 +117,10 @@ public class TrackRepository {
         discIoExecutor.execute(new Runnable() {
             @Override
             public void run() {
+                TrackEntity entity = trackDao.loadByIdSync(trackId);
+                if(!entity.getFirebaseId().isEmpty()){
+                    deleteTrackFromCloud(entity.getFirebaseId());
+                }
                 trackDao.delete(trackId);
             }
         });
@@ -201,7 +205,7 @@ public class TrackRepository {
         void onAllTracksLoaded(List<TrackEntity> trackEntityList);
     }
 
-    public void saveTrackToLocalDbFromFirebase(String firebaseId){
+    public void saveTrackToLocalDbFromFirebase(final String firebaseId){
         final DatabaseReference trackDbReference
                 = FirebaseDatabase.getInstance().getReference().child("tracks").child(firebaseId);
 
@@ -209,7 +213,29 @@ public class TrackRepository {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 TrackEntity entity = dataSnapshot.getValue(TrackEntity.class);
-                trackDao.save(entity);
+                entity.setTrackId(0);
+                final long trackId = trackDao.save(entity);
+
+                final DatabaseReference trackpointDbReference
+                        = FirebaseDatabase.getInstance().getReference().child("trackpoints").child(firebaseId);
+
+                trackpointDbReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List <TrackpointEntity> trackpointEntities = new ArrayList<>();
+                        for(DataSnapshot trackPointSnapshot : dataSnapshot.getChildren()){
+                            TrackpointEntity trackPointEntity = trackPointSnapshot.getValue(TrackpointEntity.class);
+                            trackPointEntity.setTrackId(trackId);
+                            trackpointEntities.add(trackPointEntity);
+                        }
+                        trackpointDao.saveAll(trackpointEntities);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
 
             @Override
@@ -217,24 +243,14 @@ public class TrackRepository {
 
             }
         });
+    }
 
-        final DatabaseReference trackpointDbReference
+    private void deleteTrackFromCloud(String firebaseId){
+        final DatabaseReference trackDbReference
+                = FirebaseDatabase.getInstance().getReference().child("tracks").child(firebaseId);
+        trackDbReference.removeValue();
+        final DatabaseReference trackpointsDbReference
                 = FirebaseDatabase.getInstance().getReference().child("trackpoints").child(firebaseId);
-
-        trackpointDbReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List <TrackpointEntity> trackpointEntities = new ArrayList<>();
-                for(DataSnapshot trackPointSnapshot : dataSnapshot.getChildren()){
-                    trackpointEntities.add(trackPointSnapshot.getValue(TrackpointEntity.class));
-                }
-                trackpointDao.saveAll(trackpointEntities);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        trackpointsDbReference.removeValue();
     }
 }

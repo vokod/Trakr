@@ -33,6 +33,9 @@ public interface TrackDao {
     @Query("SELECT * FROM track_table WHERE track_id = :trackId")
     LiveData<TrackEntity> loadById(long trackId);
 
+    @Query("SELECT * FROM track_table WHERE track_id = :trackId")
+    TrackEntity loadByIdSync(long trackId);
+
     @Transaction
     @Query("SELECT * FROM track_table WHERE track_id = :trackId")
     LiveData<TrackWithPoints> loadByIdWithPoints(long trackId);

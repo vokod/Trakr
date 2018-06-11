@@ -311,8 +311,7 @@ public class TrackEntity {
         if (this == o) return true;
         if (!(o instanceof TrackEntity)) return false;
         TrackEntity entity = (TrackEntity) o;
-        return getTrackId() == entity.getTrackId() &&
-                getStartTime() == entity.getStartTime() &&
+        return getStartTime() == entity.getStartTime() &&
                 Double.compare(entity.getDistance(), getDistance()) == 0 &&
                 Double.compare(entity.getAscent(), getAscent()) == 0 &&
                 Double.compare(entity.getDescent(), getDescent()) == 0 &&
@@ -355,10 +354,11 @@ public class TrackEntity {
         }
     }
 
-    public static TrackEntity fromTrackWithPoints(TrackWithPoints trackWithPoints){
+    public static TrackEntity fromTrackWithPoints(TrackWithPoints trackWithPoints) {
         TrackEntity entity = new TrackEntity();
         entity.setTrackId(trackWithPoints.getTrackId());
         entity.setFirebaseId(trackWithPoints.getFirebaseId());
+        entity.setTitle(trackWithPoints.getTitle());
         entity.setStartTime(trackWithPoints.getStartTime());
         entity.setDistance(trackWithPoints.getDistance());
         entity.setAscent(trackWithPoints.getAscent());

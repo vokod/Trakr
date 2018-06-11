@@ -23,12 +23,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.activitytype.ActivityType;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
+import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
 import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.Utility;
@@ -484,8 +486,12 @@ public class MainActivity extends AppCompatActivity
             startActivity(TrackListActivity.getStarterIntent(this));
             return true;
         } else if (id == R.id.action_select_activity_type) {
-            ActivityTypeDialogFragment dialog = new ActivityTypeDialogFragment();
-            dialog.show(getSupportFragmentManager(), null);
+            if(status.isRecording()){
+                Toast.makeText(this, "You can't change activity type while recording track.",Toast.LENGTH_LONG ).show();
+            } else {
+                ActivityTypeDialogFragment dialog = new ActivityTypeDialogFragment();
+                dialog.show(getSupportFragmentManager(), null);
+            }
         } else if (id == R.id.action_synchronisation){
             if(appUserViewModel.IsAppUserLoggedIn()){
                 AlertDialog.Builder builder;
@@ -523,6 +529,8 @@ public class MainActivity extends AppCompatActivity
                         .setIcon(android.R.drawable.ic_dialog_info)
                         .show();
             }
+        } else if(id == R.id.action_sync_now){
+            startService(new Intent(this, SyncService.class));
         }
         return super.onOptionsItemSelected(item);
     }

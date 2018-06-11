@@ -83,7 +83,7 @@ public class TrackListAdapter
     private void deleteInvalidTracks(List<TrackWithPoints> trackWithPointsList) {
         Iterator<TrackWithPoints> iterator = trackWithPointsList.iterator();
         while (iterator.hasNext()) {
-            if (iterator.next().getNumOfTrackPoints() <= 2) {
+            if (iterator.next().getNumOfTrackPoints() < 2) {
                 iterator.remove();
             }
         }
@@ -148,7 +148,6 @@ public class TrackListAdapter
             mapView.setClickable(false);
         }
 
-
         void bind(final TrackWithPoints trackWithPoints) {
             // MyLog.d(LOG_TAG, "bind " + TrackItemViewHolder.this.hashCode());
             this.trackWithPoints = trackWithPoints;
@@ -173,19 +172,12 @@ public class TrackListAdapter
                 public void onMapReady(final GoogleMap googleMap) {
                     // MyLog.d(LOG_TAG, "onMapReady: " + TrackItemViewHolder.this.hashCode());
                     TrackItemViewHolder.this.googleMap = googleMap;
-                   // Handler handler = new android.os.Handler();
-                  /*  Runnable mapDrawer = new Runnable() {
-                        @Override
-                        public void run() {*/
                     if (polyline != null) {
                         // MyLog.d(LOG_TAG, "onMapReady: " + TrackItemViewHolder.this.hashCode() + " the map already contains a polyline, removing");
                         polyline.remove();
                     }
                     polyline = MapUtils.setupTrackPolyLine(context, googleMap, trackWithPoints, true);
                     mapView.onResume();
-                   /*     }
-                    };
-                    handler.postDelayed(mapDrawer,500);*/
                 }
             });
 
