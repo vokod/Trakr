@@ -83,7 +83,7 @@ public class PreferenceUtils {
         String name = sharedpreferences.getString(context.getString(R.string.pref_key_activity_type),"");
         List<ActivityType> activityTypeList = ActivityTypeManager.getInstance(context).getActivityTypes();
         for(ActivityType activityType : activityTypeList){
-            if(activityType.getTitle().equals(name)){
+            if(activityType.getKey().equals(name)){
                 return activityType;
             }
         }
@@ -92,7 +92,7 @@ public class PreferenceUtils {
 
     public static void setActivityType(Context context, ActivityType activityType) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        editor.putString(context.getString(R.string.pref_key_activity_type), activityType.getTitle());
+        editor.putString(context.getString(R.string.pref_key_activity_type), activityType.getKey());
         editor.apply();
     }
 }

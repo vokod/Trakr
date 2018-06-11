@@ -3,6 +3,8 @@ package com.awolity.trakr.trackrecorder;
 import android.content.Context;
 import android.location.Location;
 
+import com.awolity.trakr.activitytype.ActivityType;
+import com.awolity.trakr.activitytype.ActivityTypeManager;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.utils.PreferenceUtils;
 
@@ -14,18 +16,30 @@ class TrackRecorderStatus {
             altitudeFilterParameter, numOfTrackPoints;
     private TrackpointEntity previousSavedTrackpoint, actualSavedTrackpoint, candidateTrackpoint;
     private AltitudeFilter altitudeFilter;
+    private final ActivityType activityType;
 
     public TrackRecorderStatus(Context context) {
-        trackingDistance = (PreferenceUtils.getPreferenceTrackingDistance(context));
-        trackingInterval = (PreferenceUtils.getPreferenceTrackingInterval(context));
-        trackingAccuracy = (PreferenceUtils.getPreferenceGeolocationPriority(context));
-        accuracyFilterParameter = (PreferenceUtils.getPreferenceAccuracyFilterParameter(context));
-        isAltitudeFiltered = (PreferenceUtils.getPreferenceAltitudeFilter(context));
-        altitudeFilterParameter = (PreferenceUtils.getPreferenceAltitudeFilterParameter(context));
+        ActivityType activityType1;
+        activityType1 = PreferenceUtils.getActivityType(context);
+        if (activityType1 == null) {
+            activityType1 = ActivityTypeManager.getInstance(context).getActivityTypes().get(0);
+        }
+
+        activityType = activityType1;
+        trackingDistance = activityType.getRecordParameters().getTrackingDistance();
+        trackingInterval = activityType.getRecordParameters().getTrackingInterval();
+        trackingAccuracy = activityType.getRecordParameters().getTrackingAccuracy();
+        accuracyFilterParameter = activityType.getRecordParameters().getAccuracyFilterParameter();
+        isAltitudeFiltered = true;
+        altitudeFilterParameter = activityType.getRecordParameters().getAltitudeFilterParameter();
 
         if (isAltitudeFiltered) {
             altitudeFilter = new AltitudeFilter(altitudeFilterParameter);
         }
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
     }
 
     TrackpointEntity getActualSavedTrackpoint() {
@@ -60,11 +74,11 @@ class TrackRecorderStatus {
         numOfTrackPoints++;
     }
 
-    int getNumOfTrackPoints(){
+    int getNumOfTrackPoints() {
         return numOfTrackPoints;
     }
 
-    TrackpointEntity getCandidateTrackpoint(){
+    TrackpointEntity getCandidateTrackpoint() {
         return candidateTrackpoint;
     }
 

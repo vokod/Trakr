@@ -16,7 +16,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -33,12 +32,10 @@ import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
 import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.Utility;
-import com.awolity.trakr.view.SettingsActivity;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.list.TrackListActivity;
 import com.awolity.trakr.viewmodel.LocationViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -55,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         implements OnMapReadyCallback,
         GoogleMap.OnCameraMoveListener,
         TrackRecorderServiceManager.TrackRecorderServiceManagerListener,
-        ActivityTypeDialogFragment.ActivityTypeDialogListener{
+        ActivityTypeDialogFragment.ActivityTypeDialogListener {
 
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final String KEY_CAMERA_POSITION = "camera_position";
@@ -448,8 +445,10 @@ public class MainActivity extends AppCompatActivity
         this.menu = menu;
         MenuItem activityTypeItem = menu.findItem(R.id.action_select_activity_type);
         ActivityType activityType = PreferenceUtils.getActivityType(this);
-        if(activityType!=null) {
+        if (activityType != null) {
             activityTypeItem.setIcon(activityType.getMenuIconResource());
+        } else {
+            activityTypeItem.setIcon(R.drawable.ic_walk);
         }
         return true;
     }
@@ -457,17 +456,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        } else if (id == R.id.action_list_tracks) {
+        if (id == R.id.action_list_tracks) {
             startActivity(TrackListActivity.getStarterIntent(this));
             return true;
-        } else if (id == R.id.action_crash) {
-            Crashlytics.getInstance().crash();
-        } else if(id == R.id.action_select_activity_type){
-            ActivityTypeDialogFragment  dialog = new ActivityTypeDialogFragment();
+        } else if (id == R.id.action_select_activity_type) {
+            ActivityTypeDialogFragment dialog = new ActivityTypeDialogFragment();
             dialog.show(getSupportFragmentManager(), null);
         }
         return super.onOptionsItemSelected(item);
@@ -513,7 +506,7 @@ public class MainActivity extends AppCompatActivity
         status.setRecording(false);
         clearTrackOnMap();
 
-        Intent intent = TrackDetailActivity.getStarterIntent(this,trackId);
+        Intent intent = TrackDetailActivity.getStarterIntent(this, trackId);
         startActivity(intent);
         trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
     }
@@ -521,7 +514,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onActivityTypeSelected(ActivityType activityType) {
         MenuItem activityTypeItem = menu.findItem(R.id.action_select_activity_type);
-        PreferenceUtils.setActivityType(this,activityType);
+        PreferenceUtils.setActivityType(this, activityType);
         activityTypeItem.setIcon(activityType.getMenuIconResource());
     }
 }

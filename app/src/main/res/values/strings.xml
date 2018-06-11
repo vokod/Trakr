@@ -9,12 +9,21 @@
     <string name="bottom_sheet_label_point">Point</string>
     <string name="bottom_sheet_label_track">Track</string>
     <string name="bottom_sheet_label_charts">Charts</string>
+    <string name="select_activity_type">Select activity type</string>
 
     <string name="activity_type_walking">Walking</string>
     <string name="activity_type_running">Running</string>
     <string name="activity_type_biking">Biking</string>
     <string name="activity_type_driving">Driving</string>
     <string name="activity_type_flying">Flying</string>
+
+
+    <string name="activity_type_key_walking" translatable="false">walking</string>
+    <string name="activity_type_key_running" translatable="false">running</string>
+    <string name="activity_type_key_biking" translatable="false">biking</string>
+    <string name="activity_type_key_driving" translatable="false">driving</string>
+    <string name="activity_type_key_flying" translatable="false">flying</string>
+
 
     <string name="start_recording_a_track">Start recording a track!</string>
 
@@ -44,7 +53,6 @@
     <string name="speed">Speed</string>
     <string name="pace">Pace</string>
     <string name="show_values_by">Show values by:</string>
-
 
     <!-- SettingsActivity -->
     <string name="title_activity_settings">Settings</string>
@@ -151,7 +159,6 @@
     <string name="export_track_error_notification_description">Tap this notification for more details</string>
     <string name="export_track_error_notification_expanded_line_1">Can\'t export %s</string>
     <string name="export_track_error_notification_expanded_line_2">to %s</string>
-
 
     <!-- Strings related to Settings -->
     <string name="pref_sum_altitude_filtering">Enabling results in smoother altitude profile of tracks.</string>

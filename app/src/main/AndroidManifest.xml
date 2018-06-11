@@ -46,14 +46,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.list.TrackListActivity" />
         </activity>
-        <activity
-            android:name=".view.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".view.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.awolity.trakr.view.main.MainActivity" />
-        </activity>
 
         <provider
             android:name=".gpx.GpxFileProvider"

@@ -4,13 +4,15 @@ public class ActivityType {
 
     private RecordParameters recordParameters;
     private String title;
+    private String key;
     private int iconResource;
     private int menuIconResource;
    /* private int color;
     private String hexColor;*/
 
-    public ActivityType(String title, int iconResource, int menuIconResource, RecordParameters recordParameters){
+    public ActivityType(String title, String key, int iconResource, int menuIconResource, RecordParameters recordParameters) {
         this.title = title;
+        this.key = key;
         this.iconResource = iconResource;
         this.recordParameters = recordParameters;
         this.menuIconResource = menuIconResource;
@@ -36,8 +38,12 @@ public class ActivityType {
         return iconResource;
     }
 
-    public int getMenuIconResource(){
+    public int getMenuIconResource() {
         return menuIconResource;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     /*public int getColor() {

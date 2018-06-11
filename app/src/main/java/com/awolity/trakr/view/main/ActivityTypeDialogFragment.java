@@ -41,7 +41,7 @@ public class ActivityTypeDialogFragment extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Select activity type")
+        builder.setTitle(getString(R.string.select_activity_type))
                 .setView(createView());
 
         return builder.create();

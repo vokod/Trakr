@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.awolity.trakr.R;
+import com.awolity.trakr.activitytype.ActivityType;
 import com.awolity.trakr.customviews.SecondaryPropertyView;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
@@ -15,6 +16,7 @@ import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.repository.Repository;
 import com.awolity.trakr.utils.MyLog;
+import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.StringUtils;
 import com.google.android.gms.location.LocationRequest;
 
@@ -229,7 +231,9 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
                 priority = "unknown";
         }
 
-        String metadataString = "Tracking interval: "
+        String metadataString = "Activity type: " +
+                status.getActivityType().getTitle() +
+                ". Tracking interval: "
                 + locationManager.getLocationRequestInterval() / 1000
                 + "s. "
                 + "Minimal distance between two points: "
