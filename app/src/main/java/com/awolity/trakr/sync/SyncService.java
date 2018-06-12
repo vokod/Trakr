@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
+import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.di.TrakrApplication;
 import com.awolity.trakr.repository.TrackRepository;
@@ -41,8 +42,7 @@ public class SyncService extends IntentService {
             downloadOnlineTracks();
             // uploadOfflineTracks();
         } else {
-            // TODO:
-            Toast.makeText(this, "Can't synchronise tracks in offline state. Will try next time the app starts", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.sync_service_no_net), Toast.LENGTH_LONG).show();
         }
     }
 

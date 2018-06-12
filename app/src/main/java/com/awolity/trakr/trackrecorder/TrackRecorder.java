@@ -122,8 +122,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     private void checkTrackValidity() {
         if (status.getNumOfTrackPoints() == 0) {
             trackRepository.deleteTrack(trackId);
-            // TODO:
-            Toast.makeText(context, "Recording too short, track not saved", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context.getString(R.string.track_recorder_track_too_short), Toast.LENGTH_LONG).show();
         }
         if (status.getNumOfTrackPoints() == 1) {
             // duplicate the only point

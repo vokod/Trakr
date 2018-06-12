@@ -98,15 +98,13 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
             MapUtils.moveCameraToTrack(googleMap, trackWithPoints);
             LatLng start = trackWithPoints.getPointsLatLng().get(0);
             LatLng finish = trackWithPoints.getPointsLatLng().get(trackWithPoints.getPointsLatLng().size() - 1);
-            // TODO
             googleMap.addMarker(new MarkerOptions()
                     .position(start)
-                    .title("Start")
-                    // TODO: rendes markereket
+                    .title(getString(R.string.start))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
             googleMap.addMarker(new MarkerOptions()
                     .position(finish)
-                    .title("Finish")
+                    .title(getString(R.string.finish))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         }
     }

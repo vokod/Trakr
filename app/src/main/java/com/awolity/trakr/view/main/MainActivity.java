@@ -54,7 +54,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.Arrays;
 import java.util.List;
-// TODO: startpont endpont
 public class MainActivity extends AppCompatActivity
         implements OnMapReadyCallback,
         GoogleMap.OnCameraMoveListener,
@@ -469,10 +468,9 @@ public class MainActivity extends AppCompatActivity
 
         MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
         if (appUserViewModel.IsAppUserLoggedIn()) {
-            // TODO:
-            synchronisationItem.setTitle("Disable cloud sync");
+            synchronisationItem.setTitle(getString(R.string.disable_cloud_sync));
         } else {
-            synchronisationItem.setTitle("Enable cloud sync");
+            synchronisationItem.setTitle(getString(R.string.enable_cloud_sync));
         }
         return true;
     }
@@ -485,8 +483,7 @@ public class MainActivity extends AppCompatActivity
             return true;
         } else if (id == R.id.action_select_activity_type) {
             if (status.isRecording()) {
-                // TODO:
-                Toast.makeText(this, "You can't change activity type while recording track.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.activity_change_disabled), Toast.LENGTH_LONG).show();
             } else {
                 ActivityTypeDialogFragment dialog = new ActivityTypeDialogFragment();
                 dialog.show(getSupportFragmentManager(), null);
@@ -494,9 +491,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.action_synchronisation) {
             if (appUserViewModel.IsAppUserLoggedIn()) {
                 appUserViewModel.signOut();
-                // TODO
-                item.setTitle("Enable cloud sync");
-                Toast.makeText(this, "You are logged out", Toast.LENGTH_LONG).show();
+                item.setTitle(getString(R.string.enable_cloud_sync));
+                Toast.makeText(this, getString(R.string.you_are_logged_out), Toast.LENGTH_LONG).show();
             } else {
                 startActivityForResult(AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -520,10 +516,9 @@ public class MainActivity extends AppCompatActivity
             // Successfully signed in
             if (resultCode == RESULT_OK) {
                 MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
-                Toast.makeText(this, "You are logged in", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.you_are_logged_in), Toast.LENGTH_LONG).show();
                 startService(new Intent(this, SyncService.class));
-                synchronisationItem.setTitle("Disable cloud sync");
-                // TODO:
+                synchronisationItem.setTitle(getString(R.string.disable_cloud_sync));
                 return;
             } else {
                 // Sign in failed

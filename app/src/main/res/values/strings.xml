@@ -15,6 +15,12 @@
     <string name="login_error_unknown_response">Unknown sign in response</string>
     <string name="login_error_unknown_error">Unknown error</string>
 
+    <string name="disable_cloud_sync">Disable cloud sync</string>
+    <string name="enable_cloud_sync">Enable cloud sync</string>
+    <string name="you_are_logged_out">You are logged out</string>
+    <string name="you_are_logged_in">You are logged in</string>
+    <string name="activity_change_disabled">You can\'t change activity type while recording track</string>
+
     <string name="activity_type_walking">Walking</string>
     <string name="activity_type_running">Running</string>
     <string name="activity_type_biking">Biking</string>
@@ -31,7 +37,7 @@
     <string name="start_recording_a_track">Start recording a track!</string>
 
     <!-- Track list activity -->
-    <string name="title_activity_track_list">Track list</string>
+    <string name="title_activity_track_list">Recorded tracks</string>
 
     <!-- Track detail activity -->
     <string name="title_activity_track_detail">Track detail</string>
@@ -43,9 +49,14 @@
     <string name="write_permission_denied">Write External Storage Permission not granted</string>
     <string name="enter_title_hint">Enter title</string>
 
+    <!-- Track detail activity - data fragment-->
     <string name="edit_title_dialog_title">Edit title</string>
     <string name="edit_title_dialog_ok">OK</string>
     <string name="edit_title_dialog_invalid_title">Invalid title</string>
+
+    <!-- Track detail activity - map fragment-->
+    <string name="start">Start</string>
+    <string name="finish">Finish</string>
 
     <!-- Track detail activity - charts fragment-->
     <string name="x_axis_time">time</string>
@@ -162,6 +173,11 @@
     <!-- Gpx exporter -->
     <string name="toast_external_storage_not_writable">External storage not writable :( Can\'t export track.</string>
 
+    <!-- Sync  service -->
+    <string name="sync_service_no_net">Can\'t synchronise tracks in offline state. Will try next time the app starts</string>
+
+    <!-- TrackRecorder -->
+    <string name="track_recorder_track_too_short">Recording too short, track can not be saved</string>
 
     <string name="activity_track_detail_fragment_data_iv_initial_content_desc">Initial letter of title</string>
     <string name="activity_track_detail_fragment_data_ib_edit_content_desc">Edit button</string>
@@ -174,8 +190,8 @@
     <string name="synchronisation">Synchronisation</string>
     <string name="elevation">Elevation</string>
 
-    <string name="pref_key_last_recorded_track_id">last_recorded_track_id</string>
-    <string name="pref_key_activity_type">activity_type</string>
+    <string name="pref_key_last_recorded_track_id" translatable="false">last_recorded_track_id</string>
+    <string name="pref_key_activity_type" translatable="false">activity_type</string>
 
 
 </resources>

@@ -122,4 +122,15 @@
     <string name="view_primary_propert_icon_iv_icon_content_desc">Az adatmező ikonja</string>
     <string name="activity_main_dialog_activity_type_list_item_iv_icon_content_desc">A tevékenység ikonja</string>
     <string name="view_secondary_property_icon_iv_icon_content_desc">Az adatmező ikonja</string>
+    <string name="disable_cloud_sync">Felhőszinkronizálás tiltása</string>
+    <string name="start">Start</string>
+    <string name="finish">Cél</string>
+    <string name="sync_service_no_net">A készülék nem kapcsolódik az internethez, szinkronizálás nem lehetséges</string>
+    <string name="track_recorder_track_too_short">A rögzítés túl rövid, nem lehet menteni a nyomvonalat</string>
+    <string name="synchronisation">Szinkronizáció</string>
+    <string name="elevation">Emelkedés</string>
+    <string name="activity_change_disabled">Rögzítés közben a tevékenység nem módosítható</string>
+    <string name="enable_cloud_sync">Felhőszinkronizáció engedélyezése</string>
+    <string name="you_are_logged_out">Kilépés sikeres</string>
+    <string name="you_are_logged_in">Belépés sikeres</string>
 </resources>
