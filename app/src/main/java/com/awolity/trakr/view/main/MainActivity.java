@@ -54,7 +54,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.Arrays;
 import java.util.List;
-
+// TODO: startpont endpont
 public class MainActivity extends AppCompatActivity
         implements OnMapReadyCallback,
         GoogleMap.OnCameraMoveListener,
@@ -319,7 +319,6 @@ public class MainActivity extends AppCompatActivity
             trackViewModel.getTrackpointsList().observe(this, trackpointsListObserver);
         }
         trackViewModel.getActualTrackpoint().observe(this, actualTrackpointObserver);
-
     }
 
     private final Observer<List<TrackpointEntity>> trackpointsListObserver = new Observer<List<TrackpointEntity>>() {
@@ -508,9 +507,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.action_sync_now) {
             startService(new Intent(this, SyncService.class));
         }
-        return super.
-
-                onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -523,6 +520,8 @@ public class MainActivity extends AppCompatActivity
             // Successfully signed in
             if (resultCode == RESULT_OK) {
                 MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
+                Toast.makeText(this, "You are logged in", Toast.LENGTH_LONG).show();
+                startService(new Intent(this, SyncService.class));
                 synchronisationItem.setTitle("Disable cloud sync");
                 // TODO:
                 return;

@@ -17,6 +17,9 @@ import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class TrackDetailActivityMapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -93,6 +96,18 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
         if (googleMap != null && trackWithPoints != null) {
             MapUtils.setupTrackPolyLine(getActivity(), googleMap, trackWithPoints, true);
             MapUtils.moveCameraToTrack(googleMap, trackWithPoints);
+            LatLng start = trackWithPoints.getPointsLatLng().get(0);
+            LatLng finish = trackWithPoints.getPointsLatLng().get(trackWithPoints.getPointsLatLng().size() - 1);
+            // TODO
+            googleMap.addMarker(new MarkerOptions()
+                    .position(start)
+                    .title("Start")
+                    // TODO: rendes markereket
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            googleMap.addMarker(new MarkerOptions()
+                    .position(finish)
+                    .title("Finish")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         }
     }
 

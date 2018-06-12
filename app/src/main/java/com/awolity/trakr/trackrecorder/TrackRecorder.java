@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
+import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
@@ -121,6 +122,8 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     private void checkTrackValidity() {
         if (status.getNumOfTrackPoints() == 0) {
             trackRepository.deleteTrack(trackId);
+            // TODO:
+            Toast.makeText(context, "Recording too short, track not saved", Toast.LENGTH_LONG).show();
         }
         if (status.getNumOfTrackPoints() == 1) {
             // duplicate the only point
@@ -243,7 +246,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
                 + ". "
                 + "Minimum accuracy to record points: "
                 + status.getAccuracyFilterParameter()
-                + ". ";
+                + "m. ";
     }
 
     public long getTrackId() {
