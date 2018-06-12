@@ -191,7 +191,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         trackViewModel.getTrack().removeObserver(trackEntityObserver);
     }
 
-    private Observer<TrackEntity> trackEntityObserver = new Observer<TrackEntity>() {
+    private final Observer<TrackEntity> trackEntityObserver = new Observer<TrackEntity>() {
         @Override
         public void onChanged(@Nullable TrackEntity trackEntity) {
             // MyLog.d(LOG_TAG, "trackEntityObserver.onChanged");
@@ -293,7 +293,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         maxSpeedView.setLabel(getActivity().getString(R.string.max_speed_view_title));
     }
 
-    public void setStartTime(long startTime) {
+    private void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 

@@ -28,8 +28,6 @@ public class TrackDetailActivityDataFragment extends Fragment {
     private static final String ARG_TRACK_ID = "track_id";
     private static final String LOG_TAG = TrackDetailActivityDataFragment.class.getSimpleName();
 
-    private long trackId;
-    private TrackViewModel trackViewModel;
     private PrimaryPropertyViewIcon durationPpvi, distancePpvi, ascentPpvi, descentPpvi,
             maxSpeedPpvi, avgSpeedPpvi, maxAltitudePpvi, minAltitudePpvi, startTimePpvi,
             endTimePpvi, avgPacePpvi, maxPacePpvi;
@@ -54,7 +52,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // MyLog.d(LOG_TAG, "onCreate - " + this.hashCode());
         if (getArguments() != null) {
-            trackId = getArguments().getLong(ARG_TRACK_ID);
+            long trackId = getArguments().getLong(ARG_TRACK_ID);
         }
     }
 
@@ -140,7 +138,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
     }
 
     private void setupViewModel() {
-        trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
+        TrackViewModel trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
         trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
             @Override
             public void onChanged(@Nullable final TrackWithPoints trackWithPoints) {

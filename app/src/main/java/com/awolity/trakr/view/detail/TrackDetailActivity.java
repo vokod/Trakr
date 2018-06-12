@@ -19,7 +19,7 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.repository.TrackRepository;
-import com.awolity.trakr.utils.MyLog;
+import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 
 // TODO: viewpager?
@@ -35,8 +35,8 @@ public class TrackDetailActivity extends AppCompatActivity
     private static final int PERMISSION_REQUEST_CODE = 2;
     private long trackId;
     private BottomNavigationView bottomNavigationView;
-    private FrameLayout fragmentContainer;
     private TrackViewModel trackViewModel;
+    private AppUserViewModel appUserViewModel;
     private TrackEntity trackEntity;
 
     public static Intent getStarterIntent(Context context, long trackId) {
@@ -79,7 +79,7 @@ public class TrackDetailActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.app_name);
         bottomNavigationView = findViewById(R.id.navigation);
-        fragmentContainer = findViewById(R.id.fragment_container);
+        FrameLayout fragmentContainer = findViewById(R.id.fragment_container);
     }
 
     private void setupViewModel(long trackId) {
@@ -93,6 +93,8 @@ public class TrackDetailActivity extends AppCompatActivity
                 }
             }
         });
+
+        appUserViewModel = ViewModelProviders.of(this).get(AppUserViewModel.class);
     }
 
     private void setupBottomSheetNavigation() {
@@ -193,17 +195,10 @@ public class TrackDetailActivity extends AppCompatActivity
                 trackViewModel.exportTrack();
             }
             return true;
-        } else if(id == R.id.action_upload){
-            trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
-                @Override
-                public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-                    if(trackWithPoints!=null){
-                        trackViewModel.getTrackWithPoints().removeObserver(this);
-                        TrackRepository trackRepository = new TrackRepository();
-                        trackRepository.saveTrackToFirebase(trackId);
-                    }
-                }
-            });
+        } else if (id == R.id.action_upload) {
+            trackViewModel.saveToCloud();
+        } else if (id == R.id.action_delete_all) {
+            trackViewModel.deleteAllCloudData();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -211,7 +206,11 @@ public class TrackDetailActivity extends AppCompatActivity
     @Override
     public void onTitleEdited(String title) {
         trackEntity.setTitle(title);
-        trackViewModel.updateTrack(trackEntity);
+        if (appUserViewModel.IsAppUserLoggedIn()) {
+            if (trackEntity.getFirebaseId() != null) {
+                trackViewModel.updateTrack(trackEntity);
+            }
+        }
     }
 
     @Override

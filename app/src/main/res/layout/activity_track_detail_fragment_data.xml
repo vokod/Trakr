@@ -32,7 +32,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="spread_inside" />
+                app:layout_constraintVertical_chainStyle="spread_inside"
+                android:contentDescription="@string/activity_track_detail_fragment_data_iv_initial_content_desc" />
 
             <TextView
                 android:id="@+id/tv_title"
@@ -64,7 +65,8 @@
                 android:src="@drawable/ic_edit"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_date"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_title" />
+                app:layout_constraintTop_toTopOf="@+id/tv_title"
+                android:contentDescription="@string/activity_track_detail_fragment_data_ib_edit_content_desc" />
 
         </android.support.constraint.ConstraintLayout>
 

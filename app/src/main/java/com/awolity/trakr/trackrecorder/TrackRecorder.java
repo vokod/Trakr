@@ -30,10 +30,10 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     private static final String TAG = TrackRecorder.class.getSimpleName();
     private TrackEntity track;
     private long trackId;
-    private LocationManager locationManager;
+    private final LocationManager locationManager;
     private Handler handler;
     private final Runnable uiUpdater;
-    private TrackRecorderStatus status;
+    private final TrackRecorderStatus status;
 
     @SuppressWarnings("WeakerAccess")
     @Inject
@@ -227,7 +227,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
                 priority = "unknown";
         }
 
-        String metadataString = "Activity type: " +
+        return "Activity type: " +
                 status.getActivityType().getKey() +
                 ". Tracking interval: "
                 + locationManager.getLocationRequestInterval() / 1000
@@ -244,7 +244,6 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
                 + "Minimum accuracy to record points: "
                 + status.getAccuracyFilterParameter()
                 + ". ";
-        return metadataString;
     }
 
     public long getTrackId() {

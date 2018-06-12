@@ -81,9 +81,9 @@ public class ActivityTypeAdapter
 
     class ActivityTypeItemViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView titleTv;
-        private ImageView iconImageView;
-        private FrameLayout clickOverlay;
+        private final TextView titleTv;
+        private final ImageView iconImageView;
+        private final FrameLayout clickOverlay;
 
         ActivityTypeItemViewHolder(View itemView) {
             super(itemView);

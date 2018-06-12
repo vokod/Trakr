@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -113,7 +112,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
         trackViewModel.getTrackWithPoints().observe(getActivity(), trackWithPointsObserver);
     }
 
-    private Observer<TrackWithPoints> trackWithPointsObserver = new Observer<TrackWithPoints>() {
+    private final Observer<TrackWithPoints> trackWithPointsObserver = new Observer<TrackWithPoints>() {
         @Override
         public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
             // MyLog.d(LOG_TAG, "trackWithPointsObserver.onChanged");

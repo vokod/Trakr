@@ -19,13 +19,13 @@
     <item
         android:id="@+id/action_synchronisation"
         android:orderInCategory="1"
-        android:title="Synchronisation"
+        android:title="@string/synchronisation"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_sync_now"
         android:orderInCategory="100"
-        android:title="Sync now"
+        android:title="Debug - Sync now"
         app:showAsAction="never" />
 
 

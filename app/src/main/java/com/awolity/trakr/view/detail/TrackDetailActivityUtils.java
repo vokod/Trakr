@@ -9,9 +9,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.utils.MyLog;
 
-public class TrackDetailActivityUtils {
+class TrackDetailActivityUtils {
 
     public static final String LOG_TAG = TrackDetailActivityUtils.class.getSimpleName();
 

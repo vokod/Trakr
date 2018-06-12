@@ -16,7 +16,13 @@
 
     <item
         android:id="@+id/action_upload"
-        android:orderInCategory="100"
-        android:title="Upload"
+        android:orderInCategory="99"
+        android:title="Debug - Upload track now"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_delete_all"
+        android:orderInCategory="99"
+        android:title="Debug - Delete_all"
         app:showAsAction="never" />
 </menu>

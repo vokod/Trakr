@@ -1,23 +1,18 @@
 package com.awolity.trakr.view.main;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.activitytype.ActivityType;
@@ -28,8 +23,6 @@ import java.util.List;
 public class ActivityTypeDialogFragment extends DialogFragment
         implements ActivityTypeAdapter.ActivityTypeItemCallback {
 
-    private RecyclerView rv;
-    private ActivityTypeAdapter adapter;
     private ActivityTypeDialogListener listener;
 
 
@@ -47,12 +40,13 @@ public class ActivityTypeDialogFragment extends DialogFragment
         return builder.create();
     }
 
-    public View createView() {
+    private View createView() {
         final LayoutInflater inflater = getActivity().getLayoutInflater();
 
+        @SuppressLint("InflateParams")
         final View view = inflater.inflate(R.layout.activity_main_dialog_activity_type, null);
 
-        rv = view.findViewById(R.id.rv_activity_type);
+        RecyclerView rv = view.findViewById(R.id.rv_activity_type);
         rv.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
         rv.setLayoutManager(linearLayoutManager);
@@ -60,7 +54,7 @@ public class ActivityTypeDialogFragment extends DialogFragment
                 new DividerItemDecoration(getActivity(), linearLayoutManager.getOrientation());
         rv.addItemDecoration(dividerItemDecoration);
 
-        adapter = new ActivityTypeAdapter(getActivity().getLayoutInflater(), this);
+        ActivityTypeAdapter adapter = new ActivityTypeAdapter(getActivity().getLayoutInflater(), this);
         rv.setAdapter(adapter);
 
         List<ActivityType> activityTypeList = ActivityTypeManager.getInstance(getContext()).getActivityTypes();

@@ -5,25 +5,20 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.location.Location;
-import android.util.Log;
 
 import com.awolity.trakr.location.LocationManager;
-import com.awolity.trakr.utils.MyLog;
-import com.awolity.trakr.utils.PreferenceUtils;
+import com.google.android.gms.location.LocationRequest;
 
 public class LocationViewModel extends AndroidViewModel implements LocationManager.LocationManagerCallback {
 
-    private static final String TAG = LocationViewModel.class.getSimpleName();
-    private LocationManager locationManager;
+    private static final String LOG_TAG = LocationViewModel.class.getSimpleName();
+    private final LocationManager locationManager;
     private MutableLiveData<Location> lastLocation;
     private boolean isLocationUpdating;
 
     public LocationViewModel(Application application) {
         super(application);
-        locationManager = new LocationManager(
-                PreferenceUtils.getPreferenceTrackingInterval(application),
-                PreferenceUtils.getPreferenceTrackingInterval(application) / 2,
-                PreferenceUtils.getPreferenceGeolocationPriority(application));
+            locationManager = new LocationManager(2, 1, LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     public void isLocationSettingsGood(LocationManager.LocationSettingsCallback callback) {

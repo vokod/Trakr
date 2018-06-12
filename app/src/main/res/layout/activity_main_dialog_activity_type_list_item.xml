@@ -21,7 +21,8 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_walk_circle" />
+            android:src="@drawable/ic_walk_circle"
+            android:contentDescription="@string/activity_main_dialog_activity_type_list_item_iv_icon_content_desc" />
     </FrameLayout>
 
     <TextView

@@ -2,7 +2,6 @@ package com.awolity.trakr.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 
-import com.awolity.trakr.di.TrakrApplication;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -21,5 +20,8 @@ public class AppUserViewModel extends ViewModel {
         return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
 
+    public void signOut(){
+        FirebaseAuth.getInstance().signOut();
+    }
 
 }

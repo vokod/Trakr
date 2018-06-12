@@ -4,10 +4,7 @@ import android.app.Application;
 import android.os.StrictMode;
 
 import com.awolity.trakr.notification.NotificationUtils;
-import com.crashlytics.android.Crashlytics;
 import com.google.firebase.database.FirebaseDatabase;
-
-import io.fabric.sdk.android.Fabric;
 
 public class TrakrApplication extends Application {
 

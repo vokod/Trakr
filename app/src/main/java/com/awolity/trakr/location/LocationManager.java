@@ -9,7 +9,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.awolity.trakr.di.TrakrApplication;
-import com.awolity.trakr.utils.MyLog;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -29,14 +28,11 @@ import javax.inject.Inject;
 
 public class LocationManager {
 
-    private static int sId;
-    private final int id;
-
     private static final String TAG = LocationManager.class.getSimpleName();
     private static final int SECOND = 1000;
-    private int locationRequestInterval;
-    private int locationRequestFastestInterval;
-    private int locationRequestPriority;
+    private final int locationRequestInterval;
+    private final int locationRequestFastestInterval;
+    private final int locationRequestPriority;
 
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
@@ -51,9 +47,6 @@ public class LocationManager {
     public LocationManager(int locationRequestInterval,
                            int locationRequestFastestInterval, int locationRequestPriority) {
         TrakrApplication.getInstance().getAppComponent().inject(this);
-
-        sId++;
-        id = sId;
 
         this.locationRequestInterval = locationRequestInterval * SECOND;
         this.locationRequestFastestInterval = locationRequestFastestInterval * SECOND;

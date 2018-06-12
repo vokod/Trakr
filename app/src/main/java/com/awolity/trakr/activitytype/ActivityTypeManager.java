@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class ActivityTypeManager {
 
-    private ArrayList<ActivityType> activityTypes;
+    private final ArrayList<ActivityType> activityTypes;
     private static ActivityTypeManager instance;
 
     public static ActivityTypeManager getInstance(Context context) {

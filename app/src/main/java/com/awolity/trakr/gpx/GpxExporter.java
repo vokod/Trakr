@@ -9,7 +9,6 @@ import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.utils.IOUtils;
-import com.awolity.trakr.utils.MyLog;
 
 import com.codebutchery.androidgpx.data.GPXDocument;
 import com.codebutchery.androidgpx.data.GPXRoute;

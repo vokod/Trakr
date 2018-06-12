@@ -13,9 +13,11 @@ import com.awolity.trakr.R;
 
 public class PrimaryPropertyViewIcon extends ConstraintLayout {
 
-    protected TextView labelTextView, valueTextView, unitTextView;
-    protected ImageView iconImageView;
-    protected final Context context;
+    TextView labelTextView;
+    TextView valueTextView;
+    TextView unitTextView;
+    ImageView iconImageView;
+    final Context context;
 
     public PrimaryPropertyViewIcon(@NonNull Context context) {
         super(context);
@@ -35,7 +37,7 @@ public class PrimaryPropertyViewIcon extends ConstraintLayout {
         inflate();
     }
 
-    protected void inflate() {
+    void inflate() {
         LayoutInflater.from(context).inflate(R.layout.view_primary_property_icon, this, true);
         labelTextView = findViewById(R.id.tvLabel);
         valueTextView = findViewById(R.id.tvValue);
@@ -43,7 +45,7 @@ public class PrimaryPropertyViewIcon extends ConstraintLayout {
         iconImageView = findViewById(R.id.iv_icon);
     }
 
-    public void setLabel(String labelText){
+    private void setLabel(String labelText){
        labelTextView.setText(labelText);
     }
 
@@ -53,11 +55,11 @@ public class PrimaryPropertyViewIcon extends ConstraintLayout {
 
     public String getValue(){return valueTextView.getText().toString();}
 
-    public void setUnit(String unitText){
+    private void setUnit(String unitText){
         unitTextView.setText(unitText);
     }
 
-    public void setIcon (int resId){
+    private void setIcon(int resId){
         iconImageView.setImageResource(resId);
     }
 

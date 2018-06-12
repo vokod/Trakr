@@ -107,7 +107,7 @@ public class BottomSheetPointFragment extends BottomSheetBaseFragment {
         locationViewModel.stopLocation();
     }
 
-    public void setData(Location location) {
+    private void setData(Location location) {
         setSpeed(location.getSpeed());
         setAltitude(location.getAltitude());
         setBearing(location.getBearing());

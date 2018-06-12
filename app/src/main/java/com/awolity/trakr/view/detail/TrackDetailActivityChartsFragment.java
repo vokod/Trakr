@@ -41,19 +41,16 @@ public class TrackDetailActivityChartsFragment extends Fragment
     private static final String ARG_TRACK_ID = "track_id";
     private static final String LOG_TAG = TrackDetailActivityChartsFragment.class.getSimpleName();
 
-    private TrackViewModel trackViewModel;
     private PrimaryPropertyViewIcon maxSpeedPpvi, avgSpeedPpvi, ascentPpvi, descentPpvi,
             maxAltitudePpvi, minAltitudePpvi, maxPacePpvi, avgPacePpvi;
     private CheckBox paceCheckBox, speedCheckBox;
     private LineChart speedChart, elevationChart;
-    private Spinner xAxisSpinner;
     private int xAxis = 0;
     private boolean isSpeed = true;
     private TrackWithPoints trackWithPoints;
 
     public static TrackDetailActivityChartsFragment newInstance() {
-        TrackDetailActivityChartsFragment fragment = new TrackDetailActivityChartsFragment();
-        return fragment;
+        return new TrackDetailActivityChartsFragment();
     }
 
     public TrackDetailActivityChartsFragment() {
@@ -77,7 +74,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setupWidgets(View view) {
-        xAxisSpinner = view.findViewById(R.id.spinner_xaxis);
+        Spinner xAxisSpinner = view.findViewById(R.id.spinner_xaxis);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.x_axis_label_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -132,7 +129,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
                 getString(R.string.max_speed_view_unit),
                 getString(R.string.max_speed_view_default_value),
                 R.drawable.ic_max_speed);
-        avgSpeedPpvi.setup(getString(R.string.avg_pace_view_title),
+        avgSpeedPpvi.setup(getString(R.string.avg_speed_view_title),
                 getString(R.string.avg_speed_view_unit),
                 getString(R.string.avg_speed_view_default_value),
                 R.drawable.ic_avg_speed);
@@ -195,7 +192,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setupViewModel() {
-        trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
+        TrackViewModel trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
         trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
             @Override
             public void onChanged(@Nullable TrackWithPoints trackWithPoints) {

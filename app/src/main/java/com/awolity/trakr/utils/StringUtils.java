@@ -1,33 +1,15 @@
 package com.awolity.trakr.utils;
 
-import android.content.Context;
-import android.location.Location;
+import android.annotation.SuppressLint;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class StringUtils {
 
     private StringUtils() {
-    }
-
-    public static String getLegalizedFilename(String illegalFileName) {
-        return illegalFileName.replaceAll("[\\\\/:*?\"<>| ]", "");
-    }
-
-    public static String getTimeStringFromMillis(long timeInMillis) {
-        TimeZone tz = TimeZone.getDefault();
-        Calendar cal = GregorianCalendar.getInstance(tz);
-        int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
-        timeInMillis -= offsetInMillis;
-        Date startTime = new Date(timeInMillis);
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        return df.format(startTime);
     }
 
     public static String getDistanceAsThreeCharactersString(double distance) {
@@ -90,22 +72,15 @@ public class StringUtils {
                 + String.format(Locale.getDefault(),"%02d", seconds);
     }
 
-    public static String getDateTimeAsString(long millis) {
-        java.util.Date time = new java.util.Date(millis);
-        SimpleDateFormat sdfDate = new SimpleDateFormat("MM-dd HH:mm");
-        return sdfDate.format(time);
-    }
-
     public static String getTimeAsString(long millis) {
         java.util.Date time = new java.util.Date(millis);
-        SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm");
         return sdfDate.format(time);
     }
 
     public static String getDateAsStringLocale(long millis){
         Date date = new Date(millis);
         java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance(DateFormat.DEFAULT);
-        String s = dateFormat.format(date);
-        return s;
+        return dateFormat.format(date);
     }
 }

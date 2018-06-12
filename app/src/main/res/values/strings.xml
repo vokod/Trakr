@@ -3,7 +3,6 @@
 
     <!-- MainActivity -->
     <string name="title_activity_main">Trakr</string>
-    <string name="action_settings">Settings</string>
     <string name="action_track_list">Track list</string>
     <string name="action_select_activity">Select activity</string>
     <string name="bottom_sheet_label_point">Point</string>
@@ -16,13 +15,11 @@
     <string name="login_error_unknown_response">Unknown sign in response</string>
     <string name="login_error_unknown_error">Unknown error</string>
 
-
     <string name="activity_type_walking">Walking</string>
     <string name="activity_type_running">Running</string>
     <string name="activity_type_biking">Biking</string>
     <string name="activity_type_driving">Driving</string>
     <string name="activity_type_flying">Flying</string>
-
 
     <string name="activity_type_key_walking" translatable="false">walking</string>
     <string name="activity_type_key_running" translatable="false">running</string>
@@ -44,6 +41,7 @@
     <string name="bottom_navigation_title_data">Data</string>
     <string name="bottom_navigation_title_charts">Charts</string>
     <string name="write_permission_denied">Write External Storage Permission not granted</string>
+    <string name="enter_title_hint">Enter title</string>
 
     <string name="edit_title_dialog_title">Edit title</string>
     <string name="edit_title_dialog_ok">OK</string>
@@ -59,9 +57,6 @@
     <string name="speed">Speed</string>
     <string name="pace">Pace</string>
     <string name="show_values_by">Show values by:</string>
-
-    <!-- SettingsActivity -->
-    <string name="title_activity_settings">Settings</string>
 
     <!-- Data views -->
     <string name="max_speed_view_title">Max.Speed</string>
@@ -144,12 +139,10 @@
     <!-- LOCATION SETTINGS RATIONALE  -->
     <string name="location_settings_rationale_title">Location settings</string>
     <string name="location_settings_rationale_description">Trakr needs Location settings on to do its magic. Please switch it on.</string>
-    <string name="location_settings_rationale_dismiss_action">Don\'t ask again</string>
     <!-- TRACK RECORD NOTIFICATION -->
     <string name="record_track_notification_channel_title">Track record notification category</string>
     <string name="record_track_notification_channel_description">This notification is shown, when Trakr is recording a track in the background.</string>
     <string name="record_track_notification_title">Recording track:</string>
-    <string name="record_track_notification_description">Tap this notification for more details</string>
     <!-- TRACK EXPORT NOTIFICATION-->
     <string name="export_track_notification_channel_title">Track export notification category</string>
     <string name="export_track_notification_channel_description">This notification is shown, when Trakr is exporting a track in the background.</string>
@@ -166,98 +159,23 @@
     <string name="export_track_error_notification_expanded_line_1">Can\'t export %s</string>
     <string name="export_track_error_notification_expanded_line_2">to %s</string>
 
-    <!-- Strings related to Settings -->
-    <string name="pref_sum_altitude_filtering">Enabling results in smoother altitude profile of tracks.</string>
-    <string name="pref_title_altitude_filtering">Enable altitude filtering</string>
-    <string name="pref_key_altitude_filtering">altitude_filtering</string>
+    <!-- Gpx exporter -->
+    <string name="toast_external_storage_not_writable">External storage not writable :( Can\'t export track.</string>
 
-    <string name="pref_sum_altitude_zero_filtering">Enabling removes 0 values from altitude profile of tracks.</string>
-    <string name="pref_title_altitude_zero_filtering">Enable altitude zero filtering</string>
-    <string name="pref_key_altitude_zero_filtering">altitude_zero_filtering</string>
 
-    <string name="pref_title_tracking_interval">Tracking frequency</string>
-    <string name="pref_key_tracking_interval">tracking_frequency</string>
+    <string name="activity_track_detail_fragment_data_iv_initial_content_desc">Initial letter of title</string>
+    <string name="activity_track_detail_fragment_data_ib_edit_content_desc">Edit button</string>
+    <string name="activity_track_list_item_track_iv_initial_content_desc">Initial letter of title</string>
+    <string name="view_primary_propert_icon_iv_icon_content_desc">Icon of property</string>
+    <string name="activity_main_dialog_activity_type_list_item_iv_icon_content_desc">Icon of activity</string>
+    <string name="view_secondary_property_icon_iv_icon_content_desc">Icon of property</string>
 
-    <string name="pref_label_tracking_interval_1s">1 second</string>
-    <string name="pref_label_tracking_interval_2s">2 seconds</string>
-    <string name="pref_label_tracking_interval_5s">5 seconds</string>
-    <string name="pref_label_tracking_interval_10s">10 seconds</string>
-    <string name="pref_label_tracking_interval_20s">20 seconds</string>
-    <string name="pref_label_tracking_interval_50s">50 seconds</string>
 
-    <string name="pref_value_tracking_interval_1s">1</string>
-    <string name="pref_value_tracking_interval_2s">2</string>
-    <string name="pref_value_tracking_interval_5s">5</string>
-    <string name="pref_value_tracking_interval_10s">10</string>
-    <string name="pref_value_tracking_interval_20s">20</string>
-    <string name="pref_value_tracking_interval_50s">50</string>
-
-    <string name="pref_title_tracking_distance">Tracking distance interval</string>
-    <string name="pref_key_tracking_distance">tracking_distance</string>
-
-    <string name="pref_label_tracking_distance_0m">0m</string>
-    <string name="pref_label_tracking_distance_1m">1m</string>
-    <string name="pref_label_tracking_distance_2m">2m</string>
-    <string name="pref_label_tracking_distance_5m">5m</string>
-    <string name="pref_label_tracking_distance_10m">10m</string>
-    <string name="pref_label_tracking_distance_20m">20m</string>
-    <string name="pref_label_tracking_distance_50m">50m</string>
-
-    <string name="pref_value_tracking_distance_0m">0</string>
-    <string name="pref_value_tracking_distance_1m">1</string>
-    <string name="pref_value_tracking_distance_2m">2</string>
-    <string name="pref_value_tracking_distance_5m">5</string>
-    <string name="pref_value_tracking_distance_10m">10</string>
-    <string name="pref_value_tracking_distance_20m">20</string>
-    <string name="pref_value_tracking_distance_50m">50</string>
-
-    <string name="pref_title_accuracy">Geolocation accuracy</string>
-    <string name="pref_key_accuracy">geolocation_accuracy</string>
-
-    <string name="pref_label_accuracy_high">High accuracy</string>
-    <string name="pref_label_accuracy_balanced">Balanced accuracy</string>
-    <string name="pref_label_accuracy_low">Low accuracy</string>
-    <string name="pref_label_accuracy_lowest">Lowest accuracy</string>
-
-    <string name="pref_value_accuracy_high">100</string>
-    <string name="pref_value_accuracy_balanced">102</string>
-    <string name="pref_value_accuracy_low">104</string>
-    <string name="pref_value_accuracy_lowest">105</string>
-
-    <string name="pref_title_accuracy_filter">Accuracy filter</string>
-    <string name="pref_key_accuracy_filter">accuracy_filter</string>
-
-    <string name="pref_label_accuracy_filter_5">5m</string>
-    <string name="pref_label_accuracy_filter_10">10m</string>
-    <string name="pref_label_accuracy_filter_20">20m</string>
-    <string name="pref_label_accuracy_filter_50">50m</string>
-
-    <string name="pref_value_accuracy_filter_5">5</string>
-    <string name="pref_value_accuracy_filter_10">10</string>
-    <string name="pref_value_accuracy_filter_20">20</string>
-    <string name="pref_value_accuracy_filter_50">50</string>
-
-    <string name="pref_title_altitude_filter">Altitude filter</string>
-    <string name="pref_key_altitude_filter">altitude_filter</string>
-
-    <string name="pref_title_altitude_filter_param">Altitude filter parameter</string>
-    <string name="pref_key_altitude_filter_param">altitude_filter_parameter</string>
-
-    <string name="pref_label_altitude_filter_param_10">10</string>
-    <string name="pref_label_altitude_filter_param_20">20</string>
-    <string name="pref_label_altitude_filter_param_30">30</string>
-    <string name="pref_label_altitude_filter_param_50">50</string>
-
-    <string name="pref_value_altitude_filter_param_10">10</string>
-    <string name="pref_value_altitude_filter_param_20">20</string>
-    <string name="pref_value_altitude_filter_param_30">30</string>
-    <string name="pref_value_altitude_filter_param_50">50</string>
+    <string name="synchronisation">Synchronisation</string>
+    <string name="elevation">Elevation</string>
 
     <string name="pref_key_last_recorded_track_id">last_recorded_track_id</string>
     <string name="pref_key_activity_type">activity_type</string>
-
-    <!-- Gpx exporter -->
-    <string name="toast_external_storage_not_writable">External storage not writable :( Can\'t export track.</string>
 
 
 </resources>

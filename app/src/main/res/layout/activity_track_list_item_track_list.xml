@@ -30,7 +30,8 @@
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread_inside" />
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            android:contentDescription="@string/activity_track_list_item_track_iv_initial_content_desc" />
 
         <TextView
             android:id="@+id/tv_title"

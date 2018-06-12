@@ -1,13 +1,12 @@
 package com.awolity.trakr.view.detail;
 
-import com.awolity.trakr.utils.MyLog;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 public class GraphTimeAxisValueFormatter implements IAxisValueFormatter {
 
     private static final String LOG_TAG = GraphTimeAxisValueFormatter.class.getSimpleName();
-    private String[] mValues;
+    private final String[] mValues;
 
     public GraphTimeAxisValueFormatter(long durationInSeconds) {
         Duration duration;

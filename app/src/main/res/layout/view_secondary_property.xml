@@ -29,7 +29,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tvValue"
-        tools:text="km/h" />
+        tools:text="km/h"
+        tools:ignore="RtlSymmetry" />
 
     <TextView
         android:id="@+id/tvLabel"

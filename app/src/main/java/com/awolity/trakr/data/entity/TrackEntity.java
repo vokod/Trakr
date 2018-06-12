@@ -6,8 +6,6 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import com.awolity.trakr.utils.MyLog;
-
 import java.util.Calendar;
 import java.util.Objects;
 

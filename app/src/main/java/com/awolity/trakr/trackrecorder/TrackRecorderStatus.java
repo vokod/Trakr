@@ -10,10 +10,15 @@ import com.awolity.trakr.utils.PreferenceUtils;
 
 class TrackRecorderStatus {
 
-    private boolean
-            isAltitudeFiltered, isEverythingGoodForRecording = true;
-    private int trackingDistance, trackingAccuracy, trackingInterval, accuracyFilterParameter,
-            altitudeFilterParameter, numOfTrackPoints;
+    private final boolean
+            isAltitudeFiltered;
+    private boolean isEverythingGoodForRecording = true;
+    private final int trackingDistance;
+    private final int trackingAccuracy;
+    private final int trackingInterval;
+    private final int accuracyFilterParameter;
+    private final int altitudeFilterParameter;
+    private int numOfTrackPoints;
     private TrackpointEntity previousSavedTrackpoint, actualSavedTrackpoint, candidateTrackpoint;
     private AltitudeFilter altitudeFilter;
     private final ActivityType activityType;

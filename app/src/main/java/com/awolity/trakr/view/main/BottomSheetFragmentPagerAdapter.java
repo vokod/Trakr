@@ -3,9 +3,7 @@ package com.awolity.trakr.view.main;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.awolity.trakr.utils.MyLog;
-
-public class BottomSheetFragmentPagerAdapter extends FragmentPagerAdapter {
+class BottomSheetFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private static final String TAG = BottomSheetFragmentPagerAdapter.class.getSimpleName();
     private BottomSheetBaseFragment[] fragments;

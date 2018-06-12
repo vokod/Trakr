@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.view.MapUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,8 +23,6 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
     private static final String ARG_TRACK_ID = "track_id";
     private static final String LOG_TAG = TrackDetailActivityMapFragment.class.getSimpleName();
 
-    private long trackId;
-    private TrackViewModel trackViewModel;
     private GoogleMap googleMap;
     private MapView mapView;
     private TrackWithPoints trackWithPoints;
@@ -46,7 +43,7 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
         super.onCreate(savedInstanceState);
         // MyLog.d(LOG_TAG, "onCreate - " + this.hashCode());
         if (getArguments() != null) {
-            trackId = getArguments().getLong(ARG_TRACK_ID);
+            long trackId = getArguments().getLong(ARG_TRACK_ID);
         }
     }
 
@@ -69,7 +66,7 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
 
     private void setupViewModel() {
         // MyLog.d(LOG_TAG, "setupViewModel");
-        trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
+        TrackViewModel trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
         //trackViewModel.init(trackId);
         trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
             @Override

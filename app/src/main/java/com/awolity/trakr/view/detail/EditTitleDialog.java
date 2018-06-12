@@ -1,5 +1,6 @@
 package com.awolity.trakr.view.detail;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -26,7 +27,7 @@ public class EditTitleDialog extends DialogFragment {
 
     private static final String ARG_OLD_TITLE = "arg_old_title";
     private EditTitleDialogListener listener;
-    EditText titleEditText;
+    private EditText titleEditText;
 
     public static EditTitleDialog newInstance(String oldTitle) {
         EditTitleDialog fragment = new EditTitleDialog();
@@ -43,7 +44,8 @@ public class EditTitleDialog extends DialogFragment {
 
         final LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        final View view = inflater.inflate(R.layout.activity_track_detail_fragment_data_dialog_edit_title, null);
+        @SuppressLint("InflateParams") final View view = inflater.inflate(
+                R.layout.activity_track_detail_fragment_data_dialog_edit_title, null);
         titleEditText = view.findViewById(R.id.et_title);
         String oldTitle = getArguments().getString(ARG_OLD_TITLE);
         titleEditText.setText(oldTitle);
@@ -51,9 +53,9 @@ public class EditTitleDialog extends DialogFragment {
                 .setView(view)
                 .setPositiveButton(getString(R.string.edit_title_dialog_ok),
                         new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        });
         return builder.create();
     }
 

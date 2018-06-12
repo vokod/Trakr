@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 
 public abstract class BottomSheetBaseFragment extends Fragment {
 
-    protected String title;
+    private String title;
 
     public String getTitle() {
         return title;

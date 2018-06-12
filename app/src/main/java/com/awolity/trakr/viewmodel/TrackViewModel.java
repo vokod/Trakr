@@ -19,7 +19,7 @@ public class TrackViewModel extends ViewModel {
     @Inject
     TrackRepository trackRepository;
 
-    public static final long NOT_SET = -1;
+    private static final long NOT_SET = -1;
     private static final String LOG_TAG = TrackViewModel.class.getSimpleName();
     private long trackId = NOT_SET;
 
@@ -69,7 +69,7 @@ public class TrackViewModel extends ViewModel {
     }
 
     public void saveToCloud() {
-        trackRepository.saveTrackToFirebase(trackId);
+        trackRepository.saveTrackToCloud(trackId);
     }
 
     public void updateTrack(TrackEntity trackEntity) {
@@ -80,6 +80,10 @@ public class TrackViewModel extends ViewModel {
         if (trackId == -1) {
             throw new IllegalStateException("Viewmodel not initialised");
         }
+    }
+
+    public void deleteAllCloudData(){
+        trackRepository.deleteAllCloudData();
     }
 
 

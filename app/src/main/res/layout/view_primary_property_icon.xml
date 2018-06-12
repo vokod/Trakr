@@ -13,7 +13,8 @@
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvValue" />
+        app:layout_constraintTop_toTopOf="@+id/tvValue"
+        android:contentDescription="@string/view_primary_propert_icon_iv_icon_content_desc" />
 
     <TextView
         android:id="@+id/tvValue"
@@ -35,7 +36,8 @@
         android:textAlignment="textStart"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvValue"
         app:layout_constraintStart_toEndOf="@+id/tvValue"
-        tools:text="km/h" />
+        tools:text="km/h"
+        tools:ignore="RtlSymmetry" />
 
     <TextView
         android:id="@+id/tvLabel"

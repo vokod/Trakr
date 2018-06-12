@@ -11,7 +11,8 @@
         android:layout_height="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvValue" />
+        app:layout_constraintTop_toTopOf="@+id/tvValue"
+        android:contentDescription="@string/view_secondary_property_icon_iv_icon_content_desc" />
 
     <TextView
         android:id="@+id/tvValue"
@@ -35,7 +36,8 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/tvValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvValue"
-        tools:text="km/h" />
+        tools:text="km/h"
+        tools:ignore="RtlSymmetry" />
 
     <TextView
         android:id="@+id/tvLabel"

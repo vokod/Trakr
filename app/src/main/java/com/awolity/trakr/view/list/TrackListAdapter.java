@@ -1,14 +1,12 @@
 package com.awolity.trakr.view.list;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,10 +14,8 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.awolity.trakr.R;
-import com.awolity.trakr.customviews.SecondaryPropertyView;
 import com.awolity.trakr.customviews.SecondaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.view.MapUtils;
 import com.google.android.gms.maps.GoogleMap;
@@ -110,11 +106,14 @@ public class TrackListAdapter
     class TrackItemViewHolder extends RecyclerView.ViewHolder {
 
         private TrackWithPoints trackWithPoints;
-        private TextView titleTv, dateTv;
-        private ImageView initialIv;
-        private SecondaryPropertyViewIcon distanceView, durationView, elevationView;
-        private FrameLayout clickOverlay;
-        private MapView mapView;
+        private final TextView titleTv;
+        private final TextView dateTv;
+        private final ImageView initialIv;
+        private final SecondaryPropertyViewIcon distanceView;
+        private final SecondaryPropertyViewIcon durationView;
+        private final SecondaryPropertyViewIcon elevationView;
+        private final FrameLayout clickOverlay;
+        private final MapView mapView;
         private GoogleMap googleMap;
         private Polyline polyline;
 

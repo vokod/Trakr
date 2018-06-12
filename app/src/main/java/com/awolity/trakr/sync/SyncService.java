@@ -5,16 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v4.util.Pair;
 import android.widget.Toast;
 
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.di.TrakrApplication;
 import com.awolity.trakr.repository.TrackRepository;
+import com.awolity.trakr.utils.MyLog;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
 
@@ -25,46 +25,73 @@ public class SyncService extends IntentService {
     @Inject
     TrackRepository trackRepository;
 
+    @Inject
+    Executor discIoExecutor;
+
     public SyncService() {
         super("SyncService");
+        MyLog.d(LOG_TAG, "SyncService");
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
+        MyLog.d(LOG_TAG, "onHandleIntent");
         if (isConnected(this)) {
-            final List<TrackEntity> tracksInDb = trackRepository.getTracksSync();
-
-            trackRepository.getAllTrackEntitiesFromFirebase(new TrackRepository.GetAllTrackEntitiesFromFirebaseListener() {
-                @Override
-                public void onAllTracksLoaded(List<TrackEntity> trackEntityList) {
-                    Pair<List<TrackEntity>, List<TrackEntity>> comparedTracks
-                            = compareTracks(tracksInDb, trackEntityList);
-
-                    uploadOfflineTracks(comparedTracks.first);
-                    downloadOnlineTracks(comparedTracks.second);
-                }
-            });
-
+            downloadOnlineTracks();
+            // uploadOfflineTracks();
         } else {
+            // TODO:
             Toast.makeText(this, "Can't synchronise tracks in offline state. Will try next time the app starts", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void uploadOfflineTracks(List<TrackEntity> offlineTracks) {
+    private void uploadOfflineTracks() {
+        MyLog.d(LOG_TAG, "uploadOfflineTracks");
+        List<TrackEntity> offlineTracks = trackRepository.getTracksSync();
+        Iterator<TrackEntity> offlineTracksIterator = offlineTracks.iterator();
+
+        while (offlineTracksIterator.hasNext()) {
+            if (offlineTracksIterator.next().getFirebaseId() != null) {
+                offlineTracksIterator.remove();
+            }
+        }
+
         for (TrackEntity trackEntity : offlineTracks) {
-            trackRepository.saveTrackToFirebase(trackEntity.getTrackId());
+            trackRepository.saveTrackToCloud(trackEntity.getTrackId());
         }
     }
 
-    private void downloadOnlineTracks(List<TrackEntity> onlineTracks) {
-        for (TrackEntity trackEntity : onlineTracks) {
-            trackRepository.saveTrackToLocalDbFromFirebase(trackEntity.getFirebaseId());
-        }
+    private void downloadOnlineTracks() {
+        MyLog.d(LOG_TAG, "downloadOnlineTracks");
+        trackRepository.getAllTrackEntitiesFromCloud(new TrackRepository.GetAllTrackEntitiesFromFirebaseListener() {
+            @Override
+            public void onAllTracksLoaded(final List<TrackEntity> onlineTrackEntities) {
+                discIoExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<TrackEntity> offlineTrackEntities = trackRepository.getTracksSync();
+                        for (TrackEntity offlineTrack : offlineTrackEntities) {
+                            for (TrackEntity onlineTrack : onlineTrackEntities) {
+                                if (onlineTrack.getStartTime() == offlineTrack.getStartTime()) {
+                                    onlineTrackEntities.remove(onlineTrack);
+                                    break;
+                                }
+                            }
+                        }
+                        for (TrackEntity onlineTrack : onlineTrackEntities) {
+                            trackRepository.saveTrackToLocalDbFromCloud(onlineTrack.getFirebaseId());
+                        }
+                        uploadOfflineTracks();
+                    }
+                });
+            }
+        });
+
     }
 
     private static boolean isConnected(Context context) {
+        MyLog.d(LOG_TAG, "isConnected");
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -73,22 +100,6 @@ public class SyncService extends IntentService {
                 activeNetwork.isConnectedOrConnecting();
     }
 
-    private static Pair<List<TrackEntity>, List<TrackEntity>> compareTracks(List<TrackEntity> tracksInDb, List<TrackEntity> tracksInCloud) {
-        List<TrackEntity> onlyOfflineTracks = new ArrayList<>(tracksInDb);
-        Iterator<TrackEntity> onlyOfflineIterator = onlyOfflineTracks.iterator();
-        while (onlyOfflineIterator.hasNext()) {
-            if (!onlyOfflineIterator.next().getFirebaseId().isEmpty()) {
-                onlyOfflineIterator.remove();
-            }
-        }
-
-        List<TrackEntity> onlyOnlineTracks = new ArrayList<>(tracksInCloud);
-        for (TrackEntity offlineTrack : tracksInDb) {
-            onlyOnlineTracks.remove(offlineTrack);
-        }
-
-        return new Pair<>(onlyOfflineTracks, onlyOnlineTracks);
-    }
 
 }
 

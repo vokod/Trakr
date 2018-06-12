@@ -8,7 +8,7 @@ import android.support.annotation.RequiresApi;
 
 class NotificationChannelBuilder {
 
-    private NotificationChannel channel;
+    private final NotificationChannel channel;
 
     @RequiresApi(Build.VERSION_CODES.O)
     public NotificationChannelBuilder(String id, String name) {

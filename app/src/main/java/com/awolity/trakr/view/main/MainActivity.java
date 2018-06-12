@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final float ZOOM_LEVEL_INITIAL = 15;
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final int RC_SIGN_IN = 22;
 
     private GoogleMap googleMap;
     private BottomSheetPointFragment pointFragment;
@@ -237,7 +238,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void setupAppUserViewModel(){
+    private void setupAppUserViewModel() {
         appUserViewModel = ViewModelProviders.of(this).get(AppUserViewModel.class);
     }
 
@@ -321,7 +322,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private Observer<List<TrackpointEntity>> trackpointsListObserver = new Observer<List<TrackpointEntity>>() {
+    private final Observer<List<TrackpointEntity>> trackpointsListObserver = new Observer<List<TrackpointEntity>>() {
         @Override
         public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
             if (trackpointEntities != null && trackpointEntities.size() != 0) {
@@ -331,7 +332,7 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-    private Observer<TrackpointEntity> actualTrackpointObserver = new Observer<TrackpointEntity>() {
+    private final Observer<TrackpointEntity> actualTrackpointObserver = new Observer<TrackpointEntity>() {
         @Override
         public void onChanged(@Nullable TrackpointEntity trackpointEntity) {
             if (trackpointEntity != null) {
@@ -468,71 +469,48 @@ public class MainActivity extends AppCompatActivity
         }
 
         MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
-        if(appUserViewModel.IsAppUserLoggedIn()){
-            synchronisationItem.setTitle("Disable track synchronisation");
+        if (appUserViewModel.IsAppUserLoggedIn()) {
+            // TODO:
+            synchronisationItem.setTitle("Disable cloud sync");
         } else {
-            synchronisationItem.setTitle("Enable track synchronisation");
+            synchronisationItem.setTitle("Enable cloud sync");
         }
-
         return true;
     }
 
-    private static final int RC_SIGN_IN = 22;
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_list_tracks) {
             startActivity(TrackListActivity.getStarterIntent(this));
             return true;
         } else if (id == R.id.action_select_activity_type) {
-            if(status.isRecording()){
-                Toast.makeText(this, "You can't change activity type while recording track.",Toast.LENGTH_LONG ).show();
+            if (status.isRecording()) {
+                // TODO:
+                Toast.makeText(this, "You can't change activity type while recording track.", Toast.LENGTH_LONG).show();
             } else {
                 ActivityTypeDialogFragment dialog = new ActivityTypeDialogFragment();
                 dialog.show(getSupportFragmentManager(), null);
             }
-        } else if (id == R.id.action_synchronisation){
-            if(appUserViewModel.IsAppUserLoggedIn()){
-                AlertDialog.Builder builder;
-                builder = new AlertDialog.Builder(this);
-                builder.setTitle("Disable synchronisation")
-                        .setMessage("Are you sure you want to disable synchronisation and log out?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startActivityForResult(AuthUI.getInstance()
-                                        .createSignInIntentBuilder()
-                                        .setAvailableProviders(Arrays.asList(
-                                                new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
-                                        .build(), RC_SIGN_IN);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+        } else if (id == R.id.action_synchronisation) {
+            if (appUserViewModel.IsAppUserLoggedIn()) {
+                appUserViewModel.signOut();
+                // TODO
+                item.setTitle("Enable cloud sync");
+                Toast.makeText(this, "You are logged out", Toast.LENGTH_LONG).show();
             } else {
-                AlertDialog.Builder builder;
-                builder = new AlertDialog.Builder(this);
-                builder.setTitle("Log in")
-                        .setMessage("you need to log in to enable track synchronsiation")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startActivityForResult(AuthUI.getInstance()
-                                        .createSignInIntentBuilder()
-                                        .setAvailableProviders(Arrays.asList(
-                                                new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
-                                        .build(), RC_SIGN_IN);
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .show();
+                startActivityForResult(AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(Arrays.asList(
+                                new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
+                        .build(), RC_SIGN_IN);
             }
-        } else if(id == R.id.action_sync_now){
+        } else if (id == R.id.action_sync_now) {
             startService(new Intent(this, SyncService.class));
         }
-        return super.onOptionsItemSelected(item);
+        return super.
+
+                onOptionsItemSelected(item);
     }
 
     @Override
@@ -544,6 +522,8 @@ public class MainActivity extends AppCompatActivity
 
             // Successfully signed in
             if (resultCode == RESULT_OK) {
+                MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
+                synchronisationItem.setTitle("Disable cloud sync");
                 // TODO:
                 return;
             } else {
@@ -555,16 +535,16 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    MainActivityUtils.showToast(this,getString(R.string.login_error_no_internet));
+                    MainActivityUtils.showToast(this, getString(R.string.login_error_no_internet));
                     return;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                    MainActivityUtils.showToast(this,getString(R.string.login_error_unknown_error));
+                    MainActivityUtils.showToast(this, getString(R.string.login_error_unknown_error));
                     return;
                 }
             }
-            MainActivityUtils.showToast(this,getString(R.string.login_error_unknown_response));
+            MainActivityUtils.showToast(this, getString(R.string.login_error_unknown_response));
         }
     }
 

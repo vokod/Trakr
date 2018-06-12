@@ -5,7 +5,6 @@ import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
-import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 

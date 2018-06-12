@@ -2,11 +2,11 @@ package com.awolity.trakr.activitytype;
 
 public class ActivityType {
 
-    private RecordParameters recordParameters;
-    private String title;
-    private String key;
-    private int iconResource;
-    private int menuIconResource;
+    private final RecordParameters recordParameters;
+    private final String title;
+    private final String key;
+    private final int iconResource;
+    private final int menuIconResource;
    /* private int color;
     private String hexColor;*/
 

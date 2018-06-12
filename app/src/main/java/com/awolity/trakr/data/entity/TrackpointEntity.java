@@ -8,8 +8,6 @@ import android.arch.persistence.room.PrimaryKey;
 import android.location.Location;
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.maps.model.LatLng;
-
 @SuppressWarnings("WeakerAccess")
 
 @Entity(tableName = "trackpoint_table",

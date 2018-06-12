@@ -12,8 +12,10 @@ import com.awolity.trakr.R;
 
 public class PrimaryPropertyView extends ConstraintLayout {
 
-    protected TextView labelTextView, valueTextView, unitTextView;
-    protected final Context context;
+    TextView labelTextView;
+    TextView valueTextView;
+    TextView unitTextView;
+    final Context context;
 
     public PrimaryPropertyView(@NonNull Context context) {
         super(context);
@@ -33,7 +35,7 @@ public class PrimaryPropertyView extends ConstraintLayout {
         inflate();
     }
 
-    protected void inflate() {
+    void inflate() {
         LayoutInflater.from(context).inflate(R.layout.view_primary_property, this, true);
         labelTextView = findViewById(R.id.tvLabel);
         valueTextView = findViewById(R.id.tvValue);
