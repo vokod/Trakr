@@ -54,6 +54,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.Arrays;
 import java.util.List;
+
 public class MainActivity extends AppCompatActivity
         implements OnMapReadyCallback,
         GoogleMap.OnCameraMoveListener,
@@ -581,12 +582,13 @@ public class MainActivity extends AppCompatActivity
         chartsFragment.stopTrackDataUpdate();
         status.setRecording(false);
         clearTrackOnMap();
-
-        trackViewModel.saveToCloud();
+        // TODO: ezt elenőrizni, hogy mi történik hamarabb: a trackrecorder check-trackje, vagy ez
+        if (trackViewModel.getTrackWithPoints().getValue().getTrackPoints().size() > 1) {
+            trackViewModel.saveToCloud();
+            Intent intent = TrackDetailActivity.getStarterIntent(this, trackId);
+            startActivity(intent);
+        }
         trackViewModel.reset();
-
-        Intent intent = TrackDetailActivity.getStarterIntent(this, trackId);
-        startActivity(intent);
         trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
     }
 

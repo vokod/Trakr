@@ -7,7 +7,10 @@ import android.os.StrictMode;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.utils.MyLog;
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.database.FirebaseDatabase;
+
+import io.fabric.sdk.android.Fabric;
 
 public class TrakrApplication extends Application {
 
@@ -21,7 +24,7 @@ public class TrakrApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        // Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         getAppComponent();
         NotificationUtils.setupNotificationChannels(this);
