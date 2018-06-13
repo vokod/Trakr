@@ -366,6 +366,7 @@ public class TrackEntity {
         TrackEntity entity = new TrackEntity();
         entity.setTrackId(trackWithPoints.getTrackId());
         entity.setFirebaseId(trackWithPoints.getFirebaseId());
+        entity.setActivityType(trackWithPoints.getActivityType());
         entity.setTitle(trackWithPoints.getTitle());
         entity.setStartTime(trackWithPoints.getStartTime());
         entity.setDistance(trackWithPoints.getDistance());

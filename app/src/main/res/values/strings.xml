@@ -33,7 +33,6 @@
     <string name="activity_type_key_driving" translatable="false">driving</string>
     <string name="activity_type_key_flying" translatable="false">flying</string>
 
-
     <string name="start_recording_a_track">Start recording a track!</string>
 
     <!-- Track list activity -->

@@ -80,6 +80,9 @@ public class ActivityTypeManager {
     }
 
     public ActivityType getActivityType(Context context, String key){
+        if(key == null){
+            return walking;
+        }
         if(key.equals(context.getString(R.string.activity_type_key_walking))){
             return walking;
         } else if(key.equals(context.getString(R.string.activity_type_key_running))){

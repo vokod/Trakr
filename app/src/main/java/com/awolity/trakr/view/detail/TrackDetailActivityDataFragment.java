@@ -12,8 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.awolity.trakr.R;
 import com.awolity.trakr.activitytype.ActivityType;
 import com.awolity.trakr.activitytype.ActivityTypeManager;
@@ -70,7 +68,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
     }
 
     private void setupWidgets(View view) {
-        initialImageView = view.findViewById(R.id.iv_initial);
+        initialImageView = view.findViewById(R.id.iv_icon);
         editTitleImageButton = view.findViewById(R.id.ib_edit);
         titleTextView = view.findViewById(R.id.tv_title);
         dateTextView = view.findViewById(R.id.tv_date);

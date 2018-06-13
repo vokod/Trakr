@@ -3,7 +3,6 @@ package com.awolity.trakr.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
@@ -26,7 +25,7 @@ public class TrakrWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         TrakrApplication.getInstance().getAppComponent().inject(this);
-        MyLog.d(LOG_TAG, "onUpdate");
+        // MyLog.d(LOG_TAG, "onUpdate");
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -34,7 +33,7 @@ public class TrakrWidget extends AppWidgetProvider {
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                         int appWidgetId) {
-        MyLog.d(LOG_TAG, "updateAppWidget");
+        // MyLog.d(LOG_TAG, "updateAppWidget");
 
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent showPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -49,7 +48,7 @@ public class TrakrWidget extends AppWidgetProvider {
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                        int appWidgetId, String duration, String distance, int iconResource) {
-        MyLog.d(LOG_TAG, "updateAppWidget");
+        // MyLog.d(LOG_TAG, "updateAppWidget");
 
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent showPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -66,7 +65,7 @@ public class TrakrWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.tv_label_distance, "distance");
         views.setImageViewResource(R.id.iv_icon_distance, R.drawable.ic_distance);
         views.setImageViewResource(R.id.iv_icon_duration, R.drawable.ic_duration);
-        views.setImageViewResource(R.id.iv_initial, iconResource);
+        views.setImageViewResource(R.id.iv_icon, iconResource);
 
         // Widgets allow click handlers to only launch pending intents
         views.setOnClickPendingIntent(R.id.ll_widget, showPendingIntent);

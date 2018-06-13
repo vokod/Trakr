@@ -5,16 +5,17 @@
     android:id="@+id/ll_widget"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@drawable/widget_content_base"
     android:orientation="horizontal"
     android:padding="8dp">
 
     <ImageView
-        android:id="@+id/iv_initial"
+        android:id="@+id/iv_icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:contentDescription="@string/activity_track_list_item_track_iv_initial_content_desc"
+        android:src="@drawable/widget_icon"
         android:scaleType="centerCrop" />
 
     <ImageView

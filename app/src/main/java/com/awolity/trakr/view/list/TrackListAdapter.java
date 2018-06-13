@@ -11,8 +11,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.awolity.trakr.R;
 import com.awolity.trakr.activitytype.ActivityType;
 import com.awolity.trakr.activitytype.ActivityTypeManager;
@@ -125,7 +123,7 @@ public class TrackListAdapter
             clickOverlay = itemView.findViewById(R.id.fl_click_overlay);
             titleTv = itemView.findViewById(R.id.tv_title);
             dateTv = itemView.findViewById(R.id.tv_date);
-            initialIv = itemView.findViewById(R.id.iv_initial);
+            initialIv = itemView.findViewById(R.id.iv_icon);
             distanceView = itemView.findViewById(R.id.spv_distance);
             durationView = itemView.findViewById(R.id.spv_duration);
             elevationView = itemView.findViewById(R.id.spv_elevation);

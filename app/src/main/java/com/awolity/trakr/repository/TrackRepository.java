@@ -249,7 +249,7 @@ public class TrackRepository {
         trackDbReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               saveTrackEntityToDbFromCloud(dataSnapshot,appUserId,firebaseTrackId);
+                saveTrackEntityToDbFromCloud(dataSnapshot, appUserId, firebaseTrackId);
             }
 
             @Override
@@ -259,7 +259,7 @@ public class TrackRepository {
         });
     }
 
-    private void saveTrackEntityToDbFromCloud(DataSnapshot dataSnapshot, final String appUserId, final String firebaseTrackId){
+    private void saveTrackEntityToDbFromCloud(DataSnapshot dataSnapshot, final String appUserId, final String firebaseTrackId) {
         MyLog.d(LOG_TAG, "saveTrackEntityToDbFromCloud");
         final TrackEntity entity = dataSnapshot.getValue(TrackEntity.class);
         entity.setTrackId(0);
@@ -289,7 +289,7 @@ public class TrackRepository {
         });
     }
 
-    private void saveTrackpointEntitiesToDbFromCloud(DataSnapshot dataSnapshot, long trackId){
+    private void saveTrackpointEntitiesToDbFromCloud(DataSnapshot dataSnapshot, long trackId) {
         MyLog.d(LOG_TAG, "saveTrackpointEntitiesToDbFromCloud");
         final List<TrackpointEntity> trackpointEntities = new ArrayList<>();
         for (DataSnapshot trackPointSnapshot : dataSnapshot.getChildren()) {
