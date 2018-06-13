@@ -1,5 +1,7 @@
 package com.awolity.trakr.trackrecorder;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -9,14 +11,17 @@ import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.activitytype.ActivityType;
+import com.awolity.trakr.activitytype.ActivityTypeManager;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.di.TrakrApplication;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.repository.TrackRepository;
+import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.StringUtils;
+import com.awolity.trakr.widget.TrakrWidget;
 import com.google.android.gms.location.LocationRequest;
 
 import java.util.ArrayList;
@@ -66,6 +71,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
             @Override
             public void run() {
                 updateNotification(context, track);
+                updateWidget(context, track);
                 handler.postDelayed(uiUpdater, 1000);
             }
         };
@@ -121,6 +127,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
         locationManager.stop();
         handler.removeCallbacks(uiUpdater);
         checkTrackValidity();
+        resetWidget(context);
     }
 
     private void checkTrackValidity() {
@@ -170,15 +177,6 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     private void saveTrackAndPointToDb() {
         saveTrackpointToDb(status.getCandidateTrackpoint());
         status.saveCandidateTrackpoint();
-        updateTrackData();
-        updateTrackInDb(track);
-
-        Intent intent = new Intent(BROADCAST_TO_WIDGET);
-        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-    }
-
-    private void saveTrackAndPointToDb(TrackpointEntity trackpointEntity) {
-        saveTrackpointToDb(trackpointEntity);
         updateTrackData();
         updateTrackInDb(track);
     }
@@ -267,6 +265,31 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
                 String.format(Locale.getDefault(), "%.1f", track.getAvgSpeed())));
 
         NotificationUtils.showRecordTrackNotification(context, lines);
+    }
+
+    private static void updateWidget(Context context, TrackEntity track) {
+        final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        final ComponentName componentName = new ComponentName(context, TrakrWidget.class);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(componentName);
+        for (int appWidgetId : appWidgetIds) {
+            TrakrWidget.updateAppWidget(context,
+                    appWidgetManager,
+                    appWidgetId,
+                    StringUtils.getElapsedTimeAsString(System.currentTimeMillis() - track.getStartTime()),
+                    StringUtils.getDistanceAsThreeCharactersString(track.getDistance()),
+                    ActivityTypeManager.getInstance(context).getActivityType(context, track.getActivityType()).getIconResource());
+        }
+    }
+
+    private static void resetWidget(Context context) {
+        final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        final ComponentName componentName = new ComponentName(context, TrakrWidget.class);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(componentName);
+        for (int appWidgetId : appWidgetIds) {
+            TrakrWidget.updateAppWidget(context,
+                    appWidgetManager,
+                    appWidgetId);
+        }
     }
 
     private static void sendTrackIdBroadcast(Context context, long trackId) {

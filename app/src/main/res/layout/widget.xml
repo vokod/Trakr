@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cl_item"
+    android:id="@+id/ll_widget"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="horizontal"
     android:padding="8dp">
 
@@ -15,9 +14,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:layout_marginStart="12dp"
         android:contentDescription="@string/activity_track_list_item_track_iv_initial_content_desc"
-        android:padding="4dp"
         android:scaleType="centerCrop" />
 
     <ImageView
@@ -35,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
@@ -81,6 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
@@ -97,7 +96,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-1dp"
             tools:text="Distance" />
-
     </LinearLayout>
 
     <TextView
@@ -107,18 +105,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingStart="4dp"
-        android:textAlignment="textStart"
         tools:ignore="RtlSymmetry"
         tools:text="km" />
 
-    <ImageButton
-        android:id="@+id/btn_stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        app:srcCompat="@drawable/ic_stop" />
+
+
+
 </LinearLayout>
 
 

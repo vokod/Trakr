@@ -25,6 +25,7 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -56,18 +57,17 @@
         </provider>
 
         <service android:name=".trackrecorder.TrackRecorderService" />
-
         <service android:name=".sync.SyncService" />
 
-        <receiver android:name="widget.TrakrWidget">
+        <receiver android:name=".widget.TrakrWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/trakr_widget_info" />
         </receiver>
-
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -78,6 +78,7 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="18bbe06a9bdc61f2ba085a0c0e353cd1e59f5fe4" />
+
 
     </application>
 
