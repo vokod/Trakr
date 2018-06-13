@@ -12,13 +12,11 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
+import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 

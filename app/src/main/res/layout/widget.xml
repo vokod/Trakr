@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/iv_initial"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="12dp"
+        android:contentDescription="@string/activity_track_list_item_track_iv_initial_content_desc"
+        android:padding="4dp"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/iv_icon_duration"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/view_secondary_property_icon_iv_icon_content_desc"
+        app:srcCompat="@drawable/ic_duration" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_value_duration"
+            style="@style/SecondaryPropertyValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            tools:text="34.5" />
+
+        <TextView
+            android:id="@+id/tv_label_duration"
+            style="@style/SecondaryPropertyLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-1dp"
+            tools:text="Duration" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_unit_duration"
+        style="@style/SecondaryPropertyUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingStart="4dp"
+        tools:ignore="RtlSymmetry"
+        tools:text="s" />
+
+    <ImageView
+        android:id="@+id/iv_icon_distance"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/view_secondary_property_icon_iv_icon_content_desc"
+        app:srcCompat="@drawable/ic_track" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_value_distance"
+            style="@style/SecondaryPropertyValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="34.5" />
+
+        <TextView
+            android:id="@+id/tv_label_distance"
+            style="@style/SecondaryPropertyLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-1dp"
+            tools:text="Distance" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_unit_distance"
+        style="@style/SecondaryPropertyUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingStart="4dp"
+        android:textAlignment="textStart"
+        tools:ignore="RtlSymmetry"
+        tools:text="km" />
+
+    <ImageButton
+        android:id="@+id/btn_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        app:srcCompat="@drawable/ic_stop" />
+</LinearLayout>
+
+

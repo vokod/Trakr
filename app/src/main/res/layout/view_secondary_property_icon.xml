@@ -6,48 +6,48 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/iv_icon"
+        android:id="@+id/iv_icon_duration"
         android:layout_width="28dp"
         android:layout_height="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvValue"
+        app:layout_constraintTop_toTopOf="@+id/tv_value_duration"
         android:contentDescription="@string/view_secondary_property_icon_iv_icon_content_desc" />
 
     <TextView
-        android:id="@+id/tvValue"
+        android:id="@+id/tv_value_duration"
         style="@style/SecondaryPropertyValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:textAlignment="textEnd"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@+id/iv_icon"
+        app:layout_constraintStart_toEndOf="@+id/iv_icon_duration"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="34.5" />
 
     <TextView
-        android:id="@+id/tvUnit"
+        android:id="@+id/tv_unit_duration"
         style="@style/SecondaryPropertyUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingStart="4dp"
         android:textAlignment="textStart"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvValue"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_value_duration"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvValue"
+        app:layout_constraintStart_toEndOf="@+id/tv_value_duration"
         tools:text="km/h"
         tools:ignore="RtlSymmetry" />
 
     <TextView
-        android:id="@+id/tvLabel"
+        android:id="@+id/tv_label_duration"
         style="@style/SecondaryPropertyLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="-1dp"
         android:textAlignment="center"
-        app:layout_constraintStart_toStartOf="@+id/tvValue"
-        app:layout_constraintTop_toBottomOf="@+id/tvUnit"
+        app:layout_constraintStart_toStartOf="@+id/tv_value_duration"
+        app:layout_constraintTop_toBottomOf="@+id/tv_unit_duration"
         tools:text="Speed" />
 </android.support.constraint.ConstraintLayout>

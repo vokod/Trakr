@@ -29,6 +29,7 @@ import javax.inject.Inject;
 public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
     public static final String TRACKID_BROADCAST_NAME = "com.awolity.trakr.trackrecorder.TrackRecorder.trackIdBroadcast";
+    public static final String BROADCAST_TO_WIDGET = "android.appwidget.action.APPWIDGET_UPDATE";
     public static final String EXTRA_TRACK_ID = "extra_track_id";
     private static final String TAG = TrackRecorder.class.getSimpleName();
     private TrackEntity track;
@@ -171,6 +172,9 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
         status.saveCandidateTrackpoint();
         updateTrackData();
         updateTrackInDb(track);
+
+        Intent intent = new Intent(BROADCAST_TO_WIDGET);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
     private void saveTrackAndPointToDb(TrackpointEntity trackpointEntity) {

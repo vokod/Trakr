@@ -18,6 +18,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -362,11 +363,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void clearTrackOnMap() {
-        if (polyline != null) {
+        googleMap.clear();
+        /*if (polyline != null) {
             polyline.remove();
         } else {
             googleMap.clear();
-        }
+        }*/
     }
 
     private void continueTrackOnMap(LatLng currentLatLng) {

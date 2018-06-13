@@ -104,7 +104,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
         distancePpvi.setup(getString(R.string.distance_view_title),
                 getString(R.string.distance_view_unit),
                 getString(R.string.distance_view_default_value),
-                R.drawable.ic_max_speed);
+                R.drawable.ic_distance);
         maxSpeedPpvi.setup(getString(R.string.max_speed_view_title),
                 getString(R.string.max_speed_view_unit),
                 getString(R.string.max_speed_view_default_value),

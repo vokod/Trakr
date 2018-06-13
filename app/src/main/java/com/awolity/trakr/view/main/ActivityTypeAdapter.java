@@ -90,7 +90,7 @@ public class ActivityTypeAdapter
             // MyLog.d(LOG_TAG, "TrackItemViewHolder " + TrackItemViewHolder.this.hashCode());
             clickOverlay = itemView.findViewById(R.id.fl_click_overlay2);
             titleTv = itemView.findViewById(R.id.tv_title);
-            iconImageView = itemView.findViewById(R.id.iv_icon);
+            iconImageView = itemView.findViewById(R.id.iv_icon_duration);
         }
 
         void bind(final ActivityType activityType) {

@@ -59,6 +59,16 @@
 
         <service android:name=".sync.SyncService" />
 
+        <receiver android:name="widget.TrakrWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/trakr_widget_info" />
+        </receiver>
+
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

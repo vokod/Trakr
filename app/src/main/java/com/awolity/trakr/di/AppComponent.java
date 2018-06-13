@@ -7,6 +7,7 @@ import com.awolity.trakr.trackrecorder.TrackRecorder;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
+import com.awolity.trakr.widget.TrakrWidget;
 
 import javax.inject.Singleton;
 
@@ -29,5 +30,7 @@ public interface AppComponent {
     void inject (TrackListViewModel trackListViewModel);
 
     void inject (SyncService syncService);
+
+    void inject (TrakrWidget trakrWidget);
 
 }
