@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.awolity.trakr.R;
 import com.awolity.trakr.activitytype.ActivityType;
 import com.awolity.trakr.data.entity.TrackEntity;
+import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.sync.SyncService;
@@ -582,14 +583,21 @@ public class MainActivity extends AppCompatActivity
         chartsFragment.stopTrackDataUpdate();
         status.setRecording(false);
         clearTrackOnMap();
-        // TODO: ezt elenőrizni, hogy mi történik hamarabb: a trackrecorder check-trackje, vagy ez
-        if (trackViewModel.getTrackWithPoints().getValue().getTrackPoints().size() > 1) {
-            trackViewModel.saveToCloud();
-            Intent intent = TrackDetailActivity.getStarterIntent(this, trackId);
-            startActivity(intent);
-        }
-        trackViewModel.reset();
-        trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
+        trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
+            @Override
+            public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
+                if (trackWithPoints != null) {
+                    if (trackWithPoints.getTrackPoints().size() > 1) {
+                        trackViewModel.saveToCloud();
+                        Intent intent = TrackDetailActivity.getStarterIntent(MainActivity.this, trackId);
+                        startActivity(intent);
+                        trackViewModel.getTrackWithPoints().removeObserver(this);
+                    }
+                    trackViewModel.reset();
+                    trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
+                }
+            }
+        });
     }
 
     @Override

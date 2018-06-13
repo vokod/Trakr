@@ -24,6 +24,8 @@ public class TrackEntity {
     String title;
     @ColumnInfo(name = "start_time")
     long startTime;
+    @ColumnInfo(name = "activity_type")
+    String activityType;
     double distance;
     double ascent;
     double descent;
@@ -75,6 +77,14 @@ public class TrackEntity {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(String activityType) {
+        this.activityType = activityType;
     }
 
     public long getStartTime() {

@@ -11,7 +11,7 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 
 @Database(entities = {TrackEntity.class, TrackpointEntity.class},
-version = 6)
+version = 7)
 public abstract class TrakrDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "trakr-db.db";

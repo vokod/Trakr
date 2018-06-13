@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.awolity.trakr.R;
+import com.awolity.trakr.activitytype.ActivityType;
+import com.awolity.trakr.activitytype.ActivityTypeManager;
 import com.awolity.trakr.customviews.SecondaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.utils.StringUtils;
@@ -153,14 +155,9 @@ public class TrackListAdapter
             titleTv.setText(this.trackWithPoints.getTitle());
             dateTv.setText(DateUtils.getRelativeTimeSpanString(this.trackWithPoints.getStartTime()).toString());
 
-            ColorGenerator generator = ColorGenerator.MATERIAL;
-            String firstLetter = "";
-            if (this.trackWithPoints.getTitle().length() > 0) {
-                firstLetter = this.trackWithPoints.getTitle().substring(0, 1);
-            }
-            TextDrawable drawable = TextDrawable.builder()
-                    .buildRound(firstLetter, generator.getColor(this.trackWithPoints.getTitle()));
-            initialIv.setImageDrawable(drawable);
+            ActivityType activityType = ActivityTypeManager.getInstance(context)
+                    .getActivityType(context,trackWithPoints.getActivityType());
+            initialIv.setImageResource(activityType.getIconResource());
 
             distanceView.setValue(StringUtils.getDistanceAsThreeCharactersString(trackWithPoints.getDistance()));
             elevationView.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getAscent()));

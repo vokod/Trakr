@@ -8,12 +8,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
+import com.awolity.trakr.activitytype.ActivityType;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.di.TrakrApplication;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.repository.TrackRepository;
+import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.StringUtils;
 import com.google.android.gms.location.LocationRequest;
 
@@ -110,6 +112,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
         track.setStartTime(System.currentTimeMillis());
         track.setTitle(TrackEntity.getDefaultName(track.getStartTime()));
         track.setMetadata(buildMetadataString());
+        track.setActivityType(PreferenceUtils.getActivityType(context).getKey());
         return track;
     }
 
@@ -120,14 +123,9 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     }
 
     private void checkTrackValidity() {
-        if (status.getNumOfTrackPoints() == 0) {
+        if (status.getNumOfTrackPoints() < 2) {
             trackRepository.deleteTrack(trackId);
             Toast.makeText(context, context.getString(R.string.track_recorder_track_too_short), Toast.LENGTH_LONG).show();
-        }
-        if (status.getNumOfTrackPoints() == 1) {
-            // duplicate the only point
-            TrackpointEntity trackpointEntity = status.getActualSavedTrackpoint();
-            saveTrackAndPointToDb(trackpointEntity);
         }
     }
 
@@ -167,7 +165,6 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
             }
         }
     }
-
 
     private void saveTrackAndPointToDb() {
         saveTrackpointToDb(status.getCandidateTrackpoint());
@@ -211,7 +208,6 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
     private String buildMetadataString() {
         String priority;
-
         switch (locationManager.getLocationRequestPriority()) {
             case LocationRequest.PRIORITY_HIGH_ACCURACY:
                 priority = "High accuracy";

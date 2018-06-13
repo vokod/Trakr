@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.awolity.trakr.R;
+import com.awolity.trakr.activitytype.ActivityType;
+import com.awolity.trakr.activitytype.ActivityTypeManager;
 import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
@@ -160,14 +162,9 @@ public class TrackDetailActivityDataFragment extends Fragment {
     private void setData(TrackWithPoints trackWithPoints) {
         // MyLog.d(LOG_TAG, "setData");
 
-        ColorGenerator generator = ColorGenerator.MATERIAL;
-        String firstLetter = "";
-        if (trackWithPoints.getTitle().length() > 0) {
-            firstLetter = trackWithPoints.getTitle().substring(0, 1);
-        }
-        TextDrawable drawable = TextDrawable.builder()
-                .buildRound(firstLetter, generator.getColor(trackWithPoints.getTitle()));
-        initialImageView.setImageDrawable(drawable);
+        ActivityType activityType = ActivityTypeManager.getInstance(getContext())
+                .getActivityType(getContext(),trackWithPoints.getActivityType());
+        initialImageView.setImageResource(activityType.getIconResource());
 
         titleTextView.setText(trackWithPoints.getTitle());
         dateTextView.setText(StringUtils.getDateAsStringLocale(trackWithPoints.getStartTime()));

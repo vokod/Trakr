@@ -78,7 +78,6 @@ public class TrackDetailActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.app_name);
         bottomNavigationView = findViewById(R.id.navigation);
-        FrameLayout fragmentContainer = findViewById(R.id.fragment_container);
     }
 
     private void setupViewModel(long trackId) {

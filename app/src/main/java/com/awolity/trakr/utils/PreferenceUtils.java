@@ -38,7 +38,7 @@ public class PreferenceUtils {
                 return activityType;
             }
         }
-        return null;
+        return ActivityTypeManager.getInstance(context).getActivityTypes().get(0);
     }
 
     public static void setActivityType(Context context, ActivityType activityType) {

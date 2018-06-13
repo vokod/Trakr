@@ -64,11 +64,6 @@ public class TrackRecorderService extends Service {
         return START_STICKY;
     }
 
-    public long getTrackID() {
-         // MyLog.d(TAG, "getTrackID - hash:" + this.hashCode());
-        return recorder.getTrackId();
-    }
-
     private void startRecordTrack() {
          // MyLog.d(TAG, "startRecordTrack");
         recorder = new TrackRecorder();
