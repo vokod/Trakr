@@ -20,7 +20,7 @@ android {
         release {
             keyAlias 'trakr-release-key'
             keyPassword 'trakr-release-key-password'
-            storeFile file('C:/Users/user/AndroidStudioProjects/Capstone-Project/Trakr-keystore.jks')
+            storeFile file('Trakr-keystore.jks')
             storePassword 'trakr-keystore-password'
         }
     }
