@@ -133,4 +133,10 @@
     <string name="enable_cloud_sync">Felhőszinkronizáció engedélyezése</string>
     <string name="you_are_logged_out">Kilépés sikeres</string>
     <string name="you_are_logged_in">Belépés sikeres</string>
+    <string name="night_track">Éjszakai nyomvonal</string>
+    <string name="dawn_track">Hajnali nyomvonal</string>
+    <string name="early_morning_track">Reggeli nyomvonal</string>
+    <string name="morning_track">Délelőtti nyomvonal</string>
+    <string name="afternoon_track">Délutáni nyomvonal</string>
+    <string name="evening_track">Esti nyomvonal</string>
 </resources>

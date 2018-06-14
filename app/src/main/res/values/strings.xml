@@ -37,6 +37,12 @@
 
     <!-- Track list activity -->
     <string name="title_activity_track_list">Recorded tracks</string>
+    <string name="night_track">Night track</string>
+    <string name="dawn_track">Dawn track</string>
+    <string name="early_morning_track">Early morning track</string>
+    <string name="morning_track">Morning track</string>
+    <string name="afternoon_track">Afternoon track</string>
+    <string name="evening_track">Evening track</string>
 
     <!-- Track detail activity -->
     <string name="title_activity_track_detail">Track detail</string>
@@ -185,14 +191,10 @@
     <string name="activity_main_dialog_activity_type_list_item_iv_icon_content_desc">Icon of activity</string>
     <string name="view_secondary_property_icon_iv_icon_content_desc">Icon of property</string>
 
-
     <string name="synchronisation">Synchronisation</string>
     <string name="elevation">Elevation</string>
 
     <string name="pref_key_last_recorded_track_id" translatable="false">last_recorded_track_id</string>
     <string name="pref_key_activity_type" translatable="false">activity_type</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-
 
 </resources>

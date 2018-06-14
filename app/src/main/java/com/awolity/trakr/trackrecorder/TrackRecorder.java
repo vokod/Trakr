@@ -117,7 +117,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     private TrackEntity getBaseTrack() {
         TrackEntity track = new TrackEntity();
         track.setStartTime(System.currentTimeMillis());
-        track.setTitle(TrackEntity.getDefaultName(track.getStartTime()));
+        track.setTitle(TrackEntity.getDefaultName(context, track.getStartTime()));
         track.setMetadata(buildMetadataString());
         track.setActivityType(PreferenceUtils.getActivityType(context).getKey());
         return track;

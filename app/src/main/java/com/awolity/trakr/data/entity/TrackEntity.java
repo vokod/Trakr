@@ -4,7 +4,10 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.content.Context;
 import android.support.annotation.NonNull;
+
+import com.awolity.trakr.R;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -343,22 +346,22 @@ public class TrackEntity {
         return Objects.hash(getTrackId(), getFirebaseId(), getTitle(), getStartTime(), getDistance(), getAscent(), getDescent(), getElapsedTime(), getNumOfTrackPoints(), getNorthestPoint(), getSouthestPoint(), getWesternPoint(), getEasternPoint(), getMinAltitude(), getMaxAltitude(), getMaxSpeed(), getAvgSpeed(), getMetadata());
     }
 
-    public static String getDefaultName(long startTime) {
+    public static String getDefaultName(Context context, long startTime) {
         Calendar cl = Calendar.getInstance();
         cl.setTimeInMillis(startTime);
         int hour = cl.get(Calendar.HOUR_OF_DAY);
         if (hour <= 3 || hour > 21) {
-            return "Night track";
+            return context.getString(R.string.night_track);
         } else if (hour < 6) {
-            return "Dawn track";
+            return context.getString(R.string.dawn_track);
         } else if (hour < 8) {
-            return "Early morning track";
+            return context.getString(R.string.early_morning_track);
         } else if (hour < 12) {
-            return "Morning track";
+            return context.getString(R.string.morning_track);
         } else if (hour < 18) {
-            return "Afternoon track";
+            return context.getString(R.string.afternoon_track);
         } else {
-            return "Evening track";
+            return context.getString(R.string.evening_track);
         }
     }
 
