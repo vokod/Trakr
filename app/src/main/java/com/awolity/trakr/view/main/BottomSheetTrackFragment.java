@@ -259,7 +259,6 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
             return;
         }
         startTime = 0;
-        // TODO: ezeket átállítani a másik beállító metóddal
         distanceView.setValue(getActivity().getString(R.string.distance_view_default_value));
         distanceView.setUnit(getActivity().getString(R.string.distance_view_unit));
         distanceView.setLabel(getActivity().getString(R.string.distance_view_title));

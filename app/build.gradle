@@ -16,6 +16,14 @@ repositories {
 
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'trakr-release-key'
+            keyPassword 'trakr-release-key-password'
+            storeFile file('C:/Users/user/AndroidStudioProjects/Capstone-Project/Trakr-keystore.jks')
+            storePassword 'trakr-keystore-password'
+        }
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.awolity.trakr"
@@ -28,11 +36,16 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+        lintOptions {
+            checkReleaseBuilds false
+
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     buildToolsVersion '27.0.3'
@@ -61,15 +74,13 @@ dependencies {
     implementation 'com.google.dagger:dagger-android:2.14.1'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.14.1'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
-    // text drawable
-    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     // firebase
     implementation 'com.google.firebase:firebase-core:16.0.0'
     // crashlitycs
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.3'
     // firebase realtime database
     implementation 'com.google.firebase:firebase-database:16.0.1'
-    // firebase authenication
+    // firebase authentication
     implementation 'com.google.firebase:firebase-auth:16.0.1'
     // firebaser UI for firebase auth
     implementation 'com.firebaseui:firebase-ui-auth:3.3.1'

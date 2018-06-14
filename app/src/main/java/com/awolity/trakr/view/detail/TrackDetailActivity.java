@@ -191,11 +191,11 @@ public class TrackDetailActivity extends AppCompatActivity
                 trackViewModel.exportTrack();
             }
             return true;
-        } else if (id == R.id.action_upload) {
+        } /*else if (id == R.id.action_upload) {
             trackViewModel.saveToCloud();
         } else if (id == R.id.action_delete_all) {
             trackViewModel.deleteAllCloudData();
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 

@@ -58,11 +58,11 @@ public class TrakrWidget extends AppWidgetProvider {
 
         // Update image and text
         views.setTextViewText(R.id.tv_value_duration, duration);
-        views.setTextViewText(R.id.tv_unit_duration, "s");
-        views.setTextViewText(R.id.tv_label_duration, "duration");
+        views.setTextViewText(R.id.tv_unit_duration, context.getString(R.string.elapsed_time_view_unit));
+        views.setTextViewText(R.id.tv_label_duration, context.getString(R.string.elapsed_time_view_title));
         views.setTextViewText(R.id.tv_value_distance, distance);
-        views.setTextViewText(R.id.tv_unit_distance, "km");
-        views.setTextViewText(R.id.tv_label_distance, "distance");
+        views.setTextViewText(R.id.tv_unit_distance, context.getString(R.string.distance_view_unit));
+        views.setTextViewText(R.id.tv_label_distance, context.getString(R.string.distance_view_title));
         views.setImageViewResource(R.id.iv_icon_distance, R.drawable.ic_distance);
         views.setImageViewResource(R.id.iv_icon_duration, R.drawable.ic_duration);
         views.setImageViewResource(R.id.iv_icon, iconResource);
@@ -71,6 +71,8 @@ public class TrakrWidget extends AppWidgetProvider {
         views.setOnClickPendingIntent(R.id.ll_widget, showPendingIntent);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
+
+
     }
 
     @Override

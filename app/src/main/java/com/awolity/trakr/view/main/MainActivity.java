@@ -504,9 +504,9 @@ public class MainActivity extends AppCompatActivity
                                 new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
                         .build(), RC_SIGN_IN);
             }
-        } else if (id == R.id.action_sync_now) {
+        } /*else if (id == R.id.action_sync_now) {
             startService(new Intent(this, SyncService.class));
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -589,14 +589,16 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
                 if (trackWithPoints != null) {
-                    if (trackWithPoints.getTrackPoints().size() > 1) {
-                        trackViewModel.saveToCloud();
-                        Intent intent = TrackDetailActivity.getStarterIntent(MainActivity.this, trackId);
-                        startActivity(intent);
-                        trackViewModel.getTrackWithPoints().removeObserver(this);
+                    if (trackId != PreferenceUtils.NO_LAST_RECORDED_TRACK) {
+                        if (trackWithPoints.getTrackPoints().size() > 1) {
+                            trackViewModel.saveToCloud();
+                            Intent intent = TrackDetailActivity.getStarterIntent(MainActivity.this, trackId);
+                            startActivity(intent);
+                            trackViewModel.getTrackWithPoints().removeObserver(this);
+                        }
+                        trackViewModel.reset();
+                        trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
                     }
-                    trackViewModel.reset();
-                    trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
                 }
             }
         });

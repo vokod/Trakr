@@ -16,7 +16,7 @@
         android:title="@string/action_delete"
         app:showAsAction="never" />
 
-    <item
+   <!-- <item
         android:id="@+id/action_upload"
         android:orderInCategory="99"
         android:title="Debug - Upload track now"
@@ -26,5 +26,5 @@
         android:id="@+id/action_delete_all"
         android:orderInCategory="99"
         android:title="Debug - Delete_all"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
 </menu>
