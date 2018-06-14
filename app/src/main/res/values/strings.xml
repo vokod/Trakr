@@ -197,4 +197,5 @@
     <string name="pref_key_last_recorded_track_id" translatable="false">last_recorded_track_id</string>
     <string name="pref_key_activity_type" translatable="false">activity_type</string>
 
+
 </resources>
