@@ -60,6 +60,8 @@ public class SyncService extends IntentService {
         for (TrackEntity trackEntity : offlineTracks) {
             trackRepository.saveTrackToCloud(trackEntity.getTrackId());
         }
+        // sanitize db
+        new DbSanitizer().sanitizeDb();
     }
 
     private void downloadOnlineTracks() {

@@ -2,6 +2,7 @@ package com.awolity.trakr.di;
 
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.repository.TrackRepository;
+import com.awolity.trakr.sync.DbSanitizer;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
@@ -32,5 +33,7 @@ public interface AppComponent {
     void inject (SyncService syncService);
 
     void inject (TrakrWidget trakrWidget);
+
+    void inject (DbSanitizer dbSanitizer);
 
 }
