@@ -364,11 +364,6 @@ public class MainActivity extends AppCompatActivity
 
     private void clearTrackOnMap() {
         googleMap.clear();
-        /*if (polyline != null) {
-            polyline.remove();
-        } else {
-            googleMap.clear();
-        }*/
     }
 
     private void continueTrackOnMap(LatLng currentLatLng) {
@@ -384,6 +379,10 @@ public class MainActivity extends AppCompatActivity
         trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
             @Override
             public void onChanged(@Nullable TrackEntity track) {
+                // if we already have a cameraposition, than it centering is unnecessary
+                if (status.getCameraPosition() != null) {
+                    return;
+                }
                 if (track != null) {
                     if (track.getNorthestPoint() != 0 || track.getSouthestPoint() != 0
                             || track.getWesternPoint() != 0 || track.getEasternPoint() != 0) {
@@ -392,6 +391,7 @@ public class MainActivity extends AppCompatActivity
                                 new LatLng(track.getNorthestPoint(), track.getEasternPoint()));
                         if (googleMap != null) {
                             updateCamera(bounds);
+                            status.setCameraPosition(googleMap.getCameraPosition());
                         }
                     }
                 }
@@ -532,7 +532,7 @@ public class MainActivity extends AppCompatActivity
                     return;
                 }
 
-                if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
                     MainActivityUtils.showToast(this, getString(R.string.login_error_no_internet));
                     return;
                 }
@@ -594,12 +594,12 @@ public class MainActivity extends AppCompatActivity
                             trackViewModel.saveToCloud();
                             Intent intent = TrackDetailActivity.getStarterIntent(MainActivity.this, trackId);
                             startActivity(intent);
-                            trackViewModel.getTrackWithPoints().removeObserver(this);
                         }
                         trackViewModel.reset();
                         trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
                     }
                 }
+                trackViewModel.getTrackWithPoints().removeObserver(this);
             }
         });
     }

@@ -10,7 +10,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.activitytype.ActivityType;
 import com.awolity.trakr.activitytype.ActivityTypeManager;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
@@ -18,7 +17,6 @@ import com.awolity.trakr.di.TrakrApplication;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.repository.TrackRepository;
-import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.widget.TrakrWidget;

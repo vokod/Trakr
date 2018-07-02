@@ -43,6 +43,7 @@ public class SyncService extends IntentService {
             // uploadOfflineTracks();
         } else {
             Toast.makeText(this, getString(R.string.sync_service_no_net), Toast.LENGTH_LONG).show();
+            // TODO: refactor to snackbar
         }
     }
 
