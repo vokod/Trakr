@@ -115,7 +115,7 @@ public class BottomSheetPointFragment extends BottomSheetBaseFragment {
     }
 
     private void setSpeed(float speed) {
-        String speedString = String.format(Locale.getDefault(), "%.1f", speed);
+        String speedString = String.format(Locale.getDefault(), "%.1f", speed * 3.6f);
         speedView.setValue(speedString);
     }
 

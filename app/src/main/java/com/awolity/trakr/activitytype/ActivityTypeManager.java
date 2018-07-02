@@ -41,7 +41,7 @@ public class ActivityTypeManager {
         activityTypes.add(walking);
 
         RecordParameters runningRecordParameters = new RecordParameters(2,
-                LocationRequest.PRIORITY_HIGH_ACCURACY, 1, 20, 10);
+                LocationRequest.PRIORITY_HIGH_ACCURACY, 2, 20, 10);
         running = new ActivityType(context.getString(R.string.activity_type_running),
                 context.getString(R.string.activity_type_key_running),
                 R.drawable.ic_run_circle,
@@ -50,7 +50,7 @@ public class ActivityTypeManager {
         activityTypes.add(running);
 
         RecordParameters bikingRecordParameters = new RecordParameters(5,
-                LocationRequest.PRIORITY_HIGH_ACCURACY, 2, 20, 10);
+                LocationRequest.PRIORITY_HIGH_ACCURACY, 5, 20, 10);
         biking = new ActivityType(context.getString(R.string.activity_type_biking),
                 context.getString(R.string.activity_type_key_biking),
                 R.drawable.ic_bike_circle,
@@ -59,7 +59,7 @@ public class ActivityTypeManager {
         activityTypes.add(biking);
 
         RecordParameters drivingRecordParameters = new RecordParameters(10,
-                LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, 5, 40, 10);
+                LocationRequest.PRIORITY_HIGH_ACCURACY, 10, 40, 10);
         driving = new ActivityType(context.getString(R.string.activity_type_driving),
                 context.getString(R.string.activity_type_key_driving),
                 R.drawable.ic_car_circle,

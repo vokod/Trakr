@@ -7,8 +7,6 @@ public class ActivityType {
     private final String key;
     private final int iconResource;
     private final int menuIconResource;
-   /* private int color;
-    private String hexColor;*/
 
     public ActivityType(String title, String key, int iconResource, int menuIconResource, RecordParameters recordParameters) {
         this.title = title;
@@ -16,15 +14,7 @@ public class ActivityType {
         this.iconResource = iconResource;
         this.recordParameters = recordParameters;
         this.menuIconResource = menuIconResource;
-
-       /* ColorGenerator generator = ColorGenerator.MATERIAL;
-        color = generator.getColor(title);
-        hexColor = String.format("#%06X", (0xFFFFFF & color));*/
     }
-
-  /*  public Drawable getBackgroundDrawable(){
-        return new ColorDrawable(color);
-    }*/
 
     public RecordParameters getRecordParameters() {
         return recordParameters;
@@ -45,8 +35,4 @@ public class ActivityType {
     public String getKey() {
         return key;
     }
-
-    /*public int getColor() {
-        return color;
-    }*/
 }

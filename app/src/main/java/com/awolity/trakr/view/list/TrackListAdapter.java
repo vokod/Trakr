@@ -136,7 +136,7 @@ public class TrackListAdapter
             distanceView.setup(context.getString(R.string.distance_view_title),
                     context.getString(R.string.distance_view_unit),
                     context.getString(R.string.distance_view_default_value),
-                    R.drawable.ic_max_speed);
+                    R.drawable.ic_distance);
             elevationView.setup(context.getString(R.string.ascent_view_title),
                     context.getString(R.string.ascent_view_unit),
                     context.getString(R.string.ascent_view_default_value),
