@@ -112,7 +112,7 @@ public class TrackRepository {
             @Override
             public void run() {
                 TrackEntity entity = trackDao.loadByIdSync(trackId);
-                if (entity.getFirebaseId() != null) {
+                if (entity != null && entity.getFirebaseId() != null) {
                     deleteTrackFromCloud(entity.getFirebaseId());
                 }
                 trackDao.delete(trackId);

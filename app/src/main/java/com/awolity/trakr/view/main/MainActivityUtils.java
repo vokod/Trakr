@@ -71,6 +71,12 @@ class MainActivityUtils {
         }
     }
 
+    static boolean isLocationPermissionEnabled(final Activity activity){
+        return ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
+    }
+
     static boolean checkPlayServices(final Context context) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         int resultCode = apiAvailability.isGooglePlayServicesAvailable(context);

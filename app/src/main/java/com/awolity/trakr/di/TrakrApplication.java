@@ -6,6 +6,7 @@ import android.os.StrictMode;
 
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.sync.SyncService;
+import com.awolity.trakr.trackrecorder.TrackRecorder;
 import com.awolity.trakr.utils.MyLog;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,6 +34,7 @@ public class TrakrApplication extends Application {
         } catch (IllegalStateException e){
             MyLog.e("TrakrApplication", e.getLocalizedMessage() );
         }
+        TrackRecorder.resetWidget(this);
 
 
       /* StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()

@@ -217,27 +217,23 @@ public class MainActivity extends AppCompatActivity
 
     private void setupLocationViewModel() {
         locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
-        locationViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
-            @Override
-            public void onLocationSettingsDetermined(boolean isSettingsGood) {
-                if (!isSettingsGood) {
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setTitle(getString(R.string.location_settings_rationale_title))
-                            .setMessage(getString(R.string.location_settings_rationale_description))
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    // take the user to the settings, where she/he can turn on GPS
-                                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                    MainActivity.this.startActivity(intent);
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, null)
-                            .setIcon(R.mipmap.ic_launcher)
-                            .show();
-                }
-            }
-        });
+    }
+
+    private void showLocationSettingsDialog(){
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle(getString(R.string.location_settings_rationale_title))
+                .setMessage(getString(R.string.location_settings_rationale_description))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // take the user to the settings, where she/he can turn on GPS
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        MainActivity.this.startActivity(intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(R.mipmap.ic_launcher)
+                .show();
     }
 
     private void setupAppUserViewModel() {
@@ -309,7 +305,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onRecordFabClick(View view) {
-        serviceManager.startStopFabClicked();
+        if(!MainActivityUtils.isLocationPermissionEnabled(this)){
+            MainActivityUtils.checkLocationPermission(this,PERMISSION_REQUEST_CODE);
+            return;
+        }
+        locationViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
+            @Override
+            public void onLocationSettingsDetermined(boolean isSettingsGood) {
+                if (isSettingsGood){
+                    serviceManager.startStopFabClicked();
+                } else {
+                    showLocationSettingsDialog();
+                }
+            }
+        });
     }
 
     private void setupTrackViewModel(final long trackId) {
@@ -408,7 +417,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        setupTrackRecorderService();
+        locationViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
+            @Override
+            public void onLocationSettingsDetermined(boolean isSettingsGood) {
+                if (isSettingsGood){
+                    setupTrackRecorderService();
+                } else {
+                    showLocationSettingsDialog();
+                }
+            }
+        });
     }
 
     @Override
@@ -594,12 +612,12 @@ public class MainActivity extends AppCompatActivity
                             trackViewModel.saveToCloud();
                             Intent intent = TrackDetailActivity.getStarterIntent(MainActivity.this, trackId);
                             startActivity(intent);
+                            trackViewModel.getTrackWithPoints().removeObserver(this);
+                            trackViewModel.reset();
+                            trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
                         }
-                        trackViewModel.reset();
-                        trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
                     }
                 }
-                trackViewModel.getTrackWithPoints().removeObserver(this);
             }
         });
     }

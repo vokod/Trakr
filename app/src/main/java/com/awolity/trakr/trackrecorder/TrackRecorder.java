@@ -279,7 +279,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
         }
     }
 
-    private static void resetWidget(Context context) {
+    public static void resetWidget(Context context) {
         final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         final ComponentName componentName = new ComponentName(context, TrakrWidget.class);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(componentName);
