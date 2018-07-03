@@ -606,15 +606,17 @@ public class MainActivity extends AppCompatActivity
         trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
             @Override
             public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-                if (trackWithPoints != null) {
-                    if (trackId != PreferenceUtils.NO_LAST_RECORDED_TRACK) {
-                        if (trackWithPoints.getTrackPoints().size() > 1) {
-                            trackViewModel.saveToCloud();
-                            Intent intent = TrackDetailActivity.getStarterIntent(MainActivity.this, trackId);
-                            startActivity(intent);
-                            trackViewModel.getTrackWithPoints().removeObserver(this);
-                            trackViewModel.reset();
-                            trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
+                if (!status.isRecording()) {
+                    if (trackWithPoints != null) {
+                        if (trackId != PreferenceUtils.NO_LAST_RECORDED_TRACK) {
+                            if (trackWithPoints.getTrackPoints().size() > 1) {
+                                trackViewModel.saveToCloud();
+                                Intent intent = TrackDetailActivity.getStarterIntent(MainActivity.this, trackId);
+                                startActivity(intent);
+                                trackViewModel.getTrackWithPoints().removeObserver(this);
+                                trackViewModel.reset();
+                                trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
+                            }
                         }
                     }
                 }
