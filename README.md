@@ -1,5 +1,5 @@
-# Capstone-Project
-Udacity Android Developer Nanodegree project
+# Trakr
+Udacity Android Developer Nanodegree Capstone project
 
 
 ## Description 
