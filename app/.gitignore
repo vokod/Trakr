@@ -1,1 +1,6 @@
 /build
+/fabric.properties.txt
+/google-services.json
+/Trakr-keystore.jks
+/src/main/res/values/fabric_api.xml
+/src/main/res/values/google_maps_api.xml
