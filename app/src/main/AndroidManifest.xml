@@ -77,8 +77,7 @@
             android:value="@string/google_maps_key" />
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="18bbe06a9bdc61f2ba085a0c0e353cd1e59f5fe4" />
-
+            android:value="@string/fabric_api_key" />
 
     </application>
 
