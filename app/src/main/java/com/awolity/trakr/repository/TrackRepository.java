@@ -7,6 +7,7 @@ import android.support.annotation.WorkerThread;
 
 import com.awolity.trakr.data.dao.TrackDao;
 import com.awolity.trakr.data.dao.TrackpointDao;
+import com.awolity.trakr.data.dao.TrackpointDao_Impl;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
@@ -147,43 +148,49 @@ public class TrackRepository {
      * Firebase
      */
 
+
     public void saveTrackToCloud(final long trackId) {
         MyLog.d(LOG_TAG, "saveTrackToCloud");
+        discIoExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+               saveTrackToCloudOnThread(trackId);
+            }
+        });
+    }
+
+    @WorkerThread
+    public void saveTrackToCloudOnThread(final long trackId){
         final String appUserId = FirebaseAuth.getInstance().getUid();
         if (appUserId == null) {
             return;
         }
 
-        discIoExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                TrackWithPoints trackWithPoints = trackDao.loadByIdWithPointsSync(trackId);
-                TrackEntity entity = TrackEntity.fromTrackWithPoints(trackWithPoints);
+        TrackWithPoints trackWithPoints = trackDao.loadByIdWithPointsSync(trackId);
+        TrackEntity entity = TrackEntity.fromTrackWithPoints(trackWithPoints);
 
-                final DatabaseReference dbReference
-                        = FirebaseDatabase.getInstance().getReference();
-                String trackFirebaseId = dbReference
-                        .child("tracks")
-                        .child(appUserId).push().getKey();
+        final DatabaseReference dbReference
+                = FirebaseDatabase.getInstance().getReference();
+        String trackFirebaseId = dbReference
+                .child("tracks")
+                .child(appUserId).push().getKey();
 
-                entity.setFirebaseId(trackFirebaseId);
-                trackDao.update(entity);
+        entity.setFirebaseId(trackFirebaseId);
+        trackDao.update(entity);
 
-                Map<String, Object> childUpdates = new HashMap<>();
-                // create chat in "chatsLiveData" node
-                childUpdates.put("tracks"
-                        + "/"
-                        + appUserId
-                        + "/"
-                        + trackFirebaseId, entity);
-                childUpdates.put("trackpoints"
-                        + "/"
-                        + appUserId
-                        + "/"
-                        + trackFirebaseId, trackWithPoints.getTrackPoints());
-                dbReference.updateChildren(childUpdates);
-            }
-        });
+        Map<String, Object> childUpdates = new HashMap<>();
+        // create chat in "chatsLiveData" node
+        childUpdates.put("tracks"
+                + "/"
+                + appUserId
+                + "/"
+                + trackFirebaseId, entity);
+        childUpdates.put("trackpoints"
+                + "/"
+                + appUserId
+                + "/"
+                + trackFirebaseId, trackWithPoints.getTrackPoints());
+        dbReference.updateChildren(childUpdates);
     }
 
     private void updateTrackToCloud(TrackEntity trackEntity) {
@@ -224,7 +231,8 @@ public class TrackRepository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                MyLog.e(LOG_TAG, "Error in getAllTrackEntitiesFromCloud - onCancelled" + databaseError.getDetails());
+                MyLog.e(LOG_TAG, "Error in getAllTrackEntitiesFromCloud - onCancelled"
+                        + databaseError.getDetails());
             }
         });
     }
@@ -233,7 +241,7 @@ public class TrackRepository {
         void onAllTracksLoaded(List<TrackEntity> trackEntityList);
     }
 
-    public void saveTrackToLocalDbFromCloud(final String firebaseTrackId) {
+  /*  public void saveTrackToLocalDbFromCloud(final String firebaseTrackId) {
         MyLog.d(LOG_TAG, "saveTrackToLocalDbFromCloud");
         final String appUserId = FirebaseAuth.getInstance().getUid();
         if (appUserId == null) {
@@ -257,10 +265,20 @@ public class TrackRepository {
 
             }
         });
+    }*/
+
+    public void saveTrackToLocalDbFromCloud(final TrackEntity onlineTrackEntity) {
+        MyLog.d(LOG_TAG, "saveTrackToLocalDbFromCloud");
+        final String appUserId = FirebaseAuth.getInstance().getUid();
+        if (appUserId == null) {
+            return;
+        }
+        saveTrackEntityWithPointsToDbFromCloud(onlineTrackEntity, appUserId);
     }
 
-    private void saveTrackEntityToDbFromCloud(DataSnapshot dataSnapshot, final String appUserId, final String firebaseTrackId) {
-        MyLog.d(LOG_TAG, "saveTrackEntityToDbFromCloud");
+   /* private void saveTrackEntityToDbFromCloud(DataSnapshot dataSnapshot, final String appUserId,
+                                              final String firebaseTrackId) {
+        MyLog.d(LOG_TAG, "saveTrackEntityWithPointsToDbFromCloud");
         final TrackEntity entity = dataSnapshot.getValue(TrackEntity.class);
         entity.setTrackId(0);
         discIoExecutor.execute(new Runnable() {
@@ -287,6 +305,58 @@ public class TrackRepository {
                 });
             }
         });
+    }*/
+
+    private void saveTrackEntityWithPointsToDbFromCloud(final TrackEntity onlineTrackEntity,
+                                                        final String appUserId) {
+        MyLog.d(LOG_TAG, "saveTrackEntityWithPointsToDbFromCloud");
+        onlineTrackEntity.setTrackId(0);
+
+        final DatabaseReference trackpointDbReference
+                = FirebaseDatabase.getInstance().getReference()
+                .child("trackpoints")
+                .child(appUserId)
+                .child(onlineTrackEntity.getFirebaseId());
+
+        trackpointDbReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                final List<TrackpointEntity> trackpointEntities = new ArrayList<>();
+
+                for (DataSnapshot trackPointSnapshot : dataSnapshot.getChildren()) {
+                    TrackpointEntity trackPointEntity
+                            = trackPointSnapshot.getValue(TrackpointEntity.class);
+                    trackpointEntities.add(trackPointEntity);
+                }
+
+                saveTrackEntityWithPointsToDb(onlineTrackEntity, trackpointEntities);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // TODO ?
+            }
+        });
+    }
+
+    @WorkerThread
+    private void saveTrackEntityWithPointsToDb(final TrackEntity trackEntity,
+                                               final List<TrackpointEntity> trackpointEntities) {
+        discIoExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                final long trackId = trackDao.save(trackEntity);
+                setTrackIdInTrackPointEntities(trackpointEntities, trackId);
+                trackpointDao.saveAll(trackpointEntities);
+            }
+        });
+    }
+
+    private void setTrackIdInTrackPointEntities(
+            List<TrackpointEntity> trackpointEntities, long id) {
+        for (TrackpointEntity trackpointEntity : trackpointEntities) {
+            trackpointEntity.setTrackId(id);
+        }
     }
 
     private void saveTrackpointEntitiesToDbFromCloud(DataSnapshot dataSnapshot, long trackId) {
