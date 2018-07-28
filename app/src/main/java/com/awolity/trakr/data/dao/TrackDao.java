@@ -50,4 +50,7 @@ public interface TrackDao {
     @Query("DELETE FROM track_table WHERE track_id = :trackId")
     void delete(long trackId);
 
+    @Query("DELETE FROM track_table WHERE firabase_id = :firebaseId")
+    void delete(String firebaseId);
+
 }

@@ -142,6 +142,29 @@ public class FirebaseTrackRepository {
         // remove track from trackpoint node
         userTrackpointsReference.child(firebaseTrackId).removeValue();
         // add track to deleted tracks
+        markTrackDeletedFromDevice(firebaseTrackId);
+    }
+
+    public void getDeletedTracks(final TrackRepository.GetCloudDeletedTrackListener listener){
+        userDeletedTracksReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> deletedTracksFirebaseIds = new ArrayList<>();
+                for (DataSnapshot stringSnapshot : dataSnapshot.getChildren()) {
+                    deletedTracksFirebaseIds.add(stringSnapshot.getKey());
+
+                }
+                listener.onCloudDeletedTracksLoaded(deletedTracksFirebaseIds);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // TODO:
+            }
+        });
+    }
+
+    public void markTrackDeletedFromDevice(String firebaseTrackId){
         userDeletedTracksReference.child(firebaseTrackId).child(installationId).setValue(true);
     }
 }

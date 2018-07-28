@@ -47,7 +47,12 @@ public class SyncService extends IntentService {
 
         if (isConnected(this)) {
             setInstallationId();
+            // this downloads tracks that are present in cloud but not in the device
             downloadOnlineTracks();
+            // this uploads the tracks that were recorded on this device and were not yet uploaded
+            uploadOfflineTracks();
+            // this delete the local tracks that were deleted from the cloud in another installation
+            deleteCloudDeletedTracks();
         } else {
             Toast.makeText(this, getString(R.string.sync_service_no_net),
                     Toast.LENGTH_LONG).show();
@@ -69,7 +74,6 @@ public class SyncService extends IntentService {
                             @Override
                             public void run() {
                                 saveDownloadedTracks(onlineTrackEntities);
-                                uploadOfflineTracks();
                             }
                         });
                     }
@@ -104,7 +108,8 @@ public class SyncService extends IntentService {
         List<TrackEntity> offlineTracks = trackRepository.getTracksSync();
         Iterator<TrackEntity> offlineTracksIterator = offlineTracks.iterator();
 
-        // get all the tracks that has no firebase id
+        // get all the tracks that has no firebase id,
+        // which means that they are genuine offline local tracks
         while (offlineTracksIterator.hasNext()) {
             if (offlineTracksIterator.next().getFirebaseId() != null) {
                 offlineTracksIterator.remove();
@@ -118,6 +123,21 @@ public class SyncService extends IntentService {
         new DbSanitizer().sanitizeDb();
     }
 
+    private void deleteCloudDeletedTracks(){
+        MyLog.d(LOG_TAG, "deleteCloudDeletedTracks");
+
+
+        // get the list of tracks that are present locally and has firebaseId, and are not present in cloud
+
+        trackRepository.getCloudDeletedTracks(new TrackRepository.GetCloudDeletedTrackListener() {
+            @Override
+            public void onCloudDeletedTracksLoaded(List<String> deletedTracksFirebaseIds) {
+                // delete the local instance of the tracks
+                trackRepository.deleteCloudDeletedTracks(deletedTracksFirebaseIds);
+            }
+        });
+    }
+
     private static boolean isConnected(Context context) {
         MyLog.d(LOG_TAG, "isConnected");
         ConnectivityManager cm =
@@ -127,7 +147,5 @@ public class SyncService extends IntentService {
         return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
     }
-
-
 }
 

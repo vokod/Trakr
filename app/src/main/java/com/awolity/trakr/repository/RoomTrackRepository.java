@@ -116,4 +116,11 @@ public class RoomTrackRepository {
     public void saveAllTrackpoints(List<TrackpointEntity> trackpointEntities) {
         trackpointDao.saveAll(trackpointEntities);
     }
+
+    public void deleteCloudDeletedTracks(List<String> deletedTracksFirebaseIds){
+        for(String  firebaseId : deletedTracksFirebaseIds){
+            trackDao.delete(firebaseId);
+        }
+
+    }
 }

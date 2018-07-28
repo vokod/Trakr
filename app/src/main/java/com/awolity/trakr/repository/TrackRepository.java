@@ -9,7 +9,6 @@ import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.gpx.GpxExporter;
-import com.awolity.trakr.utils.PreferenceUtils;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -146,14 +145,6 @@ public class TrackRepository {
         firebaseTrackRepository.getAllTrackEntitiesFromCloud(listener);
     }
 
-    public interface GetAllTrackEntitiesFromCloudListener {
-        void onAllTracksLoaded(List<TrackEntity> trackEntityList);
-    }
-
-    public interface GetTrackpointsFromCloudListener{
-        void onTrackpointsLoaded(List<TrackpointEntity> trackpointEntityList);
-    }
-
     public void saveTrackToLocalDbFromCloud(final TrackEntity onlineTrackEntity) {
         onlineTrackEntity.setTrackId(0);
 
@@ -164,6 +155,20 @@ public class TrackRepository {
                         saveTrackEntityWithPointsToDb(onlineTrackEntity, trackpointEntityList);
                     }
                 });
+    }
+
+    public void getCloudDeletedTracks(GetCloudDeletedTrackListener listener){
+        firebaseTrackRepository.getDeletedTracks(listener);
+    }
+
+    public void deleteCloudDeletedTracks(List<String> deletedTracksFirebaseIds){
+        // delete local instances
+        roomTrackRepository.deleteCloudDeletedTracks(deletedTracksFirebaseIds);
+        // mark them deleted from the device in firebase
+        for(String firebaseId : deletedTracksFirebaseIds){
+            firebaseTrackRepository.markTrackDeletedFromDevice(firebaseId);
+        }
+
     }
 
     @WorkerThread
@@ -193,4 +198,18 @@ public class TrackRepository {
     public void setInstallationId(){
         firebaseTrackRepository.setInstallationId();
     }
+
+    public interface GetAllTrackEntitiesFromCloudListener {
+        void onAllTracksLoaded(List<TrackEntity> trackEntityList);
+    }
+
+    public interface GetTrackpointsFromCloudListener{
+        void onTrackpointsLoaded(List<TrackpointEntity> trackpointEntityList);
+    }
+
+    public interface GetCloudDeletedTrackListener {
+        void onCloudDeletedTracksLoaded(List<String> deletedStringsFirebaseIds);
+    }
+
+
 }
