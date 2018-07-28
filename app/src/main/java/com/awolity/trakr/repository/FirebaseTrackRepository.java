@@ -35,9 +35,8 @@ public class FirebaseTrackRepository {
     @Inject
     Context context;
 
-    private DatabaseReference dbReference, userTracksReference, userTrackpointsReference,
-            userDevicesReference, userDeletedTracksReference;
-    private String appUserId, installationId;
+    private DatabaseReference dbReference, userTracksReference, userTrackpointsReference;
+    private String appUserId;
 
     public FirebaseTrackRepository() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
@@ -49,14 +48,6 @@ public class FirebaseTrackRepository {
         dbReference = FirebaseDatabase.getInstance().getReference();
         userTracksReference = dbReference.child(Constants.NODE_TRACKS).child(appUserId);
         userTrackpointsReference = dbReference.child(Constants.NODE_TRACKPOINTS).child(appUserId);
-        userDevicesReference = dbReference.child(Constants.NODE_INSTALLATIONS).child(appUserId);
-        userDeletedTracksReference = dbReference.child(Constants.NODE_DELETED_TRACKS).child(appUserId);
-
-        installationId = PreferenceUtils.getInstallationId(context);
-    }
-
-    public void setInstallationId() {
-        userDevicesReference.child(installationId).setValue(true);
     }
 
     public String getIdForNewTrack() {
@@ -141,30 +132,5 @@ public class FirebaseTrackRepository {
         userTracksReference.child(firebaseTrackId).removeValue();
         // remove track from trackpoint node
         userTrackpointsReference.child(firebaseTrackId).removeValue();
-        // add track to deleted tracks
-        markTrackDeletedFromDevice(firebaseTrackId);
-    }
-
-    public void getDeletedTracks(final TrackRepository.GetCloudDeletedTrackListener listener){
-        userDeletedTracksReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<String> deletedTracksFirebaseIds = new ArrayList<>();
-                for (DataSnapshot stringSnapshot : dataSnapshot.getChildren()) {
-                    deletedTracksFirebaseIds.add(stringSnapshot.getKey());
-
-                }
-                listener.onCloudDeletedTracksLoaded(deletedTracksFirebaseIds);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // TODO:
-            }
-        });
-    }
-
-    public void markTrackDeletedFromDevice(String firebaseTrackId){
-        userDeletedTracksReference.child(firebaseTrackId).child(installationId).setValue(true);
     }
 }

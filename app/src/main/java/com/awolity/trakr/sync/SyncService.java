@@ -15,7 +15,7 @@ import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.utils.MyLog;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -27,7 +27,6 @@ public class SyncService extends IntentService {
 
     @Inject
     TrackRepository trackRepository;
-
     @Inject
     Executor discIoExecutor;
 
@@ -45,44 +44,47 @@ public class SyncService extends IntentService {
             return;
         }
 
-        if (isConnected(this)) {
-            setInstallationId();
-            // this downloads tracks that are present in cloud but not in the device
-            downloadOnlineTracks();
-            // this uploads the tracks that were recorded on this device and were not yet uploaded
-            uploadOfflineTracks();
-            // this delete the local tracks that were deleted from the cloud in another installation
-            deleteCloudDeletedTracks();
-        } else {
+        if (!isConnected(this)) {
             Toast.makeText(this, getString(R.string.sync_service_no_net),
                     Toast.LENGTH_LONG).show();
             // TODO: refactor to snackbar
+            return;
         }
-    }
 
-    private void setInstallationId(){
-        trackRepository.setInstallationId();
-    }
-
-    private void downloadOnlineTracks() {
-        MyLog.d(LOG_TAG, "downloadOnlineTracks");
         trackRepository.getAllTrackEntitiesFromCloud(
                 new TrackRepository.GetAllTrackEntitiesFromCloudListener() {
                     @Override
-                    public void onAllTracksLoaded(final List<TrackEntity> onlineTrackEntities) {
+                    public void onAllTracksLoaded(final List<TrackEntity> onlineTracks) {
                         discIoExecutor.execute(new Runnable() {
                             @Override
                             public void run() {
-                                saveDownloadedTracks(onlineTrackEntities);
+                                List<TrackEntity> offlineTracks = trackRepository.getTracksSync();
+                                List<TrackEntity> onlyOfflineTracks = new ArrayList<>();
+                                List<TrackEntity> cloudSavedOfflineTracks = new ArrayList<>();
+                                for (TrackEntity trackEntity : offlineTracks) {
+                                    if (trackEntity.getFirebaseId().isEmpty()) {
+                                        onlyOfflineTracks.add(trackEntity);
+                                    } else {
+                                        cloudSavedOfflineTracks.add(trackEntity);
+                                    }
+                                }
+
+                                // this saves tracks that are present in cloud but not in the device
+                                saveOnlineTracks(onlineTracks, offlineTracks);
+                                // this uploads the tracks that were recorded on this device and were not yet uploaded
+                                uploadOfflineTracks(onlyOfflineTracks);
+                                // this delete the local tracks that were deleted from the cloud in another installation
+                                deleteCloudDeletedTracks(cloudSavedOfflineTracks, onlineTracks);
                             }
                         });
                     }
                 });
+
+        new DbSanitizer().sanitizeDb();
     }
 
-    @WorkerThread
-    private void saveDownloadedTracks(List<TrackEntity> onlineTrackEntities) {
-        List<TrackEntity> offlineTrackEntities = trackRepository.getTracksSync();
+    private void saveOnlineTracks(List<TrackEntity> onlineTrackEntities,
+                                  List<TrackEntity> offlineTrackEntities) {
         // remove those tracks from the downloaded tracks,
         // that are present offline.
         // the TrackEntity objects are not equal, they have different id-s, so compare start time
@@ -102,40 +104,28 @@ public class SyncService extends IntentService {
     }
 
     @WorkerThread
-    private void uploadOfflineTracks() {
+    private void uploadOfflineTracks(List<TrackEntity> onlyOfflineTracks) {
         MyLog.d(LOG_TAG, "uploadOfflineTracks");
-
-        List<TrackEntity> offlineTracks = trackRepository.getTracksSync();
-        Iterator<TrackEntity> offlineTracksIterator = offlineTracks.iterator();
-
-        // get all the tracks that has no firebase id,
-        // which means that they are genuine offline local tracks
-        while (offlineTracksIterator.hasNext()) {
-            if (offlineTracksIterator.next().getFirebaseId() != null) {
-                offlineTracksIterator.remove();
-            }
-        }
-
-        for (TrackEntity trackEntity : offlineTracks) {
+        for (TrackEntity trackEntity : onlyOfflineTracks) {
             trackRepository.saveTrackToCloudOnThread(trackEntity.getTrackId());
         }
-
-        new DbSanitizer().sanitizeDb();
     }
 
-    private void deleteCloudDeletedTracks(){
+    @WorkerThread
+    private void deleteCloudDeletedTracks(List<TrackEntity> cloudSavedTracks,
+                                          List<TrackEntity> onlineTracks) {
         MyLog.d(LOG_TAG, "deleteCloudDeletedTracks");
-
-
-        // get the list of tracks that are present locally and has firebaseId, and are not present in cloud
-
-        trackRepository.getCloudDeletedTracks(new TrackRepository.GetCloudDeletedTrackListener() {
-            @Override
-            public void onCloudDeletedTracksLoaded(List<String> deletedTracksFirebaseIds) {
-                // delete the local instance of the tracks
-                trackRepository.deleteCloudDeletedTracks(deletedTracksFirebaseIds);
+        for (TrackEntity cloudSavedTrack : cloudSavedTracks) {
+            for (TrackEntity onlineTrack : onlineTracks) {
+                if (onlineTrack.getStartTime() == cloudSavedTrack.getStartTime()) {
+                    cloudSavedTracks.remove(onlineTrack);
+                    break;
+                }
             }
-        });
+        }
+        for (TrackEntity cloudDeletedOfflineTrack : cloudSavedTracks) {
+            trackRepository.deleteTrack(cloudDeletedOfflineTrack.getTrackId());
+        }
     }
 
     private static boolean isConnected(Context context) {

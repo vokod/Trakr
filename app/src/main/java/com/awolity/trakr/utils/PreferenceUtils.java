@@ -44,22 +44,5 @@ public class PreferenceUtils {
         editor.putString(Constants.PREF_KEY_LAST_ACTIVITY_TYPE, activityType.getKey());
         editor.apply();
     }
-
-    public static void createAndSaveInstallationId(Context context) {
-        String uniqueID = UUID.randomUUID().toString();
-        setInstallationId(context, uniqueID);
-    }
-
-    public static String getInstallationId(Context context) {
-        SharedPreferences sharedpreferences =
-                PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedpreferences.getString(Constants.PREF_KEY_LAST_INSTALLATION_ID, null);
-    }
-
-    public static void setInstallationId(Context context, String installationId) {
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        editor.putString(Constants.PREF_KEY_LAST_INSTALLATION_ID, installationId);
-        editor.apply();
-    }
 }
 

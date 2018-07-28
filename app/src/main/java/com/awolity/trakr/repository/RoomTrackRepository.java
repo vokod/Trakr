@@ -46,6 +46,16 @@ public class RoomTrackRepository {
     }
 
     @WorkerThread
+    public List<TrackEntity> getTracksSync() {
+        return trackDao.loadAllSync();
+    }
+
+
+    /**
+     * Track methods
+     */
+
+    @WorkerThread
     public long saveTrackSync(final TrackEntity trackData) {
         return trackDao.save(trackData);
     }
@@ -66,11 +76,6 @@ public class RoomTrackRepository {
     @WorkerThread
     public TrackEntity getTrackSync(long id) {
         return trackDao.loadByIdSync(id);
-    }
-
-    @WorkerThread
-    public List<TrackEntity> getTracksSync() {
-        return trackDao.loadAllSync();
     }
 
     public LiveData<TrackWithPoints> getTrackWithPoints(long id) {
@@ -117,10 +122,9 @@ public class RoomTrackRepository {
         trackpointDao.saveAll(trackpointEntities);
     }
 
-    public void deleteCloudDeletedTracks(List<String> deletedTracksFirebaseIds){
-        for(String  firebaseId : deletedTracksFirebaseIds){
-            trackDao.delete(firebaseId);
+    public void deleteCloudDeletedTracks(List<TrackEntity> deletedTracks){
+        for(TrackEntity  trackEntity : deletedTracks){
+            trackDao.delete(trackEntity.getFirebaseId());
         }
-
     }
 }

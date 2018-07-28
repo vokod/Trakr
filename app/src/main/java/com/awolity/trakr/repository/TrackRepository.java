@@ -45,6 +45,11 @@ public class TrackRepository {
         return roomTrackRepository.getTracksWithPoints();
     }
 
+    @WorkerThread
+    public List<TrackEntity> getTracksSync() {
+        return roomTrackRepository.getTracksSync();
+    }
+
     /**
      * Track methods
      */
@@ -65,11 +70,6 @@ public class TrackRepository {
 
     public LiveData<TrackEntity> getTrack(long id) {
         return roomTrackRepository.getTrack(id);
-    }
-
-    @WorkerThread
-    public List<TrackEntity> getTracksSync() {
-        return roomTrackRepository.getTracksSync();
     }
 
     public LiveData<TrackWithPoints> getTrackWithPoints(long id) {
@@ -115,10 +115,6 @@ public class TrackRepository {
         return roomTrackRepository.getActualTrackpoint(id);
     }
 
-    /**
-     * Firebase
-     */
-
     public void saveTrackToCloud(final long trackId) {
         discIoExecutor.execute(new Runnable() {
             @Override
@@ -133,7 +129,9 @@ public class TrackRepository {
         TrackWithPoints trackWithPoints = roomTrackRepository.getTrackWithPointsSync(trackId);
         TrackEntity trackEntity = TrackEntity.fromTrackWithPoints(trackWithPoints);
         String trackFirebaseId = firebaseTrackRepository.getIdForNewTrack();
+        // update the local instance with the firebase id
         roomTrackRepository.setTrackFirebaseIdSync(trackEntity,trackFirebaseId);
+        trackWithPoints.setFirebaseId(trackFirebaseId);
         firebaseTrackRepository.saveTrackToCloudOnThread(trackWithPoints, trackFirebaseId);
     }
 
@@ -157,18 +155,9 @@ public class TrackRepository {
                 });
     }
 
-    public void getCloudDeletedTracks(GetCloudDeletedTrackListener listener){
-        firebaseTrackRepository.getDeletedTracks(listener);
-    }
-
-    public void deleteCloudDeletedTracks(List<String> deletedTracksFirebaseIds){
+    public void deleteCloudDeletedTracks(List<TrackEntity> deletedTracks){
         // delete local instances
-        roomTrackRepository.deleteCloudDeletedTracks(deletedTracksFirebaseIds);
-        // mark them deleted from the device in firebase
-        for(String firebaseId : deletedTracksFirebaseIds){
-            firebaseTrackRepository.markTrackDeletedFromDevice(firebaseId);
-        }
-
+        roomTrackRepository.deleteCloudDeletedTracks(deletedTracks);
     }
 
     @WorkerThread
@@ -195,10 +184,6 @@ public class TrackRepository {
       firebaseTrackRepository.deleteTrackFromCloud(firebaseId);
     }
 
-    public void setInstallationId(){
-        firebaseTrackRepository.setInstallationId();
-    }
-
     public interface GetAllTrackEntitiesFromCloudListener {
         void onAllTracksLoaded(List<TrackEntity> trackEntityList);
     }
@@ -206,10 +191,5 @@ public class TrackRepository {
     public interface GetTrackpointsFromCloudListener{
         void onTrackpointsLoaded(List<TrackpointEntity> trackpointEntityList);
     }
-
-    public interface GetCloudDeletedTrackListener {
-        void onCloudDeletedTracksLoaded(List<String> deletedStringsFirebaseIds);
-    }
-
 
 }
