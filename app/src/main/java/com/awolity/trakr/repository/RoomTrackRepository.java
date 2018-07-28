@@ -64,7 +64,7 @@ public class RoomTrackRepository {
     }
 
     @WorkerThread
-    public TrackEntity getTrackSync(long id){
+    public TrackEntity getTrackSync(long id) {
         return trackDao.loadByIdSync(id);
     }
 
@@ -78,20 +78,16 @@ public class RoomTrackRepository {
     }
 
     @WorkerThread
-    public TrackWithPoints getTrackWithPointsSync(long id){
+    public TrackWithPoints getTrackWithPointsSync(long id) {
         return trackDao.loadByIdWithPointsSync(id);
     }
 
+    @WorkerThread
     public void deleteTrack(final long trackId) {
-        discIoExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                trackDao.delete(trackId);
-            }
-        });
+        trackDao.delete(trackId);
     }
 
-    public void setTrackFirebaseIdSync(TrackEntity trackEntity, String firebaseId){
+    public void setTrackFirebaseIdSync(TrackEntity trackEntity, String firebaseId) {
         trackEntity.setFirebaseId(firebaseId);
         trackDao.update(trackEntity);
     }
@@ -117,8 +113,7 @@ public class RoomTrackRepository {
         return trackpointDao.loadActualTrackpointByTrack(id);
     }
 
-    public void saveAllTrackpoints(List<TrackpointEntity> trackpointEntities){
+    public void saveAllTrackpoints(List<TrackpointEntity> trackpointEntities) {
         trackpointDao.saveAll(trackpointEntities);
     }
-
 }

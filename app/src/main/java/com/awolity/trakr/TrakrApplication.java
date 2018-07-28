@@ -37,6 +37,11 @@ public class TrakrApplication extends Application {
 
         NotificationUtils.setupNotificationChannels(this);
 
+        // check for installation id. if not present, create and save it
+        if (PreferenceUtils.getInstallationId(this) == null) {
+            PreferenceUtils.createAndSaveInstallationId(this);
+        }
+
         // start syncing
         try {
             startService(new Intent(this, SyncService.class));
@@ -46,12 +51,6 @@ public class TrakrApplication extends Application {
         }
 
         TrackRecorder.resetWidget(this);
-
-        // check for installation id. if not present, create and save it
-        if (PreferenceUtils.getInstallationId(this) == null) {
-            PreferenceUtils.createAndSaveInstallationId(this);
-        }
-
 
       /* StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()

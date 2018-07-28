@@ -10,6 +10,7 @@ import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
+import com.awolity.trakr.utils.PreferenceUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,8 +36,8 @@ public class FirebaseTrackRepository {
     Context context;
 
     private DatabaseReference dbReference, userTracksReference, userTrackpointsReference,
-            userDevicesReference;
-    private String appUserId;
+            userDevicesReference, userDeletedTracksReference;
+    private String appUserId, installationId;
 
     public FirebaseTrackRepository() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
@@ -44,22 +45,26 @@ public class FirebaseTrackRepository {
         if (appUserId == null) {
             return;
         }
+
         dbReference = FirebaseDatabase.getInstance().getReference();
         userTracksReference = dbReference.child(Constants.NODE_TRACKS).child(appUserId);
         userTrackpointsReference = dbReference.child(Constants.NODE_TRACKPOINTS).child(appUserId);
-        userDevicesReference = dbReference.child(Constants.NODE_USER_INSTALLATIONS).child(appUserId);
+        userDevicesReference = dbReference.child(Constants.NODE_INSTALLATIONS).child(appUserId);
+        userDeletedTracksReference = dbReference.child(Constants.NODE_DELETED_TRACKS).child(appUserId);
+
+        installationId = PreferenceUtils.getInstallationId(context);
     }
 
-    public void setInstallationId(String installationId){
-       userDevicesReference.child(installationId).setValue(true);
+    public void setInstallationId() {
+        userDevicesReference.child(installationId).setValue(true);
     }
 
-    public String getIdForNewTrack(){
+    public String getIdForNewTrack() {
         return userTracksReference.child(appUserId).push().getKey();
     }
 
     @WorkerThread
-    public void saveTrackToCloudOnThread(TrackWithPoints trackWithPoints, String trackFirebaseId){
+    public void saveTrackToCloudOnThread(TrackWithPoints trackWithPoints, String trackFirebaseId) {
         TrackEntity trackEntity = TrackEntity.fromTrackWithPoints(trackWithPoints);
 
         Map<String, Object> childUpdates = new HashMap<>();
@@ -106,7 +111,7 @@ public class FirebaseTrackRepository {
     }
 
     public void getTrackPoints(String firebaseTrackId,
-                               final TrackRepository.GetTrackpointsFromCloudListener listener){
+                               final TrackRepository.GetTrackpointsFromCloudListener listener) {
 
         final DatabaseReference trackpointDbReference
                 = userTrackpointsReference.child(firebaseTrackId);
@@ -121,7 +126,6 @@ public class FirebaseTrackRepository {
                             = trackPointSnapshot.getValue(TrackpointEntity.class);
                     trackpointEntities.add(trackPointEntity);
                 }
-
                 listener.onTrackpointsLoaded(trackpointEntities);
             }
 
@@ -132,10 +136,12 @@ public class FirebaseTrackRepository {
         });
     }
 
-    public void deleteTrackFromCloud(String firebaseId) {
-        final DatabaseReference trackDbReference = userTracksReference.child(firebaseId);
-        trackDbReference.removeValue();
-        final DatabaseReference trackpointsDbReference = userTrackpointsReference.child(firebaseId);
-        trackpointsDbReference.removeValue();
+    public void deleteTrackFromCloud(String firebaseTrackId) {
+        // remove track from track node
+        userTracksReference.child(firebaseTrackId).removeValue();
+        // remove track from trackpoint node
+        userTrackpointsReference.child(firebaseTrackId).removeValue();
+        // add track to deleted tracks
+        userDeletedTracksReference.child(firebaseTrackId).child(installationId).setValue(true);
     }
 }

@@ -88,8 +88,6 @@ public class TrackRepository {
     }
 
     public void deleteTrack(final long trackId) {
-        roomTrackRepository.deleteTrack(trackId);
-
         discIoExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -97,6 +95,7 @@ public class TrackRepository {
                 if (entity != null && entity.getFirebaseId() != null) {
                     deleteTrackFromCloud(entity.getFirebaseId());
                 }
+                roomTrackRepository.deleteTrack(trackId);
             }
         });
     }
@@ -192,7 +191,6 @@ public class TrackRepository {
     }
 
     public void setInstallationId(){
-        String installationId = PreferenceUtils.getInstallationId(context);
-        firebaseTrackRepository.setInstallationId(installationId);
+        firebaseTrackRepository.setInstallationId();
     }
 }
