@@ -71,10 +71,14 @@ public class SyncService extends IntentService {
     private void saveDownloadedTracks(List<TrackEntity> onlineTrackEntities){
         List<TrackEntity> offlineTrackEntities = trackRepository.getTracksSync();
         // remove those tracks from the downloaded tracks,
-        // that are present offline
+        // that are present offline.
+        // the TrackEntity objects are not equal, they have different id-s, so compare start time
         for (TrackEntity offlineTrack : offlineTrackEntities) {
-            if(onlineTrackEntities.contains(offlineTrack)){
-                onlineTrackEntities.remove(offlineTrack);
+            for (TrackEntity onlineTrack : onlineTrackEntities) {
+                if (onlineTrack.getStartTime() == offlineTrack.getStartTime()) {
+                    onlineTrackEntities.remove(onlineTrack);
+                    break;
+                }
             }
         }
 
