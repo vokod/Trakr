@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
+import com.crashlytics.android.Crashlytics;
 
 public class EditTitleDialog extends DialogFragment {
 
@@ -94,6 +95,7 @@ public class EditTitleDialog extends DialogFragment {
             listener = (EditTitleDialogListener) activity;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
+            Crashlytics.logException(e);
             throw new ClassCastException(activity.toString()
                     + " must implement EditTitleDialogListener");
         }

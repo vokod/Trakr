@@ -17,6 +17,7 @@ import android.view.View;
 import com.awolity.trakr.R;
 import com.awolity.trakr.activitytype.ActivityType;
 import com.awolity.trakr.activitytype.ActivityTypeManager;
+import com.crashlytics.android.Crashlytics;
 
 import java.util.List;
 
@@ -73,6 +74,7 @@ public class ActivityTypeDialogFragment extends DialogFragment
             listener = (ActivityTypeDialogListener) activity;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
+            Crashlytics.logException(e);
             throw new ClassCastException(activity.toString()
                     + " must implement AddPartnerDialogListener");
         }

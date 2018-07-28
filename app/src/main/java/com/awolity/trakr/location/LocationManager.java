@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.awolity.trakr.di.TrakrApplication;
 import com.awolity.trakr.utils.MyLog;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -168,8 +169,10 @@ public class LocationManager {
             try {
                 fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null /* Looper */);
             } catch (SecurityException e) {
+                Crashlytics.logException(e);
                 Log.e(LOG_TAG, "Security Exception. Maybe by not having location permission... " + e.getLocalizedMessage());
             } catch (NullPointerException e) {
+                Crashlytics.logException(e);
                 Log.e(LOG_TAG, "Something bad happened:");
                 e.printStackTrace();
             }
@@ -186,6 +189,7 @@ public class LocationManager {
                 // // MyLog.d(LOG_TAG, "stopLocation - task NOT successful");
             }
         } catch (RuntimeException e){
+            Crashlytics.logException(e);
             MyLog.e(LOG_TAG, "unable to remove location callback: "+ e.getLocalizedMessage());
         }
     }

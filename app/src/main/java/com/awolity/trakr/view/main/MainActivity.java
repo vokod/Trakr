@@ -34,6 +34,7 @@ import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
+import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
@@ -41,6 +42,7 @@ import com.awolity.trakr.view.list.TrackListActivity;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.LocationViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
+import com.crashlytics.android.Crashlytics;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
@@ -219,7 +221,7 @@ public class MainActivity extends AppCompatActivity
         locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
     }
 
-    private void showLocationSettingsDialog(){
+    private void showLocationSettingsDialog() {
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle(getString(R.string.location_settings_rationale_title))
                 .setMessage(getString(R.string.location_settings_rationale_description))
@@ -305,14 +307,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onRecordFabClick(View view) {
-        if(!MainActivityUtils.isLocationPermissionEnabled(this)){
-            MainActivityUtils.checkLocationPermission(this,PERMISSION_REQUEST_CODE);
+        if (!MainActivityUtils.isLocationPermissionEnabled(this)) {
+            MainActivityUtils.checkLocationPermission(this, PERMISSION_REQUEST_CODE);
             return;
         }
         locationViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
             @Override
             public void onLocationSettingsDetermined(boolean isSettingsGood) {
-                if (isSettingsGood){
+                if (isSettingsGood) {
                     serviceManager.startStopFabClicked();
                 } else {
                     showLocationSettingsDialog();
@@ -420,7 +422,7 @@ public class MainActivity extends AppCompatActivity
         locationViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
             @Override
             public void onLocationSettingsDetermined(boolean isSettingsGood) {
-                if (isSettingsGood){
+                if (isSettingsGood) {
                     setupTrackRecorderService();
                 } else {
                     showLocationSettingsDialog();
@@ -452,7 +454,8 @@ public class MainActivity extends AppCompatActivity
         try {
             googleMap.setMyLocationEnabled(true);
         } catch (SecurityException e) {
-            // MyLog.e(LOG_TAG, e.getLocalizedMessage());
+            Crashlytics.logException(e);
+            MyLog.e(LOG_TAG, e.getLocalizedMessage());
         }
 
         if (status.isThereACameraPosition()) {
