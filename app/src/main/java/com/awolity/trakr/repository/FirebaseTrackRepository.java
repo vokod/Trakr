@@ -7,7 +7,7 @@ import android.support.annotation.WorkerThread;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.di.TrakrApplication;
+import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,36 +34,35 @@ public class FirebaseTrackRepository {
     @Inject
     Context context;
 
+    private DatabaseReference dbReference, userTracksReference, userTrackpointsReference,
+            userDevicesReference;
+    private String appUserId;
+
     public FirebaseTrackRepository() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
+        appUserId = FirebaseAuth.getInstance().getUid();
+        if (appUserId == null) {
+            return;
+        }
+        dbReference = FirebaseDatabase.getInstance().getReference();
+        userTracksReference = dbReference.child(Constants.NODE_TRACKS).child(appUserId);
+        userTrackpointsReference = dbReference.child(Constants.NODE_TRACKPOINTS).child(appUserId);
+        userDevicesReference = dbReference.child(Constants.NODE_USER_INSTALLATIONS).child(appUserId);
+    }
+
+    public void setInstallationId(String installationId){
+       userDevicesReference.child(installationId).setValue(true);
     }
 
     public String getIdForNewTrack(){
-        final String appUserId = FirebaseAuth.getInstance().getUid();
-        if (appUserId == null) {
-            return null;
-        }
-
-        final DatabaseReference dbReference
-                = FirebaseDatabase.getInstance().getReference();
-        return dbReference
-                .child(Constants.NODE_TRACKS)
-                .child(appUserId).push().getKey();
+        return userTracksReference.child(appUserId).push().getKey();
     }
 
     @WorkerThread
     public void saveTrackToCloudOnThread(TrackWithPoints trackWithPoints, String trackFirebaseId){
-        final String appUserId = FirebaseAuth.getInstance().getUid();
-        if (appUserId == null) {
-            return;
-        }
-
-        final DatabaseReference dbReference
-                = FirebaseDatabase.getInstance().getReference();
         TrackEntity trackEntity = TrackEntity.fromTrackWithPoints(trackWithPoints);
 
         Map<String, Object> childUpdates = new HashMap<>();
-        // create chat in "chatsLiveData" node
         childUpdates.put(Constants.NODE_TRACKS
                 + "/"
                 + appUserId
@@ -74,35 +73,21 @@ public class FirebaseTrackRepository {
                 + appUserId
                 + "/"
                 + trackFirebaseId, trackWithPoints.getTrackPoints());
+
         dbReference.updateChildren(childUpdates);
     }
 
     public void updateTrackToCloud(TrackEntity trackEntity) {
-        final String appUserId = FirebaseAuth.getInstance().getUid();
-        if (appUserId == null) {
-            return;
-        }
-
         final DatabaseReference trackDbReference
-                = FirebaseDatabase.getInstance().getReference()
-                .child(Constants.NODE_TRACKS)
-                .child(appUserId).child(trackEntity.getFirebaseId());
+                = userTracksReference.child(trackEntity.getFirebaseId());
+
         trackDbReference.setValue(trackEntity);
     }
 
     public void getAllTrackEntitiesFromCloud(
             final TrackRepository.GetAllTrackEntitiesFromCloudListener listener) {
-        final String appUserId = FirebaseAuth.getInstance().getUid();
-        if (appUserId == null) {
-            return;
-        }
 
-        final DatabaseReference tracksDbReference
-                = FirebaseDatabase.getInstance().getReference()
-                .child(Constants.NODE_TRACKS)
-                .child(appUserId);
-
-        tracksDbReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        userTracksReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<TrackEntity> trackEntities = new ArrayList<>();
@@ -122,16 +107,9 @@ public class FirebaseTrackRepository {
 
     public void getTrackPoints(String firebaseTrackId,
                                final TrackRepository.GetTrackpointsFromCloudListener listener){
-        final String appUserId = FirebaseAuth.getInstance().getUid();
-        if (appUserId == null) {
-            return;
-        }
 
         final DatabaseReference trackpointDbReference
-                = FirebaseDatabase.getInstance().getReference()
-                .child(Constants.NODE_TRACKPOINTS)
-                .child(appUserId)
-                .child(firebaseTrackId);
+                = userTrackpointsReference.child(firebaseTrackId);
 
         trackpointDbReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -155,32 +133,9 @@ public class FirebaseTrackRepository {
     }
 
     public void deleteTrackFromCloud(String firebaseId) {
-        final String appUserId = FirebaseAuth.getInstance().getUid();
-        if (appUserId == null) {
-            return;
-        }
-
-        final DatabaseReference trackDbReference
-                = FirebaseDatabase.getInstance().getReference().child(Constants.NODE_TRACKS)
-                .child(appUserId)
-                .child(firebaseId);
+        final DatabaseReference trackDbReference = userTracksReference.child(firebaseId);
         trackDbReference.removeValue();
-        final DatabaseReference trackpointsDbReference
-                = FirebaseDatabase.getInstance().getReference()
-                .child(Constants.NODE_TRACKPOINTS)
-                .child(appUserId).child(firebaseId);
+        final DatabaseReference trackpointsDbReference = userTrackpointsReference.child(firebaseId);
         trackpointsDbReference.removeValue();
     }
-
-    public void deleteAllCloudData() {
-        final DatabaseReference tracksDbReference
-                = FirebaseDatabase.getInstance().getReference().child(Constants.NODE_TRACKS);
-        tracksDbReference.removeValue();
-
-        final DatabaseReference trackpointsDbReference
-                = FirebaseDatabase.getInstance().getReference().child(Constants.NODE_TRACKPOINTS);
-        trackpointsDbReference.removeValue();
-    }
-
-
 }

@@ -9,7 +9,7 @@ import com.awolity.trakr.data.dao.TrackpointDao;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.di.TrakrApplication;
+import com.awolity.trakr.TrakrApplication;
 
 import java.util.List;
 import java.util.concurrent.Executor;

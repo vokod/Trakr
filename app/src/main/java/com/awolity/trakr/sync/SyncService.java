@@ -10,9 +10,10 @@ import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.di.TrakrApplication;
+import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.utils.MyLog;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Iterator;
 import java.util.List;
@@ -39,7 +40,13 @@ public class SyncService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         MyLog.d(LOG_TAG, "onHandleIntent");
+        if (FirebaseAuth.getInstance().getUid() == null) {
+            MyLog.d(LOG_TAG, "onHandleIntent - user not logged in, no sync :(");
+            return;
+        }
+
         if (isConnected(this)) {
+            setInstallationId();
             downloadOnlineTracks();
         } else {
             Toast.makeText(this, getString(R.string.sync_service_no_net),
@@ -48,27 +55,29 @@ public class SyncService extends IntentService {
         }
     }
 
+    private void setInstallationId(){
+        trackRepository.setInstallationId();
+    }
+
     private void downloadOnlineTracks() {
-        // ezt úgy átalakítani, hogy először letöltse a trackeket, de ne rakja db-be
-        // majd letöltse a trackpointokat, és ha ez megvan, akkor rakja be db-be a dolgokat
         MyLog.d(LOG_TAG, "downloadOnlineTracks");
         trackRepository.getAllTrackEntitiesFromCloud(
                 new TrackRepository.GetAllTrackEntitiesFromCloudListener() {
-            @Override
-            public void onAllTracksLoaded(final List<TrackEntity> onlineTrackEntities) {
-                discIoExecutor.execute(new Runnable() {
                     @Override
-                    public void run() {
-                        saveDownloadedTracks(onlineTrackEntities);
-                        uploadOfflineTracks();
+                    public void onAllTracksLoaded(final List<TrackEntity> onlineTrackEntities) {
+                        discIoExecutor.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                saveDownloadedTracks(onlineTrackEntities);
+                                uploadOfflineTracks();
+                            }
+                        });
                     }
                 });
-            }
-        });
     }
 
     @WorkerThread
-    private void saveDownloadedTracks(List<TrackEntity> onlineTrackEntities){
+    private void saveDownloadedTracks(List<TrackEntity> onlineTrackEntities) {
         List<TrackEntity> offlineTrackEntities = trackRepository.getTracksSync();
         // remove those tracks from the downloaded tracks,
         // that are present offline.

@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.awolity.trakr.di.TrakrApplication;
+import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.utils.MyLog;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.api.ApiException;

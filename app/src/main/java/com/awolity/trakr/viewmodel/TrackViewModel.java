@@ -6,7 +6,7 @@ import android.arch.lifecycle.ViewModel;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.di.TrakrApplication;
+import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.TrackRepository;
 
 import java.util.List;
@@ -82,9 +82,6 @@ public class TrackViewModel extends ViewModel {
         }
     }
 
-    public void deleteAllCloudData(){
-        trackRepository.deleteAllCloudData();
-    }
 
 
 }

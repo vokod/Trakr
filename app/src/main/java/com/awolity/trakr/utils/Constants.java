@@ -11,6 +11,6 @@ public class Constants {
     // firebase realtime database nodes
     public static final String NODE_TRACKS = "tracks";
     public static final String NODE_TRACKPOINTS = "trackpoints";
-    public static final String NODE_USER_DEVICES = "user_devices";
+    public static final String NODE_USER_INSTALLATIONS = "user_installations";
 
 }

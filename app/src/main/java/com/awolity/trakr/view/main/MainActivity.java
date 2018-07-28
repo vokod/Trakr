@@ -525,9 +525,7 @@ public class MainActivity extends AppCompatActivity
                                 new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
                         .build(), RC_SIGN_IN);
             }
-        } /*else if (id == R.id.action_sync_now) {
-            startService(new Intent(this, SyncService.class));
-        }*/
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -543,6 +541,7 @@ public class MainActivity extends AppCompatActivity
 
                 MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
                 synchronisationItem.setTitle(getString(R.string.disable_cloud_sync));
+
                 Toast.makeText(this, getString(R.string.you_are_logged_in), Toast.LENGTH_LONG).show();
                 startService(new Intent(this, SyncService.class));
                 return;

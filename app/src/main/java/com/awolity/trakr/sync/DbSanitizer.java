@@ -1,7 +1,7 @@
 package com.awolity.trakr.sync;
 
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.di.TrakrApplication;
+import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.utils.MyLog;
 

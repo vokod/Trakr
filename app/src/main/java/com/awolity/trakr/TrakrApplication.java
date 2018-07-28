@@ -1,13 +1,18 @@
-package com.awolity.trakr.di;
+package com.awolity.trakr;
 
 import android.app.Application;
 import android.content.Intent;
-import android.os.StrictMode;
 
+import com.awolity.trakr.di.AppComponent;
+import com.awolity.trakr.di.AppModule;
+import com.awolity.trakr.di.DaggerAppComponent;
+import com.awolity.trakr.di.DbModule;
+import com.awolity.trakr.di.RepositoryModule;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
 import com.awolity.trakr.utils.MyLog;
+import com.awolity.trakr.utils.PreferenceUtils;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -27,15 +32,25 @@ public class TrakrApplication extends Application {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         getAppComponent();
+
         NotificationUtils.setupNotificationChannels(this);
+
+        // start syncing
         try {
             startService(new Intent(this, SyncService.class));
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             Crashlytics.logException(e);
-            MyLog.e("TrakrApplication", e.getLocalizedMessage() );
+            MyLog.e("TrakrApplication", e.getLocalizedMessage());
         }
+
         TrackRecorder.resetWidget(this);
+
+        // check for installation id. if not present, create and save it
+        if (PreferenceUtils.getInstallationId(this) == null) {
+            PreferenceUtils.createAndSaveInstallationId(this);
+        }
 
 
       /* StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -50,7 +65,6 @@ public class TrakrApplication extends Application {
                 .penaltyLog()
                 .penaltyDeath()
                 .build());*/
-
     }
 
     public AppComponent getAppComponent() {

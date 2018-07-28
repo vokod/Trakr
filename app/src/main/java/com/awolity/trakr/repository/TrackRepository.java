@@ -7,8 +7,9 @@ import android.support.annotation.WorkerThread;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.di.TrakrApplication;
+import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.gpx.GpxExporter;
+import com.awolity.trakr.utils.PreferenceUtils;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -190,7 +191,8 @@ public class TrackRepository {
       firebaseTrackRepository.deleteTrackFromCloud(firebaseId);
     }
 
-    public void deleteAllCloudData() {
-       firebaseTrackRepository.deleteAllCloudData();
+    public void setInstallationId(){
+        String installationId = PreferenceUtils.getInstallationId(context);
+        firebaseTrackRepository.setInstallationId(installationId);
     }
 }

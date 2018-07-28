@@ -1,5 +1,6 @@
 package com.awolity.trakr.di;
 
+import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.TrakrDatabase;
 import com.awolity.trakr.data.dao.TrackDao;
 import com.awolity.trakr.data.dao.TrackpointDao;
