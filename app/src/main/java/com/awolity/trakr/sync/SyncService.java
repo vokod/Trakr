@@ -53,7 +53,7 @@ public class SyncService extends IntentService {
         // majd letöltse a trackpointokat, és ha ez megvan, akkor rakja be db-be a dolgokat
         MyLog.d(LOG_TAG, "downloadOnlineTracks");
         trackRepository.getAllTrackEntitiesFromCloud(
-                new TrackRepository.GetAllTrackEntitiesFromFirebaseListener() {
+                new TrackRepository.GetAllTrackEntitiesFromCloudListener() {
             @Override
             public void onAllTracksLoaded(final List<TrackEntity> onlineTrackEntities) {
                 discIoExecutor.execute(new Runnable() {

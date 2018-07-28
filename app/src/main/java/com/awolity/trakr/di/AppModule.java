@@ -36,10 +36,4 @@ public class AppModule {
         return executors.diskIO();
     }
 
-    @Provides
-    @Singleton
-    public TrackRepository provideTrackRepository() {
-        return new TrackRepository();
-    }
-
 }

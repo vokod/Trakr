@@ -1,6 +1,8 @@
 package com.awolity.trakr.di;
 
 import com.awolity.trakr.location.LocationManager;
+import com.awolity.trakr.repository.FirebaseTrackRepository;
+import com.awolity.trakr.repository.RoomTrackRepository;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.sync.DbSanitizer;
 import com.awolity.trakr.sync.SyncService;
@@ -15,7 +17,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {AppModule.class, DbModule.class})
+@Component(modules = {AppModule.class, DbModule.class, RepositoryModule.class})
 public interface AppComponent {
 
     void inject(LocationManager locationManager);
@@ -23,6 +25,10 @@ public interface AppComponent {
     void inject(TrackRecorder trackRecorder);
 
     void inject (TrackRepository trackRepository);
+
+    void inject (RoomTrackRepository roomTrackRepository);
+
+    void inject (FirebaseTrackRepository firebaseTrackRepository);
 
     void inject (TrackViewModel trackViewModel);
 

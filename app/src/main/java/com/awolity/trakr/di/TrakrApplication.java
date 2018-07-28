@@ -58,6 +58,7 @@ public class TrakrApplication extends Application {
             appComponent = DaggerAppComponent.builder()
                     .appModule(new AppModule(this))
                     .dbModule(new DbModule(this))
+                    .repositoryModule(new RepositoryModule())
                     .build();
         }
         return appComponent;

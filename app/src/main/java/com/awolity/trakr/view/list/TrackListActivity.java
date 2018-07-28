@@ -47,7 +47,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         trackListLayoutManager.setOrientation(VERTICAL);
         trackListRv.setLayoutManager(trackListLayoutManager);
         //noinspection ConstantConditions
-        trackListAdapter = new TrackListAdapter(this, getLayoutInflater(),this);
+        trackListAdapter = new TrackListAdapter(this, getLayoutInflater(), this);
         trackListRv.setAdapter(trackListAdapter);
         trackListRv.setHasFixedSize(true);
     }
@@ -58,7 +58,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         trackListViewModel.getTracksWithPoints().observe(this, new Observer<List<TrackWithPoints>>() {
             @Override
             public void onChanged(@Nullable List<TrackWithPoints> trackWithPointsList) {
-                if(trackWithPointsList!=null){
+                if (trackWithPointsList != null) {
                     trackListAdapter.updateItems(trackWithPointsList);
                 }
             }

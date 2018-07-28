@@ -23,10 +23,10 @@ public interface TrackDao {
     @Update(onConflict = REPLACE)
     void update(TrackEntity trackEntity);
 
-    @Query("SELECT * FROM track_table ORDER BY start_time")
+    @Query("SELECT * FROM track_table ORDER BY start_time DESC")
     LiveData<List<TrackEntity>> loadAll();
 
-    @Query("SELECT * FROM track_table ORDER BY start_time")
+    @Query("SELECT * FROM track_table ORDER BY start_time DESC")
     List<TrackEntity> loadAllSync();
 
     @Query("SELECT * FROM track_table WHERE track_id = :trackId")
@@ -40,7 +40,7 @@ public interface TrackDao {
     LiveData<TrackWithPoints> loadByIdWithPoints(long trackId);
 
     @Transaction
-    @Query("SELECT * FROM track_table")
+    @Query("SELECT * FROM track_table ORDER BY start_time DESC")
     LiveData<List<TrackWithPoints>> loadAllWithPoints();
 
     @Transaction
