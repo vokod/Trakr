@@ -13,6 +13,7 @@ import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.di.TrakrApplication;
 import com.awolity.trakr.gpx.GpxExporter;
+import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -148,7 +149,6 @@ public class TrackRepository {
      * Firebase
      */
 
-
     public void saveTrackToCloud(final long trackId) {
         MyLog.d(LOG_TAG, "saveTrackToCloud");
         discIoExecutor.execute(new Runnable() {
@@ -172,7 +172,7 @@ public class TrackRepository {
         final DatabaseReference dbReference
                 = FirebaseDatabase.getInstance().getReference();
         String trackFirebaseId = dbReference
-                .child("tracks")
+                .child(Constants.NODE_TRACKS)
                 .child(appUserId).push().getKey();
 
         entity.setFirebaseId(trackFirebaseId);
@@ -180,12 +180,12 @@ public class TrackRepository {
 
         Map<String, Object> childUpdates = new HashMap<>();
         // create chat in "chatsLiveData" node
-        childUpdates.put("tracks"
+        childUpdates.put(Constants.NODE_TRACKS
                 + "/"
                 + appUserId
                 + "/"
                 + trackFirebaseId, entity);
-        childUpdates.put("trackpoints"
+        childUpdates.put(Constants.NODE_TRACKPOINTS
                 + "/"
                 + appUserId
                 + "/"
@@ -202,7 +202,7 @@ public class TrackRepository {
 
         final DatabaseReference trackDbReference
                 = FirebaseDatabase.getInstance().getReference()
-                .child("tracks")
+                .child(Constants.NODE_TRACKS)
                 .child(appUserId).child(trackEntity.getFirebaseId());
         trackDbReference.setValue(trackEntity);
     }
@@ -216,7 +216,7 @@ public class TrackRepository {
 
         final DatabaseReference tracksDbReference
                 = FirebaseDatabase.getInstance().getReference()
-                .child("tracks")
+                .child(Constants.NODE_TRACKS)
                 .child(appUserId);
 
         tracksDbReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -257,7 +257,7 @@ public class TrackRepository {
 
         final DatabaseReference trackpointDbReference
                 = FirebaseDatabase.getInstance().getReference()
-                .child("trackpoints")
+                .child(Constants.NODE_TRACKPOINTS)
                 .child(appUserId)
                 .child(onlineTrackEntity.getFirebaseId());
 
@@ -310,13 +310,13 @@ public class TrackRepository {
         }
 
         final DatabaseReference trackDbReference
-                = FirebaseDatabase.getInstance().getReference().child("tracks")
+                = FirebaseDatabase.getInstance().getReference().child(Constants.NODE_TRACKS)
                 .child(appUserId)
                 .child(firebaseId);
         trackDbReference.removeValue();
         final DatabaseReference trackpointsDbReference
                 = FirebaseDatabase.getInstance().getReference()
-                .child("trackpoints")
+                .child(Constants.NODE_TRACKPOINTS)
                 .child(appUserId).child(firebaseId);
         trackpointsDbReference.removeValue();
     }
@@ -324,11 +324,11 @@ public class TrackRepository {
     public void deleteAllCloudData() {
         MyLog.d(LOG_TAG, "deleteAllCloudData");
         final DatabaseReference tracksDbReference
-                = FirebaseDatabase.getInstance().getReference().child("tracks");
+                = FirebaseDatabase.getInstance().getReference().child(Constants.NODE_TRACKS);
         tracksDbReference.removeValue();
 
         final DatabaseReference trackpointsDbReference
-                = FirebaseDatabase.getInstance().getReference().child("trackpoints");
+                = FirebaseDatabase.getInstance().getReference().child(Constants.NODE_TRACKPOINTS);
         trackpointsDbReference.removeValue();
     }
 }

@@ -18,7 +18,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +33,7 @@ import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
+import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.Utility;
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
     private AppUserViewModel appUserViewModel;
     private PolylineOptions polylineOptions;
     private Polyline polyline;
-    private long trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
+    private long trackId = Constants.NO_LAST_RECORDED_TRACK;
     private Menu menu;
 
     @Override
@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity
         if (TrackRecorderServiceManager.isServiceRunning(this)) {
             status.setContinueRecording();
             long trackId = PreferenceUtils.getLastRecordedTrackId(this);
-            if (trackId != PreferenceUtils.NO_LAST_RECORDED_TRACK) {
+            if (trackId != Constants.NO_LAST_RECORDED_TRACK) {
                 setupTrackViewModel(trackId);
                 this.trackId = trackId;
                 trackFragment.startTrackDataUpdate(trackId);
@@ -540,10 +540,11 @@ public class MainActivity extends AppCompatActivity
 
             // Successfully signed in
             if (resultCode == RESULT_OK) {
+
                 MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
+                synchronisationItem.setTitle(getString(R.string.disable_cloud_sync));
                 Toast.makeText(this, getString(R.string.you_are_logged_in), Toast.LENGTH_LONG).show();
                 startService(new Intent(this, SyncService.class));
-                synchronisationItem.setTitle(getString(R.string.disable_cloud_sync));
                 return;
             } else {
                 // Sign in failed
@@ -566,6 +567,7 @@ public class MainActivity extends AppCompatActivity
             MainActivityUtils.showToast(this, getString(R.string.login_error_unknown_response));
         }
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -611,14 +613,14 @@ public class MainActivity extends AppCompatActivity
             public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
                 if (!status.isRecording()) {
                     if (trackWithPoints != null) {
-                        if (trackId != PreferenceUtils.NO_LAST_RECORDED_TRACK) {
+                        if (trackId != Constants.NO_LAST_RECORDED_TRACK) {
                             if (trackWithPoints.getTrackPoints().size() > 1) {
                                 trackViewModel.saveToCloud();
                                 Intent intent = TrackDetailActivity.getStarterIntent(MainActivity.this, trackId);
                                 startActivity(intent);
                                 trackViewModel.getTrackWithPoints().removeObserver(this);
                                 trackViewModel.reset();
-                                trackId = PreferenceUtils.NO_LAST_RECORDED_TRACK;
+                                trackId = Constants.NO_LAST_RECORDED_TRACK;
                             }
                         }
                     }
