@@ -62,7 +62,7 @@ public class SyncService extends IntentService {
                                 List<TrackEntity> onlyOfflineTracks = new ArrayList<>();
                                 List<TrackEntity> cloudSavedOfflineTracks = new ArrayList<>();
                                 for (TrackEntity trackEntity : offlineTracks) {
-                                    if (trackEntity.getFirebaseId().isEmpty()) {
+                                    if (trackEntity.getFirebaseId() == null || trackEntity.getFirebaseId().isEmpty()) {
                                         onlyOfflineTracks.add(trackEntity);
                                     } else {
                                         cloudSavedOfflineTracks.add(trackEntity);
