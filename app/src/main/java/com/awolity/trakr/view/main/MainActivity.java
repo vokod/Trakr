@@ -602,6 +602,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onServiceStopped() {
+        // TODO: ezt átalakítani úgy, hogy a döntések a viewmodelben szülessenek, nem az activityben
         // MyLog.d(LOG_TAG,"onServiceStopped");
         trackFragment.stopTrackDataUpdate();
         chartsFragment.stopTrackDataUpdate();

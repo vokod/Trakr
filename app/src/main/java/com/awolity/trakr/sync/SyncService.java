@@ -112,18 +112,18 @@ public class SyncService extends IntentService {
     }
 
     @WorkerThread
-    private void deleteCloudDeletedTracks(List<TrackEntity> cloudSavedTracks,
+    private void deleteCloudDeletedTracks(List<TrackEntity> cloudSavedOfflineTracks,
                                           List<TrackEntity> onlineTracks) {
         MyLog.d(LOG_TAG, "deleteCloudDeletedTracks");
-        for (TrackEntity cloudSavedTrack : cloudSavedTracks) {
+        for (TrackEntity cloudSavedTrack : cloudSavedOfflineTracks) {
             for (TrackEntity onlineTrack : onlineTracks) {
                 if (onlineTrack.getStartTime() == cloudSavedTrack.getStartTime()) {
-                    cloudSavedTracks.remove(onlineTrack);
+                    cloudSavedOfflineTracks.remove(onlineTrack);
                     break;
                 }
             }
         }
-        for (TrackEntity cloudDeletedOfflineTrack : cloudSavedTracks) {
+        for (TrackEntity cloudDeletedOfflineTrack : cloudSavedOfflineTracks) {
             trackRepository.deleteTrack(cloudDeletedOfflineTrack.getTrackId());
         }
     }

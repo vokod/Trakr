@@ -51,6 +51,7 @@ public class FirebaseTrackRepository {
     }
 
     public String getIdForNewTrack() {
+        if (appUserId == null) return null;
         return userTracksReference.child(appUserId).push().getKey();
     }
 

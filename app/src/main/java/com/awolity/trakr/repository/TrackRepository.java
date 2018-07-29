@@ -129,10 +129,13 @@ public class TrackRepository {
         TrackWithPoints trackWithPoints = roomTrackRepository.getTrackWithPointsSync(trackId);
         TrackEntity trackEntity = TrackEntity.fromTrackWithPoints(trackWithPoints);
         String trackFirebaseId = firebaseTrackRepository.getIdForNewTrack();
-        // update the local instance with the firebase id
-        roomTrackRepository.setTrackFirebaseIdSync(trackEntity,trackFirebaseId);
-        trackWithPoints.setFirebaseId(trackFirebaseId);
-        firebaseTrackRepository.saveTrackToCloudOnThread(trackWithPoints, trackFirebaseId);
+        // TODO: ezt átalakítani úgy, hogy a user logint hamarabb teszteljük
+        if(trackFirebaseId!=null) {
+            // update the local instance with the firebase id
+            roomTrackRepository.setTrackFirebaseIdSync(trackEntity, trackFirebaseId);
+            trackWithPoints.setFirebaseId(trackFirebaseId);
+            firebaseTrackRepository.saveTrackToCloudOnThread(trackWithPoints, trackFirebaseId);
+        }
     }
 
     private void updateTrackToCloud(TrackEntity trackEntity) {
