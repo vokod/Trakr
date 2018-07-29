@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.activitytype.ActivityType;
+import com.awolity.trakr.utils.MyLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 public class ActivityTypeAdapter
         extends RecyclerView.Adapter<ActivityTypeAdapter.ActivityTypeItemViewHolder> {
 
-    private static final String LOG_TAG = ActivityTypeAdapter.class.getSimpleName();
+    private static final String TAG = ActivityTypeAdapter.class.getSimpleName();
     private final List<ActivityType> items = new ArrayList<>();
     private final LayoutInflater layoutInflater;
     private final ActivityTypeItemCallback callback;
@@ -30,7 +31,7 @@ public class ActivityTypeAdapter
     }
 
     public void updateItems(final List<ActivityType> newItems) {
-        // MyLog.d(LOG_TAG, "updateItems");
+        MyLog.d(TAG, "updateItems");
         final List<ActivityType> oldItems = new ArrayList<>(this.items);
         this.items.clear();
         if (newItems != null) {
@@ -63,14 +64,14 @@ public class ActivityTypeAdapter
 
     @Override
     public ActivityTypeItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // MyLog.d(LOG_TAG, "onCreateViewHolder");
+        MyLog.d(TAG, "onCreateViewHolder");
         View v = layoutInflater.inflate(R.layout.activity_main_dialog_activity_type_list_item, parent, false);
         return new ActivityTypeItemViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ActivityTypeItemViewHolder holder, int position) {
-        // MyLog.d(LOG_TAG, "onBindViewHolder");
+        MyLog.d(TAG, "onBindViewHolder");
         holder.bind(items.get(position));
     }
 
@@ -87,14 +88,14 @@ public class ActivityTypeAdapter
 
         ActivityTypeItemViewHolder(View itemView) {
             super(itemView);
-            // MyLog.d(LOG_TAG, "TrackItemViewHolder " + TrackItemViewHolder.this.hashCode());
+            MyLog.d(TAG, "TrackItemViewHolder " + ActivityTypeItemViewHolder.this.hashCode());
             clickOverlay = itemView.findViewById(R.id.fl_click_overlay2);
             titleTv = itemView.findViewById(R.id.tv_title);
             iconImageView = itemView.findViewById(R.id.iv_icon_duration);
         }
 
         void bind(final ActivityType activityType) {
-            // MyLog.d(LOG_TAG, "bind " + TrackItemViewHolder.this.hashCode());
+            MyLog.d(TAG, "bind " + ActivityTypeItemViewHolder.this.hashCode());
             titleTv.setText(activityType.getTitle());
 
             iconImageView.setImageResource(activityType.getIconResource());

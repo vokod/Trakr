@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -31,7 +32,7 @@ import java.util.List;
 
 public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
 
-    private static final String LOG_TAG = BottomSheetChartsFragment.class.getSimpleName();
+    private static final String TAG = BottomSheetChartsFragment.class.getSimpleName();
     private TrackViewModel trackViewModel;
     private boolean isRecording;
     private long trackId = -1;
@@ -54,7 +55,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // MyLog.d(LOG_TAG, "onCreate");
+        MyLog.d(TAG, "onCreate");
         //noinspection ConstantConditions
         trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
     }
@@ -108,14 +109,14 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     }
 
     private void startObserve(/*long trackId*/) {
-        // MyLog.d(LOG_TAG, "startObserve");
+        MyLog.d(TAG, "startObserve");
         trackViewModel.getTrackWithPoints().observe(getActivity(), trackWithPointsObserver);
     }
 
     private final Observer<TrackWithPoints> trackWithPointsObserver = new Observer<TrackWithPoints>() {
         @Override
         public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-            // MyLog.d(LOG_TAG, "trackWithPointsObserver.onChanged");
+            MyLog.d(TAG, "trackWithPointsObserver.onChanged");
             if (trackWithPoints != null) {
                 BottomSheetChartsFragment.this.trackWithPoints = trackWithPoints;
                 if (firstRun) {
@@ -127,23 +128,23 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     };
 
     private void stopObserve() {
-        // MyLog.d(LOG_TAG, "stopObserve");
+        MyLog.d(TAG, "stopObserve");
         trackViewModel.getTrackWithPoints().removeObserver(trackWithPointsObserver);
     }
 
     private void startChartUpdater() {
-        // MyLog.d(LOG_TAG, "startChartUpdater");
+        MyLog.d(TAG, "startChartUpdater");
         updateChart();
         chartUpdater.run();
     }
 
     private void stopChartUpdater() {
-        // MyLog.d(LOG_TAG, "stopChartUpdater");
+        MyLog.d(TAG, "stopChartUpdater");
         handler.removeCallbacks(chartUpdater);
     }
 
     public void startTrackDataUpdate(long trackId) {
-        // MyLog.d(LOG_TAG, "startTrackDataUpdate");
+        MyLog.d(TAG, "startTrackDataUpdate");
         this.trackId = trackId;
         if (checkViews()) {
             setDataVisibility(true);
@@ -154,23 +155,23 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     }
 
     public void stopTrackDataUpdate() {
-        // MyLog.d(LOG_TAG, "stopTrackDataUpdate");
+        MyLog.d(TAG, "stopTrackDataUpdate");
         stopObserve();
         stopChartUpdater();
         setDataVisibility(false);
     }
 
     private void updateChart() {
-        // MyLog.d(LOG_TAG, "updateChart");
+        MyLog.d(TAG, "updateChart");
         if (trackWithPoints == null) {
-            // MyLog.d(LOG_TAG, "updateChart - track NULL :(");
+            MyLog.d(TAG, "updateChart - track NULL :(");
             return;
         } else {
             if (trackWithPoints.getTrackPoints().size() < 3) {
                 return;
             }
         }
-        // MyLog.d(LOG_TAG, "updateChart - track NOT null");
+        MyLog.d(TAG, "updateChart - track NOT null");
         List<Entry> elevationValues = new ArrayList<>();
         List<Entry> speedValues = new ArrayList<>();
         List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
@@ -220,7 +221,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     }
 
     private void setDataVisibility(boolean isRecording) {
-        // MyLog.d(LOG_TAG, "setDataVisibility");
+        MyLog.d(TAG, "setDataVisibility");
         // TODO: ezt valami animációval
         if (isRecording) {
             //resetData();

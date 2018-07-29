@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class AppUserViewModel extends ViewModel {
 
-    private static final String LOG_TAG = AppUserViewModel.class.getSimpleName();
+    private static final String TAG = AppUserViewModel.class.getSimpleName();
 
     public AppUserViewModel() {
     }

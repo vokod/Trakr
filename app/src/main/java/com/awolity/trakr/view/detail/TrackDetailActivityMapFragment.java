@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
+import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.view.MapUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,7 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class TrackDetailActivityMapFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String ARG_TRACK_ID = "track_id";
-    private static final String LOG_TAG = TrackDetailActivityMapFragment.class.getSimpleName();
+    private static final String TAG = TrackDetailActivityMapFragment.class.getSimpleName();
 
     private GoogleMap googleMap;
     private MapView mapView;
@@ -44,7 +45,7 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // MyLog.d(LOG_TAG, "onCreate - " + this.hashCode());
+        MyLog.d(TAG, "onCreate - " + this.hashCode());
         if (getArguments() != null) {
             long trackId = getArguments().getLong(ARG_TRACK_ID);
         }
@@ -53,7 +54,7 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // MyLog.d(LOG_TAG, "onCreateView " + this.hashCode());
+        MyLog.d(TAG, "onCreateView " + this.hashCode());
         View view = inflater.inflate(R.layout.activity_track_detail_fragment_map, container, false);
         setupMapView(view, savedInstanceState);
         setupViewModel();
@@ -61,20 +62,20 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
     }
 
     private void setupMapView(View view, Bundle savedInstanceState) {
-        // MyLog.d(LOG_TAG, "setupMapView");
+        MyLog.d(TAG, "setupMapView");
         mapView = view.findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
     }
 
     private void setupViewModel() {
-        // MyLog.d(LOG_TAG, "setupViewModel");
+        MyLog.d(TAG, "setupViewModel");
         TrackViewModel trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
         //trackViewModel.init(trackId);
         trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
             @Override
             public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-                // MyLog.d(LOG_TAG, "onChanged");
+                MyLog.d(TAG, "onChanged");
                 if (trackWithPoints != null) {
                     TrackDetailActivityMapFragment.this.trackWithPoints = trackWithPoints;
                     showTrack();
@@ -85,7 +86,7 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        // MyLog.d(LOG_TAG, "onMapReady");
+        MyLog.d(TAG, "onMapReady");
         this.googleMap = googleMap;
         googleMap.getUiSettings().setMapToolbarEnabled(true);
         googleMap.getUiSettings().setCompassEnabled(true);

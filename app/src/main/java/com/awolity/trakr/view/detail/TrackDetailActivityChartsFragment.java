@@ -20,6 +20,7 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.github.mikephil.charting.charts.LineChart;
@@ -39,7 +40,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
         implements AdapterView.OnItemSelectedListener {
 
     private static final String ARG_TRACK_ID = "track_id";
-    private static final String LOG_TAG = TrackDetailActivityChartsFragment.class.getSimpleName();
+    private static final String TAG = TrackDetailActivityChartsFragment.class.getSimpleName();
 
     private PrimaryPropertyViewIcon maxSpeedPpvi, avgSpeedPpvi, ascentPpvi, descentPpvi,
             maxAltitudePpvi, minAltitudePpvi, maxPacePpvi, avgPacePpvi;
@@ -207,7 +208,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setWidgetData(TrackWithPoints trackWithPoints) {
-        // MyLog.d(LOG_TAG, "setWidgetData");
+        MyLog.d(TAG, "setWidgetData");
 
         maxSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getMaxSpeed()));
         avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getAvgSpeed()));

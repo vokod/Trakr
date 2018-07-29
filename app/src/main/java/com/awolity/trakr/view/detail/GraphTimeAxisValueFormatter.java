@@ -1,11 +1,12 @@
 package com.awolity.trakr.view.detail;
 
+import com.awolity.trakr.utils.MyLog;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 public class GraphTimeAxisValueFormatter implements IAxisValueFormatter {
 
-    private static final String LOG_TAG = GraphTimeAxisValueFormatter.class.getSimpleName();
+    private static final String TAG = GraphTimeAxisValueFormatter.class.getSimpleName();
     private final String[] mValues;
 
     public GraphTimeAxisValueFormatter(long durationInSeconds) {
@@ -44,10 +45,10 @@ public class GraphTimeAxisValueFormatter implements IAxisValueFormatter {
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        // MyLog.d(LOG_TAG, "getFormattedValue - value: " + value);
+        MyLog.d(TAG, "getFormattedValue - value: " + value);
         if (value >= 0) {
             String result = mValues[(int) value % mValues.length];
-            // MyLog.d(LOG_TAG, "getFormattedValue - mValue: " + result);
+            MyLog.d(TAG, "getFormattedValue - mValue: " + result);
             return mValues[(int) value % mValues.length];
         } else
             return "";

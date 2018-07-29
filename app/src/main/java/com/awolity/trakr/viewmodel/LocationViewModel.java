@@ -7,6 +7,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.location.Location;
 
 import com.awolity.trakr.location.LocationManager;
+import com.awolity.trakr.utils.MyLog;
 import com.google.android.gms.location.LocationRequest;
 
 public class LocationViewModel extends AndroidViewModel implements LocationManager.LocationManagerCallback {
@@ -26,7 +27,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationManag
     }
 
     public LiveData<Location> getLocation() {
-        // MyLog.d(LOG_TAG, "getLocation");
+        MyLog.d(LOG_TAG, "getLocation");
         isLocationUpdating = true;
         if (lastLocation == null) {
             lastLocation = new MutableLiveData<>();
@@ -36,7 +37,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationManag
     }
 
     public void stopLocation() {
-        //MyLog.d(LOG_TAG, "stopLocation");
+        //MyLog.d(TAG, "stopLocation");
         if (isLocationUpdating) {
             locationManager.stop();
             lastLocation = null;
@@ -46,7 +47,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationManag
 
     @Override
     public void onLocationChanged(Location location) {
-        // MyLog.d(LOG_TAG, "onLocationChanged");
+        MyLog.d(LOG_TAG, "onLocationChanged");
         lastLocation.setValue(location);
     }
 }

@@ -10,13 +10,14 @@ import android.widget.RemoteViews;
 import com.awolity.trakr.R;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.TrackRepository;
+import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.view.main.MainActivity;
 
 import javax.inject.Inject;
 
 public class TrakrWidget extends AppWidgetProvider {
 
-    public static final String LOG_TAG = TrakrWidget.class.getSimpleName();
+    public static final String TAG = TrakrWidget.class.getSimpleName();
 
     @Inject
     TrackRepository repository;
@@ -24,7 +25,7 @@ public class TrakrWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         TrakrApplication.getInstance().getAppComponent().inject(this);
-        // MyLog.d(LOG_TAG, "onUpdate");
+        MyLog.d(TAG, "onUpdate");
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -32,7 +33,7 @@ public class TrakrWidget extends AppWidgetProvider {
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                         int appWidgetId) {
-        // MyLog.d(LOG_TAG, "updateAppWidget");
+        MyLog.d(TAG, "updateAppWidget");
 
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent showPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -47,7 +48,7 @@ public class TrakrWidget extends AppWidgetProvider {
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                        int appWidgetId, String duration, String distance, int iconResource) {
-        // MyLog.d(LOG_TAG, "updateAppWidget");
+        MyLog.d(TAG, "updateAppWidget");
 
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent showPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

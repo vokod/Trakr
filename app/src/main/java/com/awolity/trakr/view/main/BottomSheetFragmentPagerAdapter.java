@@ -3,6 +3,8 @@ package com.awolity.trakr.view.main;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.awolity.trakr.utils.MyLog;
+
 class BottomSheetFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private static final String TAG = BottomSheetFragmentPagerAdapter.class.getSimpleName();
@@ -13,13 +15,13 @@ class BottomSheetFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     void setFragments(BottomSheetBaseFragment[] fragments){
-         // MyLog.d(TAG, "setFragments");
+         MyLog.d(TAG, "setFragments");
         this.fragments = fragments;
     }
 
     @Override
     public BottomSheetBaseFragment getItem(int position) {
-         // MyLog.d(TAG,"getItem: " + position);
+         MyLog.d(TAG,"getItem: " + position);
         if(fragments!=null) {
             return fragments[position];
         } else {
@@ -38,7 +40,7 @@ class BottomSheetFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        // MyLog.d(TAG,"getPageTitle: " + position);
+        MyLog.d(TAG,"getPageTitle: " + position);
        return fragments[position].getTitle();
     }
 }

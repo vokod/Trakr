@@ -10,6 +10,7 @@ import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.utils.IOUtils;
 
+import com.awolity.trakr.utils.MyLog;
 import com.codebutchery.androidgpx.data.GPXDocument;
 import com.codebutchery.androidgpx.data.GPXRoute;
 import com.codebutchery.androidgpx.data.GPXSegment;
@@ -24,7 +25,7 @@ import java.util.List;
 
 public class GpxExporter {
 
-    private static final String LOG_TAG = GpxExporter.class.getSimpleName();
+    private static final String TAG = GpxExporter.class.getSimpleName();
     private static final String PATH = Environment.getExternalStorageDirectory() + "/Trakr/";
 
     public static void export(final Context context, final TrackWithPoints trackWithPoints) {
@@ -65,19 +66,19 @@ public class GpxExporter {
         GPXFilePrinter printer = new GPXFilePrinter(new GPXFilePrinter.GPXFilePrinterListener() {
             @Override
             public void onGPXPrintStarted() {
-                // MyLog.d(LOG_TAG, "onGPXPrintStarted");
+                MyLog.d(TAG, "onGPXPrintStarted");
                 NotificationUtils.showExportTrackNotification(context, trackWithPoints.getTrackId(), fileName, PATH);
             }
 
             @Override
             public void onGPXPrintCompleted() {
-                // MyLog.d(LOG_TAG, "onGPXPrintCompleted");
+                MyLog.d(TAG, "onGPXPrintCompleted");
                 NotificationUtils.showExportTrackDoneNotification(context, fileName, PATH);
             }
 
             @Override
             public void onGPXPrintError(String message) {
-                // MyLog.d(LOG_TAG, "onGPXPrintError: " + message);
+                MyLog.d(TAG, "onGPXPrintError: " + message);
                 NotificationUtils.showExportTrackErrorNotification(context, trackWithPoints.getTrackId(), fileName, PATH);
 
             }

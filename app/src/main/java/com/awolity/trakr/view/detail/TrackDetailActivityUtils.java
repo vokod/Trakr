@@ -9,15 +9,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
 import com.awolity.trakr.R;
+import com.awolity.trakr.utils.MyLog;
 
 class TrackDetailActivityUtils {
 
-    public static final String LOG_TAG = TrackDetailActivityUtils.class.getSimpleName();
+    public static final String TAG = TrackDetailActivityUtils.class.getSimpleName();
 
     private TrackDetailActivityUtils(){}
 
     static boolean checkPermission(final Activity activity, final int permissionRequestCode) {
-        // MyLog.d(LOG_TAG, "checkPermission");
+        MyLog.d(TAG, "checkPermission");
         if (ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -29,7 +30,7 @@ class TrackDetailActivityUtils {
                         .setMessage(activity.getResources().getString(R.string.external_storage_permission_rationale_description))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // MyLog.d(LOG_TAG, "checkPermission - shouldshowrationale - onclick - requesting permission");
+                                MyLog.d(TAG, "checkPermission - shouldshowrationale - onclick - requesting permission");
                                 ActivityCompat.requestPermissions(activity,
                                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                         permissionRequestCode);

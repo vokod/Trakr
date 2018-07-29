@@ -30,7 +30,7 @@ import javax.inject.Inject;
 
 public class LocationManager {
 
-    private static final String LOG_TAG = LocationManager.class.getSimpleName();
+    private static final String TAG = LocationManager.class.getSimpleName();
     private static final int SECOND = 1000;
     private final int locationRequestInterval;
     private final int locationRequestFastestInterval;
@@ -57,7 +57,7 @@ public class LocationManager {
     }
 
     private void createLocationRequest() {
-        // MyLog.d(TAG, "createLocationRequest");
+        MyLog.d(TAG, "createLocationRequest");
         locationRequest = new LocationRequest();
         locationRequest.setInterval(locationRequestInterval);
         locationRequest.setFastestInterval(locationRequestFastestInterval);
@@ -65,7 +65,7 @@ public class LocationManager {
     }
 
     public void start(LocationManagerCallback locationManagerCallback) {
-        // MyLog.d(TAG, "start");
+        MyLog.d(TAG, "start");
         this.locationManagerCallback = locationManagerCallback;
         setupLocationCallback();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.context);
@@ -73,7 +73,7 @@ public class LocationManager {
     }
 
     public void stop() {
-        // MyLog.d(TAG, "stop");
+        MyLog.d(TAG, "stop");
         stopLocationUpdates();
         fusedLocationProviderClient = null;
         locationManagerCallback = null;
@@ -84,13 +84,13 @@ public class LocationManager {
     }
 
     public boolean isLocationEnabled() {
-        // MyLog.d(TAG, "isLocationEnabled");
+        MyLog.d(TAG, "isLocationEnabled");
         return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
     }
 
     public void isLocationSettingsGood(final LocationSettingsCallback callback) {
-        // MyLog.d(TAG, "isLocationSettingsGood");
+        MyLog.d(TAG, "isLocationSettingsGood");
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
 
@@ -100,7 +100,7 @@ public class LocationManager {
         task.addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                // // MyLog.d(LOG_TAG, "isLocationSettingsGood - onSuccess");
+                // MyLog.d(TAG, "isLocationSettingsGood - onSuccess");
                 // All location settings are satisfied. The client can initialize
                 // location requests here.
                 callback.onLocationSettingsDetermined(true);
@@ -115,13 +115,13 @@ public class LocationManager {
                     case CommonStatusCodes.RESOLUTION_REQUIRED:
                         // Location settings are not satisfied, but this can be fixed
                         // by showing the user a dialog.
-                        // // MyLog.d(LOG_TAG, "isLocationSettingsGood - onFailure - resolution required");
+                        // MyLog.d(TAG, "isLocationSettingsGood - onFailure - resolution required");
                         callback.onLocationSettingsDetermined(false);
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                         // Location settings are not satisfied. However, we have no way
                         // to fix the settings so we won't show the dialog.
-                        // // MyLog.d(LOG_TAG, "isLocationSettingsGood - onFailure - required settings unavailable :(");
+                        // MyLog.d(TAG, "isLocationSettingsGood - onFailure - required settings unavailable :(");
                         callback.onLocationSettingsDetermined(false);
                         break;
                 }
@@ -130,12 +130,12 @@ public class LocationManager {
     }
 
     private void setupLocationCallback() {
-        // MyLog.d(TAG, "setupLocationCallback");
+        MyLog.d(TAG, "setupLocationCallback");
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
-                // // MyLog.d(LOG_TAG, "new location result");
-                // // MyLog.d(LOG_TAG, "    object id: "+ id);
+                // MyLog.d(TAG, "new location result");
+                // MyLog.d(TAG, "    object id: "+ id);
                 for (Location location : locationResult.getLocations()) {
                     locationManagerCallback.onLocationChanged(location);
                 }
@@ -144,7 +144,7 @@ public class LocationManager {
     }
 
     private void setLocationSettings() {
-        // MyLog.d(TAG, "setLocationSettings");
+        MyLog.d(TAG, "setLocationSettings");
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
 
@@ -154,7 +154,7 @@ public class LocationManager {
         task.addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                // // MyLog.d(LOG_TAG, "setLocationSettings - onSuccess");
+                // MyLog.d(TAG, "setLocationSettings - onSuccess");
                 // All location settings are satisfied. The client can initialize
                 // location requests here.
                 isConnected = true;
@@ -164,33 +164,33 @@ public class LocationManager {
     }
 
     private void startLocationUpdates() {
-        // MyLog.d(TAG, "startLocationUpdates");
+        MyLog.d(TAG, "startLocationUpdates");
         if (isConnected) {
             try {
                 fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null /* Looper */);
             } catch (SecurityException e) {
                 Crashlytics.logException(e);
-                Log.e(LOG_TAG, "Security Exception. Maybe by not having location permission... " + e.getLocalizedMessage());
+                Log.e(TAG, "Security Exception. Maybe by not having location permission... " + e.getLocalizedMessage());
             } catch (NullPointerException e) {
                 Crashlytics.logException(e);
-                Log.e(LOG_TAG, "Something bad happened:");
+                Log.e(TAG, "Something bad happened:");
                 e.printStackTrace();
             }
         }
     }
 
     private void stopLocationUpdates() {
-        // MyLog.d(TAG, "stopLocation");
+        MyLog.d(TAG, "stopLocation");
         try {
             Task<Void> myTask = fusedLocationProviderClient.removeLocationUpdates(locationCallback);
             if (myTask.isSuccessful()) {
-                // // MyLog.d(LOG_TAG, "stopLocation - task successful");
+                MyLog.d(TAG, "stopLocation - task successful");
             } else {
-                // // MyLog.d(LOG_TAG, "stopLocation - task NOT successful");
+                MyLog.d(TAG, "stopLocation - task NOT successful");
             }
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             Crashlytics.logException(e);
-            MyLog.e(LOG_TAG, "unable to remove location callback: "+ e.getLocalizedMessage());
+            MyLog.e(TAG, "unable to remove location callback: " + e.getLocalizedMessage());
         }
     }
 

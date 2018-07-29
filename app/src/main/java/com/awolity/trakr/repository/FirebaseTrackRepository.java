@@ -50,6 +50,17 @@ public class FirebaseTrackRepository {
         userTrackpointsReference = dbReference.child(Constants.NODE_TRACKPOINTS).child(appUserId);
     }
 
+    public void refreshReferences () {
+        appUserId = FirebaseAuth.getInstance().getUid();
+        if (appUserId == null) {
+            return;
+        }
+
+        dbReference = FirebaseDatabase.getInstance().getReference();
+        userTracksReference = dbReference.child(Constants.NODE_TRACKS).child(appUserId);
+        userTrackpointsReference = dbReference.child(Constants.NODE_TRACKPOINTS).child(appUserId);
+    }
+
     public String getIdForNewTrack() {
         if (appUserId == null) return null;
         return userTracksReference.child(appUserId).push().getKey();
@@ -57,6 +68,7 @@ public class FirebaseTrackRepository {
 
     @WorkerThread
     public void saveTrackToCloudOnThread(TrackWithPoints trackWithPoints, String trackFirebaseId) {
+        refreshReferences();
         TrackEntity trackEntity = TrackEntity.fromTrackWithPoints(trackWithPoints);
 
         Map<String, Object> childUpdates = new HashMap<>();
@@ -75,6 +87,7 @@ public class FirebaseTrackRepository {
     }
 
     public void updateTrackToCloud(TrackEntity trackEntity) {
+        refreshReferences();
         final DatabaseReference trackDbReference
                 = userTracksReference.child(trackEntity.getFirebaseId());
 
@@ -83,6 +96,7 @@ public class FirebaseTrackRepository {
 
     public void getAllTrackEntitiesFromCloud(
             final TrackRepository.GetAllTrackEntitiesFromCloudListener listener) {
+        refreshReferences();
 
         userTracksReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -104,6 +118,7 @@ public class FirebaseTrackRepository {
 
     public void getTrackPoints(String firebaseTrackId,
                                final TrackRepository.GetTrackpointsFromCloudListener listener) {
+        refreshReferences();
 
         final DatabaseReference trackpointDbReference
                 = userTrackpointsReference.child(firebaseTrackId);
@@ -129,6 +144,7 @@ public class FirebaseTrackRepository {
     }
 
     public void deleteTrackFromCloud(String firebaseTrackId) {
+        refreshReferences();
         // remove track from track node
         userTracksReference.child(firebaseTrackId).removeValue();
         // remove track from trackpoint node

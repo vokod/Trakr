@@ -27,20 +27,6 @@ public class PreferenceUtils {
         editor.apply();
     }
 
-    public static String getCloudUserId(Context context) {
-        SharedPreferences sharedpreferences =
-                PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedpreferences.getString(Constants.PREF_KEY_USER_ID,
-                Constants.PREF_VALUE_USER_NOT_LOGGED_IN);
-    }
-
-    public static void setCloudUserId(Context context, String  userId) {
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context)
-                .edit();
-        editor.putString(Constants.PREF_KEY_USER_ID, userId);
-        editor.apply();
-    }
-
     public static ActivityType getActivityType(Context context) {
         SharedPreferences sharedpreferences =
                 PreferenceManager.getDefaultSharedPreferences(context);

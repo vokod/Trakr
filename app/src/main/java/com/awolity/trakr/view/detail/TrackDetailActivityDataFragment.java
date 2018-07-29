@@ -18,6 +18,7 @@ import com.awolity.trakr.activitytype.ActivityTypeManager;
 import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
+import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 
@@ -26,7 +27,7 @@ import java.util.Locale;
 public class TrackDetailActivityDataFragment extends Fragment {
 
     private static final String ARG_TRACK_ID = "track_id";
-    private static final String LOG_TAG = TrackDetailActivityDataFragment.class.getSimpleName();
+    private static final String TAG = TrackDetailActivityDataFragment.class.getSimpleName();
 
     private PrimaryPropertyViewIcon durationPpvi, distancePpvi, ascentPpvi, descentPpvi,
             maxSpeedPpvi, avgSpeedPpvi, maxAltitudePpvi, minAltitudePpvi, startTimePpvi,
@@ -50,7 +51,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // MyLog.d(LOG_TAG, "onCreate - " + this.hashCode());
+        MyLog.d(TAG, "onCreate - " + this.hashCode());
         if (getArguments() != null) {
             long trackId = getArguments().getLong(ARG_TRACK_ID);
         }
@@ -158,7 +159,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
     }
 
     private void setData(TrackWithPoints trackWithPoints) {
-        // MyLog.d(LOG_TAG, "setData");
+        MyLog.d(TAG, "setData");
 
         ActivityType activityType = ActivityTypeManager.getInstance(getContext())
                 .getActivityType(getContext(),trackWithPoints.getActivityType());
