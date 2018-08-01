@@ -1,5 +1,5 @@
 # Trakr
-Udacity Android Developer Nanodegree Capstone project
+Android location tracking app with cloud sync, analytics and an easy to use interface
 
 ## Description 
 Trakr records the user’s geographical position and path during outdoor activities like walking, hiking, running, biking, boating, motorbike riding, driving or even flying.
