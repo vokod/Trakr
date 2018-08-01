@@ -11,7 +11,6 @@ import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.gpx.GpxExporter;
 import com.awolity.trakr.sync.SyncService;
-import com.awolity.trakr.viewmodel.AppUserViewModel;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -41,6 +40,7 @@ public class TrackRepository {
             @Override
             public void onSignOut() {
                 // delete all tracks locally, that have a Firebase Id
+                deleteSyncedLocalTracks();
             }
 
             @Override
@@ -116,15 +116,20 @@ public class TrackRepository {
         });
     }
 
-    private void deleteSyncedTracks() {
-        for (TrackEntity trackEntity : roomTrackRepository.getTracks().getValue()) {
-            if (trackEntity.getFirebaseId() != null || trackEntity.getFirebaseId().isEmpty()) {
-                deletelocalTrack(trackEntity.getTrackId());
+    private void deleteSyncedLocalTracks() {
+        discIoExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                for (TrackEntity trackEntity : roomTrackRepository.getTracksSync()) {
+                    if (trackEntity.getFirebaseId() != null || trackEntity.getFirebaseId().isEmpty()) {
+                        deleteLocalTrack(trackEntity.getTrackId());
+                    }
+                }
             }
-        }
+        });
     }
 
-    private void deletelocalTrack(final long trackId) {
+    public void deleteLocalTrack(final long trackId) {
         roomTrackRepository.deleteTrack(trackId);
     }
 

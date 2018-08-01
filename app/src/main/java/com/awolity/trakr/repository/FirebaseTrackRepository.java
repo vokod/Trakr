@@ -50,7 +50,7 @@ public class FirebaseTrackRepository {
         userTrackpointsReference = dbReference.child(Constants.NODE_TRACKPOINTS).child(appUserId);
     }
 
-    public void refreshReferences () {
+    public void refreshReferences () { // TODO: ezt innen el. egyáltalán, kell ez?
         appUserId = FirebaseAuth.getInstance().getUid();
         if (appUserId == null) {
             return;
