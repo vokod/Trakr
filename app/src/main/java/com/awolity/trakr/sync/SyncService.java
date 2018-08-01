@@ -114,7 +114,7 @@ public class SyncService extends IntentService {
                                 }
 
                                 // this saves tracks that are present in cloud but not in the device
-                                saveOnlyOnlineToDbTracks(onlyOnlineTracks);
+                                saveOnlyOnlineTracksToDb(onlyOnlineTracks);
                                 // this uploads the tracks that were recorded on this device and were not yet uploaded
                                 uploadOfflineTracks(onlyOfflineTracks);
                                 // this delete the local tracks that were deleted from the cloud in another installation
@@ -127,7 +127,7 @@ public class SyncService extends IntentService {
         new DbSanitizer().sanitizeDb();
     }
 
-    private void saveOnlyOnlineToDbTracks(List<TrackEntity> onlyOnlineTracks) {
+    private void saveOnlyOnlineTracksToDb(List<TrackEntity> onlyOnlineTracks) {
         for (TrackEntity onlineTrack : onlyOnlineTracks) {
             trackRepository.saveTrackToLocalDbFromCloud(onlineTrack);
         }
