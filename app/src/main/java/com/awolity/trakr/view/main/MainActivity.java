@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTrackViewModel(final long trackId) {
-        MyLog.d(LOG_TAG,"setupTrackViewModel");
+        MyLog.d(LOG_TAG, "setupTrackViewModel");
         trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
         trackViewModel.reset();
         trackViewModel.init(trackId);
@@ -543,7 +543,8 @@ public class MainActivity extends AppCompatActivity
                 synchronisationItem.setTitle(getString(R.string.disable_cloud_sync));
 
                 Toast.makeText(this, getString(R.string.you_are_logged_in), Toast.LENGTH_LONG).show();
-                startService(new Intent(this, SyncService.class));
+                appUserViewModel.signIn();
+
                 return;
             } else {
                 // Sign in failed
@@ -591,7 +592,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onServiceStarted(long trackId) {
-        MyLog.d(LOG_TAG,"onServiceStarted");
+        MyLog.d(LOG_TAG, "onServiceStarted");
         // TODO FAB animation
         this.trackId = trackId;
         setupTrackViewModel(trackId);
@@ -603,7 +604,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onServiceStopped() {
         // TODO: ezt átalakítani úgy, hogy a döntések a viewmodelben szülessenek, nem az activityben
-        MyLog.d(LOG_TAG,"onServiceStopped");
+        MyLog.d(LOG_TAG, "onServiceStopped");
         trackFragment.stopTrackDataUpdate();
         chartsFragment.stopTrackDataUpdate();
         status.setRecording(false);

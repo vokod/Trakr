@@ -8,6 +8,7 @@ import com.awolity.trakr.sync.DbSanitizer;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
+import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.awolity.trakr.widget.TrakrWidget;
@@ -31,6 +32,8 @@ public interface AppComponent {
     void inject (FirebaseTrackRepository firebaseTrackRepository);
 
     void inject (TrackViewModel trackViewModel);
+
+    void inject (AppUserViewModel target);
 
     void inject (TrackRecorderServiceManager serviceManager);
 

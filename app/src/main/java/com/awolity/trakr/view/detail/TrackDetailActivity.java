@@ -198,11 +198,7 @@ public class TrackDetailActivity extends AppCompatActivity
     @Override
     public void onTitleEdited(String title) {
         trackEntity.setTitle(title);
-        if (appUserViewModel.IsAppUserLoggedIn()) {
-            if (trackEntity.getFirebaseId() != null) {
-                trackViewModel.updateTrack(trackEntity);
-            }
-        }
+        trackViewModel.updateTrack(trackEntity);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.awolity.trakr.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.WorkerThread;
 
 import com.awolity.trakr.data.entity.TrackEntity;
@@ -9,6 +10,8 @@ import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.gpx.GpxExporter;
+import com.awolity.trakr.sync.SyncService;
+import com.awolity.trakr.viewmodel.AppUserViewModel;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -29,8 +32,24 @@ public class TrackRepository {
     @Inject
     FirebaseTrackRepository firebaseTrackRepository;
 
+    @Inject
+    AppUserRepository appUserRepository;
+
     public TrackRepository() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
+        appUserRepository.setAppUserStatusListener(new AppUserRepository.AppUserStatusListener() {
+            @Override
+            public void onSignOut() {
+                // delete all tracks locally, that have a Firebase Id
+            }
+
+            @Override
+            public void onSignIn() {
+                // sync tracks with cloud
+                context.getApplicationContext().startService(
+                        new Intent(context.getApplicationContext(), SyncService.class));
+            }
+        });
     }
 
     /**
@@ -55,16 +74,14 @@ public class TrackRepository {
      */
 
     @WorkerThread
-    public long saveTrackSync(final TrackEntity trackData) {
-        return roomTrackRepository.saveTrackSync(trackData);
+    public long saveTrackSync(final TrackEntity trackEntity) {
+        return roomTrackRepository.saveTrackSync(trackEntity);
     }
 
-    public void updateTrack(final TrackEntity trackData) {
-        roomTrackRepository.updateTrack(trackData);
-        // TODO
-        if (trackData.getFirebaseId() != null) {
-            // if it was already in firebase than update it
-            updateTrackToCloud(trackData);
+    public void updateTrack(final TrackEntity trackEntity) {
+        roomTrackRepository.updateTrack(trackEntity);
+        if (appUserRepository.IsAppUserLoggedIn()) {
+            updateTrackToCloud(trackEntity);
         }
     }
 
@@ -99,6 +116,18 @@ public class TrackRepository {
         });
     }
 
+    private void deleteSyncedTracks() {
+        for (TrackEntity trackEntity : roomTrackRepository.getTracks().getValue()) {
+            if (trackEntity.getFirebaseId() != null || trackEntity.getFirebaseId().isEmpty()) {
+                deletelocalTrack(trackEntity.getTrackId());
+            }
+        }
+    }
+
+    private void deletelocalTrack(final long trackId) {
+        roomTrackRepository.deleteTrack(trackId);
+    }
+
     /**
      * Trackpoint methods
      */
@@ -130,7 +159,7 @@ public class TrackRepository {
         TrackEntity trackEntity = TrackEntity.fromTrackWithPoints(trackWithPoints);
         String trackFirebaseId = firebaseTrackRepository.getIdForNewTrack();
         // TODO: ezt átalakítani úgy, hogy a user logint hamarabb teszteljük
-        if(trackFirebaseId!=null) {
+        if (trackFirebaseId != null) {
             // update the local instance with the firebase id
             roomTrackRepository.setTrackFirebaseIdSync(trackEntity, trackFirebaseId);
             trackWithPoints.setFirebaseId(trackFirebaseId);
@@ -139,7 +168,10 @@ public class TrackRepository {
     }
 
     private void updateTrackToCloud(TrackEntity trackEntity) {
-       firebaseTrackRepository.updateTrackToCloud(trackEntity);
+        if (trackEntity.getFirebaseId() == null || trackEntity.getFirebaseId().isEmpty()) {
+
+        }
+        firebaseTrackRepository.updateTrackToCloud(trackEntity);
     }
 
     public void getAllTrackEntitiesFromCloud(final GetAllTrackEntitiesFromCloudListener listener) {
@@ -158,7 +190,7 @@ public class TrackRepository {
                 });
     }
 
-    public void deleteCloudDeletedTracks(List<TrackEntity> deletedTracks){
+    public void deleteCloudDeletedTracks(List<TrackEntity> deletedTracks) {
         // delete local instances
         roomTrackRepository.deleteCloudDeletedTracks(deletedTracks);
     }
@@ -184,14 +216,14 @@ public class TrackRepository {
     }
 
     private void deleteTrackFromCloud(String firebaseId) {
-      firebaseTrackRepository.deleteTrackFromCloud(firebaseId);
+        firebaseTrackRepository.deleteTrackFromCloud(firebaseId);
     }
 
     public interface GetAllTrackEntitiesFromCloudListener {
         void onAllTracksLoaded(List<TrackEntity> trackEntityList);
     }
 
-    public interface GetTrackpointsFromCloudListener{
+    public interface GetTrackpointsFromCloudListener {
         void onTrackpointsLoaded(List<TrackpointEntity> trackpointEntityList);
     }
 
