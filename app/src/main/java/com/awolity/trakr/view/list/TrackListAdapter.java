@@ -1,6 +1,7 @@
 package com.awolity.trakr.view.list;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -38,20 +39,18 @@ public class TrackListAdapter
     private final TrackItemCallback callback;
     private final Context context;
 
-    public TrackListAdapter(Context context, LayoutInflater layoutInflater, TrackItemCallback callback) {
+    TrackListAdapter(Context context, LayoutInflater layoutInflater, TrackItemCallback callback) {
         this.layoutInflater = layoutInflater;
         this.callback = callback;
         this.context = context;
     }
 
-    public void updateItems(final List<TrackWithPoints> newItems) {
+    public void updateItems(@NonNull  final List<TrackWithPoints> newItems) {
         MyLog.d(LOG_TAG, "updateItems");
         deleteInvalidTracks(newItems);
         final List<TrackWithPoints> oldItems = new ArrayList<>(this.items);
         this.items.clear();
-        if (newItems != null) {
-            this.items.addAll(newItems);
-        }
+
         DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {

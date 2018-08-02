@@ -11,9 +11,9 @@ import android.widget.Toast;
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.TrakrApplication;
+import com.awolity.trakr.repository.AppUserRepository;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.utils.MyLog;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +25,13 @@ public class SyncService extends IntentService {
 
     private static final String LOG_TAG = SyncService.class.getSimpleName();
 
-    @Inject // TODO: ide beinjektálni az AppUserRepo-t és onnan szedni a releváns infókat
-            TrackRepository trackRepository;
+    @Inject
+    TrackRepository trackRepository;
     @Inject
     Executor discIoExecutor;
+
+    @Inject
+    AppUserRepository appUserRepository;
 
     public SyncService() {
         super("SyncService");
@@ -39,7 +42,7 @@ public class SyncService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         MyLog.d(LOG_TAG, "onHandleIntent");
-        if (FirebaseAuth.getInstance().getUid() == null) {
+        if (!appUserRepository.IsAppUserLoggedIn()) {
             MyLog.d(LOG_TAG, "onHandleIntent - user not logged in, no sync :(");
             return;
         }
@@ -59,59 +62,12 @@ public class SyncService extends IntentService {
                             @Override
                             public void run() {
                                 List<TrackEntity> offlineTracks = trackRepository.getTracksSync();
-                                List<TrackEntity> onlyOfflineTracks = new ArrayList<>();
-                                // get those tracks from offline tracks, that has no firebaseId
-                                // those are only offline tracks
-                                // get those tracks from offline tracks that are already backed up to cloud
-                                // List<TrackEntity> cloudSavedOfflineTracks = new ArrayList<>();
-                                for (TrackEntity trackEntity : offlineTracks) {
-                                    if (trackEntity.getFirebaseId() == null || trackEntity.getFirebaseId().isEmpty()) {
-                                        onlyOfflineTracks.add(trackEntity);
-                                    } /*else {
-                                        cloudSavedOfflineTracks.add(trackEntity);
-                                    }*/
-                                }
-
-                                // add those tracks from the online tracks
-                                // that are not present locally
-                                // to a list
-                                // the TrackEntity objects are not equal, they have different id-s, so compare start time
-                                List<TrackEntity> onlyOnlineTracks = new ArrayList<>();
-                                for (TrackEntity onlineTrack : onlineTracks) {
-                                    boolean isOnlyOnline = true;
-                                    for (TrackEntity offlineTrack : offlineTracks) {
-                                        if (onlineTrack.getStartTime() == offlineTrack.getStartTime()) {
-                                            // track is present locally, move to next
-                                            isOnlyOnline = false;
-                                            break;
-                                        }
-                                    }
-                                    if (isOnlyOnline) {
-                                        onlyOnlineTracks.add(onlineTrack);
-                                    }
-                                }
-
-                                // add those tracks from local tracks
-                                // that has a firebaseId (was uploaded earlier)
-                                // but are not among the online tracks (the user deleted them using another device)
-                                List<TrackEntity> cloudDeletedOfflineTracks = new ArrayList<>();
-                                for (TrackEntity offlineTrack : offlineTracks) {
-                                    boolean isCloudDeleted = true;
-                                    if (offlineTrack.getFirebaseId() == null
-                                            || offlineTrack.getFirebaseId().isEmpty()) {
-                                        continue;
-                                    }
-                                    for (TrackEntity onlineTrack : onlineTracks) {
-                                        if (onlineTrack.getStartTime() == offlineTrack.getStartTime()) {
-                                            // track is present online, remove it
-                                            isCloudDeleted = false;
-                                            break;
-                                        }
-                                    }
-                                    if (isCloudDeleted) {
-                                        cloudDeletedOfflineTracks.add(offlineTrack);
-                                    }
-                                }
+                                List<TrackEntity> onlyOfflineTracks = getOnyOfflineTracks(
+                                        offlineTracks);
+                                List<TrackEntity> onlyOnlineTracks = getOnyOnlineTracks(
+                                        onlineTracks, offlineTracks);
+                                List<TrackEntity> cloudDeletedOfflineTracks
+                                        = getCloudDeletedOfflineTracks(onlineTracks, offlineTracks);
 
                                 // this saves tracks that are present in cloud but not in the device
                                 saveOnlyOnlineTracksToDb(onlyOnlineTracks);
@@ -125,6 +81,69 @@ public class SyncService extends IntentService {
                 });
 
         new DbSanitizer().sanitizeDb();
+    }
+
+    private List<TrackEntity> getOnyOfflineTracks(List<TrackEntity> offlineTracks) {
+        List<TrackEntity> onlyOfflineTracks = new ArrayList<>();
+        // get those tracks from offline tracks, that has no firebaseId
+        // those are only offline tracks
+        // get those tracks from offline tracks that are already backed up to cloud
+        // List<TrackEntity> cloudSavedOfflineTracks = new ArrayList<>();
+        for (TrackEntity trackEntity : offlineTracks) {
+            if (trackEntity.getFirebaseId() == null || trackEntity.getFirebaseId().isEmpty()) {
+                onlyOfflineTracks.add(trackEntity);
+            }
+        }
+        return onlyOfflineTracks;
+    }
+
+    private List<TrackEntity> getOnyOnlineTracks(List<TrackEntity> onlineTracks,
+                                                 List<TrackEntity> offlineTracks) {
+        // add those tracks from the online tracks
+        // that are not present locally
+        // to a list
+        // the TrackEntity objects are not equal, they have different id-s, so compare start time
+        List<TrackEntity> onlyOnlineTracks = new ArrayList<>();
+        for (TrackEntity onlineTrack : onlineTracks) {
+            boolean isOnlyOnline = true;
+            for (TrackEntity offlineTrack : offlineTracks) {
+                if (onlineTrack.getStartTime() == offlineTrack.getStartTime()) {
+                    // track is present locally, move to next
+                    isOnlyOnline = false;
+                    break;
+                }
+            }
+            if (isOnlyOnline) {
+                onlyOnlineTracks.add(onlineTrack);
+            }
+        }
+        return onlyOnlineTracks;
+    }
+
+    private List<TrackEntity> getCloudDeletedOfflineTracks(List<TrackEntity> onlineTracks,
+                                                           List<TrackEntity> offlineTracks) {
+        // add those tracks from local tracks
+        // that has a firebaseId (was uploaded earlier)
+        // but are not among the online tracks (the user deleted them using another device)
+        List<TrackEntity> cloudDeletedOfflineTracks = new ArrayList<>();
+        for (TrackEntity offlineTrack : offlineTracks) {
+            boolean isCloudDeleted = true;
+            if (offlineTrack.getFirebaseId() == null
+                    || offlineTrack.getFirebaseId().isEmpty()) {
+                continue;
+            }
+            for (TrackEntity onlineTrack : onlineTracks) {
+                if (onlineTrack.getStartTime() == offlineTrack.getStartTime()) {
+                    // track is present online, remove it
+                    isCloudDeleted = false;
+                    break;
+                }
+            }
+            if (isCloudDeleted) {
+                cloudDeletedOfflineTracks.add(offlineTrack);
+            }
+        }
+        return cloudDeletedOfflineTracks;
     }
 
     private void saveOnlyOnlineTracksToDb(List<TrackEntity> onlyOnlineTracks) {
@@ -144,7 +163,6 @@ public class SyncService extends IntentService {
     @WorkerThread
     private void deleteCloudDeletedTracks(List<TrackEntity> cloudSavedOfflineTracks) {
         MyLog.d(LOG_TAG, "deleteCloudDeletedTracks");
-
         for (TrackEntity cloudDeletedOfflineTrack : cloudSavedOfflineTracks) {
             trackRepository.deleteLocalTrack(cloudDeletedOfflineTrack.getTrackId());
         }
@@ -154,7 +172,6 @@ public class SyncService extends IntentService {
         MyLog.d(LOG_TAG, "isConnected");
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();

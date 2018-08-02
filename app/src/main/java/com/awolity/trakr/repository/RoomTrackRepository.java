@@ -121,10 +121,4 @@ public class RoomTrackRepository {
     public void saveAllTrackpoints(List<TrackpointEntity> trackpointEntities) {
         trackpointDao.saveAll(trackpointEntities);
     }
-
-    public void deleteCloudDeletedTracks(List<TrackEntity> deletedTracks){
-        for(TrackEntity  trackEntity : deletedTracks){
-            trackDao.delete(trackEntity.getFirebaseId());
-        }
-    }
 }

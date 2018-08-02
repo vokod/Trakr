@@ -10,7 +10,6 @@ import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
-import com.awolity.trakr.utils.PreferenceUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

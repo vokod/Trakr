@@ -173,10 +173,9 @@ public class TrackRepository {
     }
 
     private void updateTrackToCloud(TrackEntity trackEntity) {
-        if (trackEntity.getFirebaseId() == null || trackEntity.getFirebaseId().isEmpty()) {
-
+        if (trackEntity.getFirebaseId() != null && !trackEntity.getFirebaseId().isEmpty()) {
+            firebaseTrackRepository.updateTrackToCloud(trackEntity);
         }
-        firebaseTrackRepository.updateTrackToCloud(trackEntity);
     }
 
     public void getAllTrackEntitiesFromCloud(final GetAllTrackEntitiesFromCloudListener listener) {
@@ -185,7 +184,6 @@ public class TrackRepository {
 
     public void saveTrackToLocalDbFromCloud(final TrackEntity onlineTrackEntity) {
         onlineTrackEntity.setTrackId(0);
-
         firebaseTrackRepository.getTrackPoints(onlineTrackEntity.getFirebaseId(),
                 new GetTrackpointsFromCloudListener() {
                     @Override
@@ -193,11 +191,6 @@ public class TrackRepository {
                         saveTrackEntityWithPointsToDb(onlineTrackEntity, trackpointEntityList);
                     }
                 });
-    }
-
-    public void deleteCloudDeletedTracks(List<TrackEntity> deletedTracks) {
-        // delete local instances
-        roomTrackRepository.deleteCloudDeletedTracks(deletedTracks);
     }
 
     @WorkerThread
