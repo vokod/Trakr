@@ -2,6 +2,7 @@ package com.awolity.trakr.view.main;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -31,6 +32,7 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
+import com.awolity.trakr.repository.AppUserRepository;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
 import com.awolity.trakr.utils.Constants;
@@ -515,9 +517,7 @@ public class MainActivity extends AppCompatActivity
             }
         } else if (id == R.id.action_synchronisation) {
             if (appUserViewModel.IsAppUserLoggedIn()) {
-                appUserViewModel.signOut();
-                item.setTitle(getString(R.string.enable_cloud_sync));
-                Toast.makeText(this, getString(R.string.you_are_logged_out), Toast.LENGTH_LONG).show();
+                MainActivityUtils.showLogoutAlertDialog(this, appUserViewModel, item);
             } else {
                 startActivityForResult(AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -538,13 +538,10 @@ public class MainActivity extends AppCompatActivity
 
             // Successfully signed in
             if (resultCode == RESULT_OK) {
-
                 MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
                 synchronisationItem.setTitle(getString(R.string.disable_cloud_sync));
-
                 Toast.makeText(this, getString(R.string.you_are_logged_in), Toast.LENGTH_LONG).show();
                 appUserViewModel.signIn();
-
                 return;
             } else {
                 // Sign in failed
@@ -567,7 +564,6 @@ public class MainActivity extends AppCompatActivity
             MainActivityUtils.showToast(this, getString(R.string.login_error_unknown_response));
         }
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

@@ -50,7 +50,7 @@ public class TrackListAdapter
         deleteInvalidTracks(newItems);
         final List<TrackWithPoints> oldItems = new ArrayList<>(this.items);
         this.items.clear();
-
+        this.items.addAll(newItems);
         DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {

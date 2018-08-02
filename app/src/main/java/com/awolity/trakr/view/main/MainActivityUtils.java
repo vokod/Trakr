@@ -10,10 +10,12 @@ import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -71,7 +73,7 @@ class MainActivityUtils {
         }
     }
 
-    static boolean isLocationPermissionEnabled(final Activity activity){
+    static boolean isLocationPermissionEnabled(final Activity activity) {
         return ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
@@ -111,5 +113,35 @@ class MainActivityUtils {
 
     static void showToast(Context context, String s) {
         Toast.makeText(context, s, Toast.LENGTH_LONG).show();
+    }
+
+    static void showLogoutAlertDialog(final Context context, final AppUserViewModel appUserViewModel,
+                                      final MenuItem item) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        // set title
+        alertDialogBuilder.setTitle(context.getString(R.string.logout_dialog_title));
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(context.getString(R.string.logout_dialog_message,
+                        appUserViewModel.getAppUser().getEmail()))
+                .setCancelable(true)
+                .setIcon(context.getDrawable(R.drawable.ic_warning))
+                .setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        appUserViewModel.signOut();
+                        item.setTitle(context.getString(R.string.enable_cloud_sync));
+                        Toast.makeText(context,
+                                context.getString(R.string.you_are_logged_out),
+                                Toast.LENGTH_LONG).show();
+                    }
+                })
+                .setNegativeButton(context.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

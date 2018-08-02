@@ -15,11 +15,12 @@
     <string name="login_error_unknown_response">Unknown sign in response</string>
     <string name="login_error_unknown_error">Unknown error</string>
 
-    <string name="disable_cloud_sync">Disable cloud sync</string>
-    <string name="enable_cloud_sync">Enable cloud sync</string>
+    <string name="disable_cloud_sync">Disable cloud sync (log out)</string>
+    <string name="enable_cloud_sync">Enable cloud sync (log in)</string>
     <string name="you_are_logged_out">You are logged out</string>
     <string name="you_are_logged_in">You are logged in</string>
-    <string name="activity_change_disabled">You can\'t change activity type while recording track</string>
+    <string name="activity_change_disabled">You can\'t change activity type while recording track
+    </string>
 
     <string name="activity_type_walking">Walking</string>
     <string name="activity_type_running">Running</string>
@@ -34,6 +35,12 @@
     <string name="activity_type_key_flying" translatable="false">flying</string>
 
     <string name="start_recording_a_track">Start recording a track!</string>
+
+    <string name="logout_dialog_title">Log out</string>
+    <string name="logout_dialog_message">On logging out, all the tracks saved by this account: %s
+        will be removed from this device. Those tracks will be available on next login.\n\nDo you
+        really want to log out?"</string>
+
 
     <!-- Track list activity -->
     <string name="title_activity_track_list">Recorded tracks</string>
@@ -148,47 +155,64 @@
 
     <!-- LOCATION PERMISSION RATIONALE -->
     <string name="location_permission_rationale_title">Location permission</string>
-    <string name="location_permission_rationale_description">Trakr needs Location Permission enabled to do its magic. Please enable it.</string>
+    <string name="location_permission_rationale_description">Trakr needs Location Permission enabled
+        to do its magic. Please enable it.</string>
     <!-- EXTERNAL STORAGE PERMISSION RATIONALE -->
-    <string name="external_storage_permission_rationale_title">Write external storage permission</string>
-    <string name="external_storage_permission_rationale_description">Trakr needs Write External Storage Permission enabled to export tracks to GPX files. Please enable it.</string>
+    <string name="external_storage_permission_rationale_title">Write external storage permission
+    </string>
+    <string name="external_storage_permission_rationale_description">Trakr needs Write External
+        Storage Permission enabled to export tracks to GPX files. Please enable it.</string>
     <!-- LOCATION SETTINGS RATIONALE  -->
     <string name="location_settings_rationale_title">Location settings</string>
-    <string name="location_settings_rationale_description">Trakr needs Location settings on to do its magic. Please switch it on.</string>
+    <string name="location_settings_rationale_description">Trakr needs Location settings on to do
+        its magic. Please switch it on.</string>
     <!-- TRACK RECORD NOTIFICATION -->
-    <string name="record_track_notification_channel_title">Track record notification category</string>
-    <string name="record_track_notification_channel_description">This notification is shown, when Trakr is recording a track in the background.</string>
+    <string name="record_track_notification_channel_title">Track record notification category
+    </string>
+    <string name="record_track_notification_channel_description">This notification is shown, when
+        Trakr is recording a track in the background.</string>
     <string name="record_track_notification_title">Recording track:</string>
     <!-- TRACK EXPORT NOTIFICATION-->
-    <string name="export_track_notification_channel_title">Track export notification category</string>
-    <string name="export_track_notification_channel_description">This notification is shown, when Trakr is exporting a track in the background.</string>
+    <string name="export_track_notification_channel_title">Track export notification category
+    </string>
+    <string name="export_track_notification_channel_description">This notification is shown, when
+        Trakr is exporting a track in the background.</string>
     <string name="export_track_notification_title">Exporting track…</string>
-    <string name="export_track_notification_description">Tap this notification for more details</string>
+    <string name="export_track_notification_description">Tap this notification for more details
+    </string>
     <string name="export_track_notification_expanded_line_1">File name: %s</string>
     <string name="export_track_notification_expanded_line_2">Location: %s</string>
     <string name="export_track_done_notification_title">Exporting track done</string>
-    <string name="export_track_done_notification_description">Tap this notification for more details</string>
+    <string name="export_track_done_notification_description">Tap this notification for more details
+    </string>
     <string name="export_track_done_notification_expanded_line_1">File name: %s</string>
     <string name="export_track_done_notification_expanded_line_2">Location: %s</string>
     <string name="export_track_error_notification_title">Track export error</string>
-    <string name="export_track_error_notification_description">Tap this notification for more details</string>
+    <string name="export_track_error_notification_description">Tap this notification for more
+        details</string>
     <string name="export_track_error_notification_expanded_line_1">Can\'t export %s</string>
     <string name="export_track_error_notification_expanded_line_2">to %s</string>
 
     <!-- Gpx exporter -->
-    <string name="toast_external_storage_not_writable">External storage not writable :( Can\'t export track.</string>
+    <string name="toast_external_storage_not_writable">External storage not writable :( Can\'t
+        export track.</string>
 
     <!-- Sync  service -->
-    <string name="sync_service_no_net">Can\'t synchronise tracks in offline state. Will try next time the app starts</string>
+    <string name="sync_service_no_net">Can\'t synchronise tracks in offline state. Will try next
+        time the app starts</string>
 
     <!-- TrackRecorder -->
-    <string name="track_recorder_track_too_short">Recording too short, track can not be saved</string>
+    <string name="track_recorder_track_too_short">Recording too short, track can not be saved
+    </string>
 
-    <string name="activity_track_detail_fragment_data_iv_initial_content_desc">Initial letter of title</string>
+    <string name="activity_track_detail_fragment_data_iv_initial_content_desc">Initial letter of
+        title</string>
     <string name="activity_track_detail_fragment_data_ib_edit_content_desc">Edit button</string>
-    <string name="activity_track_list_item_track_iv_initial_content_desc">Initial letter of title</string>
+    <string name="activity_track_list_item_track_iv_initial_content_desc">Initial letter of title
+    </string>
     <string name="view_primary_propert_icon_iv_icon_content_desc">Icon of property</string>
-    <string name="activity_main_dialog_activity_type_list_item_iv_icon_content_desc">Icon of activity</string>
+    <string name="activity_main_dialog_activity_type_list_item_iv_icon_content_desc">Icon of
+        activity</string>
     <string name="view_secondary_property_icon_iv_icon_content_desc">Icon of property</string>
 
     <string name="synchronisation">Synchronisation</string>
