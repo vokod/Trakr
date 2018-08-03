@@ -140,5 +140,5 @@
     <string name="afternoon_track">Délutáni nyomvonal</string>
     <string name="evening_track">Esti nyomvonal</string>
     <string name="logout_dialog_title">Kilépés</string>
-    <string name="logout_dialog_message">Ha kilépsz, minden rögzített nyomvonal, amit a %s fiókkal rögzítettél törlődni fog erről az eszközről. Ezek a nyomvonalak a legközelebbi belépéskor újra elérhetőek lesznek. \\n\\n Biztosan ki szeretnél lépni?</string>
+    <string name="logout_dialog_message">Ha kilépsz, minden rögzített nyomvonal, amit a %s fiókkal rögzítettél törlődni fog erről az eszközről. Ezek a nyomvonalak a legközelebbi belépéskor újra elérhetőek lesznek. \n\n Biztosan ki szeretnél lépni?</string>
 </resources>
