@@ -10,14 +10,13 @@ import com.awolity.trakr.utils.PreferenceUtils;
 
 class TrackRecorderStatus {
 
-    private final boolean
-            isAltitudeFiltered;
+    private boolean isAltitudeFiltered, speedZeroFilterAlreadyapplied;
     private boolean isEverythingGoodForRecording = true;
-    private final int trackingDistance;
-    private final int trackingAccuracy;
-    private final int trackingInterval;
-    private final int accuracyFilterParameter;
-    private final int altitudeFilterParameter;
+    private int trackingDistance;
+    private int trackingAccuracy;
+    private int trackingInterval;
+    private int accuracyFilterParameter;
+    private int altitudeFilterParameter;
     private int numOfTrackPoints;
     private TrackpointEntity previousSavedTrackpoint, actualSavedTrackpoint, candidateTrackpoint;
     private AltitudeFilter altitudeFilter;
@@ -31,16 +30,20 @@ class TrackRecorderStatus {
         }
 
         activityType = activityType1;
-        trackingDistance = activityType.getRecordParameters().getTrackingDistance();
-        trackingInterval = activityType.getRecordParameters().getTrackingInterval();
-        trackingAccuracy = activityType.getRecordParameters().getTrackingAccuracy();
-        accuracyFilterParameter = activityType.getRecordParameters().getAccuracyFilterParameter();
-        isAltitudeFiltered = true;
-        altitudeFilterParameter = activityType.getRecordParameters().getAltitudeFilterParameter();
+        setupRecordParameters();
 
         if (isAltitudeFiltered) {
             altitudeFilter = new AltitudeFilter(altitudeFilterParameter);
         }
+    }
+
+    private void setupRecordParameters() {
+        trackingDistance = activityType.getRecordParameters().getTrackingDistance();
+        trackingInterval = activityType.getRecordParameters().getTrackingInterval();
+        trackingAccuracy = activityType.getRecordParameters().getTrackingAccuracy();
+        isAltitudeFiltered = true;
+        accuracyFilterParameter = activityType.getRecordParameters().getAccuracyFilterParameter();
+        altitudeFilterParameter = activityType.getRecordParameters().getAltitudeFilterParameter();
     }
 
     public ActivityType getActivityType() {
@@ -57,16 +60,9 @@ class TrackRecorderStatus {
         if (actualSavedTrackpoint != null) {
             candidateTrackPoint.setDistance(getGeologicalDistance(candidateTrackPoint, actualSavedTrackpoint));
 
-            // ha a jelölt magassága nulla, akkor legyen inkább az előző magassága
-            if (candidateTrackPoint.getUnfilteredAltitude() == 0) {
-                candidateTrackPoint.setUnfilteredAltitude(actualSavedTrackpoint.getAltitude());
-            }
-
-            // apply altitude filter
-            if (isAltitudeFiltered) {
-                candidateTrackPoint.setAltitude(altitudeFilter.filterNext(
-                        candidateTrackPoint.getUnfilteredAltitude()));
-            }
+            applyAltitudeZeroFilter();
+            applyAltitudeFilter();
+            applySpeedZeroFilter();
         }
     }
 
@@ -140,5 +136,30 @@ class TrackRecorderStatus {
         actualLocation.setLatitude(actualTrackpoint.getLatitude());
         actualLocation.setLongitude(actualTrackpoint.getLongitude());
         return actualLocation.distanceTo(previousLocation);
+    }
+
+    private void applyAltitudeZeroFilter() {
+        if (candidateTrackpoint.getUnfilteredAltitude() == 0) {
+            candidateTrackpoint.setUnfilteredAltitude(actualSavedTrackpoint.getAltitude());
+        }
+    }
+
+    private void applyAltitudeFilter(){
+        if (isAltitudeFiltered) {
+            candidateTrackpoint.setAltitude(altitudeFilter.filterNext(
+                    candidateTrackpoint.getUnfilteredAltitude()));
+        }
+    }
+
+    private void applySpeedZeroFilter(){
+        // apply speed zero filter: if candidate trackpoint speed is 0,
+        // then set it to previous point's speed.
+        // but only do it once.
+        if (candidateTrackpoint.getSpeed() == 0 && !speedZeroFilterAlreadyapplied) {
+            speedZeroFilterAlreadyapplied = true;
+            candidateTrackpoint.setSpeed(actualSavedTrackpoint.getSpeed());
+        } else {
+            speedZeroFilterAlreadyapplied = false;
+        }
     }
 }
