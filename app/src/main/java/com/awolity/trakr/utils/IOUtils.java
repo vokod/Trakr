@@ -7,7 +7,7 @@ import java.io.File;
 public class IOUtils {
 
     public static String getLegalizedFilename(String illegalFileName) {
-        return illegalFileName.replaceAll("[\\\\/:*?\"<>|]", "");
+        return illegalFileName.replaceAll("[\\\\/:*?\"<>|]", "_");
     }
 
     public static boolean isExternalStorageWritable() {
