@@ -263,27 +263,31 @@ public class TrackEntity {
     }
 
     public void checkSetHighLow(double altitude) {
-        MyLog.d(TAG, "checkSetHighLow");
+        MyLog.d(TAG, "checkSetHighLow - new altitude: " + altitude);
         if (!isValidElevationData && altitude != 0) {
-            MyLog.d(TAG, "checkSetHighLow - first valid elevation data: "+altitude);
+            MyLog.d(TAG, "checkSetHighLow - first valid elevation data: " + altitude);
             // there was no valid elevation data before, only 0-s
             maxAltitude = altitude;
             minAltitude = altitude;
             isValidElevationData = true;
         } else {
-            MyLog.d(TAG, "checkSetHighLow - new valid elevation data: " +altitude);
+            MyLog.d(TAG, "checkSetHighLow - new valid elevation data: " + altitude);
             // we already had valid elevation data
             if (altitude > maxAltitude) {
-                MyLog.d(TAG, "checkSetHighLow -     higher then MaxAltitude, saving");
+                MyLog.d(TAG, "checkSetHighLow -     higher then MaxAltitude ("
+                        + maxAltitude + "), saving");
                 maxAltitude = altitude;
             } else {
-                MyLog.d(TAG, "checkSetHighLow -     NOT higher then MaxAltitude");
+                MyLog.d(TAG, "checkSetHighLow -     NOT higher then MaxAltitude ("
+                        + maxAltitude + ")");
             }
             if (altitude < minAltitude) {
-                MyLog.d(TAG, "checkSetHighLow -     lower then MinAltitude, saving");
+                MyLog.d(TAG, "checkSetHighLow -     lower then MinAltitude ("
+                        + minAltitude + "), saving");
                 minAltitude = altitude;
             } else {
-                MyLog.d(TAG, "checkSetHighLow -     NOT lower then MinAltitude");
+                MyLog.d(TAG, "checkSetHighLow -     NOT lower then MinAltitude ("
+                        + minAltitude + ")");
             }
         }
     }
