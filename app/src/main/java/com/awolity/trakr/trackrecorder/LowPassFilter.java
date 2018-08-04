@@ -1,6 +1,6 @@
 package com.awolity.trakr.trackrecorder;
 
-class AltitudeFilter {
+class LowPassFilter {
 
 
     private boolean isFirstTime = true;
@@ -8,7 +8,7 @@ class AltitudeFilter {
     private final int size;
     private final double invertedSize;
 
-    public AltitudeFilter(int parameter) {
+    public LowPassFilter(int parameter) {
         size = parameter;
         alphas = new double[size];
         invertedSize = (double) 1 / (double) size;

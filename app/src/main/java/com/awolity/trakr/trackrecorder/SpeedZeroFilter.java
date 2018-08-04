@@ -1,3 +1,4 @@
+/*
 package com.awolity.trakr.trackrecorder;
 
 import com.awolity.trakr.data.entity.TrackpointEntity;
@@ -36,3 +37,4 @@ public class SpeedZeroFilter {
         lastSavedTrackpoint = candidateTrackpoint;
     }
 }
+*/

@@ -10,6 +10,7 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.TrakrApplication;
+import com.awolity.trakr.utils.MyLog;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -105,6 +106,7 @@ public class RoomTrackRepository {
         discIoExecutor.execute(new Runnable() {
             @Override
             public void run() {
+                MyLog.d("saveTrackpoint - ", trackpoint.toString());
                 trackpointDao.save(trackpoint);
             }
         });

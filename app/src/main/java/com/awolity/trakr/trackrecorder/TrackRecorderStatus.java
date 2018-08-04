@@ -20,10 +20,10 @@ class TrackRecorderStatus {
     private int altitudeFilterParameter;
     private int numOfTrackPoints;
     private TrackpointEntity previousSavedTrackpoint, actualSavedTrackpoint, candidateTrackpoint;
-    private AltitudeFilter altitudeFilter;
+    private LowPassFilter altitudeFilter, speedFilter;
     private final ActivityType activityType;
     private final AltitudeZeroFilter altitudeZeroFilter;
-    private final SpeedZeroFilter speedZeroFilter;
+    // private final SpeedZeroFilter speedZeroFilter;
 
     public TrackRecorderStatus(Context context) {
         MyLog.d(TAG, "TrackRecorderStatus");
@@ -36,9 +36,12 @@ class TrackRecorderStatus {
         activityType = activityType1;
         setupRecordParameters();
 
-        altitudeFilter = new AltitudeFilter(altitudeFilterParameter);
+        altitudeFilter = new LowPassFilter(altitudeFilterParameter);
+        // TODO: a speedfilter paraméterét refactorolni az ActiviyType-ba
+        // TODO: kell-e speed-zero-filter, ha van speedfilter?
+        speedFilter = new LowPassFilter(3);
         altitudeZeroFilter = new AltitudeZeroFilter();
-        speedZeroFilter = new SpeedZeroFilter();
+        // speedZeroFilter = new SpeedZeroFilter();
     }
 
     private void setupRecordParameters() {
@@ -58,18 +61,22 @@ class TrackRecorderStatus {
         return actualSavedTrackpoint;
     }
 
-    void setCandidateTrackpoint(TrackpointEntity candidateTrackPoint) {
+    void setCandidateTrackpoint(TrackpointEntity candidateTrackpoint) {
         MyLog.d(TAG, "setCandidateTrackpoint");
-        this.candidateTrackpoint = candidateTrackPoint;
+        this.candidateTrackpoint = candidateTrackpoint;
 
         if (actualSavedTrackpoint != null) {
-            candidateTrackPoint.setDistance(getGeologicalDistance(candidateTrackPoint, actualSavedTrackpoint));
+            this.candidateTrackpoint.setDistance(
+                    getGeologicalDistance(candidateTrackpoint, actualSavedTrackpoint));
 
-            altitudeZeroFilter.filterNext(candidateTrackpoint);
-            speedZeroFilter.filterNext(candidateTrackpoint);
+            altitudeZeroFilter.filterNext(this.candidateTrackpoint);
+            // speedZeroFilter.filterNext(this.candidateTrackpoint);
 
-            candidateTrackpoint.setAltitude(altitudeFilter.filterNext(
-                    candidateTrackpoint.getUnfilteredAltitude()));
+            this.candidateTrackpoint.setAltitude(altitudeFilter.filterNext(
+                    this.candidateTrackpoint.getUnfilteredAltitude()));
+
+            this.candidateTrackpoint.setSpeed(speedFilter.filterNext(
+                    this.candidateTrackpoint.getUnfilteredSpeed()));
         }
     }
 

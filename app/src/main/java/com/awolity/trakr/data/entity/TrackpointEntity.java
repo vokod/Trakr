@@ -3,6 +3,7 @@ package com.awolity.trakr.data.entity;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.location.Location;
@@ -33,6 +34,8 @@ public class TrackpointEntity {
     double unfilteredAltitude;
     double bearing;
     double speed;
+    @ColumnInfo(name = "speed_unfiltered")
+    double unfilteredSpeed;
     double accuracy;
     double distance;
 
@@ -109,6 +112,14 @@ public class TrackpointEntity {
         this.speed = speed;
     }
 
+    public double getUnfilteredSpeed() {
+        return unfilteredSpeed;
+    }
+
+    public void setUnfilteredSpeed(double unfilteredSpeed) {
+        this.unfilteredSpeed = unfilteredSpeed;
+    }
+
     public double getAccuracy() {
         return accuracy;
     }
@@ -136,5 +147,23 @@ public class TrackpointEntity {
         tp.setTime(location.getTime());
         tp.setUnfilteredAltitude(location.getAltitude());
         return tp;
+    }
+
+    @Override
+    public String toString() {
+        return "TrackpointEntity{" +
+                "trackpointId=" + trackpointId +
+                ", trackId=" + trackId +
+                ", time=" + time +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", altitude=" + altitude +
+                ", unfilteredAltitude=" + unfilteredAltitude +
+                ", bearing=" + bearing +
+                ", speed=" + speed +
+                ", unfilteredSpeed=" + unfilteredSpeed +
+                ", accuracy=" + accuracy +
+                ", distance=" + distance +
+                '}';
     }
 }
