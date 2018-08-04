@@ -174,6 +174,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     }
 
     private void saveTrackAndPointToDb() {
+        MyLog.d(TAG, "saveTrackAndPointToDb");
         saveTrackpointToDb(status.getCandidateTrackpoint());
         status.saveCandidateTrackpoint();
         updateTrackData();
@@ -181,6 +182,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     }
 
     private void updateTrackData() {
+        MyLog.d(TAG, "updateTrackData");
         track.increaseNumOfTrackpoints();
         if (status.isThereASavedTrackpoint()) {
             track.increaseElapsedTime(status.getActualSavedTrackpoint().getTime());
@@ -192,6 +194,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     }
 
     private TrackpointEntity createTrackPoint(Location location) {
+        MyLog.d(TAG, "createTrackPoint");
         TrackpointEntity tp = TrackpointEntity.fromLocation(location);
         tp.setTrackId(trackId);
         return tp;
@@ -250,7 +253,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     }
 
     private static void updateNotification(Context context, TrackEntity track) {
-        MyLog.d(TAG, "updateNotification");
+        // MyLog.d(TAG, "updateNotification");
         List<String> lines = new ArrayList<>(6);
         lines.add(context.getString(R.string.record_notification_line_1,
                 StringUtils.getElapsedTimeAsString(System.currentTimeMillis() - track.getStartTime())));

@@ -37,7 +37,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationManag
     }
 
     public void stopLocation() {
-        //MyLog.d(TAG, "stopLocation");
+        // MyLog.d(TAG, "stopLocation");
         if (isLocationUpdating) {
             locationManager.stop();
             lastLocation = null;
@@ -47,7 +47,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationManag
 
     @Override
     public void onLocationChanged(Location location) {
-        MyLog.d(LOG_TAG, "onLocationChanged");
+        // MyLog.d(LOG_TAG, "onLocationChanged");
         lastLocation.setValue(location);
     }
 }

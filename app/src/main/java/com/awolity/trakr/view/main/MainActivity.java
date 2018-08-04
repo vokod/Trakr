@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updateMap(Location location) {
-        MyLog.d(LOG_TAG, "updateMap");
+        // MyLog.d(LOG_TAG, "updateMap");
         if (!status.isThereACameraPosition()) {
             // it is first start, so centered
             if (status.isRecording()) {
