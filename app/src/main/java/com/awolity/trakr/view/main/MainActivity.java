@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MyLog.d(LOG_TAG, "onCreate");
+        // MyLog.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         status = new MainActivityStatus();
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("ConstantConditions")
     private void setupBottomSheet(Bundle savedInstanceState) {
-        MyLog.d(LOG_TAG, "setupBottomSheet");
+        // MyLog.d(LOG_TAG, "setupBottomSheet");
         LinearLayout llBottomSheet = findViewById(R.id.ll_bottom_sheet);
         final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
         BottomSheetFragmentPagerAdapter adapter =
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupMapFragment() {
-        MyLog.d(LOG_TAG, "setupMapFragment");
+        // MyLog.d(LOG_TAG, "setupMapFragment");
         if (MainActivityUtils.checkPlayServices(this)) {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.mapFragment);
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTrackRecorderService() {
-        MyLog.d(LOG_TAG, "setupTrackRecorderService");
+        // MyLog.d(LOG_TAG, "setupTrackRecorderService");
         serviceManager = new TrackRecorderServiceManager(this);
         if (TrackRecorderServiceManager.isServiceRunning(this)) {
             status.setContinueRecording();
@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void startLocationUpdates() {
-        MyLog.d(LOG_TAG, "startLocationUpdates");
+        // MyLog.d(LOG_TAG, "startLocationUpdates");
         if (Utility.isLocationEnabled(this)) {
             locationViewModel.getLocation().observe(MainActivity.this, new Observer<Location>() {
                 @Override
@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTrackViewModel(final long trackId) {
-        MyLog.d(LOG_TAG, "setupTrackViewModel");
+        // MyLog.d(LOG_TAG, "setupTrackViewModel");
         trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
         trackViewModel.reset();
         trackViewModel.init(trackId);
@@ -415,7 +415,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        MyLog.d(LOG_TAG, "onNewIntent");
+        // MyLog.d(LOG_TAG, "onNewIntent");
     }
 
     @Override
@@ -457,7 +457,7 @@ public class MainActivity extends AppCompatActivity
             googleMap.setMyLocationEnabled(true);
         } catch (SecurityException e) {
             Crashlytics.logException(e);
-            MyLog.e(LOG_TAG, e.getLocalizedMessage());
+            // MyLog.e(LOG_TAG, e.getLocalizedMessage());
         }
 
         if (status.isThereACameraPosition()) {
@@ -588,7 +588,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onServiceStarted(long trackId) {
-        MyLog.d(LOG_TAG, "onServiceStarted");
+        // MyLog.d(LOG_TAG, "onServiceStarted");
         // TODO FAB animation
         this.trackId = trackId;
         setupTrackViewModel(trackId);
@@ -600,7 +600,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onServiceStopped() {
         // TODO: ezt átalakítani úgy, hogy a döntések a viewmodelben szülessenek, nem az activityben
-        MyLog.d(LOG_TAG, "onServiceStopped");
+        // MyLog.d(LOG_TAG, "onServiceStopped");
         trackFragment.stopTrackDataUpdate();
         chartsFragment.stopTrackDataUpdate();
         status.setRecording(false);

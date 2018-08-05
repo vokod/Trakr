@@ -23,10 +23,9 @@ class TrackRecorderStatus {
     private LowPassFilter altitudeFilter, speedFilter;
     private final ActivityType activityType;
     private final AltitudeZeroFilter altitudeZeroFilter;
-    // private final SpeedZeroFilter speedZeroFilter;
 
     public TrackRecorderStatus(Context context) {
-        MyLog.d(TAG, "TrackRecorderStatus");
+        // MyLog.d(TAG, "TrackRecorderStatus");
         ActivityType activityType1;
         activityType1 = PreferenceUtils.getActivityType(context);
         if (activityType1 == null) {
@@ -41,11 +40,10 @@ class TrackRecorderStatus {
         // TODO: kell-e speed-zero-filter, ha van speedfilter?
         speedFilter = new LowPassFilter(3);
         altitudeZeroFilter = new AltitudeZeroFilter();
-        // speedZeroFilter = new SpeedZeroFilter();
     }
 
     private void setupRecordParameters() {
-        MyLog.d(TAG, "setupRecordParameters");
+        // MyLog.d(TAG, "setupRecordParameters");
         trackingDistance = activityType.getRecordParameters().getTrackingDistance();
         trackingInterval = activityType.getRecordParameters().getTrackingInterval();
         trackingAccuracy = activityType.getRecordParameters().getTrackingAccuracy();
@@ -70,7 +68,6 @@ class TrackRecorderStatus {
                     getGeologicalDistance(candidateTrackpoint, actualSavedTrackpoint));
 
             altitudeZeroFilter.filterNext(this.candidateTrackpoint);
-            // speedZeroFilter.filterNext(this.candidateTrackpoint);
 
             this.candidateTrackpoint.setAltitude(altitudeFilter.filterNext(
                     this.candidateTrackpoint.getUnfilteredAltitude()));

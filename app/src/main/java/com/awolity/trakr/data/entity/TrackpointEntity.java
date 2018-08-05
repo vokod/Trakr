@@ -143,7 +143,7 @@ public class TrackpointEntity {
         tp.setBearing(location.getBearing());
         tp.setLatitude(location.getLatitude());
         tp.setLongitude(location.getLongitude());
-        tp.setSpeed(location.getSpeed() * 3.6);
+        tp.setUnfilteredSpeed(location.getSpeed() * 3.6);
         tp.setTime(location.getTime());
         tp.setUnfilteredAltitude(location.getAltitude());
         return tp;
