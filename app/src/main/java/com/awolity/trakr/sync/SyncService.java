@@ -23,7 +23,7 @@ import javax.inject.Inject;
 
 public class SyncService extends IntentService {
 
-    private static final String LOG_TAG = SyncService.class.getSimpleName();
+    private static final String TAG = SyncService.class.getSimpleName();
 
     @Inject
     TrackRepository trackRepository;
@@ -35,15 +35,15 @@ public class SyncService extends IntentService {
 
     public SyncService() {
         super("SyncService");
-        MyLog.d(LOG_TAG, "SyncService");
+      // MyLog.d(TAG, "SyncService");
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        MyLog.d(LOG_TAG, "onHandleIntent");
+      // MyLog.d(TAG, "onHandleIntent");
         if (!appUserRepository.IsAppUserLoggedIn()) {
-            MyLog.d(LOG_TAG, "onHandleIntent - user not logged in, no sync :(");
+          // MyLog.d(TAG, "onHandleIntent - user not logged in, no sync :(");
             return;
         }
 
@@ -154,7 +154,7 @@ public class SyncService extends IntentService {
 
     @WorkerThread
     private void uploadOfflineTracks(List<TrackEntity> onlyOfflineTracks) {
-        MyLog.d(LOG_TAG, "uploadOfflineTracks");
+      // MyLog.d(TAG, "uploadOfflineTracks");
         for (TrackEntity trackEntity : onlyOfflineTracks) {
             trackRepository.saveTrackToCloudOnThread(trackEntity.getTrackId());
         }
@@ -162,14 +162,14 @@ public class SyncService extends IntentService {
 
     @WorkerThread
     private void deleteCloudDeletedTracks(List<TrackEntity> cloudSavedOfflineTracks) {
-        MyLog.d(LOG_TAG, "deleteCloudDeletedTracks");
+      // MyLog.d(TAG, "deleteCloudDeletedTracks");
         for (TrackEntity cloudDeletedOfflineTrack : cloudSavedOfflineTracks) {
             trackRepository.deleteLocalTrack(cloudDeletedOfflineTrack.getTrackId());
         }
     }
 
     private static boolean isConnected(Context context) {
-        MyLog.d(LOG_TAG, "isConnected");
+      // MyLog.d(TAG, "isConnected");
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();

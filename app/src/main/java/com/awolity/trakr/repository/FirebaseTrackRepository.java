@@ -109,8 +109,8 @@ public class FirebaseTrackRepository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                MyLog.e(TAG, "Error in getAllTrackEntitiesFromCloud - onCancelled"
-                        + databaseError.getDetails());
+              // MyLog.e(TAG, "Error in getAllTrackEntitiesFromCloud - onCancelled"
+                      //  + databaseError.getDetails());
             }
         });
     }

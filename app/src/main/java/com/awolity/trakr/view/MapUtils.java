@@ -21,7 +21,7 @@ public class MapUtils {
     }
 
     public static Polyline setupTrackPolyLine(Context context, GoogleMap googleMap, TrackWithPoints trackWithPoints, boolean moveCamera) {
-        MyLog.d(TAG, "setupTrackPolyLine");
+      // MyLog.d(TAG, "setupTrackPolyLine");
         Polyline polyline = null;
         PolylineOptions polylineOptions = new PolylineOptions()
                 .geodesic(true)
@@ -40,7 +40,7 @@ public class MapUtils {
     }
 
     public static void moveCameraToTrack(GoogleMap googleMap, TrackWithPoints trackWithPoints) {
-        MyLog.d(TAG, "moveCameraToTrack");
+      // MyLog.d(TAG, "moveCameraToTrack");
         LatLngBounds bounds = new LatLngBounds(
                 new LatLng(trackWithPoints.getSouthestPoint(), trackWithPoints.getWesternPoint()),
                 new LatLng(trackWithPoints.getNorthestPoint(), trackWithPoints.getEasternPoint()));

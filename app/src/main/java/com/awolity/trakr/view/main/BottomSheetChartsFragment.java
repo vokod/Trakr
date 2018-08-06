@@ -55,7 +55,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyLog.d(TAG, "onCreate");
+      // MyLog.d(TAG, "onCreate");
         //noinspection ConstantConditions
         trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
     }
@@ -109,14 +109,14 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     }
 
     private void startObserve(/*long trackId*/) {
-        MyLog.d(TAG, "startObserve");
+      // MyLog.d(TAG, "startObserve");
         trackViewModel.getTrackWithPoints().observe(getActivity(), trackWithPointsObserver);
     }
 
     private final Observer<TrackWithPoints> trackWithPointsObserver = new Observer<TrackWithPoints>() {
         @Override
         public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-            MyLog.d(TAG, "trackWithPointsObserver.onChanged");
+          // MyLog.d(TAG, "trackWithPointsObserver.onChanged");
             if (trackWithPoints != null) {
                 BottomSheetChartsFragment.this.trackWithPoints = trackWithPoints;
                 if (firstRun) {
@@ -128,23 +128,23 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     };
 
     private void stopObserve() {
-        MyLog.d(TAG, "stopObserve");
+      // MyLog.d(TAG, "stopObserve");
         trackViewModel.getTrackWithPoints().removeObserver(trackWithPointsObserver);
     }
 
     private void startChartUpdater() {
-        MyLog.d(TAG, "startChartUpdater");
+      // MyLog.d(TAG, "startChartUpdater");
         updateChart();
         chartUpdater.run();
     }
 
     private void stopChartUpdater() {
-        MyLog.d(TAG, "stopChartUpdater");
+      // MyLog.d(TAG, "stopChartUpdater");
         handler.removeCallbacks(chartUpdater);
     }
 
     public void startTrackDataUpdate(long trackId) {
-        MyLog.d(TAG, "startTrackDataUpdate");
+      // MyLog.d(TAG, "startTrackDataUpdate");
         this.trackId = trackId;
         if (checkViews()) {
             setDataVisibility(true);
@@ -155,23 +155,23 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     }
 
     public void stopTrackDataUpdate() {
-        MyLog.d(TAG, "stopTrackDataUpdate");
+      // MyLog.d(TAG, "stopTrackDataUpdate");
         stopObserve();
         stopChartUpdater();
         setDataVisibility(false);
     }
 
     private void updateChart() {
-        MyLog.d(TAG, "updateChart");
+      // MyLog.d(TAG, "updateChart");
         if (trackWithPoints == null) {
-            MyLog.d(TAG, "updateChart - track NULL :(");
+          // MyLog.d(TAG, "updateChart - track NULL :(");
             return;
         } else {
             if (trackWithPoints.getTrackPoints().size() < 3) {
                 return;
             }
         }
-        MyLog.d(TAG, "updateChart - track NOT null");
+      // MyLog.d(TAG, "updateChart - track NOT null");
         List<Entry> elevationValues = new ArrayList<>();
         List<Entry> speedValues = new ArrayList<>();
         List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
@@ -221,7 +221,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     }
 
     private void setDataVisibility(boolean isRecording) {
-        MyLog.d(TAG, "setDataVisibility");
+      // MyLog.d(TAG, "setDataVisibility");
         // TODO: ezt valami animációval
         if (isRecording) {
             //resetData();

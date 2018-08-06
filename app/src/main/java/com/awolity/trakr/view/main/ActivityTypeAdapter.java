@@ -31,7 +31,7 @@ public class ActivityTypeAdapter
     }
 
     public void updateItems(final List<ActivityType> newItems) {
-        MyLog.d(TAG, "updateItems");
+      // MyLog.d(TAG, "updateItems");
         final List<ActivityType> oldItems = new ArrayList<>(this.items);
         this.items.clear();
         if (newItems != null) {
@@ -64,14 +64,14 @@ public class ActivityTypeAdapter
 
     @Override
     public ActivityTypeItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MyLog.d(TAG, "onCreateViewHolder");
+      // MyLog.d(TAG, "onCreateViewHolder");
         View v = layoutInflater.inflate(R.layout.activity_main_dialog_activity_type_list_item, parent, false);
         return new ActivityTypeItemViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ActivityTypeItemViewHolder holder, int position) {
-        MyLog.d(TAG, "onBindViewHolder");
+      // MyLog.d(TAG, "onBindViewHolder");
         holder.bind(items.get(position));
     }
 
@@ -88,14 +88,14 @@ public class ActivityTypeAdapter
 
         ActivityTypeItemViewHolder(View itemView) {
             super(itemView);
-            MyLog.d(TAG, "TrackItemViewHolder " + ActivityTypeItemViewHolder.this.hashCode());
+          // MyLog.d(TAG, "TrackItemViewHolder " + ActivityTypeItemViewHolder.this.hashCode());
             clickOverlay = itemView.findViewById(R.id.fl_click_overlay2);
             titleTv = itemView.findViewById(R.id.tv_title);
             iconImageView = itemView.findViewById(R.id.iv_icon_duration);
         }
 
         void bind(final ActivityType activityType) {
-            MyLog.d(TAG, "bind " + ActivityTypeItemViewHolder.this.hashCode());
+          // MyLog.d(TAG, "bind " + ActivityTypeItemViewHolder.this.hashCode());
             titleTv.setText(activityType.getTitle());
 
             iconImageView.setImageResource(activityType.getIconResource());

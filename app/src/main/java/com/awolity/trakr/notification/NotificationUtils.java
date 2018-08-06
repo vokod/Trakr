@@ -29,7 +29,7 @@ public class NotificationUtils {
     private static final String NOTIFICATION_CHANNEL_ID_TRACK_EXPORT = "com.awolity.trakr.notification.track_exporting";
     public static final int NOTIFICATION_ID_TRACK_RECORD = 20;
     private static final int NOTIFICATION_ID_TRACK_EXPORT = 21;
-    private static final String LOG_TAG = NotificationUtils.class.getSimpleName();
+    private static final String TAG = NotificationUtils.class.getSimpleName();
 
     public static void showRecordTrackNotification(Context context, List<String> lines) {
         NotificationManager notificationManager =

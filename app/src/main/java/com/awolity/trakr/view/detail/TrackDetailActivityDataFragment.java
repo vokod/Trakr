@@ -51,7 +51,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyLog.d(TAG, "onCreate - " + this.hashCode());
+      // MyLog.d(TAG, "onCreate - " + this.hashCode());
         if (getArguments() != null) {
             long trackId = getArguments().getLong(ARG_TRACK_ID);
         }
@@ -159,7 +159,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
     }
 
     private void setData(TrackWithPoints trackWithPoints) {
-        MyLog.d(TAG, "setData");
+      // MyLog.d(TAG, "setData");
 
         ActivityType activityType = ActivityTypeManager.getInstance(getContext())
                 .getActivityType(getContext(),trackWithPoints.getActivityType());

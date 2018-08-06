@@ -44,7 +44,7 @@ public class TrakrApplication extends Application {
             startService(new Intent(this, SyncService.class));
         } catch (IllegalStateException e) {
             Crashlytics.logException(e);
-            MyLog.e("TrakrApplication", e.getLocalizedMessage());
+          // MyLog.e("TrakrApplication", e.getLocalizedMessage());
         }
 
         TrackRecorder.resetWidget(this);

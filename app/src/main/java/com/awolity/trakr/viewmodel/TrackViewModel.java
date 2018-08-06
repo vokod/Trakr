@@ -20,7 +20,7 @@ public class TrackViewModel extends ViewModel {
     TrackRepository trackRepository;
 
     private static final long NOT_SET = -1;
-    private static final String LOG_TAG = TrackViewModel.class.getSimpleName();
+    private static final String TAG = TrackViewModel.class.getSimpleName();
     private long trackId = NOT_SET;
 
     public TrackViewModel() {

@@ -12,7 +12,7 @@ import com.google.android.gms.location.LocationRequest;
 
 public class LocationViewModel extends AndroidViewModel implements LocationManager.LocationManagerCallback {
 
-    private static final String LOG_TAG = LocationViewModel.class.getSimpleName();
+    private static final String TAG = LocationViewModel.class.getSimpleName();
     private final LocationManager locationManager;
     private MutableLiveData<Location> lastLocation;
     private boolean isLocationUpdating;
@@ -27,7 +27,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationManag
     }
 
     public LiveData<Location> getLocation() {
-        MyLog.d(LOG_TAG, "getLocation");
+      // MyLog.d(TAG, "getLocation");
         isLocationUpdating = true;
         if (lastLocation == null) {
             lastLocation = new MutableLiveData<>();
@@ -47,7 +47,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationManag
 
     @Override
     public void onLocationChanged(Location location) {
-        // MyLog.d(LOG_TAG, "onLocationChanged");
+        // MyLog.d(TAG, "onLocationChanged");
         lastLocation.setValue(location);
     }
 }

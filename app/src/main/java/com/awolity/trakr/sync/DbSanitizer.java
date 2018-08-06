@@ -12,7 +12,7 @@ import javax.inject.Inject;
 
 public class DbSanitizer {
 
-    private static final String LOG_TAG = DbSanitizer.class.getSimpleName();
+    private static final String TAG = DbSanitizer.class.getSimpleName();
 
     @Inject
     TrackRepository trackRepository;
@@ -21,7 +21,7 @@ public class DbSanitizer {
     Executor discIoExecutor;
 
     public DbSanitizer() {
-        MyLog.d(LOG_TAG, "DbSanitizer");
+      // MyLog.d(TAG, "DbSanitizer");
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 

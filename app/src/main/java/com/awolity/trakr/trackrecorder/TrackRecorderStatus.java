@@ -45,7 +45,7 @@ class TrackRecorderStatus {
     }
 
     void setCandidateTrackpoint(TrackpointEntity candidateTrackpoint) {
-        MyLog.d(TAG, "setCandidateTrackpoint");
+      // MyLog.d(TAG, "setCandidateTrackpoint");
         this.candidateTrackpoint = candidateTrackpoint;
 
         if (actualSavedTrackpoint != null) {
@@ -63,7 +63,7 @@ class TrackRecorderStatus {
     }
 
     void saveCandidateTrackpoint() {
-        MyLog.d(TAG, "saveCandidateTrackpoint");
+      // MyLog.d(TAG, "saveCandidateTrackpoint");
         if (this.actualSavedTrackpoint != null) {
             previousSavedTrackpoint = this.actualSavedTrackpoint;
         }
@@ -130,7 +130,7 @@ class TrackRecorderStatus {
 
     private static double getGeologicalDistance(TrackpointEntity actualTrackpoint,
                                                 TrackpointEntity previousTrackpoint) {
-        MyLog.d(TAG, "getGeologicalDistance");
+      // MyLog.d(TAG, "getGeologicalDistance");
         Location previousLocation = new Location("previousTrackpointLocation");
         previousLocation.setLatitude(previousTrackpoint.getLatitude());
         previousLocation.setLongitude(previousTrackpoint.getLongitude());

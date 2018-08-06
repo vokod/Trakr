@@ -22,19 +22,19 @@ public class TrackRecorderService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-         MyLog.d(TAG, "onDestroy");
+       // MyLog.d(TAG, "onDestroy");
         stopRecordTrack();
     }
 
     @Override
     public TrackRecorderServiceBinder onBind(Intent intent) {
-         MyLog.d(TAG, "onBind");
+       // MyLog.d(TAG, "onBind");
         return binder;
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
-         MyLog.d(TAG, "onUnbind");
+       // MyLog.d(TAG, "onUnbind");
         stopRecordTrack();
         return false;
     }
@@ -42,19 +42,19 @@ public class TrackRecorderService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-         MyLog.d(TAG, "onCreate");
+       // MyLog.d(TAG, "onCreate");
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-         MyLog.d(TAG, "onConfigurationChanged");
+       // MyLog.d(TAG, "onConfigurationChanged");
     }
 
     @Override
     public void onRebind(Intent intent) {
         super.onRebind(intent);
-         MyLog.d(TAG, "onRebind");
+       // MyLog.d(TAG, "onRebind");
     }
 
     @Override
@@ -66,13 +66,13 @@ public class TrackRecorderService extends Service {
     }
 
     private void startRecordTrack() {
-         MyLog.d(TAG, "startRecordTrack");
+       // MyLog.d(TAG, "startRecordTrack");
         recorder = new TrackRecorder();
         recorder.startRecording();
     }
 
     private void stopRecordTrack() {
-         MyLog.d(TAG, "stopRecordTrack");
+       // MyLog.d(TAG, "stopRecordTrack");
         if (recorder != null) {
             recorder.stopRecording();
             recorder = null;

@@ -45,10 +45,10 @@ public class GraphTimeAxisValueFormatter implements IAxisValueFormatter {
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        MyLog.d(TAG, "getFormattedValue - value: " + value);
+      // MyLog.d(TAG, "getFormattedValue - value: " + value);
         if (value >= 0) {
             String result = mValues[(int) value % mValues.length];
-            MyLog.d(TAG, "getFormattedValue - mValue: " + result);
+          // MyLog.d(TAG, "getFormattedValue - mValue: " + result);
             return mValues[(int) value % mValues.length];
         } else
             return "";

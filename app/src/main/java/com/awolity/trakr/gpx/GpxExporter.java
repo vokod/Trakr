@@ -66,19 +66,19 @@ public class GpxExporter {
         GPXFilePrinter printer = new GPXFilePrinter(new GPXFilePrinter.GPXFilePrinterListener() {
             @Override
             public void onGPXPrintStarted() {
-                MyLog.d(TAG, "onGPXPrintStarted");
+              // MyLog.d(TAG, "onGPXPrintStarted");
                 NotificationUtils.showExportTrackNotification(context, trackWithPoints.getTrackId(), fileName, PATH);
             }
 
             @Override
             public void onGPXPrintCompleted() {
-                MyLog.d(TAG, "onGPXPrintCompleted");
+              // MyLog.d(TAG, "onGPXPrintCompleted");
                 NotificationUtils.showExportTrackDoneNotification(context, fileName, PATH);
             }
 
             @Override
             public void onGPXPrintError(String message) {
-                MyLog.d(TAG, "onGPXPrintError: " + message);
+              // MyLog.d(TAG, "onGPXPrintError: " + message);
                 NotificationUtils.showExportTrackErrorNotification(context, trackWithPoints.getTrackId(), fileName, PATH);
 
             }

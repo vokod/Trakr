@@ -21,7 +21,7 @@ public class TrackListViewModel extends ViewModel {
     private LiveData<List<TrackEntity>> tracks;
     private LiveData<List<TrackWithPoints>> tracksWithPoints;
 
-    private static final String LOG_TAG = TrackListViewModel.class.getSimpleName();
+    private static final String TAG = TrackListViewModel.class.getSimpleName();
 
     public TrackListViewModel() {
         TrakrApplication.getInstance().getAppComponent().inject(this);

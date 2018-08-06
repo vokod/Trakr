@@ -25,7 +25,7 @@ public class TrakrWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         TrakrApplication.getInstance().getAppComponent().inject(this);
-        MyLog.d(TAG, "onUpdate");
+      // MyLog.d(TAG, "onUpdate");
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -33,7 +33,7 @@ public class TrakrWidget extends AppWidgetProvider {
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                         int appWidgetId) {
-        MyLog.d(TAG, "updateAppWidget");
+      // MyLog.d(TAG, "updateAppWidget");
 
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent showPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -48,7 +48,7 @@ public class TrakrWidget extends AppWidgetProvider {
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                        int appWidgetId, String duration, String distance, int iconResource) {
-        MyLog.d(TAG, "updateAppWidget");
+      // MyLog.d(TAG, "updateAppWidget");
 
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent showPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

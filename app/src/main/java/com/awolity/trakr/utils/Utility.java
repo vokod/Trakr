@@ -10,7 +10,7 @@ import android.support.v4.content.ContextCompat;
 
 public class Utility {
 
-    private static final String LOG_TAG = Utility.class.getSimpleName();
+    private static final String TAG = Utility.class.getSimpleName();
 
     public static Bitmap getBitmap(int drawableRes, Context context) {
         Drawable drawable = context.getResources().getDrawable(drawableRes);

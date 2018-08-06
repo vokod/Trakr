@@ -2,7 +2,6 @@ package com.awolity.trakr.view.main;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,8 +31,6 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
-import com.awolity.trakr.repository.AppUserRepository;
-import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
@@ -41,7 +38,6 @@ import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.list.TrackListActivity;
-import com.awolity.trakr.view.settings.SettingsActivity;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.LocationViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
@@ -71,7 +67,7 @@ public class MainActivity extends AppCompatActivity
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final float ZOOM_LEVEL_INITIAL = 15;
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = MainActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 22;
 
     private GoogleMap googleMap;
@@ -91,7 +87,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // MyLog.d(LOG_TAG, "onCreate");
+        // MyLog.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         status = new MainActivityStatus();
@@ -109,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("ConstantConditions")
     private void setupBottomSheet(Bundle savedInstanceState) {
-        // MyLog.d(LOG_TAG, "setupBottomSheet");
+        // MyLog.d(TAG, "setupBottomSheet");
         LinearLayout llBottomSheet = findViewById(R.id.ll_bottom_sheet);
         final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
         BottomSheetFragmentPagerAdapter adapter =
@@ -209,7 +205,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupMapFragment() {
-        // MyLog.d(LOG_TAG, "setupMapFragment");
+        // MyLog.d(TAG, "setupMapFragment");
         if (MainActivityUtils.checkPlayServices(this)) {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.mapFragment);
@@ -246,7 +242,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTrackRecorderService() {
-        // MyLog.d(LOG_TAG, "setupTrackRecorderService");
+        // MyLog.d(TAG, "setupTrackRecorderService");
         serviceManager = new TrackRecorderServiceManager(this);
         if (TrackRecorderServiceManager.isServiceRunning(this)) {
             status.setContinueRecording();
@@ -262,7 +258,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void startLocationUpdates() {
-        // MyLog.d(LOG_TAG, "startLocationUpdates");
+        // MyLog.d(TAG, "startLocationUpdates");
         if (Utility.isLocationEnabled(this)) {
             locationViewModel.getLocation().observe(MainActivity.this, new Observer<Location>() {
                 @Override
@@ -276,7 +272,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updateMap(Location location) {
-        // MyLog.d(LOG_TAG, "updateMap");
+        // MyLog.d(TAG, "updateMap");
         if (!status.isThereACameraPosition()) {
             // it is first start, so centered
             if (status.isRecording()) {
@@ -327,7 +323,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTrackViewModel(final long trackId) {
-        // MyLog.d(LOG_TAG, "setupTrackViewModel");
+        // MyLog.d(TAG, "setupTrackViewModel");
         trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
         trackViewModel.reset();
         trackViewModel.init(trackId);
@@ -341,7 +337,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
             if (trackpointEntities != null && trackpointEntities.size() != 0) {
-                drawTrackOnMap(MainActivityUtils.transformTrackpointsToLatLngs(trackpointEntities));
+                drawPolyline(MainActivityUtils.transformTrackpointsToLatLngs(trackpointEntities));
                 trackViewModel.getTrackpointsList().removeObserver(this);
             }
         }
@@ -351,19 +347,24 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onChanged(@Nullable TrackpointEntity trackpointEntity) {
             if (trackpointEntity != null) {
-                continueTrackOnMap(new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
+                continuePolyline(new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
             }
         }
     };
 
-    private void drawTrackOnMap(List<LatLng> pointsCoordinates) {
+    private void drawPolyline(List<LatLng> pointsCoordinates) {
+        MyLog.d(TAG, "drawPolyline");
         setupPolyLine();
         if (googleMap != null) {
+            MyLog.d(TAG, "drawPolyline - setting points: " + pointsCoordinates.size());
             polyline.setPoints(pointsCoordinates);
+        } else {
+            MyLog.d(TAG, "drawPolyline - google maps is NULL");
         }
     }
 
     private void setupPolyLine() {
+        MyLog.d(TAG, "setupPolyLine");
         polylineOptions = new PolylineOptions()
                 .geodesic(true)
                 .color(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -372,20 +373,30 @@ public class MainActivity extends AppCompatActivity
                 .visible(true);
 
         if (googleMap != null) {
+            MyLog.d(TAG, "setupPolyLine - adding polyline to map");
             polyline = googleMap.addPolyline(polylineOptions);
         }
     }
 
-    private void clearTrackOnMap() {
+    private void clearPolyline() {
+        MyLog.d(TAG, "clearPolyline");
         googleMap.clear();
     }
 
-    private void continueTrackOnMap(LatLng currentLatLng) {
+    private void continuePolyline(LatLng currentLatLng) {
+        MyLog.d(TAG, "continuePolyline");
         if (polylineOptions == null) {
+            MyLog.d(TAG, "continuePolyline - polylineOptions is NULL, setting up");
             setupPolyLine();
+        } else {
+            MyLog.d(TAG, "continuePolyline - polylineOptions is NOT NULL");
         }
+        MyLog.d(TAG, "continuePolyline - getting polyline points");
         List<LatLng> points = polyline.getPoints();
+        MyLog.d(TAG, "continuePolyline - num of points: " + points.size());
+        MyLog.d(TAG, "continuePolyline - adding point to points");
         points.add(currentLatLng);
+        MyLog.d(TAG, "continuePolyline - setting points to polyline");
         polyline.setPoints(points);
     }
 
@@ -416,7 +427,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        // MyLog.d(LOG_TAG, "onNewIntent");
+        // MyLog.d(TAG, "onNewIntent");
     }
 
     @Override
@@ -458,7 +469,7 @@ public class MainActivity extends AppCompatActivity
             googleMap.setMyLocationEnabled(true);
         } catch (SecurityException e) {
             Crashlytics.logException(e);
-            // MyLog.e(LOG_TAG, e.getLocalizedMessage());
+            // MyLog.e(TAG, e.getLocalizedMessage());
         }
 
         if (status.isThereACameraPosition()) {
@@ -526,8 +537,8 @@ public class MainActivity extends AppCompatActivity
                                 new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
                         .build(), RC_SIGN_IN);
             }
-        } else if (id==R.id.action_settings){
-            startActivity(new Intent(this, SettingsActivity.class));
+        } else if (false) {
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -591,7 +602,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onServiceStarted(long trackId) {
-        // MyLog.d(LOG_TAG, "onServiceStarted");
+        // MyLog.d(TAG, "onServiceStarted");
         // TODO FAB animation
         this.trackId = trackId;
         setupTrackViewModel(trackId);
@@ -603,11 +614,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onServiceStopped() {
         // TODO: ezt átalakítani úgy, hogy a döntések a viewmodelben szülessenek, nem az activityben
-        // MyLog.d(LOG_TAG, "onServiceStopped");
+        // MyLog.d(TAG, "onServiceStopped");
         trackFragment.stopTrackDataUpdate();
         chartsFragment.stopTrackDataUpdate();
         status.setRecording(false);
-        clearTrackOnMap();
+        clearPolyline();
         trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
             @Override
             public void onChanged(@Nullable TrackWithPoints trackWithPoints) {

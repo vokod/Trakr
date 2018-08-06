@@ -15,13 +15,13 @@ class BottomSheetFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     void setFragments(BottomSheetBaseFragment[] fragments){
-         MyLog.d(TAG, "setFragments");
+       // MyLog.d(TAG, "setFragments");
         this.fragments = fragments;
     }
 
     @Override
     public BottomSheetBaseFragment getItem(int position) {
-         MyLog.d(TAG,"getItem: " + position);
+       // MyLog.d(TAG,"getItem: " + position);
         if(fragments!=null) {
             return fragments[position];
         } else {
@@ -40,7 +40,7 @@ class BottomSheetFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        MyLog.d(TAG,"getPageTitle: " + position);
+      // MyLog.d(TAG,"getPageTitle: " + position);
        return fragments[position].getTitle();
     }
 }

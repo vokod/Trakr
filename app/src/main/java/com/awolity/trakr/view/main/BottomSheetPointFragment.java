@@ -20,7 +20,7 @@ import java.util.Locale;
 
 public class BottomSheetPointFragment extends BottomSheetBaseFragment {
 
-    private static final String LOG_TAG = BottomSheetPointFragment.class.getSimpleName();
+    private static final String TAG = BottomSheetPointFragment.class.getSimpleName();
     private LocationViewModel locationViewModel;
     private PrimaryPropertyView speedView, altitudeView;
     private SecondaryPropertyView accuracyView, bearingView;
