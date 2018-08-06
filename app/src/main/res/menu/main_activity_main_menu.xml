@@ -22,11 +22,11 @@
         android:title="@string/synchronisation"
         app:showAsAction="never" />
 
- <!--   <item
-        android:id="@+id/action_sync_now"
+   <item
+        android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="Debug - Sync now"
-        app:showAsAction="never" />-->
+        android:title="Settings"
+        app:showAsAction="never" />
 
 
 </menu>
