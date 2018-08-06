@@ -243,8 +243,11 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
                 + "Altitude filter parameter: "
                 + status.getAltitudeFilterParameter()
                 + ". "
+                + "Speed filter parameter: "
+                + status.getSpeedFilterParameter()
+                + ". "
                 + "Minimum accuracy to record points: "
-                + status.getAccuracyFilterParameter()
+                + status.getMinimalRecordAccuracy()
                 + "m. ";
     }
 

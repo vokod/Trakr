@@ -31,8 +31,15 @@ public class ActivityTypeManager {
     private ArrayList<ActivityType> createActivityTypes(Context context) {
         ArrayList<ActivityType> activityTypes = new ArrayList<>();
 
-        RecordParameters walkingRecordParameters = new RecordParameters(1,
-                LocationRequest.PRIORITY_HIGH_ACCURACY, 1, 20, 10);
+        RecordParameters walkingRecordParameters = new RecordParametersBuilder()
+                .setTrackingAccuracy(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setTrackingDistance(1)
+                .setTrackingInterval(1)
+                .setMinimalRecordAccuracy(20)
+                .setAltitudeFilterParameter(10)
+                .setSpeedFilterParameter(2)
+                .build();
+
         walking = new ActivityType(context.getString(R.string.activity_type_walking),
                 context.getString(R.string.activity_type_key_walking),
                 R.drawable.ic_walk_circle,
@@ -40,8 +47,15 @@ public class ActivityTypeManager {
                 walkingRecordParameters);
         activityTypes.add(walking);
 
-        RecordParameters runningRecordParameters = new RecordParameters(2,
-                LocationRequest.PRIORITY_HIGH_ACCURACY, 2, 20, 10);
+        RecordParameters runningRecordParameters = new RecordParametersBuilder()
+                .setTrackingAccuracy(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setTrackingDistance(2)
+                .setTrackingInterval(2)
+                .setMinimalRecordAccuracy(20)
+                .setAltitudeFilterParameter(10)
+                .setSpeedFilterParameter(2)
+                .build();
+
         running = new ActivityType(context.getString(R.string.activity_type_running),
                 context.getString(R.string.activity_type_key_running),
                 R.drawable.ic_run_circle,
@@ -49,8 +63,15 @@ public class ActivityTypeManager {
                 runningRecordParameters);
         activityTypes.add(running);
 
-        RecordParameters bikingRecordParameters = new RecordParameters(5,
-                LocationRequest.PRIORITY_HIGH_ACCURACY, 5, 20, 10);
+        RecordParameters bikingRecordParameters = new RecordParametersBuilder()
+                .setTrackingAccuracy(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setTrackingDistance(5)
+                .setTrackingInterval(3)
+                .setMinimalRecordAccuracy(20)
+                .setAltitudeFilterParameter(10)
+                .setSpeedFilterParameter(2)
+                .build();
+
         biking = new ActivityType(context.getString(R.string.activity_type_biking),
                 context.getString(R.string.activity_type_key_biking),
                 R.drawable.ic_bike_circle,
@@ -58,8 +79,15 @@ public class ActivityTypeManager {
                 bikingRecordParameters);
         activityTypes.add(biking);
 
-        RecordParameters drivingRecordParameters = new RecordParameters(10,
-                LocationRequest.PRIORITY_HIGH_ACCURACY, 10, 40, 10);
+        RecordParameters drivingRecordParameters = new RecordParametersBuilder()
+                .setTrackingAccuracy(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setTrackingDistance(10)
+                .setTrackingInterval(5)
+                .setMinimalRecordAccuracy(40)
+                .setAltitudeFilterParameter(10)
+                .setSpeedFilterParameter(2)
+                .build();
+
         driving = new ActivityType(context.getString(R.string.activity_type_driving),
                 context.getString(R.string.activity_type_key_driving),
                 R.drawable.ic_car_circle,
@@ -67,8 +95,15 @@ public class ActivityTypeManager {
                 drivingRecordParameters);
         activityTypes.add(driving);
 
-        RecordParameters flyingRecordParameters = new RecordParameters(50,
-                LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, 5, 100, 10);
+        RecordParameters flyingRecordParameters = new RecordParametersBuilder()
+                .setTrackingAccuracy(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+                .setTrackingDistance(50)
+                .setTrackingInterval(5)
+                .setMinimalRecordAccuracy(100)
+                .setAltitudeFilterParameter(10)
+                .setSpeedFilterParameter(2)
+                .build();
+
         flying = new ActivityType(context.getString(R.string.activity_type_flying),
                 context.getString(R.string.activity_type_key_flying),
                 R.drawable.ic_plane_circle,
@@ -79,19 +114,19 @@ public class ActivityTypeManager {
         return activityTypes;
     }
 
-    public ActivityType getActivityType(Context context, String key){
-        if(key == null){
+    public ActivityType getActivityType(Context context, String key) {
+        if (key == null) {
             return walking;
         }
-        if(key.equals(context.getString(R.string.activity_type_key_walking))){
+        if (key.equals(context.getString(R.string.activity_type_key_walking))) {
             return walking;
-        } else if(key.equals(context.getString(R.string.activity_type_key_running))){
+        } else if (key.equals(context.getString(R.string.activity_type_key_running))) {
             return running;
-        }else if(key.equals(context.getString(R.string.activity_type_key_biking))){
+        } else if (key.equals(context.getString(R.string.activity_type_key_biking))) {
             return biking;
-        }else if(key.equals(context.getString(R.string.activity_type_key_driving))){
+        } else if (key.equals(context.getString(R.string.activity_type_key_driving))) {
             return driving;
-        }else if(key.equals(context.getString(R.string.activity_type_key_flying))){
+        } else if (key.equals(context.getString(R.string.activity_type_key_flying))) {
             return flying;
         } else {
             return walking;

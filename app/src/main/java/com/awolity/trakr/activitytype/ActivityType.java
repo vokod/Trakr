@@ -8,7 +8,8 @@ public class ActivityType {
     private final int iconResource;
     private final int menuIconResource;
 
-    public ActivityType(String title, String key, int iconResource, int menuIconResource, RecordParameters recordParameters) {
+    public ActivityType(String title, String key, int iconResource, int menuIconResource,
+                        RecordParameters recordParameters) {
         this.title = title;
         this.key = key;
         this.iconResource = iconResource;

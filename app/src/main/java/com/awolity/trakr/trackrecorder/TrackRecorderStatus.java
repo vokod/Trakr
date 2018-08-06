@@ -13,11 +13,6 @@ class TrackRecorderStatus {
 
     private static final String TAG = "TrackRecorderStatus";
     private boolean isEverythingGoodForRecording = true;
-    private int trackingDistance;
-    private int trackingAccuracy;
-    private int trackingInterval;
-    private int accuracyFilterParameter;
-    private int altitudeFilterParameter;
     private int numOfTrackPoints;
     private TrackpointEntity previousSavedTrackpoint, actualSavedTrackpoint, candidateTrackpoint;
     private LowPassFilter altitudeFilter, speedFilter;
@@ -33,22 +28,12 @@ class TrackRecorderStatus {
         }
 
         activityType = activityType1;
-        setupRecordParameters();
 
-        altitudeFilter = new LowPassFilter(altitudeFilterParameter);
-        // TODO: a speedfilter paraméterét refactorolni az ActiviyType-ba
-        // TODO: kell-e speed-zero-filter, ha van speedfilter?
-        speedFilter = new LowPassFilter(3);
+        altitudeFilter = new LowPassFilter(
+                activityType.getRecordParameters().getAltitudeFilterParameter());
+        speedFilter = new LowPassFilter(
+                activityType.getRecordParameters().getSpeedFilterParameter());
         altitudeZeroFilter = new AltitudeZeroFilter();
-    }
-
-    private void setupRecordParameters() {
-        // MyLog.d(TAG, "setupRecordParameters");
-        trackingDistance = activityType.getRecordParameters().getTrackingDistance();
-        trackingInterval = activityType.getRecordParameters().getTrackingInterval();
-        trackingAccuracy = activityType.getRecordParameters().getTrackingAccuracy();
-        accuracyFilterParameter = activityType.getRecordParameters().getAccuracyFilterParameter();
-        altitudeFilterParameter = activityType.getRecordParameters().getAltitudeFilterParameter();
     }
 
     public ActivityType getActivityType() {
@@ -100,7 +85,7 @@ class TrackRecorderStatus {
     }
 
     boolean isAccurateEnough() {
-        return candidateTrackpoint.getAccuracy() < getAccuracyFilterParameter();
+        return candidateTrackpoint.getAccuracy() < getMinimalRecordAccuracy();
     }
 
     boolean isThereASavedTrackpoint() {
@@ -116,23 +101,27 @@ class TrackRecorderStatus {
     }
 
     int getTrackingDistance() {
-        return trackingDistance;
+        return activityType.getRecordParameters().getTrackingDistance();
     }
 
     int getTrackingAccuracy() {
-        return trackingAccuracy;
+        return activityType.getRecordParameters().getTrackingAccuracy();
     }
 
     int getTrackingInterval() {
-        return trackingInterval;
+        return activityType.getRecordParameters().getTrackingInterval();
     }
 
-    int getAccuracyFilterParameter() {
-        return accuracyFilterParameter;
+    int getMinimalRecordAccuracy() {
+        return activityType.getRecordParameters().getMinimalRecordAccuracy();
     }
 
     int getAltitudeFilterParameter() {
-        return altitudeFilterParameter;
+        return activityType.getRecordParameters().getAltitudeFilterParameter();
+    }
+
+    int getSpeedFilterParameter() {
+        return activityType.getRecordParameters().getSpeedFilterParameter();
     }
 
     TrackpointEntity getPreviousSavedTrackpoint() {

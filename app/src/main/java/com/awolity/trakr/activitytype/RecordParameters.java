@@ -2,16 +2,18 @@ package com.awolity.trakr.activitytype;
 
 public class RecordParameters {
 
-    private final int trackingDistance, trackingAccuracy, trackingInterval, accuracyFilterParameter,
-            altitudeFilterParameter;
+    private final int trackingDistance, trackingAccuracy, trackingInterval, minimalRecordAccuracy,
+            altitudeFilterParameter, speedFilterParameter;
 
     public RecordParameters(int trackingDistance, int trackingAccuracy, int trackingInterval,
-                            int accuracyFilterParameter, int altitudeFilterParameter) {
+                            int minimalRecordAccuracy, int altitudeFilterParameter,
+                            int speedFilterParameter) {
         this.trackingDistance = trackingDistance;
         this.trackingAccuracy = trackingAccuracy;
         this.trackingInterval = trackingInterval;
-        this.accuracyFilterParameter = accuracyFilterParameter;
+        this.minimalRecordAccuracy = minimalRecordAccuracy;
         this.altitudeFilterParameter = altitudeFilterParameter;
+        this.speedFilterParameter = speedFilterParameter;
     }
 
     public int getTrackingDistance() {
@@ -26,13 +28,15 @@ public class RecordParameters {
         return trackingInterval;
     }
 
-    public int getAccuracyFilterParameter() {
-        return accuracyFilterParameter;
+    public int getMinimalRecordAccuracy() {
+        return minimalRecordAccuracy;
     }
 
     public int getAltitudeFilterParameter() {
         return altitudeFilterParameter;
     }
 
-
+    public int getSpeedFilterParameter() {
+        return speedFilterParameter;
+    }
 }

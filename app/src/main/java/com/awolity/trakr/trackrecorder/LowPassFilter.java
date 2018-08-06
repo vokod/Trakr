@@ -31,9 +31,7 @@ class LowPassFilter {
             }
             isFirstTime = false;
         } else {
-            for (int i = 0; i < size - 1; i++) {
-                alphas[i] = alphas[i + 1];
-            }
+            System.arraycopy(alphas, 1, alphas, 0, size - 1);
             alphas[size - 1] = current;
         }
         return lowPass();
