@@ -15,7 +15,6 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.PrimaryPropertyView;
 import com.awolity.trakr.customviews.SecondaryPropertyView;
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 
@@ -27,7 +26,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     private static final String KEY_ASCENTVIEW_VALUE = "key_ascentView_value";
     private static final String KEY_DESCENTVIEW_VALUE = "key_descentView_value";
     private static final String KEY_ELAPSEDVIEW_VALUE = "key_elapsedTimeView_value";
-    private static final String KEY_MINALTITUDECEVIEW_VALUE = "key_minAltitudeView_value";
+    private static final String KEY_MINALTITUDEVIEW_VALUE = "key_minAltitudeView_value";
     private static final String KEY_MAXALTITUDEVIEW_VALUE = "key_maxAltitudeView_value";
     private static final String KEY_AVGSPEEDVIEW_VALUE = "key_avgSpeedView_value";
     private static final String KEY_MAXSPEEDVIEW_VALUE = "key_maxSpeedView_value";
@@ -115,7 +114,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
             ascentView.setValue(savedInstanceState.getString(KEY_ASCENTVIEW_VALUE));
             descentView.setValue(savedInstanceState.getString(KEY_DESCENTVIEW_VALUE));
             elapsedTimeView.setValue(savedInstanceState.getString(KEY_ELAPSEDVIEW_VALUE));
-            minAltitudeView.setValue(savedInstanceState.getString(KEY_MINALTITUDECEVIEW_VALUE));
+            minAltitudeView.setValue(savedInstanceState.getString(KEY_MINALTITUDEVIEW_VALUE));
             maxAltitudeView.setValue(savedInstanceState.getString(KEY_MAXALTITUDEVIEW_VALUE));
             avgSpeedView.setValue(savedInstanceState.getString(KEY_AVGSPEEDVIEW_VALUE));
             maxSpeedView.setValue(savedInstanceState.getString(KEY_MAXSPEEDVIEW_VALUE));
@@ -146,7 +145,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         outState.putString(KEY_ASCENTVIEW_VALUE, ascentView.getValue());
         outState.putString(KEY_DESCENTVIEW_VALUE, descentView.getValue());
         outState.putString(KEY_ELAPSEDVIEW_VALUE, elapsedTimeView.getValue());
-        outState.putString(KEY_MINALTITUDECEVIEW_VALUE, minAltitudeView.getValue());
+        outState.putString(KEY_MINALTITUDEVIEW_VALUE, minAltitudeView.getValue());
         outState.putString(KEY_MAXALTITUDEVIEW_VALUE, maxAltitudeView.getValue());
         outState.putString(KEY_AVGSPEEDVIEW_VALUE, avgSpeedView.getValue());
         outState.putString(KEY_MAXSPEEDVIEW_VALUE, maxAltitudeView.getValue());
@@ -209,8 +208,8 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         setDistance(track.getDistance());
         setAscent(track.getAscent());
         setDescent(track.getDescent());
-        setMinAltitude(track.getMaxAltitude());
-        setMaxAltitude(track.getMinAltitude());
+        setMinAltitude(track.getMinAltitude());
+        setMaxAltitude(track.getMaxAltitude());
         setMaxSpeed(track.getMaxSpeed());
         setAvgSpeed(track.getAvgSpeed());
         setStartTime(track.getStartTime());

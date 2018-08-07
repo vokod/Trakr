@@ -353,18 +353,18 @@ public class MainActivity extends AppCompatActivity
     };
 
     private void drawPolyline(List<LatLng> pointsCoordinates) {
-        MyLog.d(TAG, "drawPolyline");
+        // MyLog.d(TAG, "drawPolyline");
         setupPolyLine();
         if (googleMap != null) {
-            MyLog.d(TAG, "drawPolyline - setting points: " + pointsCoordinates.size());
+            // MyLog.d(TAG, "drawPolyline - setting points: " + pointsCoordinates.size());
             polyline.setPoints(pointsCoordinates);
         } else {
-            MyLog.d(TAG, "drawPolyline - google maps is NULL");
+            // MyLog.d(TAG, "drawPolyline - google maps is NULL");
         }
     }
 
     private void setupPolyLine() {
-        MyLog.d(TAG, "setupPolyLine");
+        // MyLog.d(TAG, "setupPolyLine");
         polylineOptions = new PolylineOptions()
                 .geodesic(true)
                 .color(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -373,30 +373,30 @@ public class MainActivity extends AppCompatActivity
                 .visible(true);
 
         if (googleMap != null) {
-            MyLog.d(TAG, "setupPolyLine - adding polyline to map");
+            // MyLog.d(TAG, "setupPolyLine - adding polyline to map");
             polyline = googleMap.addPolyline(polylineOptions);
         }
     }
 
     private void clearPolyline() {
-        MyLog.d(TAG, "clearPolyline");
+        // MyLog.d(TAG, "clearPolyline");
         googleMap.clear();
     }
 
     private void continuePolyline(LatLng currentLatLng) {
-        MyLog.d(TAG, "continuePolyline");
+        // MyLog.d(TAG, "continuePolyline");
         if (polylineOptions == null) {
-            MyLog.d(TAG, "continuePolyline - polylineOptions is NULL, setting up");
+            // MyLog.d(TAG, "continuePolyline - polylineOptions is NULL, setting up");
             setupPolyLine();
         } else {
-            MyLog.d(TAG, "continuePolyline - polylineOptions is NOT NULL");
+            // MyLog.d(TAG, "continuePolyline - polylineOptions is NOT NULL");
         }
-        MyLog.d(TAG, "continuePolyline - getting polyline points");
+        // MyLog.d(TAG, "continuePolyline - getting polyline points");
         List<LatLng> points = polyline.getPoints();
-        MyLog.d(TAG, "continuePolyline - num of points: " + points.size());
-        MyLog.d(TAG, "continuePolyline - adding point to points");
+        // MyLog.d(TAG, "continuePolyline - num of points: " + points.size());
+        // MyLog.d(TAG, "continuePolyline - adding point to points");
         points.add(currentLatLng);
-        MyLog.d(TAG, "continuePolyline - setting points to polyline");
+        // MyLog.d(TAG, "continuePolyline - setting points to polyline");
         polyline.setPoints(points);
     }
 
@@ -427,7 +427,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        // MyLog.d(TAG, "onNewIntent");
+        MyLog.d(TAG, "onNewIntent");
     }
 
     @Override

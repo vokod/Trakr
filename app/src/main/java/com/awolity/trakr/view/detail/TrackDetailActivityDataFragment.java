@@ -18,7 +18,6 @@ import com.awolity.trakr.activitytype.ActivityTypeManager;
 import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 
@@ -35,7 +34,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
     private TextView titleTextView, dateTextView;
     private ImageButton editTitleImageButton;
     private ImageView initialImageView;
-    private TrackEntity trackEntity;
+//    private TrackEntity trackEntity;
 
     public static TrackDetailActivityDataFragment newInstance(long trackId) {
         TrackDetailActivityDataFragment fragment = new TrackDetailActivityDataFragment();
@@ -52,9 +51,9 @@ public class TrackDetailActivityDataFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       // MyLog.d(TAG, "onCreate - " + this.hashCode());
-        if (getArguments() != null) {
+       /* if (getArguments() != null) {
             long trackId = getArguments().getLong(ARG_TRACK_ID);
-        }
+        }*/
     }
 
     @Override
@@ -77,8 +76,8 @@ public class TrackDetailActivityDataFragment extends Fragment {
         endTimePpvi = view.findViewById(R.id.ppvi_end_time);
         durationPpvi = view.findViewById(R.id.ppvi_duration);
         distancePpvi = view.findViewById(R.id.ppvi_distance);
-        ascentPpvi = view.findViewById(R.id.ppvi_ascent);
-        descentPpvi = view.findViewById(R.id.ppvi_descent);
+        ascentPpvi = view.findViewById(R.id.ppvi_descent);
+        descentPpvi = view.findViewById(R.id.ppvi_ascent);
         maxSpeedPpvi = view.findViewById(R.id.ppvi_max_speed);
         avgSpeedPpvi = view.findViewById(R.id.ppvi_avg_speed);
         maxPacePpvi = view.findViewById(R.id.ppvi_max_pace);

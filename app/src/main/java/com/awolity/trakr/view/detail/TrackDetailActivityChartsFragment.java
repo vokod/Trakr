@@ -20,7 +20,6 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.github.mikephil.charting.charts.LineChart;
@@ -89,8 +88,8 @@ public class TrackDetailActivityChartsFragment extends Fragment
         avgPacePpvi = view.findViewById(R.id.ppvi_avg_pace);
         speedChart = view.findViewById(R.id.chart_speed);
         elevationChart = view.findViewById(R.id.chart_elevation);
-        ascentPpvi = view.findViewById(R.id.ppvi_ascent);
-        descentPpvi = view.findViewById(R.id.ppvi_descent);
+        ascentPpvi = view.findViewById(R.id.ppvi_descent);
+        descentPpvi = view.findViewById(R.id.ppvi_ascent);
         maxAltitudePpvi = view.findViewById(R.id.ppvi_max_altitude);
         minAltitudePpvi = view.findViewById(R.id.ppvi_min_altitude);
         paceCheckBox = view.findViewById(R.id.cb_pace);
