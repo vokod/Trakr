@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -52,8 +51,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.Arrays;
 import java.util.List;
@@ -80,10 +77,9 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("FieldCanBeLocal")
     private TrackViewModel trackViewModel;
     private AppUserViewModel appUserViewModel;
-    private PolylineOptions polylineOptions;
-    private Polyline polyline;
     private long trackId = Constants.NO_LAST_RECORDED_TRACK;
     private Menu menu;
+    private PolylineManager polylineManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -242,12 +238,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTrackRecorderService() {
-        // MyLog.d(TAG, "setupTrackRecorderService");
+        MyLog.d(TAG, "setupTrackRecorderService");
         serviceManager = new TrackRecorderServiceManager(this);
         if (TrackRecorderServiceManager.isServiceRunning(this)) {
+            MyLog.d(TAG, "setupTrackRecorderService - service is running");
             status.setContinueRecording();
             long trackId = PreferenceUtils.getLastRecordedTrackId(this);
             if (trackId != Constants.NO_LAST_RECORDED_TRACK) {
+                if (polylineManager == null) {
+                    polylineManager = new PolylineManager(this);
+                }
                 setupTrackViewModel(trackId);
                 this.trackId = trackId;
                 trackFragment.startTrackDataUpdate(trackId);
@@ -323,7 +323,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTrackViewModel(final long trackId) {
-        // MyLog.d(TAG, "setupTrackViewModel");
+        MyLog.d(TAG, "setupTrackViewModel");
         trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
         trackViewModel.reset();
         trackViewModel.init(trackId);
@@ -337,7 +337,8 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
             if (trackpointEntities != null && trackpointEntities.size() != 0) {
-                drawPolyline(MainActivityUtils.transformTrackpointsToLatLngs(trackpointEntities));
+                polylineManager.drawPolyline(googleMap,
+                        MainActivityUtils.transformTrackpointsToLatLngs(trackpointEntities));
                 trackViewModel.getTrackpointsList().removeObserver(this);
             }
         }
@@ -347,58 +348,12 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onChanged(@Nullable TrackpointEntity trackpointEntity) {
             if (trackpointEntity != null) {
-                continuePolyline(new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
+                polylineManager.continuePolyline(googleMap,
+                        new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
             }
         }
     };
 
-    private void drawPolyline(List<LatLng> pointsCoordinates) {
-        // MyLog.d(TAG, "drawPolyline");
-        setupPolyLine();
-        if (googleMap != null) {
-            // MyLog.d(TAG, "drawPolyline - setting points: " + pointsCoordinates.size());
-            polyline.setPoints(pointsCoordinates);
-        } else {
-            // MyLog.d(TAG, "drawPolyline - google maps is NULL");
-        }
-    }
-
-    private void setupPolyLine() {
-        // MyLog.d(TAG, "setupPolyLine");
-        polylineOptions = new PolylineOptions()
-                .geodesic(true)
-                .color(ContextCompat.getColor(this, R.color.colorPrimary))
-                .width(getResources().getInteger(R.integer.polyline_width))
-                .zIndex(30)
-                .visible(true);
-
-        if (googleMap != null) {
-            // MyLog.d(TAG, "setupPolyLine - adding polyline to map");
-            polyline = googleMap.addPolyline(polylineOptions);
-        }
-    }
-
-    private void clearPolyline() {
-        // MyLog.d(TAG, "clearPolyline");
-        googleMap.clear();
-    }
-
-    private void continuePolyline(LatLng currentLatLng) {
-        // MyLog.d(TAG, "continuePolyline");
-        if (polylineOptions == null) {
-            // MyLog.d(TAG, "continuePolyline - polylineOptions is NULL, setting up");
-            setupPolyLine();
-        } else {
-            // MyLog.d(TAG, "continuePolyline - polylineOptions is NOT NULL");
-        }
-        // MyLog.d(TAG, "continuePolyline - getting polyline points");
-        List<LatLng> points = polyline.getPoints();
-        // MyLog.d(TAG, "continuePolyline - num of points: " + points.size());
-        // MyLog.d(TAG, "continuePolyline - adding point to points");
-        points.add(currentLatLng);
-        // MyLog.d(TAG, "continuePolyline - setting points to polyline");
-        polyline.setPoints(points);
-    }
 
     private void centerTrackOnMap() {
         trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
@@ -609,6 +564,7 @@ public class MainActivity extends AppCompatActivity
         trackFragment.startTrackDataUpdate(trackId);
         chartsFragment.startTrackDataUpdate(trackId);
         status.setRecording(true);
+        polylineManager = new PolylineManager(this);
     }
 
     @Override
@@ -618,7 +574,7 @@ public class MainActivity extends AppCompatActivity
         trackFragment.stopTrackDataUpdate();
         chartsFragment.stopTrackDataUpdate();
         status.setRecording(false);
-        clearPolyline();
+        polylineManager.clearPolyline(googleMap);
         trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
             @Override
             public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
