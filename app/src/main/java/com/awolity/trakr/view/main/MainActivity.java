@@ -333,11 +333,13 @@ public class MainActivity extends AppCompatActivity
     private final Observer<List<TrackpointEntity>> trackpointsListObserver = new Observer<List<TrackpointEntity>>() {
         @Override
         public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
-            if (trackpointEntities != null && trackpointEntities.size() != 0) {
+            if (trackpointEntities != null
+                    && trackpointEntities.size() != 0
+                    && polylineManager != null) {
                 polylineManager.drawPolyline(googleMap,
                         MainActivityUtils.transformTrackpointsToLatLngs(trackpointEntities));
-                trackViewModel.getTrackpointsList().removeObserver(this);
             }
+            trackViewModel.getTrackpointsList().removeObserver(this);
         }
     };
 
@@ -345,8 +347,10 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onChanged(@Nullable TrackpointEntity trackpointEntity) {
             if (trackpointEntity != null) {
-                polylineManager.continuePolyline(googleMap,
-                        new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
+                if (polylineManager != null) {
+                    polylineManager.continuePolyline(googleMap,
+                            new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
+                }
             }
         }
     };
