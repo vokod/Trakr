@@ -33,8 +33,8 @@ public class ActivityTypeManager {
 
         RecordParameters walkingRecordParameters = new RecordParametersBuilder()
                 .setTrackingAccuracy(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setTrackingDistance(1)
-                .setTrackingInterval(1)
+                .setTrackingDistance(3)
+                .setTrackingInterval(3)
                 .setMinimalRecordAccuracy(20)
                 .setAltitudeFilterParameter(10)
                 .setSpeedFilterParameter(2)
