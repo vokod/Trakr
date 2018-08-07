@@ -153,7 +153,9 @@ public class TrackRepository {
         discIoExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                saveTrackToCloudOnThread(trackId);
+                if(roomTrackRepository.getTrackSync(trackId).getNumOfTrackPoints()>1) {
+                    saveTrackToCloudOnThread(trackId);
+                }
             }
         });
     }

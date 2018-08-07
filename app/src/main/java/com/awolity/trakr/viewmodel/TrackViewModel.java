@@ -73,14 +73,8 @@ public class TrackViewModel extends ViewModel {
     }
 
     public void finishRecording() {
-        if (trackRepository.getTrackWithPoints(trackId).getValue().getTrackPoints().size() > 1) {
-            saveToCloud();
-        }
-        reset();
-    }
-
-    public void saveToCloud() {
         trackRepository.saveTrackToCloud(trackId);
+        reset();
     }
 
     public void updateTrack(TrackEntity trackEntity) {
