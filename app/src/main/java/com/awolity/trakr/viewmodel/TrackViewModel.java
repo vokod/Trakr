@@ -2,12 +2,16 @@ package com.awolity.trakr.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+import android.content.Intent;
 
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.TrackRepository;
+import com.awolity.trakr.utils.Constants;
+import com.awolity.trakr.view.detail.TrackDetailActivity;
+import com.awolity.trakr.view.main.MainActivity;
 
 import java.util.List;
 
@@ -68,6 +72,13 @@ public class TrackViewModel extends ViewModel {
         trackRepository.exportTrack(trackId);
     }
 
+    public void finishRecording() {
+        if (trackRepository.getTrackWithPoints(trackId).getValue().getTrackPoints().size() > 1) {
+            saveToCloud();
+        }
+        reset();
+    }
+
     public void saveToCloud() {
         trackRepository.saveTrackToCloud(trackId);
     }
@@ -81,7 +92,6 @@ public class TrackViewModel extends ViewModel {
             throw new IllegalStateException("Viewmodel not initialised");
         }
     }
-
 
 
 }

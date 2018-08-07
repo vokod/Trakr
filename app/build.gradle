@@ -38,8 +38,8 @@ android {
         applicationId "com.awolity.trakr"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 12
-        versionName "0.12"
+        versionCode 13
+        versionName "0.13"
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]

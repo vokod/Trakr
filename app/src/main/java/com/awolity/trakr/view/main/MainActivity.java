@@ -27,7 +27,6 @@ import android.widget.Toast;
 import com.awolity.trakr.R;
 import com.awolity.trakr.activitytype.ActivityType;
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
@@ -245,9 +244,7 @@ public class MainActivity extends AppCompatActivity
             status.setContinueRecording();
             long trackId = PreferenceUtils.getLastRecordedTrackId(this);
             if (trackId != Constants.NO_LAST_RECORDED_TRACK) {
-                if (polylineManager == null) {
-                    polylineManager = new PolylineManager(this);
-                }
+                polylineManager = new PolylineManager(this);
                 setupTrackViewModel(trackId);
                 this.trackId = trackId;
                 trackFragment.startTrackDataUpdate(trackId);
@@ -583,25 +580,11 @@ public class MainActivity extends AppCompatActivity
         chartsFragment.stopTrackDataUpdate();
         status.setRecording(false);
         polylineManager.clearPolyline(googleMap);
-        trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
-            @Override
-            public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-                if (!status.isRecording()) {
-                    if (trackWithPoints != null) {
-                        if (trackId != Constants.NO_LAST_RECORDED_TRACK) {
-                            if (trackWithPoints.getTrackPoints().size() > 1) {
-                                trackViewModel.saveToCloud();
-                                Intent intent = TrackDetailActivity.getStarterIntent(MainActivity.this, trackId);
-                                startActivity(intent);
-                                trackViewModel.getTrackWithPoints().removeObserver(this);
-                                trackViewModel.reset();
-                                trackId = Constants.NO_LAST_RECORDED_TRACK;
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        polylineManager = null;
+        trackViewModel.finishRecording();
+        Intent intent = TrackDetailActivity.getStarterIntent(
+                MainActivity.this, trackId);
+        startActivity(intent);
     }
 
     @Override
