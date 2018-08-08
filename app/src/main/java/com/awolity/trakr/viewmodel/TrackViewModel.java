@@ -74,7 +74,6 @@ public class TrackViewModel extends ViewModel {
 
     public void finishRecording() {
         trackRepository.saveTrackToCloud(trackId);
-        reset();
     }
 
     public void updateTrack(TrackEntity trackEntity) {
