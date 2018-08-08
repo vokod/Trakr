@@ -11,6 +11,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -73,13 +74,16 @@ public class MainActivity extends AppCompatActivity
     private BottomSheetPointFragment pointFragment;
     private BottomSheetTrackFragment trackFragment;
     private BottomSheetChartsFragment chartsFragment;
+    private FloatingActionButton fab;
+
     private LocationViewModel locationViewModel;
-    private TrackRecorderServiceManager serviceManager;
-    private MainActivityStatus status;
-    @SuppressWarnings("FieldCanBeLocal")
     private TrackViewModel trackViewModel;
     private AppUserViewModel appUserViewModel;
+
+    private TrackRecorderServiceManager serviceManager;
+    private MainActivityStatus status;
     private long trackId = Constants.NO_LAST_RECORDED_TRACK;
+
     private Menu menu;
     private PolylineManager polylineManager;
 
@@ -89,6 +93,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         status = new MainActivityStatus();
+        fab = findViewById(R.id.fab);
 
         if (savedInstanceState != null) {
             status.setCameraPosition((CameraPosition) savedInstanceState.getParcelable(KEY_CAMERA_POSITION));
@@ -553,7 +558,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onServiceStarted(long trackId) {
         // MyLog.d(TAG, "onServiceStarted");
-        // TODO FAB animation
+        fab.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
         this.trackId = trackId;
         setupTrackViewModel(trackId);
         trackFragment.startTrackDataUpdate(trackId);
@@ -590,5 +595,4 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-
 }

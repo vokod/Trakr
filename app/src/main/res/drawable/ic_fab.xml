@@ -2,23 +2,25 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="192dp"
     android:height="192dp"
-    android:viewportWidth="192"
-    android:viewportHeight="192">
+    android:viewportHeight="192"
+    android:viewportWidth="192">
 
-    <path
-        android:fillColor="@color/colorPrimaryDark"
-        android:pathData="M82,160.7l-4.5,0h-4l-0.4-8.3c-0.7-13.6-8.6-37.4-20.1-52.1c-7.4-9.5-11.8-19.8-11.8-27.7c0-22.7,18.3-41.1,40.8-41.1
+    <group android:name="icon">
+        <path
+            android:fillColor="@color/colorPrimaryDark"
+            android:pathData="M82,160.7l-4.5,0h-4l-0.4-8.3c-0.7-13.6-8.6-37.4-20.1-52.1c-7.4-9.5-11.8-19.8-11.8-27.7c0-22.7,18.3-41.1,40.8-41.1
 c22.5,0,40.8,18.5,40.8,41.1c0,7.9-4.4,18.3-11.8,27.7c-11.5,14.7-19.4,38.5-20.1,52.1l-0.4,8.3h-4L82,160.7z
 M82,48.8
 c-12.9,0-23.3,10.6-23.3,23.7c0,1.8,1.5,8.5,8.1,17c6.4,8.2,11.4,17.9,15.2,27.3c3.8-9.4,8.8-19.1,15.2-27.3
 c6.6-8.5,8.1-15.1,8.1-17C105.3,59.4,94.9,48.8,82,48.8z" />
-    <path
-        android:fillColor="@color/colorPrimaryDark"
-        android:pathData="M 81.8 57.7 C 89.3110725977 57.7 95.4 63.7889274023 95.4 71.3 C 95.4 78.8110725977 89.3110725977 84.9 81.8 84.9 C 74.2889274023 84.9 68.2 78.8110725977 68.2 71.3 C 68.2 63.7889274023 74.2889274023 57.7 81.8 57.7 Z" />
-    <path
-        android:fillColor="@color/colorPrimaryDark"
-        android:pathData="M 137.6 148 L 101.4 148 L 96 159.7 L 132.2 159.7 Z" />
-    <path
-        android:fillColor="@color/colorPrimaryDark"
-        android:pathData="M 184.1 148 L 147.8 148 L 142.5 159.7 L 178.7 159.7 Z" />
+        <path
+            android:fillColor="@color/colorPrimaryDark"
+            android:pathData="M 81.8 57.7 C 89.3110725977 57.7 95.4 63.7889274023 95.4 71.3 C 95.4 78.8110725977 89.3110725977 84.9 81.8 84.9 C 74.2889274023 84.9 68.2 78.8110725977 68.2 71.3 C 68.2 63.7889274023 74.2889274023 57.7 81.8 57.7 Z" />
+        <path
+            android:fillColor="@color/colorPrimaryDark"
+            android:pathData="M 137.6 148 L 101.4 148 L 96 159.7 L 132.2 159.7 Z" />
+        <path
+            android:fillColor="@color/colorPrimaryDark"
+            android:pathData="M 184.1 148 L 147.8 148 L 142.5 159.7 L 178.7 159.7 Z" />
+    </group>
 </vector>
