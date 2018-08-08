@@ -1,20 +1,18 @@
-package com.awolity.trakr.view.main;
+package com.awolity.trakr.view.main.bottom;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.awolity.trakr.utils.MyLog;
-
-class BottomSheetFragmentPagerAdapter extends FragmentPagerAdapter {
+public class BottomSheetFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private static final String TAG = BottomSheetFragmentPagerAdapter.class.getSimpleName();
     private BottomSheetBaseFragment[] fragments;
 
-    BottomSheetFragmentPagerAdapter(FragmentManager fm) {
+    public BottomSheetFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    void setFragments(BottomSheetBaseFragment[] fragments){
+    public void setFragments(BottomSheetBaseFragment[] fragments){
        // MyLog.d(TAG, "setFragments");
         this.fragments = fragments;
     }

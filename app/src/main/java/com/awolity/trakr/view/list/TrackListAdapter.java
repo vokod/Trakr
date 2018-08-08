@@ -13,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.activitytype.ActivityType;
-import com.awolity.trakr.activitytype.ActivityTypeManager;
 import com.awolity.trakr.customviews.SecondaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.utils.MyLog;
@@ -153,9 +151,7 @@ public class TrackListAdapter
             titleTv.setText(this.trackWithPoints.getTitle());
             dateTv.setText(DateUtils.getRelativeTimeSpanString(this.trackWithPoints.getStartTime()).toString());
 
-            ActivityType activityType = ActivityTypeManager.getInstance(context)
-                    .getActivityType(context, trackWithPoints.getActivityType());
-            initialIv.setImageResource(activityType.getIconResource());
+            // TODO: initialIv.setImageResource(activityType.getIconResource());
 
             distanceView.setValue(StringUtils.getDistanceAsThreeCharactersString(trackWithPoints.getDistance()));
             elevationView.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getAscent()));

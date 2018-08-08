@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/bottom_sheet_height_extended"
     android:background="@color/bottom_sheet_background"
-    tools:context="com.awolity.trakr.view.main.BottomSheetTrackFragment">
+    tools:context="com.awolity.trakr.view.main.bottom.BottomSheetTrackFragment">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"

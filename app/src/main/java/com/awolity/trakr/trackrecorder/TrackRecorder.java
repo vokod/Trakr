@@ -10,7 +10,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.activitytype.ActivityTypeManager;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.TrakrApplication;
@@ -118,7 +117,6 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
         track.setStartTime(System.currentTimeMillis());
         track.setTitle(TrackEntity.getDefaultName(context, track.getStartTime()));
         track.setMetadata(buildMetadataString());
-        track.setActivityType(PreferenceUtils.getActivityType(context).getKey());
         return track;
     }
 
@@ -229,9 +227,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
                 priority = "unknown";
         }
 
-        return "Activity type: " +
-                status.getActivityType().getKey() +
-                ". Tracking interval: "
+        return "Tracking interval: "
                 + locationManager.getLocationRequestInterval() / 1000
                 + "s. "
                 + "Minimal distance between two points: "
@@ -281,8 +277,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
                     appWidgetManager,
                     appWidgetId,
                     StringUtils.getElapsedTimeAsString(System.currentTimeMillis() - track.getStartTime()),
-                    StringUtils.getDistanceAsThreeCharactersString(track.getDistance()),
-                    ActivityTypeManager.getInstance(context).getActivityType(context, track.getActivityType()).getIconResource());
+                    StringUtils.getDistanceAsThreeCharactersString(track.getDistance()),0);
         }
     }
 

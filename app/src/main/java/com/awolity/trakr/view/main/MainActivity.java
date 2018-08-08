@@ -25,17 +25,21 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.activitytype.ActivityType;
 import com.awolity.trakr.data.entity.TrackEntity;
+import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
-import com.awolity.trakr.trackrecorder.TrackRecorderServiceManager;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.PreferenceUtils;
 import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.list.TrackListActivity;
+import com.awolity.trakr.view.main.bottom.BottomSheetBaseFragment;
+import com.awolity.trakr.view.main.bottom.BottomSheetChartsFragment;
+import com.awolity.trakr.view.main.bottom.BottomSheetFragmentPagerAdapter;
+import com.awolity.trakr.view.main.bottom.BottomSheetPointFragment;
+import com.awolity.trakr.view.main.bottom.BottomSheetTrackFragment;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.LocationViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
@@ -57,8 +61,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements OnMapReadyCallback,
         GoogleMap.OnCameraMoveListener,
-        TrackRecorderServiceManager.TrackRecorderServiceManagerListener,
-        ActivityTypeDialogFragment.ActivityTypeDialogListener {
+        TrackRecorderServiceManager.TrackRecorderServiceManagerListener {
 
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final String KEY_CAMERA_POSITION = "camera_position";
@@ -461,14 +464,6 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main_activity_main_menu, menu);
         this.menu = menu;
 
-        MenuItem activityTypeItem = menu.findItem(R.id.action_select_activity_type);
-        ActivityType activityType = PreferenceUtils.getActivityType(this);
-        if (activityType != null) {
-            activityTypeItem.setIcon(activityType.getMenuIconResource());
-        } else {
-            activityTypeItem.setIcon(R.drawable.ic_walk);
-        }
-
         MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
         if (appUserViewModel.IsAppUserLoggedIn()) {
             synchronisationItem.setTitle(getString(R.string.disable_cloud_sync));
@@ -484,13 +479,6 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_list_tracks) {
             startActivity(TrackListActivity.getStarterIntent(this));
             return true;
-        } else if (id == R.id.action_select_activity_type) {
-            if (status.isRecording()) {
-                Toast.makeText(this, getString(R.string.activity_change_disabled), Toast.LENGTH_LONG).show();
-            } else {
-                ActivityTypeDialogFragment dialog = new ActivityTypeDialogFragment();
-                dialog.show(getSupportFragmentManager(), null);
-            }
         } else if (id == R.id.action_synchronisation) {
             if (appUserViewModel.IsAppUserLoggedIn()) {
                 MainActivityUtils.showLogoutAlertDialog(this, appUserViewModel, item);
@@ -501,8 +489,6 @@ public class MainActivity extends AppCompatActivity
                                 new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
                         .build(), RC_SIGN_IN);
             }
-        } else if (false) {
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -578,23 +564,31 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onServiceStopped() {
-        // TODO: ezt átalakítani úgy, hogy a döntések a viewmodelben szülessenek, nem az activityben
         // MyLog.d(TAG, "onServiceStopped");
         trackFragment.stopTrackDataUpdate();
         chartsFragment.stopTrackDataUpdate();
         status.setRecording(false);
         polylineManager.clearPolyline(googleMap);
         polylineManager = null;
-        trackViewModel.finishRecording();
-        Intent intent = TrackDetailActivity.getStarterIntent(
-                MainActivity.this, trackId);
-        startActivity(intent);
+        trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
+            @Override
+            public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
+                if (!status.isRecording()) {
+                    if (trackWithPoints != null) {
+                        if (trackId != Constants.NO_LAST_RECORDED_TRACK) {
+                            if (trackWithPoints.getTrackPoints().size() > 1) {
+                                trackViewModel.finishRecording();
+                                Intent intent = TrackDetailActivity.getStarterIntent(MainActivity.this, trackId);
+                                startActivity(intent);
+                                trackViewModel.getTrackWithPoints().removeObserver(this);
+                                trackViewModel.reset();
+                                trackId = Constants.NO_LAST_RECORDED_TRACK;
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
-    @Override
-    public void onActivityTypeSelected(ActivityType activityType) {
-        MenuItem activityTypeItem = menu.findItem(R.id.action_select_activity_type);
-        PreferenceUtils.setActivityType(this, activityType);
-        activityTypeItem.setIcon(activityType.getMenuIconResource());
-    }
 }

@@ -1,4 +1,4 @@
-package com.awolity.trakr.view.main;
+package com.awolity.trakr.view.main.bottom;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;

@@ -1,4 +1,4 @@
-package com.awolity.trakr.view.main;
+package com.awolity.trakr.view.main.bottom;
 
 import android.support.v4.app.Fragment;
 

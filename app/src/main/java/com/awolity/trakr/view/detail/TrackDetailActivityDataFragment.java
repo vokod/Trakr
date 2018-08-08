@@ -13,10 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.activitytype.ActivityType;
-import com.awolity.trakr.activitytype.ActivityTypeManager;
 import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
-import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
@@ -50,7 +47,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      // MyLog.d(TAG, "onCreate - " + this.hashCode());
+        // MyLog.d(TAG, "onCreate - " + this.hashCode());
        /* if (getArguments() != null) {
             long trackId = getArguments().getLong(ARG_TRACK_ID);
         }*/
@@ -158,11 +155,8 @@ public class TrackDetailActivityDataFragment extends Fragment {
     }
 
     private void setData(TrackWithPoints trackWithPoints) {
-      // MyLog.d(TAG, "setData");
-
-        ActivityType activityType = ActivityTypeManager.getInstance(getContext())
-                .getActivityType(getContext(),trackWithPoints.getActivityType());
-        initialImageView.setImageResource(activityType.getIconResource());
+        // MyLog.d(TAG, "setData");
+        // TODO initialImageView.setImageResource(activityType.getIconResource());
 
         titleTextView.setText(trackWithPoints.getTitle());
         dateTextView.setText(StringUtils.getDateAsStringLocale(trackWithPoints.getStartTime()));
@@ -181,7 +175,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
             maxPacePpvi.setValue("-");
         }
         double avgSpeed = trackWithPoints.getAvgSpeed();
-        if(avgSpeed>1){
+        if (avgSpeed > 1) {
             avgPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((60 * (1 / avgSpeed))));
         } else {
             avgPacePpvi.setValue("-");

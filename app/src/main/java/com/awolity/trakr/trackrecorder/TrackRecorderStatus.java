@@ -3,11 +3,10 @@ package com.awolity.trakr.trackrecorder;
 import android.content.Context;
 import android.location.Location;
 
-import com.awolity.trakr.activitytype.ActivityType;
-import com.awolity.trakr.activitytype.ActivityTypeManager;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.PreferenceUtils;
+import com.google.android.gms.location.LocationRequest;
 
 class TrackRecorderStatus {
 
@@ -16,28 +15,13 @@ class TrackRecorderStatus {
     private int numOfTrackPoints;
     private TrackpointEntity previousSavedTrackpoint, actualSavedTrackpoint, candidateTrackpoint;
     private LowPassFilter altitudeFilter, speedFilter;
-    private final ActivityType activityType;
     private final AltitudeZeroFilter altitudeZeroFilter;
 
     public TrackRecorderStatus(Context context) {
         // MyLog.d(TAG, "TrackRecorderStatus");
-        ActivityType activityType1;
-        activityType1 = PreferenceUtils.getActivityType(context);
-        if (activityType1 == null) {
-            activityType1 = ActivityTypeManager.getInstance(context).getActivityTypes().get(0);
-        }
-
-        activityType = activityType1;
-
-        altitudeFilter = new LowPassFilter(
-                activityType.getRecordParameters().getAltitudeFilterParameter());
-        speedFilter = new LowPassFilter(
-                activityType.getRecordParameters().getSpeedFilterParameter());
+        altitudeFilter = new LowPassFilter(10);
+        speedFilter = new LowPassFilter(2);
         altitudeZeroFilter = new AltitudeZeroFilter();
-    }
-
-    public ActivityType getActivityType() {
-        return activityType;
     }
 
     TrackpointEntity getActualSavedTrackpoint() {
@@ -45,7 +29,7 @@ class TrackRecorderStatus {
     }
 
     void setCandidateTrackpoint(TrackpointEntity candidateTrackpoint) {
-      // MyLog.d(TAG, "setCandidateTrackpoint");
+        // MyLog.d(TAG, "setCandidateTrackpoint");
         this.candidateTrackpoint = candidateTrackpoint;
 
         if (actualSavedTrackpoint != null) {
@@ -63,7 +47,7 @@ class TrackRecorderStatus {
     }
 
     void saveCandidateTrackpoint() {
-      // MyLog.d(TAG, "saveCandidateTrackpoint");
+        // MyLog.d(TAG, "saveCandidateTrackpoint");
         if (this.actualSavedTrackpoint != null) {
             previousSavedTrackpoint = this.actualSavedTrackpoint;
         }
@@ -101,27 +85,27 @@ class TrackRecorderStatus {
     }
 
     int getTrackingDistance() {
-        return activityType.getRecordParameters().getTrackingDistance();
+        return 3;
     }
 
     int getTrackingAccuracy() {
-        return activityType.getRecordParameters().getTrackingAccuracy();
+        return LocationRequest.PRIORITY_HIGH_ACCURACY;
     }
 
     int getTrackingInterval() {
-        return activityType.getRecordParameters().getTrackingInterval();
+        return 3;
     }
 
     int getMinimalRecordAccuracy() {
-        return activityType.getRecordParameters().getMinimalRecordAccuracy();
+        return 20;
     }
 
     int getAltitudeFilterParameter() {
-        return activityType.getRecordParameters().getAltitudeFilterParameter();
+        return 10;
     }
 
     int getSpeedFilterParameter() {
-        return activityType.getRecordParameters().getSpeedFilterParameter();
+        return 2;
     }
 
     TrackpointEntity getPreviousSavedTrackpoint() {
@@ -130,7 +114,7 @@ class TrackRecorderStatus {
 
     private static double getGeologicalDistance(TrackpointEntity actualTrackpoint,
                                                 TrackpointEntity previousTrackpoint) {
-      // MyLog.d(TAG, "getGeologicalDistance");
+        // MyLog.d(TAG, "getGeologicalDistance");
         Location previousLocation = new Location("previousTrackpointLocation");
         previousLocation.setLatitude(previousTrackpoint.getLatitude());
         previousLocation.setLongitude(previousTrackpoint.getLongitude());
