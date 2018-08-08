@@ -31,7 +31,8 @@ import javax.inject.Inject;
 
 public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
-    public static final String TRACKID_BROADCAST_NAME = "com.awolity.trakr.trackrecorder.TrackRecorder.trackIdBroadcast";
+    public static final String TRACKID_BROADCAST_NAME
+            = "com.awolity.trakr.trackrecorder.TrackRecorder.trackIdBroadcast";
     public static final String BROADCAST_TO_WIDGET = "android.appwidget.action.APPWIDGET_UPDATE";
     public static final String EXTRA_TRACK_ID = "extra_track_id";
     private static final String TAG = TrackRecorder.class.getSimpleName();
@@ -137,36 +138,19 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     @Override
     public void onLocationChanged(Location location) {
       // MyLog.d(TAG, "onLocationChanged");
-
         status.setCandidateTrackpoint(createTrackPoint(location));
-
         // if accuracy is below the required level, drop the point
         if (!status.isAccurateEnough()) {
-          // MyLog.d(TAG, "    - accuracy is below expected - DROPPING");
             return;
         }
-
         // filtering is only possible if there is a previous data point
         if (status.isThereASavedTrackpoint()) {
-          // MyLog.d(TAG, "    - there IS a previous trackpoint ");
-
             if (status.isDistanceFarEnoughFromLastTrackpoint()) {
-              // MyLog.d(TAG, "        - the new location is away from previous, SAVING");
-
                 saveTrackAndPointToDb();
-                // updateNotification(context, track);
-            } else {
-              // MyLog.d(TAG, "        - the new location is exactly the previous, DROPPING");
             }
-
         } else {
-          // MyLog.d(TAG, "    - there is NO previous trackpoint ");
             if (status.getCandidateTrackpoint().getAltitude() != 0) {
-              // MyLog.d(TAG, "        - there is no previous trackpoint and this one has valid altitude. SAVING");
                 saveTrackAndPointToDb();
-                // updateNotification(context, track);
-            } else {
-              // MyLog.d(TAG, "        - there is no previous trackpoint and this one's altitude is 0. DROPPING");
             }
         }
     }
@@ -185,7 +169,8 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
         if (status.isThereASavedTrackpoint()) {
             track.increaseElapsedTime(status.getActualSavedTrackpoint().getTime());
             track.increaseDistance(status.getActualSavedTrackpoint().getDistance());
-            track.calculateAscentDescent(status.getActualSavedTrackpoint(), status.getPreviousSavedTrackpoint());
+            track.calculateAscentDescent(status.getActualSavedTrackpoint(),
+                    status.getPreviousSavedTrackpoint());
             track.calculateAvgSpeed();
             track.checkSetExtremeValues(status.getActualSavedTrackpoint());
         }
@@ -276,8 +261,9 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
             TrakrWidget.updateAppWidget(context,
                     appWidgetManager,
                     appWidgetId,
-                    StringUtils.getElapsedTimeAsString(System.currentTimeMillis() - track.getStartTime()),
-                    StringUtils.getDistanceAsThreeCharactersString(track.getDistance()),0);
+                    StringUtils.getElapsedTimeAsString(
+                            System.currentTimeMillis() - track.getStartTime()),
+                    StringUtils.getDistanceAsThreeCharactersString(track.getDistance()));
         }
     }
 

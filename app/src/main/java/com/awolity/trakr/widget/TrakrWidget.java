@@ -47,7 +47,7 @@ public class TrakrWidget extends AppWidgetProvider {
     }
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                       int appWidgetId, String duration, String distance, int iconResource) {
+                                       int appWidgetId, String duration, String distance) {
       // MyLog.d(TAG, "updateAppWidget");
 
         Intent intent = new Intent(context, MainActivity.class);
@@ -65,7 +65,6 @@ public class TrakrWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.tv_label_distance, context.getString(R.string.distance_view_title));
         views.setImageViewResource(R.id.iv_icon_distance, R.drawable.ic_distance);
         views.setImageViewResource(R.id.iv_icon_duration, R.drawable.ic_duration);
-        views.setImageViewResource(R.id.iv_icon, iconResource);
 
         // Widgets allow click handlers to only launch pending intents
         views.setOnClickPendingIntent(R.id.ll_widget, showPendingIntent);

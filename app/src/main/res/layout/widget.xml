@@ -15,8 +15,8 @@
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:contentDescription="@string/activity_track_list_item_track_iv_initial_content_desc"
-        android:src="@drawable/widget_icon"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/widget_icon" />
 
     <ImageView
         android:id="@+id/iv_icon_duration"
