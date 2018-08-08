@@ -96,9 +96,9 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
         Description description = new Description();
         description.setText("");
         chart.setDescription(description);
-        chart.setTouchEnabled(true);
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
+        chart.setTouchEnabled(false);
+        chart.setDragEnabled(false);
+        chart.setScaleEnabled(false);
         chart.setPinchZoom(false);
         Legend l = chart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
@@ -158,6 +158,8 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
         setDataVisibility(false);
         stopObserve();
         stopChartUpdater();
+        trackWithPoints = null;
+        chart.clear();
     }
 
     private void updateChart() {
