@@ -17,6 +17,7 @@ import com.awolity.trakr.customviews.SecondaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
+import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.MapUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -112,12 +113,10 @@ public class TrackListAdapter
         private final SecondaryPropertyViewIcon elevationView;
         private final FrameLayout clickOverlay;
         private final MapView mapView;
-        private GoogleMap googleMap;
         private Polyline polyline;
 
         TrackItemViewHolder(View itemView) {
             super(itemView);
-          // MyLog.d(TAG, "TrackItemViewHolder " + TrackItemViewHolder.this.hashCode());
             clickOverlay = itemView.findViewById(R.id.fl_click_overlay);
             titleTv = itemView.findViewById(R.id.tv_title);
             dateTv = itemView.findViewById(R.id.tv_date);
@@ -149,24 +148,32 @@ public class TrackListAdapter
           // MyLog.d(TAG, "bind " + TrackItemViewHolder.this.hashCode());
             this.trackWithPoints = trackWithPoints;
             titleTv.setText(this.trackWithPoints.getTitle());
-            dateTv.setText(DateUtils.getRelativeTimeSpanString(this.trackWithPoints.getStartTime()).toString());
+            dateTv.setText(DateUtils.getRelativeTimeSpanString(
+                    this.trackWithPoints.getStartTime()).toString());
 
-            // TODO: initialIv.setImageResource(activityType.getIconResource());
+            String firstLetter = "";
+            if (trackWithPoints.getTitle() != null && !trackWithPoints.getTitle().isEmpty()) {
+                firstLetter = trackWithPoints.getTitle().substring(0, 1);
+            }
+            initialIv.setImageDrawable(
+                    Utility.getInitial(firstLetter,
+                            String.valueOf(trackWithPoints.getStartTime())));
 
-            distanceView.setValue(StringUtils.getDistanceAsThreeCharactersString(trackWithPoints.getDistance()));
-            elevationView.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getAscent()));
-            durationView.setValue(StringUtils.getElapsedTimeAsString(trackWithPoints.getElapsedTime()));
+            distanceView.setValue(StringUtils.getDistanceAsThreeCharactersString(
+                    trackWithPoints.getDistance()));
+            elevationView.setValue(String.format(Locale.getDefault(),
+                    "%.0f", trackWithPoints.getAscent()));
+            durationView.setValue(StringUtils.getElapsedTimeAsString(
+                    trackWithPoints.getElapsedTime()));
 
             mapView.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(final GoogleMap googleMap) {
-                  // MyLog.d(TAG, "onMapReady: " + TrackItemViewHolder.this.hashCode());
-                    TrackItemViewHolder.this.googleMap = googleMap;
                     if (polyline != null) {
-                      // MyLog.d(TAG, "onMapReady: " + TrackItemViewHolder.this.hashCode() + " the map already contains a polyline, removing");
                         polyline.remove();
                     }
-                    polyline = MapUtils.setupTrackPolyLine(context, googleMap, trackWithPoints, true);
+                    polyline = MapUtils.setupTrackPolyLine(context, googleMap,
+                            trackWithPoints, true);
                     mapView.onResume();
                 }
             });

@@ -16,6 +16,7 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.utils.StringUtils;
+import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 
 import java.util.Locale;
@@ -31,7 +32,6 @@ public class TrackDetailActivityDataFragment extends Fragment {
     private TextView titleTextView, dateTextView;
     private ImageButton editTitleImageButton;
     private ImageView initialImageView;
-//    private TrackEntity trackEntity;
 
     public static TrackDetailActivityDataFragment newInstance(long trackId) {
         TrackDetailActivityDataFragment fragment = new TrackDetailActivityDataFragment();
@@ -57,7 +57,8 @@ public class TrackDetailActivityDataFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.activity_track_detail_fragment_data, container, false);
+        View view = inflater.inflate(R.layout.activity_track_detail_fragment_data,
+                container, false);
         setupWidgets(view);
         resetWidgets();
         setupViewModel();
@@ -135,7 +136,8 @@ public class TrackDetailActivityDataFragment extends Fragment {
     }
 
     private void setupViewModel() {
-        TrackViewModel trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
+        TrackViewModel trackViewModel = ViewModelProviders.of(getActivity())
+                .get(TrackViewModel.class);
         trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
             @Override
             public void onChanged(@Nullable final TrackWithPoints trackWithPoints) {
@@ -145,7 +147,8 @@ public class TrackDetailActivityDataFragment extends Fragment {
                     editTitleImageButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            EditTitleDialog dialog = EditTitleDialog.newInstance(trackWithPoints.getTitle());
+                            EditTitleDialog dialog = EditTitleDialog.newInstance(
+                                    trackWithPoints.getTitle());
                             dialog.show(getActivity().getSupportFragmentManager(), null);
                         }
                     });
@@ -156,18 +159,31 @@ public class TrackDetailActivityDataFragment extends Fragment {
 
     private void setData(TrackWithPoints trackWithPoints) {
         // MyLog.d(TAG, "setData");
-        // TODO initialImageView.setImageResource(activityType.getIconResource());
+
+        String firstLetter = "";
+        if (trackWithPoints.getTitle() != null && !trackWithPoints.getTitle().isEmpty()) {
+            firstLetter = trackWithPoints.getTitle().substring(0, 1);
+        }
+
+        initialImageView.setImageDrawable(
+                Utility.getInitial(firstLetter, String.valueOf(trackWithPoints.getStartTime())));
 
         titleTextView.setText(trackWithPoints.getTitle());
         dateTextView.setText(StringUtils.getDateAsStringLocale(trackWithPoints.getStartTime()));
         startTimePpvi.setValue(StringUtils.getTimeAsString(trackWithPoints.getStartTime()));
-        endTimePpvi.setValue(StringUtils.getTimeAsString(trackWithPoints.getStartTime() + trackWithPoints.getElapsedTime()));
+        endTimePpvi.setValue(StringUtils.getTimeAsString(trackWithPoints.getStartTime()
+                + trackWithPoints.getElapsedTime()));
         durationPpvi.setValue(StringUtils.getElapsedTimeAsString(trackWithPoints.getElapsedTime()));
-        distancePpvi.setValue(StringUtils.getDistanceAsThreeCharactersString(trackWithPoints.getDistance()));
-        ascentPpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getAscent()));
-        descentPpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getDescent()));
-        maxSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getMaxSpeed()));
-        avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getAvgSpeed()));
+        distancePpvi.setValue(StringUtils.getDistanceAsThreeCharactersString(
+                trackWithPoints.getDistance()));
+        ascentPpvi.setValue(String.format(Locale.getDefault(), "%.0f",
+                trackWithPoints.getAscent()));
+        descentPpvi.setValue(String.format(Locale.getDefault(), "%.0f",
+                trackWithPoints.getDescent()));
+        maxSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(
+                trackWithPoints.getMaxSpeed()));
+        avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(
+                trackWithPoints.getAvgSpeed()));
         double maxSpeed = trackWithPoints.getMaxSpeed();
         if (maxSpeed > 1) {
             maxPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((60 * (1 / maxSpeed))));
@@ -180,7 +196,9 @@ public class TrackDetailActivityDataFragment extends Fragment {
         } else {
             avgPacePpvi.setValue("-");
         }
-        minAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getMinAltitude()));
-        maxAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getMaxAltitude()));
+        minAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f",
+                trackWithPoints.getMinAltitude()));
+        maxAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f",
+                trackWithPoints.getMaxAltitude()));
     }
 }

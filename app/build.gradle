@@ -102,6 +102,10 @@ dependencies {
     implementation 'com.codebutchery.android:gpx_lib:1.0.3'
     // Timber
     implementation 'com.jakewharton.timber:timber:4.5.1'
+    // text drawable
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    // circle imageview
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
 
 
