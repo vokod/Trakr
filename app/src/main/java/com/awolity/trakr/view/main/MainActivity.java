@@ -558,7 +558,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onServiceStarted(long trackId) {
         // MyLog.d(TAG, "onServiceStarted");
-        fab.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
+        MainActivityUtils.startFabAnimation(fab);
         this.trackId = trackId;
         setupTrackViewModel(trackId);
         trackFragment.startTrackDataUpdate(trackId);
@@ -570,6 +570,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onServiceStopped() {
         // MyLog.d(TAG, "onServiceStopped");
+        MainActivityUtils.stopFabAnimation(fab);
         trackFragment.stopTrackDataUpdate();
         chartsFragment.stopTrackDataUpdate();
         status.setRecording(false);

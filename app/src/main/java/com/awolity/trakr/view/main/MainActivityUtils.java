@@ -6,7 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Animatable2;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -143,5 +148,24 @@ class MainActivityUtils {
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    static void startFabAnimation(FloatingActionButton fab) {
+        AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) fab.getDrawable();
+
+
+        drawable.registerAnimationCallback(new Animatable2.AnimationCallback() {
+            @Override
+            public void onAnimationEnd(Drawable drawable) {
+                ((Animatable) drawable).start();
+            }
+        });
+        drawable.start();
+    }
+
+    static void stopFabAnimation(FloatingActionButton fab) {
+        AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) fab.getDrawable();
+        drawable.clearAnimationCallbacks();
+        drawable.stop();
     }
 }
