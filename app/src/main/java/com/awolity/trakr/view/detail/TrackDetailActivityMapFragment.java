@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
+import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
@@ -21,6 +22,7 @@ import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.MapUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
+import com.awolity.trakr.viewmodel.model.MapPoint;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
 import java.util.Locale;
 
 public class TrackDetailActivityMapFragment extends Fragment implements OnMapReadyCallback {
@@ -36,7 +39,8 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
 
     private GoogleMap googleMap;
     private MapView mapView;
-    private TrackWithPoints trackWithPoints;
+    private TrackEntity trackEntity;
+    private List<MapPoint> mapPoints;
     private TextView titleTextView, dateTextView;
     private ImageButton editTitleImageButton;
     private ImageView initialImageView;
@@ -79,15 +83,24 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
     private void setupViewModel() {
         // MyLog.d(TAG, "setupViewModel");
         TrackViewModel trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
-        //trackViewModel.init(trackId);
+
+        trackViewModel.getMapPoints().observe(this, new Observer<List<MapPoint>>() {
+            @Override
+            public void onChanged(@Nullable List<MapPoint> mapPoints) {
+                if (mapPoints != null) {
+                    TrackDetailActivityMapFragment.this.mapPoints = mapPoints;
+                    setTrack();
+                }
+            }
+        });
+
         trackViewModel.getTrackWithPoints()
                 .observe(this, new Observer<TrackWithPoints>() {
                     @Override
                     public void onChanged(@Nullable final TrackWithPoints trackWithPoints) {
                         // MyLog.d(TAG, "onChanged");
                         if (trackWithPoints != null) {
-                            TrackDetailActivityMapFragment.this.trackWithPoints = trackWithPoints;
-                            showTrack();
+                            setTrack();
                             setData(trackWithPoints);
 
                             editTitleImageButton.setOnClickListener(new View.OnClickListener() {
@@ -110,15 +123,15 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
         this.googleMap = googleMap;
         googleMap.getUiSettings().setMapToolbarEnabled(true);
         googleMap.getUiSettings().setCompassEnabled(true);
-        showTrack();
+        setTrack();
     }
 
-    private void showTrack() {
-        if (googleMap != null && trackWithPoints != null) {
-            MapUtils.setupTrackPolyLine(getActivity(), googleMap, trackWithPoints, true);
-            MapUtils.moveCameraToTrack(googleMap, trackWithPoints);
-            LatLng start = trackWithPoints.getPointsLatLng().get(0);
-            LatLng finish = trackWithPoints.getPointsLatLng().get(trackWithPoints.getPointsLatLng().size() - 1);
+    private void setTrack() {
+        if (googleMap != null && trackEntity != null && mapPoints != null) {
+            MapUtils.setupTrackPolyLine(getActivity(), googleMap, mapPoints);
+            MapUtils.moveCameraToTrack(googleMap, trackEntity);
+            LatLng start = mapPoints.get(0).toLatLng();
+            LatLng finish = mapPoints.get(mapPoints.size()-1).toLatLng();
             googleMap.addMarker(new MarkerOptions()
                     .position(start)
                     .title(getString(R.string.start))

@@ -1,12 +1,15 @@
 package com.awolity.trakr.viewmodel.model;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class MapPoint {
 
     private double latitude, longitude;
 
-    public MapPoint(){}
+    public MapPoint() {
+    }
 
-    public MapPoint(double latitude, double longitude){
+    public MapPoint(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -25,5 +28,9 @@ public class MapPoint {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public LatLng toLatLng() {
+        return new LatLng(latitude, longitude);
     }
 }
