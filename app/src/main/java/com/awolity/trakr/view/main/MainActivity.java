@@ -258,6 +258,7 @@ public class MainActivity extends AppCompatActivity
                 trackFragment.startTrackDataUpdate(trackId);
                 chartsFragment.startTrackDataUpdate(trackId);
                 status.setRecording(true);
+                MainActivityUtils.startFabAnimation(fab);
             }
         }
     }

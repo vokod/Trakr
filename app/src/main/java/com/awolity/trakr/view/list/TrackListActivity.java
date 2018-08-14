@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
+import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
@@ -55,8 +56,11 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
 
     private void setupViewModel() {
       // MyLog.d(TAG, "setupViewModel");
-        TrackListViewModel trackListViewModel = ViewModelProviders.of(this).get(TrackListViewModel.class);
-        trackListViewModel.getTracksWithPoints().observe(this, new Observer<List<TrackWithPoints>>() {
+        TrackListViewModel trackListViewModel = ViewModelProviders.of(this)
+                .get(TrackListViewModel.class);
+        trackListViewModel.getSimplifiedTracksWithPoints(
+                Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_LIST_ITEM_POLYLINES)
+                .observe(this, new Observer<List<TrackWithPoints>>() {
             @Override
             public void onChanged(@Nullable List<TrackWithPoints> trackWithPointsList) {
                 if (trackWithPointsList != null) {
