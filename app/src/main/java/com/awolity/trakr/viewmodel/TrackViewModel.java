@@ -82,9 +82,8 @@ public class TrackViewModel extends ViewModel {
                         }
                     }
                 });
-        return trackRepository.getTrackWithPoints(trackId);
+        return simplifiedTrackWithPoints;
     }
-
 
     public LiveData<List<TrackpointEntity>> getTrackpointsList() {
         checkTrackId();
