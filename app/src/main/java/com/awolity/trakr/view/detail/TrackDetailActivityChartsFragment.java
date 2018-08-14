@@ -20,6 +20,7 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.github.mikephil.charting.charts.LineChart;
@@ -192,22 +193,24 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setupViewModel() {
-        TrackViewModel trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
-        trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
-            @Override
-            public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-                if (trackWithPoints != null) {
-                    TrackDetailActivityChartsFragment.this.trackWithPoints = trackWithPoints;
-                    setWidgetData(trackWithPoints);
-                    setSpeedChartDataByTime(trackWithPoints);
-                    setElevationChartDataByTime(trackWithPoints);
-                }
-            }
-        });
+        TrackViewModel trackViewModel = ViewModelProviders.of(getActivity())
+                .get(TrackViewModel.class);
+        trackViewModel.getSimplifiedTrackWithPoints(Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_CHARTS)
+                .observe(this, new Observer<TrackWithPoints>() {
+                    @Override
+                    public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
+                        if (trackWithPoints != null) {
+                            TrackDetailActivityChartsFragment.this.trackWithPoints = trackWithPoints;
+                            setWidgetData(trackWithPoints);
+                            setSpeedChartDataByTime(trackWithPoints);
+                            setElevationChartDataByTime(trackWithPoints);
+                        }
+                    }
+                });
     }
 
     private void setWidgetData(TrackWithPoints trackWithPoints) {
-      // MyLog.d(TAG, "setWidgetData");
+        // MyLog.d(TAG, "setWidgetData");
 
         maxSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getMaxSpeed()));
         avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getAvgSpeed()));
@@ -218,7 +221,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
             maxPacePpvi.setValue("-");
         }
         double avgSpeed = trackWithPoints.getAvgSpeed();
-        if(avgSpeed>1){
+        if (avgSpeed > 1) {
             avgPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((60 * (1 / avgSpeed))));
         } else {
             avgPacePpvi.setValue("-");
@@ -230,7 +233,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setElevationChartDataByTime(TrackWithPoints trackWithPoints) {
-        if(trackWithPoints.getTrackPoints().size()<=2){
+        if (trackWithPoints.getTrackPoints().size() <= 2) {
             return;
         }
         List<Entry> values = new ArrayList<>();
@@ -251,7 +254,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setElevationChartDataByDistance(TrackWithPoints trackWithPoints) {
-        if(trackWithPoints.getTrackPoints().size()<=2){
+        if (trackWithPoints.getTrackPoints().size() <= 2) {
             return;
         }
         List<Entry> values = new ArrayList<>();
@@ -269,7 +272,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setSpeedChartDataByTime(TrackWithPoints trackWithPoints) {
-        if(trackWithPoints.getTrackPoints().size()<=2){
+        if (trackWithPoints.getTrackPoints().size() <= 2) {
             return;
         }
         List<Entry> values = new ArrayList<>();
@@ -290,7 +293,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setSpeedChartDataByDistance(TrackWithPoints trackWithPoints) {
-        if(trackWithPoints.getTrackPoints().size()<=2){
+        if (trackWithPoints.getTrackPoints().size() <= 2) {
             return;
         }
         List<Entry> values = new ArrayList<>();
@@ -309,7 +312,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setPaceChartDataByTime(TrackWithPoints trackWithPoints) {
-        if(trackWithPoints.getTrackPoints().size()<=2){
+        if (trackWithPoints.getTrackPoints().size() <= 2) {
             return;
         }
         List<Entry> values = new ArrayList<>();
@@ -340,7 +343,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setPaceChartDataByDistance(TrackWithPoints trackWithPoints) {
-        if(trackWithPoints.getTrackPoints().size()<=2){
+        if (trackWithPoints.getTrackPoints().size() <= 2) {
             return;
         }
         List<Entry> values = new ArrayList<>();
