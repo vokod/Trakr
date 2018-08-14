@@ -13,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
+import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
 import com.awolity.trakr.customviews.SecondaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.MapUtils;
@@ -44,8 +44,8 @@ public class TrackListAdapter
         this.context = context;
     }
 
-    public void updateItems(@NonNull  final List<TrackWithPoints> newItems) {
-      // MyLog.d(TAG, "updateItems");
+    public void updateItems(@NonNull final List<TrackWithPoints> newItems) {
+        // MyLog.d(TAG, "updateItems");
         deleteInvalidTracks(newItems);
         final List<TrackWithPoints> oldItems = new ArrayList<>(this.items);
         this.items.clear();
@@ -86,14 +86,14 @@ public class TrackListAdapter
 
     @Override
     public TrackItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      // MyLog.d(TAG, "onCreateViewHolder");
+        // MyLog.d(TAG, "onCreateViewHolder");
         View v = layoutInflater.inflate(R.layout.activity_track_list_item_track_list, parent, false);
         return new TrackItemViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(TrackItemViewHolder holder, int position) {
-      // MyLog.d(TAG, "onBindViewHolder");
+        // MyLog.d(TAG, "onBindViewHolder");
         holder.bind(items.get(position));
     }
 
@@ -108,9 +108,9 @@ public class TrackListAdapter
         private final TextView titleTv;
         private final TextView dateTv;
         private final ImageView initialIv;
-        private final SecondaryPropertyViewIcon distanceView;
-        private final SecondaryPropertyViewIcon durationView;
-        private final SecondaryPropertyViewIcon elevationView;
+        private final PrimaryPropertyViewIcon distanceView;
+        private final PrimaryPropertyViewIcon durationView;
+        private final PrimaryPropertyViewIcon elevationView;
         private final FrameLayout clickOverlay;
         private final MapView mapView;
         private Polyline polyline;
@@ -123,7 +123,7 @@ public class TrackListAdapter
             initialIv = itemView.findViewById(R.id.iv_icon);
             distanceView = itemView.findViewById(R.id.spv_distance);
             durationView = itemView.findViewById(R.id.spv_duration);
-            elevationView = itemView.findViewById(R.id.spv_elevation);
+            elevationView = itemView.findViewById(R.id.spv_ascent);
             mapView = itemView.findViewById(R.id.mapView);
 
             durationView.setup(context.getString(R.string.elapsed_time_view_title),
@@ -139,13 +139,12 @@ public class TrackListAdapter
                     context.getString(R.string.ascent_view_default_value),
                     R.drawable.ic_ascent);
 
-
             mapView.onCreate(null);
             mapView.setClickable(false);
         }
 
         void bind(final TrackWithPoints trackWithPoints) {
-          // MyLog.d(TAG, "bind " + TrackItemViewHolder.this.hashCode());
+            // MyLog.d(TAG, "bind " + TrackItemViewHolder.this.hashCode());
             this.trackWithPoints = trackWithPoints;
             titleTv.setText(this.trackWithPoints.getTitle());
             dateTv.setText(DateUtils.getRelativeTimeSpanString(
@@ -157,7 +156,8 @@ public class TrackListAdapter
             }
             initialIv.setImageDrawable(
                     Utility.getInitial(firstLetter,
-                            String.valueOf(trackWithPoints.getStartTime())));
+                            String.valueOf(trackWithPoints.getStartTime()),
+                            initialIv.getLayoutParams().width));
 
             distanceView.setValue(StringUtils.getDistanceAsThreeCharactersString(
                     trackWithPoints.getDistance()));
@@ -181,13 +181,13 @@ public class TrackListAdapter
             clickOverlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    callback.onTrackItemClicked(trackWithPoints.getTrackId());
+                    callback.onTrackItemClicked(trackWithPoints.getTrackId(), itemView);
                 }
             });
         }
     }
 
     public interface TrackItemCallback {
-        void onTrackItemClicked(long trackId);
+        void onTrackItemClicked(long trackId, View itemView);
     }
 }

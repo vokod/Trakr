@@ -210,7 +210,7 @@
                     app:layout_constraintGuide_percent="0.5" />
 
                 <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
-                    android:id="@+id/ppvi_descent"
+                    android:id="@+id/ppvi_ascent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -219,12 +219,12 @@
                     app:layout_constraintTop_toBottomOf="@id/chart_elevation" />
 
                 <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
-                    android:id="@+id/ppvi_ascent"
+                    android:id="@+id/ppvi_descent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     app:layout_constraintStart_toStartOf="@+id/guideline_2"
-                    app:layout_constraintTop_toTopOf="@+id/ppvi_descent" />
+                    app:layout_constraintTop_toTopOf="@+id/ppvi_ascent" />
 
                 <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
                     android:id="@+id/ppvi_min_altitude"
@@ -235,7 +235,7 @@
                     android:layout_marginTop="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ppvi_descent" />
+                    app:layout_constraintTop_toBottomOf="@id/ppvi_ascent" />
 
                 <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
                     android:id="@+id/ppvi_max_altitude"

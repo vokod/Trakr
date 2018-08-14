@@ -585,7 +585,8 @@ public class MainActivity extends AppCompatActivity
                         if (trackId != Constants.NO_LAST_RECORDED_TRACK) {
                             if (trackWithPoints.getTrackPoints().size() > 1) {
                                 trackViewModel.finishRecording();
-                                Intent intent = TrackDetailActivity.getStarterIntent(MainActivity.this, trackId);
+                                Intent intent = TrackDetailActivity.getStarterIntent(
+                                        MainActivity.this, trackId, null);
                                 startActivity(intent);
                                 trackViewModel.getTrackWithPoints().removeObserver(this);
                                 trackViewModel.reset();

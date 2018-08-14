@@ -89,8 +89,8 @@ public class TrackDetailActivityChartsFragment extends Fragment
         avgPacePpvi = view.findViewById(R.id.ppvi_avg_pace);
         speedChart = view.findViewById(R.id.chart_speed);
         elevationChart = view.findViewById(R.id.chart_elevation);
-        ascentPpvi = view.findViewById(R.id.ppvi_descent);
-        descentPpvi = view.findViewById(R.id.ppvi_ascent);
+        ascentPpvi = view.findViewById(R.id.ppvi_ascent);
+        descentPpvi = view.findViewById(R.id.ppvi_descent);
         maxAltitudePpvi = view.findViewById(R.id.ppvi_max_altitude);
         minAltitudePpvi = view.findViewById(R.id.ppvi_min_altitude);
         paceCheckBox = view.findViewById(R.id.cb_pace);

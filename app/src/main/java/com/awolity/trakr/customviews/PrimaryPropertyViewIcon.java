@@ -45,29 +45,32 @@ public class PrimaryPropertyViewIcon extends ConstraintLayout {
         iconImageView = findViewById(R.id.iv_icon_duration);
     }
 
-    private void setLabel(String labelText){
-       labelTextView.setText(labelText);
+    private void setLabel(String labelText) {
+        labelTextView.setText(labelText);
     }
 
-    public void setValue(String valueText){
+    public void setValue(String valueText) {
         valueTextView.setText(valueText);
     }
 
-    public String getValue(){return valueTextView.getText().toString();}
+    public String getValue() {
+        return valueTextView.getText().toString();
+    }
 
-    private void setUnit(String unitText){
+    private void setUnit(String unitText) {
         unitTextView.setText(unitText);
     }
 
-    private void setIcon(int resId){
+    private void setIcon(int resId) {
         iconImageView.setImageResource(resId);
     }
 
-    public void setup(String label, String unit, String defaultValue, int iconResource){
+    public void setup(String label, String unit, String defaultValue, int iconResource) {
         setLabel(label);
         setUnit(unit);
         setValue(defaultValue);
         setIcon(iconResource);
     }
+
 
 }

@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -69,7 +70,7 @@ public class NotificationUtils {
     }
 
     public static void showExportTrackNotification(Context context, long trackId, String fileName, String path) {
-        Intent intent = TrackDetailActivity.getStarterIntent(context, trackId);
+        Intent intent = TrackDetailActivity.getStarterIntent(context, trackId, null);
 
         // Create the TaskStackBuilder and add the intent, which inflates the back stack
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -111,7 +112,7 @@ public class NotificationUtils {
     }
 
     public static void showExportTrackErrorNotification(Context context, long trackId, String fileName, String path) {
-        Intent intent = TrackDetailActivity.getStarterIntent(context, trackId);
+        Intent intent = TrackDetailActivity.getStarterIntent(context, trackId, null);
 
         // Create the TaskStackBuilder and add the intent, which inflates the back stack
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
