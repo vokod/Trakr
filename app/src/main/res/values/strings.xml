@@ -219,4 +219,13 @@
     <string name="elevation">Elevation</string>
     <string name="title_activity_settings">Settings</string>
 
+    <!-- Shared transition names -->
+    <string name="transition_ppvi_distance" translatable="false">transition_ppvi_distance</string>
+    <string name="transition_ppvi_duration" translatable="false">transition_ppvi_duration</string>
+    <string name="transition_ppvi_ascent" translatable="false">transition_ppvi_ascent</string>
+    <string name="transition_tv_title" translatable="false">transition_tv_title</string>
+    <string name="transition_tv_date" translatable="false">transition_tv_date</string>
+    <string name="transition_iv_icon" translatable="false">transition_iv_icon</string>
+
+
 </resources>

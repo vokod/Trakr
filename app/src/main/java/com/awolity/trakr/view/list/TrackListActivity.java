@@ -88,18 +88,22 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         ImageView iconIv = itemView.findViewById(R.id.iv_icon);
         TextView dateTv = itemView.findViewById(R.id.tv_date);
 
-
         Intent intent = TrackDetailActivity.getStarterIntent(this, trackId,
                 Utility.convertToBitmap(iconIv.getDrawable(),
-                        (int)( iconIv.getLayoutParams().width), iconIv.getLayoutParams().height));
+                        iconIv.getLayoutParams().width, iconIv.getLayoutParams().height));
 
-        // TODO: ezeket string resourcokba
-        Pair<View, String> p1 = Pair.create((View) spvDistance, "spv_distance");
-        Pair<View, String> p2 = Pair.create((View) spvDuration, "spv_duration");
-        Pair<View, String> p3 = Pair.create((View) spvAscent, "spv_ascent");
-        Pair<View, String> p4 = Pair.create((View) titleTv, "tv_title");
-        Pair<View, String> p5 = Pair.create((View) iconIv, "transition_icon");
-        Pair<View, String> p6 = Pair.create((View) dateTv, "tv_date");
+        Pair<View, String> p1 = Pair.create((View) spvDistance,
+                getString(R.string.transition_ppvi_distance));
+        Pair<View, String> p2 = Pair.create((View) spvDuration,
+                getString(R.string.transition_ppvi_duration));
+        Pair<View, String> p3 = Pair.create((View) spvAscent,
+                getString(R.string.transition_ppvi_ascent));
+        Pair<View, String> p4 = Pair.create((View) titleTv,
+                getString(R.string.transition_tv_title));
+        Pair<View, String> p5 = Pair.create((View) iconIv,
+                getString(R.string.transition_iv_icon));
+        Pair<View, String> p6 = Pair.create((View) dateTv,
+                getString(R.string.transition_tv_date));
         ActivityOptionsCompat options = ActivityOptionsCompat.
                 makeSceneTransitionAnimation(this, p1, p2, p3, p4, p5, p6);
         startActivity(intent, options.toBundle());

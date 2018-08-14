@@ -22,7 +22,7 @@
 
             <ImageView
                 android:id="@+id/iv_icon"
-                android:transitionName="transition_icon"
+                android:transitionName="@string/transition_iv_icon"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginBottom="12dp"
@@ -38,7 +38,7 @@
 
             <TextView
                 android:id="@+id/tv_title"
-                android:transitionName="tv_title"
+                android:transitionName="@string/transition_tv_title"
                 style="@style/TrackDetailTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
 
             <TextView
                 android:id="@+id/tv_date"
-                android:transitionName="tv_date"
+                android:transitionName="@string/transition_tv_date"
                 style="@style/TrackDetailDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
 
                 <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
                     android:id="@+id/ppvi_distance"
-                    android:transitionName="spv_distance"
+                    android:transitionName="@string/transition_ppvi_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -130,7 +130,7 @@
 
                 <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
                     android:id="@+id/ppvi_duration"
-                    android:transitionName="spv_duration"
+                    android:transitionName="@string/transition_ppvi_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -173,7 +173,7 @@
 
                 <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
                     android:id="@+id/ppvi_ascent"
-                    android:transitionName="spv_ascent"
+                    android:transitionName="@string/transition_ppvi_ascent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
