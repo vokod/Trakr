@@ -21,12 +21,12 @@ import android.widget.TextView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
-import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.viewmodel.TrackViewModel;
+import com.awolity.trakr.viewmodel.model.ChartPoint;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -52,7 +52,8 @@ public class TrackDetailActivityChartsFragment extends Fragment
     private LineChart speedChart, elevationChart;
     private int xAxis = 0;
     private boolean isSpeed = true;
-    private TrackWithPoints trackWithPoints;
+    private TrackEntity trackEntity;
+    private List<ChartPoint> chartPoints;
     private TextView titleTextView, dateTextView;
     private ImageButton editTitleImageButton;
     private ImageView initialImageView;
@@ -111,12 +112,12 @@ public class TrackDetailActivityChartsFragment extends Fragment
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 speedCheckBox.setChecked(!b);
-                if (b && trackWithPoints != null) {
+                if (b && trackEntity != null) {
                     isSpeed = false;
                     if (xAxis == 0) {
-                        setPaceChartDataByTime(trackWithPoints);
+                        setPaceChartDataByTime(chartPoints);
                     } else if (xAxis == 1) {
-                        setPaceChartDataByDistance(trackWithPoints);
+                        setPaceChartDataByDistance(chartPoints);
                     }
                 }
             }
@@ -125,12 +126,12 @@ public class TrackDetailActivityChartsFragment extends Fragment
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 paceCheckBox.setChecked(!b);
-                if (b && trackWithPoints != null) {
+                if (b && trackEntity != null) {
                     isSpeed = true;
                     if (xAxis == 0) {
-                        setSpeedChartDataByTime(trackWithPoints);
+                        setSpeedChartDataByTime(chartPoints);
                     } else if (xAxis == 1) {
-                        setSpeedChartDataByDistance(trackWithPoints);
+                        setSpeedChartDataByDistance(chartPoints);
                     }
                 }
             }
@@ -207,78 +208,91 @@ public class TrackDetailActivityChartsFragment extends Fragment
     private void setupViewModel() {
         TrackViewModel trackViewModel = ViewModelProviders.of(getActivity())
                 .get(TrackViewModel.class);
-        trackViewModel.getSimplifiedTrackWithPoints(
-                Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_DETAILS)
-                .observe(this, new Observer<TrackWithPoints>() {
-                    @Override
-                    public void onChanged(@Nullable final TrackWithPoints trackWithPoints) {
-                        if (trackWithPoints != null) {
-                            TrackDetailActivityChartsFragment.this.trackWithPoints = trackWithPoints;
-                            setWidgetData(trackWithPoints);
-                            setSpeedChartDataByDistance(trackWithPoints);
-                            setElevationChartDataByDistance(trackWithPoints);
 
-                            editTitleImageButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    EditTitleDialog dialog = EditTitleDialog.newInstance(
-                                            trackWithPoints.getTitle());
-                                    dialog.show(getActivity().getSupportFragmentManager(), null);
-                                }
-                            });
+        trackViewModel.getChartPoints(
+                Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_DETAILS)
+                .observe(this, new Observer<List<ChartPoint>>() {
+                    @Override
+                    public void onChanged(@Nullable final List<ChartPoint> chartPoints) {
+                        if (chartPoints != null) {
+                            TrackDetailActivityChartsFragment.this.chartPoints = chartPoints;
+
+                            setWidgetData(trackEntity);
+                            setSpeedChartDataByDistance(chartPoints);
+                            setElevationChartDataByDistance(chartPoints);
                         }
                     }
                 });
+
+        trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
+            @Override
+            public void onChanged(@Nullable final TrackEntity trackEntity) {
+                if (trackEntity != null) {
+
+                    setWidgetData(trackEntity);
+
+                    editTitleImageButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            EditTitleDialog dialog = EditTitleDialog.newInstance(
+                                    trackEntity.getTitle());
+                            dialog.show(getActivity().getSupportFragmentManager(), null);
+                        }
+                    });
+                }
+            }
+        });
     }
 
-    private void setWidgetData(TrackWithPoints trackWithPoints) {
+    private void setWidgetData(TrackEntity trackEntity) {
+        if (trackEntity == null) {
+            return;
+        }
+
         String firstLetter = "";
-        if (trackWithPoints.getTitle() != null && !trackWithPoints.getTitle().isEmpty()) {
-            firstLetter = trackWithPoints.getTitle().substring(0, 1);
+        if (trackEntity.getTitle() != null && !trackEntity.getTitle().isEmpty()) {
+            firstLetter = trackEntity.getTitle().substring(0, 1);
         }
 
         initialImageView.setImageDrawable(
-                Utility.getInitial(firstLetter, String.valueOf(trackWithPoints.getStartTime()),
+                Utility.getInitial(firstLetter, String.valueOf(trackEntity.getStartTime()),
                         initialImageView.getLayoutParams().width));
         initialImageView.requestLayout();
 
-        titleTextView.setText(trackWithPoints.getTitle());
-        dateTextView.setText(StringUtils.getDateAsStringLocale(trackWithPoints.getStartTime()));
+        titleTextView.setText(trackEntity.getTitle());
+        dateTextView.setText(StringUtils.getDateAsStringLocale(trackEntity.getStartTime()));
 
-        maxSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getMaxSpeed()));
-        avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getAvgSpeed()));
-        double maxSpeed = trackWithPoints.getMaxSpeed();
+        maxSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackEntity.getMaxSpeed()));
+        avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackEntity.getAvgSpeed()));
+        double maxSpeed = trackEntity.getMaxSpeed();
         if (maxSpeed > 1) {
             maxPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((60 * (1 / maxSpeed))));
         } else {
             maxPacePpvi.setValue("-");
         }
-        double avgSpeed = trackWithPoints.getAvgSpeed();
+        double avgSpeed = trackEntity.getAvgSpeed();
         if (avgSpeed > 1) {
             avgPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((60 * (1 / avgSpeed))));
         } else {
             avgPacePpvi.setValue("-");
         }
-        ascentPpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getAscent()));
-        descentPpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getDescent()));
-        minAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getMinAltitude()));
-        maxAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackWithPoints.getMaxAltitude()));
+        ascentPpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackEntity.getAscent()));
+        descentPpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackEntity.getDescent()));
+        minAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackEntity.getMinAltitude()));
+        maxAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackEntity.getMaxAltitude()));
     }
 
-    private void setElevationChartDataByTime(TrackWithPoints trackWithPoints) {
-        if (trackWithPoints.getTrackPoints().size() <= 2) {
-            return;
-        }
+    private void setElevationChartDataByTime(List<ChartPoint> chartPoints) {
+
         List<Entry> values = new ArrayList<>();
-        List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
-        long startTime = trackWithPoints.getStartTime();
-        long durationInSeconds = (trackpointEntityList.get(trackpointEntityList.size() - 1).getTime()
+        long startTime = chartPoints.get(0).getTime();
+        long durationInSeconds = (chartPoints.get(chartPoints.size() - 1).getTime()
                 - startTime)
                 / 1000;
 
-        for (TrackpointEntity trackpointEntity : trackpointEntityList) {
-            long elapsedSeconds = (trackpointEntity.getTime() - startTime) / 1000;
-            values.add(new Entry((float) elapsedSeconds, (float) trackpointEntity.getAltitude()));
+        for (ChartPoint chartPoint : chartPoints) {
+            long elapsedSeconds = (chartPoint.getTime() - startTime) / 1000;
+            values.add(new Entry((float) elapsedSeconds, (float) chartPoint.getAltitude()));
         }
         elevationChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
         LineDataSet elevationDataSet = new LineDataSet(values, getString(R.string.elevation_chart_title));
@@ -286,17 +300,15 @@ public class TrackDetailActivityChartsFragment extends Fragment
         setElevationChartData(elevationDataSet);
     }
 
-    private void setElevationChartDataByDistance(TrackWithPoints trackWithPoints) {
-        if (trackWithPoints.getTrackPoints().size() <= 2) {
-            return;
-        }
+    private void setElevationChartDataByDistance(List<ChartPoint> chartPoints) {
+
         List<Entry> values = new ArrayList<>();
-        List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
+
         double rollingDistance = 0;
 
-        for (TrackpointEntity trackpointEntity : trackpointEntityList) {
-            rollingDistance += trackpointEntity.getDistance();
-            values.add(new Entry((float) rollingDistance, (float) trackpointEntity.getAltitude()));
+        for (ChartPoint chartPoint : chartPoints) {
+            rollingDistance += chartPoint.getDistance();
+            values.add(new Entry((float) rollingDistance, (float) chartPoint.getAltitude()));
         }
         elevationChart.getXAxis().setValueFormatter(new LargeValueFormatter());
         LineDataSet elevationDataSet = new LineDataSet(values, getString(R.string.elevation_chart_title));
@@ -304,20 +316,18 @@ public class TrackDetailActivityChartsFragment extends Fragment
         setElevationChartData(elevationDataSet);
     }
 
-    private void setSpeedChartDataByTime(TrackWithPoints trackWithPoints) {
-        if (trackWithPoints.getTrackPoints().size() <= 2) {
-            return;
-        }
+    private void setSpeedChartDataByTime(List<ChartPoint> chartPoints) {
+
         List<Entry> values = new ArrayList<>();
-        List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
-        long startTime = trackWithPoints.getStartTime();
-        long durationInSeconds = (trackpointEntityList.get(trackpointEntityList.size() - 1).getTime()
+
+        long startTime = chartPoints.get(0).getTime();
+        long durationInSeconds = (chartPoints.get(chartPoints.size() - 1).getTime()
                 - startTime)
                 / 1000;
 
-        for (TrackpointEntity trackpointEntity : trackpointEntityList) {
-            long elapsedSeconds = (trackpointEntity.getTime() - startTime) / 1000;
-            values.add(new Entry((float) elapsedSeconds, (float) trackpointEntity.getSpeed()));
+        for (ChartPoint chartPoint : chartPoints) {
+            long elapsedSeconds = (chartPoint.getTime() - startTime) / 1000;
+            values.add(new Entry((float) elapsedSeconds, (float) chartPoint.getSpeed()));
         }
         speedChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
         LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
@@ -325,18 +335,16 @@ public class TrackDetailActivityChartsFragment extends Fragment
         setSpeedChartData(speedDataSet);
     }
 
-    private void setSpeedChartDataByDistance(TrackWithPoints trackWithPoints) {
-        if (trackWithPoints.getTrackPoints().size() <= 2) {
-            return;
-        }
+    private void setSpeedChartDataByDistance(List<ChartPoint> chartPoints) {
+
         List<Entry> values = new ArrayList<>();
-        List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
+
         //double totalDistance = trackWithPoints.getDistance();
         double rollingDistance = 0;
 
-        for (TrackpointEntity trackpointEntity : trackpointEntityList) {
-            rollingDistance += trackpointEntity.getDistance();
-            values.add(new Entry((float) rollingDistance, (float) trackpointEntity.getSpeed()));
+        for (ChartPoint chartPoint : chartPoints) {
+            rollingDistance += chartPoint.getDistance();
+            values.add(new Entry((float) rollingDistance, (float) chartPoint.getSpeed()));
         }
         speedChart.getXAxis().setValueFormatter(new LargeValueFormatter());
         LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
@@ -344,22 +352,19 @@ public class TrackDetailActivityChartsFragment extends Fragment
         setSpeedChartData(speedDataSet);
     }
 
-    private void setPaceChartDataByTime(TrackWithPoints trackWithPoints) {
-        if (trackWithPoints.getTrackPoints().size() <= 2) {
-            return;
-        }
+    private void setPaceChartDataByTime(List<ChartPoint> chartPoints) {
+
         List<Entry> values = new ArrayList<>();
-        List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
-        long startTime = trackWithPoints.getStartTime();
-        long durationInSeconds = (trackpointEntityList.get(trackpointEntityList.size() - 1).getTime()
+        long startTime = chartPoints.get(0).getTime();
+        long durationInSeconds = (chartPoints.get(chartPoints.size() - 1).getTime()
                 - startTime)
                 / 1000;
         double highestPaceValue = 0;
 
-        for (TrackpointEntity trackpointEntity : trackpointEntityList) {
-            long elapsedSeconds = (trackpointEntity.getTime() - startTime) / 1000;
-            if (trackpointEntity.getSpeed() > 1) {
-                double pace = 60 * 60 * (1 / trackpointEntity.getSpeed());
+        for (ChartPoint chartPoint : chartPoints) {
+            long elapsedSeconds = (chartPoint.getTime() - startTime) / 1000;
+            if (chartPoint.getSpeed() > 1) {
+                double pace = 60 * 60 * (1 / chartPoint.getSpeed());
                 if (pace > highestPaceValue) {
                     highestPaceValue = pace;
                 }
@@ -375,19 +380,16 @@ public class TrackDetailActivityChartsFragment extends Fragment
         setSpeedChartData(speedDataSet);
     }
 
-    private void setPaceChartDataByDistance(TrackWithPoints trackWithPoints) {
-        if (trackWithPoints.getTrackPoints().size() <= 2) {
-            return;
-        }
+    private void setPaceChartDataByDistance(List<ChartPoint> chartPoints) {
+
         List<Entry> values = new ArrayList<>();
-        List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
         double rollingDistance = 0;
         double highestPaceValue = 0;
 
-        for (TrackpointEntity trackpointEntity : trackpointEntityList) {
-            rollingDistance += trackpointEntity.getDistance();
-            if (trackpointEntity.getSpeed() > 1) {
-                double pace = 60 * 60 * (1 / trackpointEntity.getSpeed());
+        for (ChartPoint chartPoint : chartPoints) {
+            rollingDistance += chartPoint.getDistance();
+            if (chartPoint.getSpeed() > 1) {
+                double pace = 60 * 60 * (1 / chartPoint.getSpeed());
                 if (pace > highestPaceValue) {
                     highestPaceValue = pace;
                 }
@@ -445,19 +447,19 @@ public class TrackDetailActivityChartsFragment extends Fragment
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (xAxis != i) {
             xAxis = i;
-            if (i == 0 && trackWithPoints != null) {
-                setElevationChartDataByTime(trackWithPoints);
+            if (i == 0 && trackEntity != null && chartPoints != null) {
+                setElevationChartDataByTime(chartPoints);
                 if (isSpeed) {
-                    setSpeedChartDataByTime(trackWithPoints);
+                    setSpeedChartDataByTime(chartPoints);
                 } else {
-                    setPaceChartDataByTime(trackWithPoints);
+                    setPaceChartDataByTime(chartPoints);
                 }
-            } else if (i == 1 && trackWithPoints != null) {
-                setElevationChartDataByDistance(trackWithPoints);
+            } else if (i == 1 && trackEntity != null && chartPoints != null) {
+                setElevationChartDataByDistance(chartPoints);
                 if (isSpeed) {
-                    setSpeedChartDataByDistance(trackWithPoints);
+                    setSpeedChartDataByDistance(chartPoints);
                 } else {
-                    setPaceChartDataByDistance(trackWithPoints);
+                    setPaceChartDataByDistance(chartPoints);
                 }
             }
         }
