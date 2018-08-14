@@ -80,8 +80,7 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
         // MyLog.d(TAG, "setupViewModel");
         TrackViewModel trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
         //trackViewModel.init(trackId);
-        trackViewModel.getSimplifiedTrackWithPoints(
-                Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_CHARTS)
+        trackViewModel.getTrackWithPoints()
                 .observe(this, new Observer<TrackWithPoints>() {
                     @Override
                     public void onChanged(@Nullable final TrackWithPoints trackWithPoints) {

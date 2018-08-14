@@ -74,8 +74,38 @@ public class TrackViewModel extends ViewModel {
                                         trackWithPoints.getTrackEntity());
 
                                 List<TrackpointEntity> simplifiedList = new ArrayList<>();
-                                for (int i = 0; i < numOfPoints; i += divider) {
-                                    simplifiedList.add(trackWithPoints.getTrackPoints().get(i));
+                                double averagedSpeed = 0, averagedAltitude = 0;
+
+                                // TODO: igazából nem is entytiben kellene ezt visszaadni a view-nak
+                                // annak úgysem kell tudni az entity-kről, hanem valami egyszerűbb adat
+                                // szerkezetben
+                                // ez ugyanígy igaz a többi viewmodelre is
+                                for (int i = 0; i < numOfPoints; i++) {
+                                    if (i > 0 && i % divider == 0) {
+
+                                        TrackpointEntity averagedTrackpoint = new TrackpointEntity();
+                                        averagedTrackpoint.setTime(
+                                                trackWithPoints.getTrackPoints().get(i).getTime());
+                                        averagedTrackpoint.setDistance(
+                                                trackWithPoints.getTrackPoints().get(i).getDistance());
+                                        averagedTrackpoint.setLatitude(
+                                                trackWithPoints.getTrackPoints().get(i).getLatitude());
+                                        averagedTrackpoint.setLongitude(
+                                                trackWithPoints.getTrackPoints().get(i).getLongitude());
+
+                                        averagedTrackpoint.setSpeed(averagedSpeed / divider);
+                                        averagedTrackpoint.setAltitude(averagedAltitude / divider);
+
+                                        simplifiedList.add(averagedTrackpoint);
+
+                                        averagedSpeed = 0;
+                                        averagedAltitude = 0;
+                                    } else {
+                                        averagedSpeed = averagedSpeed
+                                                + trackWithPoints.getTrackPoints().get(i).getSpeed();
+                                        averagedAltitude = averagedAltitude
+                                                + trackWithPoints.getTrackPoints().get(i).getAltitude();
+                                    }
                                 }
                                 result.setTrackPoints(simplifiedList);
                                 simplifiedTrackWithPoints.postValue(result);

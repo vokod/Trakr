@@ -162,7 +162,7 @@ public class TrackEntity {
     }
 
     public double getMaxAltitude() {
-        return minAltitude;
+        return maxAltitude;
     }
 
     public void setMinAltitude(double minAltitude) {
@@ -170,7 +170,7 @@ public class TrackEntity {
     }
 
     public double getMinAltitude() {
-        return maxAltitude;
+        return minAltitude;
     }
 
     public void setMaxAltitude(double maxAltitude) {

@@ -93,7 +93,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         xAxisSpinner.setAdapter(adapter);
         xAxisSpinner.setOnItemSelectedListener(this);
-        xAxisSpinner.setSelection(0);
+        xAxisSpinner.setSelection(1);
 
         maxSpeedPpvi = view.findViewById(R.id.ppvi_max_speed);
         maxPacePpvi = view.findViewById(R.id.ppvi_max_pace);
@@ -192,9 +192,9 @@ public class TrackDetailActivityChartsFragment extends Fragment
 
         elevationChart.setDescription(description);
         elevationChart.getAxisRight().setEnabled(false);
-        elevationChart.setTouchEnabled(true);
-        elevationChart.setDragEnabled(true);
-        elevationChart.setScaleEnabled(true);
+        elevationChart.setTouchEnabled(false);
+        elevationChart.setDragEnabled(false);
+        elevationChart.setScaleEnabled(false);
         elevationChart.setPinchZoom(false);
         l = elevationChart.getLegend();
 
@@ -207,15 +207,16 @@ public class TrackDetailActivityChartsFragment extends Fragment
     private void setupViewModel() {
         TrackViewModel trackViewModel = ViewModelProviders.of(getActivity())
                 .get(TrackViewModel.class);
-        trackViewModel.getSimplifiedTrackWithPoints(Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_CHARTS)
+        trackViewModel.getSimplifiedTrackWithPoints(
+                Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_DETAILS)
                 .observe(this, new Observer<TrackWithPoints>() {
                     @Override
                     public void onChanged(@Nullable final TrackWithPoints trackWithPoints) {
                         if (trackWithPoints != null) {
                             TrackDetailActivityChartsFragment.this.trackWithPoints = trackWithPoints;
                             setWidgetData(trackWithPoints);
-                            setSpeedChartDataByTime(trackWithPoints);
-                            setElevationChartDataByTime(trackWithPoints);
+                            setSpeedChartDataByDistance(trackWithPoints);
+                            setElevationChartDataByDistance(trackWithPoints);
 
                             editTitleImageButton.setOnClickListener(new View.OnClickListener() {
                                 @Override

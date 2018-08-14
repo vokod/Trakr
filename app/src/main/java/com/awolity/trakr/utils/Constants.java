@@ -13,8 +13,8 @@ public class Constants {
     public static final String NODE_TRACKS = "tracks";
     public static final String NODE_TRACKPOINTS = "trackpoints";
 
-    public static final int SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_CHARTS = 500;
-    public static final int SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_LIST_ITEM_POLYLINES = 50;
+    public static final int SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_DETAILS = 100;
+    public static final int SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_LIST_ITEMS = 50;
 
 
 }

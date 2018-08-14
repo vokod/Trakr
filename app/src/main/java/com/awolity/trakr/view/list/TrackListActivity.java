@@ -67,7 +67,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         TrackListViewModel trackListViewModel = ViewModelProviders.of(this)
                 .get(TrackListViewModel.class);
         trackListViewModel.getSimplifiedTracksWithPoints(
-                Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_LIST_ITEM_POLYLINES)
+                Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_LIST_ITEMS)
                 .observe(this, new Observer<List<TrackWithPoints>>() {
                     @Override
                     public void onChanged(@Nullable List<TrackWithPoints> trackWithPointsList) {
