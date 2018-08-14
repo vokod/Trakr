@@ -13,6 +13,7 @@ import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.utils.Constants;
+import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.main.MainActivity;
 

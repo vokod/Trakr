@@ -30,6 +30,7 @@ public class TrackListViewModel extends ViewModel {
 
     public TrackListViewModel() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
+        simplifiedTracksWithPoints = new MediatorLiveData<>();
     }
 
     public LiveData<List<TrackWithPoints>> getTracksWithPoints() {

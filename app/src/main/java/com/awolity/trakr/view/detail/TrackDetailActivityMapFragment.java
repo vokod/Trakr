@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
+import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.view.MapUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
@@ -72,7 +73,9 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
       // MyLog.d(TAG, "setupViewModel");
         TrackViewModel trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
         //trackViewModel.init(trackId);
-        trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
+        trackViewModel.getSimplifiedTrackWithPoints(
+                Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_CHARTS)
+                .observe(this, new Observer<TrackWithPoints>() {
             @Override
             public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
               // MyLog.d(TAG, "onChanged");
