@@ -5,11 +5,14 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.transition.Fade;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.AutoTransition;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -29,12 +32,21 @@ public class TrackDetailActivity extends AppCompatActivity
     private static final String TAG_CHARTS_FRAGMENT = "tag_charts_fragment";
     private static final String KEY_SELECTED_FRAGMENT = "key_selected_fragment";
     private static final String EXTRA_TRACK_ID = "extra_track_id";
+    private static final String EXTRA_ICON = "extra_icon";
     private static final int PERMISSION_REQUEST_CODE = 2;
     private long trackId;
+    Bitmap icon;
     private BottomNavigationView bottomNavigationView;
     private TrackViewModel trackViewModel;
     private AppUserViewModel appUserViewModel;
     private TrackEntity trackEntity;
+
+    public static Intent getStarterIntent(Context context, long trackId, Bitmap icon) {
+        Intent intent = new Intent(context, TrackDetailActivity.class);
+        intent.putExtra(EXTRA_TRACK_ID, trackId);
+        intent.putExtra(EXTRA_ICON, icon);
+        return intent;
+    }
 
     public static Intent getStarterIntent(Context context, long trackId) {
         Intent intent = new Intent(context, TrackDetailActivity.class);
@@ -47,6 +59,8 @@ public class TrackDetailActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_detail);
         trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
+        icon = getIntent().getParcelableExtra(EXTRA_ICON);
+        postponeEnterTransition();
 
         setupWidgets();
         setupBottomSheetNavigation();
@@ -100,7 +114,7 @@ public class TrackDetailActivity extends AppCompatActivity
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_map:
-                      // MyLog.d(TAG, "onNavigationItemSelected - action_map");
+                        // MyLog.d(TAG, "onNavigationItemSelected - action_map");
                         showMapFragment();
                         return true;
                     case R.id.action_data:
@@ -119,7 +133,9 @@ public class TrackDetailActivity extends AppCompatActivity
         TrackDetailActivityMapFragment mapFragment
                 = (TrackDetailActivityMapFragment) getSupportFragmentManager().findFragmentByTag(TAG_MAP_FRAGMENT);
         if (mapFragment == null) {
-            mapFragment = TrackDetailActivityMapFragment.newInstance(trackId);
+            mapFragment = TrackDetailActivityMapFragment.newInstance();
+            mapFragment.setEnterTransition(new Fade());
+            mapFragment.setExitTransition(new Fade());
         }
         getSupportFragmentManager()
                 .beginTransaction()
@@ -131,7 +147,9 @@ public class TrackDetailActivity extends AppCompatActivity
         TrackDetailActivityDataFragment dataFragment
                 = (TrackDetailActivityDataFragment) getSupportFragmentManager().findFragmentByTag(TAG_DATA_FRAGMENT);
         if (dataFragment == null) {
-            dataFragment = TrackDetailActivityDataFragment.newInstance(trackId);
+            dataFragment = TrackDetailActivityDataFragment.newInstance(icon);
+            dataFragment.setEnterTransition(new Fade());
+            dataFragment.setExitTransition(new Fade());
         }
         getSupportFragmentManager()
                 .beginTransaction()
@@ -143,7 +161,9 @@ public class TrackDetailActivity extends AppCompatActivity
         TrackDetailActivityChartsFragment chartsFragment
                 = (TrackDetailActivityChartsFragment) getSupportFragmentManager().findFragmentByTag(TAG_CHARTS_FRAGMENT);
         if (chartsFragment == null) {
-            chartsFragment = TrackDetailActivityChartsFragment.newInstance(/*trackId*/);
+            chartsFragment = TrackDetailActivityChartsFragment.newInstance();
+            chartsFragment.setEnterTransition(new Fade());
+            chartsFragment.setExitTransition(new Fade());
         }
         getSupportFragmentManager()
                 .beginTransaction()
@@ -153,18 +173,18 @@ public class TrackDetailActivity extends AppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-      // MyLog.d(TAG, "onRequestPermissionsResult");
+        // MyLog.d(TAG, "onRequestPermissionsResult");
 
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                  // MyLog.d(TAG, "onRequestPermissionsResult - permission granted");
+                    // MyLog.d(TAG, "onRequestPermissionsResult - permission granted");
                     // permission was granted, yay!
                     trackViewModel.exportTrack();
                 } else {
-                  // MyLog.d(TAG, "onRequestPermissionsResult - permission denied :(");
+                    // MyLog.d(TAG, "onRequestPermissionsResult - permission denied :(");
                     // permission denied, boo!
                     Toast.makeText(this, getString(R.string.write_permission_denied),
                             Toast.LENGTH_LONG).show();

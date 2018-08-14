@@ -2,6 +2,9 @@ package com.awolity.trakr.view.detail;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,7 +26,7 @@ import java.util.Locale;
 
 public class TrackDetailActivityDataFragment extends Fragment {
 
-    private static final String ARG_TRACK_ID = "track_id";
+    private static final String ARG_ICON = "arg_icon";
     private static final String TAG = TrackDetailActivityDataFragment.class.getSimpleName();
 
     private PrimaryPropertyViewIcon durationPpvi, distancePpvi, ascentPpvi, descentPpvi,
@@ -33,10 +36,10 @@ public class TrackDetailActivityDataFragment extends Fragment {
     private ImageButton editTitleImageButton;
     private ImageView initialImageView;
 
-    public static TrackDetailActivityDataFragment newInstance(long trackId) {
+    public static TrackDetailActivityDataFragment newInstance(Bitmap icon) {
         TrackDetailActivityDataFragment fragment = new TrackDetailActivityDataFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_TRACK_ID, trackId);
+        args.putParcelable(ARG_ICON, icon);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,10 +50,6 @@ public class TrackDetailActivityDataFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // MyLog.d(TAG, "onCreate - " + this.hashCode());
-       /* if (getArguments() != null) {
-            long trackId = getArguments().getLong(ARG_TRACK_ID);
-        }*/
     }
 
     @Override
@@ -74,8 +73,8 @@ public class TrackDetailActivityDataFragment extends Fragment {
         endTimePpvi = view.findViewById(R.id.ppvi_end_time);
         durationPpvi = view.findViewById(R.id.ppvi_duration);
         distancePpvi = view.findViewById(R.id.ppvi_distance);
-        ascentPpvi = view.findViewById(R.id.ppvi_descent);
-        descentPpvi = view.findViewById(R.id.ppvi_ascent);
+        ascentPpvi = view.findViewById(R.id.ppvi_ascent);
+        descentPpvi = view.findViewById(R.id.ppvi_descent);
         maxSpeedPpvi = view.findViewById(R.id.ppvi_max_speed);
         avgSpeedPpvi = view.findViewById(R.id.ppvi_avg_speed);
         maxPacePpvi = view.findViewById(R.id.ppvi_max_pace);
@@ -152,6 +151,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
                             dialog.show(getActivity().getSupportFragmentManager(), null);
                         }
                     });
+                    getActivity().startPostponedEnterTransition();
                 }
             }
         });
@@ -166,7 +166,8 @@ public class TrackDetailActivityDataFragment extends Fragment {
         }
 
         initialImageView.setImageDrawable(
-                Utility.getInitial(firstLetter, String.valueOf(trackWithPoints.getStartTime())));
+                Utility.getInitial(firstLetter, String.valueOf(trackWithPoints.getStartTime()),
+                        initialImageView.getLayoutParams().width));
 
         titleTextView.setText(trackWithPoints.getTitle());
         dateTextView.setText(StringUtils.getDateAsStringLocale(trackWithPoints.getStartTime()));

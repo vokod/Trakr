@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/CardView.Light"
     android:layout_width="match_parent"
@@ -10,10 +11,7 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="4dp">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,6 +19,7 @@
 
         <ImageView
             android:id="@+id/iv_icon"
+            android:transitionName="@string/transition_iv_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginBottom="12dp"
@@ -35,6 +34,7 @@
 
         <TextView
             android:id="@+id/tv_title"
+            android:transitionName="@string/transition_tv_title"
             style="@style/TrackDetailTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,6 +47,7 @@
 
         <TextView
             android:id="@+id/tv_date"
+            android:transitionName="@string/transition_tv_date"
             style="@style/TrackDetailDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -57,8 +58,9 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
             tools:text="Subtitle text" />
 
-        <com.awolity.trakr.customviews.SecondaryPropertyViewIcon
+        <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
             android:id="@+id/spv_distance"
+            android:transitionName="@string/transition_ppvi_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -69,17 +71,19 @@
             app:layout_constraintStart_toStartOf="@id/mapView"
             app:layout_constraintTop_toBottomOf="@id/mapView" />
 
-        <com.awolity.trakr.customviews.SecondaryPropertyViewIcon
+        <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
             android:id="@+id/spv_duration"
+            android:transitionName="@string/transition_ppvi_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/spv_elevation"
+            app:layout_constraintEnd_toStartOf="@+id/spv_ascent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/spv_distance"
             app:layout_constraintTop_toTopOf="@+id/spv_distance" />
 
-        <com.awolity.trakr.customviews.SecondaryPropertyViewIcon
-            android:id="@+id/spv_elevation"
+        <com.awolity.trakr.customviews.PrimaryPropertyViewIcon
+            android:id="@+id/spv_ascent"
+            android:transitionName="@string/transition_ppvi_ascent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
