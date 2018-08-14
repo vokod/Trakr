@@ -11,6 +11,7 @@ import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.gpx.GpxExporter;
 import com.awolity.trakr.sync.SyncService;
+import com.awolity.trakr.utils.MyLog;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -33,6 +34,8 @@ public class TrackRepository {
 
     @Inject
     AppUserRepository appUserRepository;
+
+    private static final String TAG = "TrackRepository";
 
     public TrackRepository() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
@@ -153,7 +156,7 @@ public class TrackRepository {
         discIoExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                if(roomTrackRepository.getTrackSync(trackId).getNumOfTrackPoints()>1) {
+                if (roomTrackRepository.getTrackSync(trackId).getNumOfTrackPoints() > 1) {
                     saveTrackToCloudOnThread(trackId);
                 }
             }
@@ -212,6 +215,7 @@ public class TrackRepository {
             List<TrackpointEntity> trackpointEntities, long id) {
         for (TrackpointEntity trackpointEntity : trackpointEntities) {
             trackpointEntity.setTrackId(id);
+            trackpointEntity.setTrackpointId(0);
         }
     }
 

@@ -147,7 +147,9 @@ public class SyncService extends IntentService {
     }
 
     private void saveOnlyOnlineTracksToDb(List<TrackEntity> onlyOnlineTracks) {
+        MyLog.d(TAG, "saveOnlyOnlineTracksToDb");
         for (TrackEntity onlineTrack : onlyOnlineTracks) {
+            MyLog.d(TAG, "saveOnlyOnlineTracksToDb - saving online track: "+ onlineTrack.getFirebaseId());
             trackRepository.saveTrackToLocalDbFromCloud(onlineTrack);
         }
     }

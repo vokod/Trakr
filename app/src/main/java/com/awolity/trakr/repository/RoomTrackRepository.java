@@ -106,7 +106,7 @@ public class RoomTrackRepository {
         discIoExecutor.execute(new Runnable() {
             @Override
             public void run() {
-              // MyLog.d("saveTrackpoint - ", trackpoint.toString());
+                // MyLog.d("saveTrackpoint - ", trackpoint.toString());
                 trackpointDao.save(trackpoint);
             }
         });

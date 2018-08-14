@@ -11,6 +11,7 @@ import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.repository.TrackRepository;
+import com.awolity.trakr.utils.MyLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,19 +46,19 @@ public class TrackListViewModel extends ViewModel {
                 new Observer<List<TrackWithPoints>>() {
                     @Override
                     public void onChanged(@Nullable List<TrackWithPoints> tracksWithPoints) {
-                        if (tracksWithPoints != null) {
+                        if (tracksWithPoints != null ) {
                             List<TrackWithPoints> result = new ArrayList<>();
 
                             for (TrackWithPoints originalTrackWithPoints : tracksWithPoints) {
                                 long numOfPoints = originalTrackWithPoints.getNumOfTrackPoints();
-
                                 if (numOfPoints > maxNumOfPoints) {
                                     long divider = numOfPoints / maxNumOfPoints + 1;
+
                                     TrackWithPoints oneResult = new TrackWithPoints();
                                     oneResult.setTrackEntity(
                                             originalTrackWithPoints.getTrackEntity());
 
-                                    List<TrackpointEntity> simplifiedList = new ArrayList<>();
+                                    List<TrackpointEntity> simplifiedList = new ArrayList<>(maxNumOfPoints);
                                     for (int i = 0; i < numOfPoints; i += divider) {
                                         simplifiedList.add(
                                                 originalTrackWithPoints.getTrackPoints().get(i));
