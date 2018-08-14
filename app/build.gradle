@@ -38,8 +38,8 @@ android {
         applicationId "com.awolity.trakr"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 14
-        versionName "0.14"
+        versionCode 15
+        versionName "0.15"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
             annotationProcessorOptions {
