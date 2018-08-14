@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
-import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import com.awolity.trakr.data.entity.TrackEntity;
@@ -12,10 +11,8 @@ import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.TrackRepository;
-import com.awolity.trakr.utils.Constants;
-import com.awolity.trakr.utils.MyLog;
-import com.awolity.trakr.view.detail.TrackDetailActivity;
-import com.awolity.trakr.view.main.MainActivity;
+import com.awolity.trakr.viewmodel.model.ChartPoint;
+import com.awolity.trakr.viewmodel.model.MapPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +28,8 @@ public class TrackViewModel extends ViewModel {
     private static final long NOT_SET = -1;
     private static final String TAG = TrackViewModel.class.getSimpleName();
     private long trackId = NOT_SET;
-    private MediatorLiveData<TrackWithPoints> simplifiedTrackWithPoints;
+    private MediatorLiveData<List<MapPoint>> mapPointsMediatorLiveData;
+    private MediatorLiveData<List<ChartPoint>> chartPointsMediatorLiveData;
 
     public TrackViewModel() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
@@ -41,7 +39,8 @@ public class TrackViewModel extends ViewModel {
         if (this.trackId == NOT_SET) {
             this.trackId = trackId;
         }
-        simplifiedTrackWithPoints = new MediatorLiveData<>();
+        mapPointsMediatorLiveData = new MediatorLiveData<>();
+        chartPointsMediatorLiveData = new MediatorLiveData<>();
     }
 
     public void reset() {
@@ -58,64 +57,79 @@ public class TrackViewModel extends ViewModel {
         return trackRepository.getTrackWithPoints(trackId);
     }
 
-    public LiveData<TrackWithPoints> getSimplifiedTrackWithPoints(final int maxNumOfPoints) {
+    public LiveData<TrackEntity> getTrackData() {
+        return trackRepository.getTrack(trackId);
+    }
+
+    public LiveData<List<ChartPoint>> getChartPoints(final int maxNumOfPoints) {
         checkTrackId();
-        simplifiedTrackWithPoints.addSource(trackRepository.getTrackWithPoints(trackId),
-                new Observer<TrackWithPoints>() {
+        chartPointsMediatorLiveData.addSource(trackRepository.getTrackpointsByTrack(trackId),
+                new Observer<List<TrackpointEntity>>() {
                     @Override
-                    public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-                        if (trackWithPoints != null) {
-                            long numOfPoints = trackWithPoints.getNumOfTrackPoints();
+                    public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
+                        if (trackpointEntities != null) {
+                            long numOfPoints = trackpointEntities.size();
+                            List<ChartPoint> chartPoints = new ArrayList<>();
 
                             if (numOfPoints > maxNumOfPoints) {
                                 long divider = numOfPoints / maxNumOfPoints + 1;
-                                TrackWithPoints result = new TrackWithPoints();
-                                result.setTrackEntity(
-                                        trackWithPoints.getTrackEntity());
 
-                                List<TrackpointEntity> simplifiedList = new ArrayList<>();
                                 double averagedSpeed = 0, averagedAltitude = 0;
 
-                                // TODO: igazából nem is entytiben kellene ezt visszaadni a view-nak
-                                // annak úgysem kell tudni az entity-kről, hanem valami egyszerűbb adat
-                                // szerkezetben
-                                // ez ugyanígy igaz a többi viewmodelre is
                                 for (int i = 0; i < numOfPoints; i++) {
                                     if (i > 0 && i % divider == 0) {
 
-                                        TrackpointEntity averagedTrackpoint = new TrackpointEntity();
-                                        averagedTrackpoint.setTime(
-                                                trackWithPoints.getTrackPoints().get(i).getTime());
-                                        averagedTrackpoint.setDistance(
-                                                trackWithPoints.getTrackPoints().get(i).getDistance());
-                                        averagedTrackpoint.setLatitude(
-                                                trackWithPoints.getTrackPoints().get(i).getLatitude());
-                                        averagedTrackpoint.setLongitude(
-                                                trackWithPoints.getTrackPoints().get(i).getLongitude());
+                                        ChartPoint chartPoint = new ChartPoint();
+                                        chartPoint.setTime(
+                                                trackpointEntities.get(i).getTime());
+                                        chartPoint.setDistance(
+                                                trackpointEntities.get(i).getDistance());
 
-                                        averagedTrackpoint.setSpeed(averagedSpeed / divider);
-                                        averagedTrackpoint.setAltitude(averagedAltitude / divider);
+                                        chartPoint.setSpeed(averagedSpeed / divider);
+                                        chartPoint.setAltitude(averagedAltitude / divider);
 
-                                        simplifiedList.add(averagedTrackpoint);
+                                        chartPoints.add(chartPoint);
 
                                         averagedSpeed = 0;
                                         averagedAltitude = 0;
                                     } else {
                                         averagedSpeed = averagedSpeed
-                                                + trackWithPoints.getTrackPoints().get(i).getSpeed();
+                                                + trackpointEntities.get(i).getSpeed();
                                         averagedAltitude = averagedAltitude
-                                                + trackWithPoints.getTrackPoints().get(i).getAltitude();
+                                                + trackpointEntities.get(i).getAltitude();
                                     }
                                 }
-                                result.setTrackPoints(simplifiedList);
-                                simplifiedTrackWithPoints.postValue(result);
                             } else {
-                                simplifiedTrackWithPoints.postValue(trackWithPoints);
+                                for (TrackpointEntity trackpointEntity : trackpointEntities) {
+                                    chartPoints.add(new ChartPoint(trackpointEntity.getTime(),
+                                            trackpointEntity.getAltitude(),
+                                            trackpointEntity.getSpeed(),
+                                            trackpointEntity.getDistance()));
+                                }
                             }
+                            chartPointsMediatorLiveData.postValue(chartPoints);
                         }
                     }
                 });
-        return simplifiedTrackWithPoints;
+        return chartPointsMediatorLiveData;
+    }
+
+    public LiveData<List<MapPoint>> getMapPoints() {
+        mapPointsMediatorLiveData.addSource(trackRepository.getTrackpointsByTrack(trackId),
+                new Observer<List<TrackpointEntity>>() {
+                    @Override
+                    public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
+                        if (trackpointEntities != null) {
+                            List<MapPoint> mapPoints = new ArrayList<>(trackpointEntities.size());
+                            for (TrackpointEntity trackpointEntity : trackpointEntities) {
+                                mapPoints.add(new MapPoint(trackpointEntity.getLatitude(),
+                                        trackpointEntity.getLongitude()));
+                            }
+                            mapPointsMediatorLiveData.postValue(mapPoints);
+                        }
+                    }
+                });
+        return mapPointsMediatorLiveData;
     }
 
     public LiveData<List<TrackpointEntity>> getTrackpointsList() {
