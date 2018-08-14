@@ -226,6 +226,7 @@
     <string name="transition_tv_title" translatable="false">transition_tv_title</string>
     <string name="transition_tv_date" translatable="false">transition_tv_date</string>
     <string name="transition_iv_icon" translatable="false">transition_iv_icon</string>
+    <string name="transition_title_bar" translatable="false">transition_title_bar</string>
 
 
 </resources>

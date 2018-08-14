@@ -26,7 +26,6 @@ import java.util.Locale;
 
 public class TrackDetailActivityDataFragment extends Fragment {
 
-    private static final String ARG_TRACK_ID = "arg_track_id";
     private static final String ARG_ICON = "arg_icon";
     private static final String TAG = TrackDetailActivityDataFragment.class.getSimpleName();
 
@@ -37,10 +36,9 @@ public class TrackDetailActivityDataFragment extends Fragment {
     private ImageButton editTitleImageButton;
     private ImageView initialImageView;
 
-    public static TrackDetailActivityDataFragment newInstance(long trackId, Bitmap icon) {
+    public static TrackDetailActivityDataFragment newInstance(Bitmap icon) {
         TrackDetailActivityDataFragment fragment = new TrackDetailActivityDataFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_TRACK_ID, trackId);
         args.putParcelable(ARG_ICON, icon);
         fragment.setArguments(args);
         return fragment;
@@ -52,10 +50,6 @@ public class TrackDetailActivityDataFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // MyLog.d(TAG, "onCreate - " + this.hashCode());
-       /* if (getArguments() != null) {
-            long trackId = getArguments().getLong(ARG_TRACK_ID);
-        }*/
     }
 
     @Override
@@ -72,10 +66,6 @@ public class TrackDetailActivityDataFragment extends Fragment {
 
     private void setupWidgets(View view) {
         initialImageView = view.findViewById(R.id.iv_icon);
-      /*  Bitmap icon = getArguments().getParcelable(ARG_ICON);
-        if (icon != null) {
-            initialImageView.setImageDrawable(new BitmapDrawable(icon));
-        }*/
         editTitleImageButton = view.findViewById(R.id.ib_edit);
         titleTextView = view.findViewById(R.id.tv_title);
         dateTextView = view.findViewById(R.id.tv_date);
@@ -178,7 +168,6 @@ public class TrackDetailActivityDataFragment extends Fragment {
         initialImageView.setImageDrawable(
                 Utility.getInitial(firstLetter, String.valueOf(trackWithPoints.getStartTime()),
                         initialImageView.getLayoutParams().width));
-        initialImageView.requestLayout();
 
         titleTextView.setText(trackWithPoints.getTitle());
         dateTextView.setText(StringUtils.getDateAsStringLocale(trackWithPoints.getStartTime()));

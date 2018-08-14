@@ -14,7 +14,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
@@ -22,6 +25,7 @@ import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.StringUtils;
+import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -49,6 +53,9 @@ public class TrackDetailActivityChartsFragment extends Fragment
     private int xAxis = 0;
     private boolean isSpeed = true;
     private TrackWithPoints trackWithPoints;
+    private TextView titleTextView, dateTextView;
+    private ImageButton editTitleImageButton;
+    private ImageView initialImageView;
 
     public static TrackDetailActivityChartsFragment newInstance() {
         return new TrackDetailActivityChartsFragment();
@@ -75,6 +82,11 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setupWidgets(View view) {
+        initialImageView = view.findViewById(R.id.iv_icon);
+        editTitleImageButton = view.findViewById(R.id.ib_edit);
+        titleTextView = view.findViewById(R.id.tv_title);
+        dateTextView = view.findViewById(R.id.tv_date);
+
         Spinner xAxisSpinner = view.findViewById(R.id.spinner_xaxis);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.x_axis_label_array, android.R.layout.simple_spinner_item);
@@ -198,19 +210,39 @@ public class TrackDetailActivityChartsFragment extends Fragment
         trackViewModel.getSimplifiedTrackWithPoints(Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_CHARTS)
                 .observe(this, new Observer<TrackWithPoints>() {
                     @Override
-                    public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
+                    public void onChanged(@Nullable final TrackWithPoints trackWithPoints) {
                         if (trackWithPoints != null) {
                             TrackDetailActivityChartsFragment.this.trackWithPoints = trackWithPoints;
                             setWidgetData(trackWithPoints);
                             setSpeedChartDataByTime(trackWithPoints);
                             setElevationChartDataByTime(trackWithPoints);
+
+                            editTitleImageButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    EditTitleDialog dialog = EditTitleDialog.newInstance(
+                                            trackWithPoints.getTitle());
+                                    dialog.show(getActivity().getSupportFragmentManager(), null);
+                                }
+                            });
                         }
                     }
                 });
     }
 
     private void setWidgetData(TrackWithPoints trackWithPoints) {
-        // MyLog.d(TAG, "setWidgetData");
+        String firstLetter = "";
+        if (trackWithPoints.getTitle() != null && !trackWithPoints.getTitle().isEmpty()) {
+            firstLetter = trackWithPoints.getTitle().substring(0, 1);
+        }
+
+        initialImageView.setImageDrawable(
+                Utility.getInitial(firstLetter, String.valueOf(trackWithPoints.getStartTime()),
+                        initialImageView.getLayoutParams().width));
+        initialImageView.requestLayout();
+
+        titleTextView.setText(trackWithPoints.getTitle());
+        dateTextView.setText(StringUtils.getDateAsStringLocale(trackWithPoints.getStartTime()));
 
         maxSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getMaxSpeed()));
         avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackWithPoints.getAvgSpeed()));

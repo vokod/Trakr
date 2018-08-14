@@ -46,7 +46,7 @@ public class EditTitleDialog extends DialogFragment {
         final LayoutInflater inflater = getActivity().getLayoutInflater();
 
         @SuppressLint("InflateParams") final View view = inflater.inflate(
-                R.layout.activity_track_detail_fragment_data_dialog_edit_title, null);
+                R.layout.activity_track_detail_dialog_edit_title, null);
         titleEditText = view.findViewById(R.id.et_title);
         String oldTitle = getArguments().getString(ARG_OLD_TITLE);
         titleEditText.setText(oldTitle);

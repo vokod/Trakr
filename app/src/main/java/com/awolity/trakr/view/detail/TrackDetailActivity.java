@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.transition.Fade;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.AutoTransition;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -131,7 +133,9 @@ public class TrackDetailActivity extends AppCompatActivity
         TrackDetailActivityMapFragment mapFragment
                 = (TrackDetailActivityMapFragment) getSupportFragmentManager().findFragmentByTag(TAG_MAP_FRAGMENT);
         if (mapFragment == null) {
-            mapFragment = TrackDetailActivityMapFragment.newInstance(trackId);
+            mapFragment = TrackDetailActivityMapFragment.newInstance();
+            mapFragment.setEnterTransition(new Fade());
+            mapFragment.setExitTransition(new Fade());
         }
         getSupportFragmentManager()
                 .beginTransaction()
@@ -143,7 +147,9 @@ public class TrackDetailActivity extends AppCompatActivity
         TrackDetailActivityDataFragment dataFragment
                 = (TrackDetailActivityDataFragment) getSupportFragmentManager().findFragmentByTag(TAG_DATA_FRAGMENT);
         if (dataFragment == null) {
-            dataFragment = TrackDetailActivityDataFragment.newInstance(trackId, icon);
+            dataFragment = TrackDetailActivityDataFragment.newInstance(icon);
+            dataFragment.setEnterTransition(new Fade());
+            dataFragment.setExitTransition(new Fade());
         }
         getSupportFragmentManager()
                 .beginTransaction()
@@ -155,7 +161,9 @@ public class TrackDetailActivity extends AppCompatActivity
         TrackDetailActivityChartsFragment chartsFragment
                 = (TrackDetailActivityChartsFragment) getSupportFragmentManager().findFragmentByTag(TAG_CHARTS_FRAGMENT);
         if (chartsFragment == null) {
-            chartsFragment = TrackDetailActivityChartsFragment.newInstance(/*trackId*/);
+            chartsFragment = TrackDetailActivityChartsFragment.newInstance();
+            chartsFragment.setEnterTransition(new Fade());
+            chartsFragment.setExitTransition(new Fade());
         }
         getSupportFragmentManager()
                 .beginTransaction()
