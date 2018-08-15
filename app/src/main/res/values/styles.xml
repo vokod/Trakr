@@ -11,7 +11,7 @@
 
     <style name="PrimaryPropertyValue" parent="@android:style/TextAppearance.Large">
         <item name="android:textSize">32sp</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">sans</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
@@ -50,7 +50,7 @@
 
     <style name="PrimaryPropertyIconValue" parent="@android:style/TextAppearance.Large">
         <item name="android:textSize">22sp</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">sans</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
