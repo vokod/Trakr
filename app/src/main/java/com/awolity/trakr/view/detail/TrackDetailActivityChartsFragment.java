@@ -228,7 +228,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
             @Override
             public void onChanged(@Nullable final TrackEntity trackEntity) {
                 if (trackEntity != null) {
-
+                    TrackDetailActivityChartsFragment.this.trackEntity = trackEntity;
                     setWidgetData(trackEntity);
 
                     editTitleImageButton.setOnClickListener(new View.OnClickListener() {
@@ -283,7 +283,6 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setElevationChartDataByTime(List<ChartPoint> chartPoints) {
-
         List<Entry> values = new ArrayList<>();
         long startTime = chartPoints.get(0).getTime();
         long durationInSeconds = (chartPoints.get(chartPoints.size() - 1).getTime()
@@ -301,7 +300,6 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setElevationChartDataByDistance(List<ChartPoint> chartPoints) {
-
         List<Entry> values = new ArrayList<>();
 
         double rollingDistance = 0;
@@ -317,7 +315,6 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setSpeedChartDataByTime(List<ChartPoint> chartPoints) {
-
         List<Entry> values = new ArrayList<>();
 
         long startTime = chartPoints.get(0).getTime();
@@ -336,10 +333,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setSpeedChartDataByDistance(List<ChartPoint> chartPoints) {
-
         List<Entry> values = new ArrayList<>();
-
-        //double totalDistance = trackWithPoints.getDistance();
         double rollingDistance = 0;
 
         for (ChartPoint chartPoint : chartPoints) {
@@ -353,7 +347,6 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setPaceChartDataByTime(List<ChartPoint> chartPoints) {
-
         List<Entry> values = new ArrayList<>();
         long startTime = chartPoints.get(0).getTime();
         long durationInSeconds = (chartPoints.get(chartPoints.size() - 1).getTime()
@@ -381,7 +374,6 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setPaceChartDataByDistance(List<ChartPoint> chartPoints) {
-
         List<Entry> values = new ArrayList<>();
         double rollingDistance = 0;
         double highestPaceValue = 0;

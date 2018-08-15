@@ -90,31 +90,30 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
                 if (mapPoints != null) {
                     TrackDetailActivityMapFragment.this.mapPoints = mapPoints;
                     setTrack();
+
+                    editTitleImageButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            EditTitleDialog dialog = EditTitleDialog.newInstance(
+                                    trackEntity.getTitle());
+                            dialog.show(getActivity().getSupportFragmentManager(), null);
+                        }
+                    });
+                    getActivity().startPostponedEnterTransition();
                 }
             }
         });
 
-        trackViewModel.getTrackWithPoints()
-                .observe(this, new Observer<TrackWithPoints>() {
-                    @Override
-                    public void onChanged(@Nullable final TrackWithPoints trackWithPoints) {
-                        // MyLog.d(TAG, "onChanged");
-                        if (trackWithPoints != null) {
-                            setTrack();
-                            setData(trackWithPoints);
-
-                            editTitleImageButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    EditTitleDialog dialog = EditTitleDialog.newInstance(
-                                            trackWithPoints.getTitle());
-                                    dialog.show(getActivity().getSupportFragmentManager(), null);
-                                }
-                            });
-                            getActivity().startPostponedEnterTransition();
-                        }
-                    }
-                });
+        trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
+            @Override
+            public void onChanged(@Nullable TrackEntity trackEntity) {
+                if (trackEntity != null) {
+                    TrackDetailActivityMapFragment.this.trackEntity = trackEntity;
+                    setData(trackEntity);
+                    setTrack();
+                }
+            }
+        });
     }
 
     @Override
@@ -131,7 +130,7 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
             MapUtils.setupTrackPolyLine(getActivity(), googleMap, mapPoints);
             MapUtils.moveCameraToTrack(googleMap, trackEntity);
             LatLng start = mapPoints.get(0).toLatLng();
-            LatLng finish = mapPoints.get(mapPoints.size()-1).toLatLng();
+            LatLng finish = mapPoints.get(mapPoints.size() - 1).toLatLng();
             googleMap.addMarker(new MarkerOptions()
                     .position(start)
                     .title(getString(R.string.start))
@@ -143,21 +142,21 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
         }
     }
 
-    private void setData(TrackWithPoints trackWithPoints) {
+    private void setData(TrackEntity trackEntity) {
         // MyLog.d(TAG, "setData");
 
         String firstLetter = "";
-        if (trackWithPoints.getTitle() != null && !trackWithPoints.getTitle().isEmpty()) {
-            firstLetter = trackWithPoints.getTitle().substring(0, 1);
+        if (trackEntity.getTitle() != null && !trackEntity.getTitle().isEmpty()) {
+            firstLetter = trackEntity.getTitle().substring(0, 1);
         }
 
         initialImageView.setImageDrawable(
-                Utility.getInitial(firstLetter, String.valueOf(trackWithPoints.getStartTime()),
+                Utility.getInitial(firstLetter, String.valueOf(trackEntity.getStartTime()),
                         initialImageView.getLayoutParams().width));
         initialImageView.requestLayout();
 
-        titleTextView.setText(trackWithPoints.getTitle());
-        dateTextView.setText(StringUtils.getDateAsStringLocale(trackWithPoints.getStartTime()));
+        titleTextView.setText(trackEntity.getTitle());
+        dateTextView.setText(StringUtils.getDateAsStringLocale(trackEntity.getStartTime()));
     }
 
     @Override
