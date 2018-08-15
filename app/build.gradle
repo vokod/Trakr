@@ -107,6 +107,8 @@ dependencies {
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     // circle imageview
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    // switch
+    implementation 'lib.kingja.switchbutton:switchbutton:1.1.7'
 }
 
 

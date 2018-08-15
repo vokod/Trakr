@@ -40,8 +40,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class TrackDetailActivityChartsFragment extends Fragment
-        implements AdapterView.OnItemSelectedListener {
+import lib.kingja.switchbutton.SwitchMultiButton;
+
+public class TrackDetailActivityChartsFragment extends Fragment {
 
     private static final String ARG_TRACK_ID = "track_id";
     private static final String TAG = TrackDetailActivityChartsFragment.class.getSimpleName();
@@ -50,7 +51,7 @@ public class TrackDetailActivityChartsFragment extends Fragment
             maxAltitudePpvi, minAltitudePpvi, maxPacePpvi, avgPacePpvi;
     private CheckBox paceCheckBox, speedCheckBox;
     private LineChart speedChart, elevationChart;
-    private int xAxis = 0;
+    private int xAxis = 1;
     private boolean isSpeed = true;
     private TrackEntity trackEntity;
     private List<ChartPoint> chartPoints;
@@ -83,19 +84,36 @@ public class TrackDetailActivityChartsFragment extends Fragment
     }
 
     private void setupWidgets(View view) {
+        SwitchMultiButton switchMultiButton = view.findViewById(R.id.smb_xaxis);
+        switchMultiButton.setSelectedTab(xAxis);
+        switchMultiButton.setOnSwitchListener(new SwitchMultiButton.OnSwitchListener() {
+            @Override
+            public void onSwitch(int position, String tabText) {
+                if (xAxis != position) {
+                    xAxis = position;
+                    if (position == 0 && trackEntity != null && chartPoints != null) {
+                        setElevationChartDataByTime(chartPoints);
+                        if (isSpeed) {
+                            setSpeedChartDataByTime(chartPoints);
+                        } else {
+                            setPaceChartDataByTime(chartPoints);
+                        }
+                    } else if (position == 1 && trackEntity != null && chartPoints != null) {
+                        setElevationChartDataByDistance(chartPoints);
+                        if (isSpeed) {
+                            setSpeedChartDataByDistance(chartPoints);
+                        } else {
+                            setPaceChartDataByDistance(chartPoints);
+                        }
+                    }
+                }
+            }
+        });
+
         initialImageView = view.findViewById(R.id.iv_icon);
         editTitleImageButton = view.findViewById(R.id.ib_edit);
         titleTextView = view.findViewById(R.id.tv_title);
         dateTextView = view.findViewById(R.id.tv_date);
-
-        Spinner xAxisSpinner = view.findViewById(R.id.spinner_xaxis);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.x_axis_label_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        xAxisSpinner.setAdapter(adapter);
-        xAxisSpinner.setOnItemSelectedListener(this);
-        xAxisSpinner.setSelection(1);
-
         maxSpeedPpvi = view.findViewById(R.id.ppvi_max_speed);
         maxPacePpvi = view.findViewById(R.id.ppvi_max_pace);
         avgSpeedPpvi = view.findViewById(R.id.ppvi_avg_speed);
@@ -433,32 +451,5 @@ public class TrackDetailActivityChartsFragment extends Fragment
         LineData data = new LineData(dataSets);
         speedChart.setData(data);
         speedChart.invalidate();
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if (xAxis != i) {
-            xAxis = i;
-            if (i == 0 && trackEntity != null && chartPoints != null) {
-                setElevationChartDataByTime(chartPoints);
-                if (isSpeed) {
-                    setSpeedChartDataByTime(chartPoints);
-                } else {
-                    setPaceChartDataByTime(chartPoints);
-                }
-            } else if (i == 1 && trackEntity != null && chartPoints != null) {
-                setElevationChartDataByDistance(chartPoints);
-                if (isSpeed) {
-                    setSpeedChartDataByDistance(chartPoints);
-                } else {
-                    setPaceChartDataByDistance(chartPoints);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 }
