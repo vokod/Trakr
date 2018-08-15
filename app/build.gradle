@@ -41,6 +41,7 @@ android {
         versionCode 15
         versionName "0.15"
         vectorDrawables.useSupportLibrary = true
+        // multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
@@ -110,7 +111,7 @@ dependencies {
     // switch
     implementation 'lib.kingja.switchbutton:switchbutton:1.1.7'
     // about libraries
-    implementation "com.mikepenz:aboutlibraries:6.2.0-rc01"
+    // implementation "com.mikepenz:aboutlibraries:6.2.0-rc01"
 }
 
 
