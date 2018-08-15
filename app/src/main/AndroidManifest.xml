@@ -18,7 +18,6 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".view.main.MainActivity"
             android:label="@string/title_activity_main"
@@ -26,10 +25,10 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.list.TrackListActivity"
             android:label="@string/title_activity_track_list"
@@ -38,7 +37,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.main.MainActivity" />
         </activity>
-
         <activity
             android:name=".view.detail.TrackDetailActivity"
             android:label="@string/title_activity_track_detail"
@@ -78,6 +76,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity android:name=".view.settings.SettingsActivity"></activity>
     </application>
 
 </manifest>
