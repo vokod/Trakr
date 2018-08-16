@@ -212,7 +212,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:selectedColor="@color/colorPrimaryLight"
+                    app:selectedColor="@color/colorPrimary"
                     app:selectedTab="0"
                     app:strokeWidth="1dp"
                     app:switchTabs="@array/x_axis_label_array"
