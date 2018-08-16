@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tv_user"
             style="@style/SettingsGroup"
             android:text="@string/settings_group_user"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_user" />
 
         <com.awolity.trakr.customviews.ButtonSetting
             android:id="@+id/bs_logout"
@@ -46,7 +46,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bs_logout"/>
 
-
         <View
             android:id="@+id/divider_1"
             style="@style/SettingDivider"
@@ -54,11 +53,24 @@
             app:layout_constraintTop_toBottomOf="@+id/bs_delete_account" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_preferences"
             style="@style/SettingsGroup"
             android:text="@string/settings_group_preferences"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_1" />
+
+        <com.awolity.trakr.customviews.SeekbarSetting
+            android:id="@+id/ss_accuracy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_preferences">
+        </com.awolity.trakr.customviews.SeekbarSetting>
+
+
+
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

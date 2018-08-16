@@ -7,31 +7,33 @@ import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
 
-public class ButtonSetting extends ConstraintLayout {
+public class SeekbarSetting extends ConstraintLayout {
 
     private TextView labelTextView;
     private TextView descriptionTextView;
     private ImageView iconImageView;
+    private SeekBar seekBar;
     private final Context context;
 
-    public ButtonSetting(@NonNull Context context) {
+    public SeekbarSetting(@NonNull Context context) {
         super(context);
         this.context = context;
         inflate();
     }
 
-    public ButtonSetting(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public SeekbarSetting(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         inflate();
     }
 
-    public ButtonSetting(@NonNull Context context, @Nullable AttributeSet attrs,
-                                   int defStyleAttr) {
+    public SeekbarSetting(@NonNull Context context, @Nullable AttributeSet attrs,
+                          int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
         inflate();
@@ -42,6 +44,7 @@ public class ButtonSetting extends ConstraintLayout {
         labelTextView = findViewById(R.id.tv_label);
         descriptionTextView = findViewById(R.id.tv_desc);
         iconImageView = findViewById(R.id.iv_icon);
+        seekBar = findViewById(R.id.seekbar);
     }
 
     private void setLabel(String labelText) {
@@ -56,9 +59,17 @@ public class ButtonSetting extends ConstraintLayout {
         iconImageView.setImageResource(resId);
     }
 
-    public void setup(String label, String description, int iconResource) {
+    private void setSeekBar(int max, int pos, SeekBar.OnSeekBarChangeListener listener) {
+        seekBar.setMax(max);
+        seekBar.setProgress(pos);
+        seekBar.setOnSeekBarChangeListener(listener);
+    }
+
+    public void setup(String label, String description, int iconResource, int max, int pos,
+                      SeekBar.OnSeekBarChangeListener listener) {
         setLabel(label);
         setDescription(description);
         setIcon(iconResource);
+        setSeekBar(max, pos, listener);
     }
 }

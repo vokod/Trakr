@@ -229,14 +229,18 @@
 
     <!-- Settings activity -->
     <string name="title_activity_settings">Settings</string>
+
     <string name="settings_group_user">User</string>
     <string name="settings_group_preferences">Preferences</string>
+
     <string name="setting_label_login">Log in</string>
-    <string name="setting_label_logout">Log out</string>
-    <string name="setting_label_delete_account">Log out and delete account</string>
-    <string name="settings_description_logout">Disable cloud backup and synchronisation of your recorded tracks. All tracks recorded with your account will be deleted from this device (but not from the cloud backup).</string>
-    <string name="settings_description_delete_account">Also delete all recorded tracks from the cloud backup, but not from your device.</string>
     <string name="settings_description_login">Enable cloud backup and synchronisation of your recorded tracks between your devices.</string>
+    <string name="setting_label_logout">Log out</string>
+    <string name="settings_description_logout">Disable cloud backup and synchronisation of your recorded tracks. All tracks recorded with your account will be deleted from this device (but not from the cloud backup).</string>
+    <string name="setting_label_delete_account">Log out and delete account</string>
+    <string name="settings_description_delete_account">Also delete all recorded tracks from the cloud backup, but not from your device.</string>
+    <string name="setting_label_accuracy">Accuracy</string>
+    <string name="settings_description_accuracy">The more accurate the recording, the quicker the app drains the battery. </string>
 
 
 </resources>
