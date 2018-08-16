@@ -121,14 +121,23 @@ public class MainActivity extends AppCompatActivity
         } else {
             pointFragment = (BottomSheetPointFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, BottomSheetPointFragment.class.getName());
+            if (pointFragment == null) {
+                pointFragment = BottomSheetPointFragment.newInstance(getString(R.string.bottom_sheet_label_point));
+            }
             pointFragment.setTitle(getString(R.string.bottom_sheet_label_point));
 
             trackFragment = (BottomSheetTrackFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, BottomSheetTrackFragment.class.getName());
+            if(trackFragment==null){
+                trackFragment = BottomSheetTrackFragment.newInstance(getString(R.string.bottom_sheet_label_track));
+            }
             trackFragment.setTitle(getString(R.string.bottom_sheet_label_track));
 
             chartsFragment = (BottomSheetChartsFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, BottomSheetChartsFragment.class.getName());
+            if(chartsFragment==null){
+                chartsFragment = BottomSheetChartsFragment.newInstance(getString(R.string.bottom_sheet_label_charts));
+            }
             chartsFragment.setTitle(getString(R.string.bottom_sheet_label_charts));
         }
         adapter.setFragments(new BottomSheetBaseFragment[]{pointFragment, trackFragment, chartsFragment});
