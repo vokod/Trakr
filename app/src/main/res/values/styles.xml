@@ -111,7 +111,7 @@
     <style name="SettingsGroup" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:typeface">sans</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textAllCaps">true</item>
@@ -133,17 +133,18 @@
     </style>
 
     <style name="SettingDescription" parent="@style/SettingLabel">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/secondaryText</item>
         <item name="android:textStyle">normal</item>
         <item name="android:typeface">sans</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:layout_marginStart">72dp</item>
         <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginTop">4dp</item>
     </style>
 
     <style name="SettingIcon" parent="@style/AppTheme">
-        <item name="android:layout_marginTop">40dp</item>
+        <item name="android:layout_marginTop">48dp</item>
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

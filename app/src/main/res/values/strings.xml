@@ -234,6 +234,9 @@
     <string name="setting_label_log_in">Log in</string>
     <string name="setting_label_log_out">Log out</string>
     <string name="setting_label_log_out_and_delete_account">Log out and delete account</string>
+    <string name="settings_logout_description">Disable cloud backup and synchronisation of your recorded tracks. All tracks recorded with your account will be deleted from this device (but not from the cloud backup).</string>
+    <string name="settings_delete_account_description">Also delete all recorded tracks from the cloud backup, but not from your device.</string>
+    <string name="settings_login_description">Enable cloud backup and synchronisation of your recorded tracks between your devices.</string>
 
 
 </resources>
