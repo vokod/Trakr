@@ -7,6 +7,7 @@ import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
@@ -31,7 +32,7 @@ public class ButtonSetting extends ConstraintLayout {
     }
 
     public ButtonSetting(@NonNull Context context, @Nullable AttributeSet attrs,
-                                   int defStyleAttr) {
+                         int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
         inflate();
@@ -48,8 +49,16 @@ public class ButtonSetting extends ConstraintLayout {
         labelTextView.setText(labelText);
     }
 
-    public void setDescription(String valueText) {
-        descriptionTextView.setText(valueText);
+    public void setDescription(String descriptionText) {
+        if (descriptionText == null) {
+            descriptionTextView.setVisibility(GONE);
+            labelTextView.setPadding(labelTextView.getPaddingStart(),
+                    getInPx(context, 12),
+                    labelTextView.getPaddingEnd(),
+                    getInPx(context, 12));
+            return;
+        }
+        descriptionTextView.setText(descriptionText);
     }
 
     private void setIcon(int resId) {
@@ -60,5 +69,10 @@ public class ButtonSetting extends ConstraintLayout {
         setLabel(label);
         setDescription(description);
         setIcon(iconResource);
+    }
+
+    private static int getInPx(Context context, int dp) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
     }
 }

@@ -15,7 +15,7 @@ import com.awolity.trakr.utils.MyLog;
 public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
-    private ButtonSetting loginBs, logoutBs, deleteBs;
+    private ButtonSetting loginBs, logoutBs, deleteBs, termsBs, privacyBs, librariesBs, contactBs;
     private SeekbarSetting accuracySs;
     private RadiogroupSetting unitRs;
 
@@ -37,6 +37,10 @@ public class SettingsActivity extends AppCompatActivity {
         deleteBs = findViewById(R.id.bs_delete_account);
         accuracySs = findViewById(R.id.ss_accuracy);
         unitRs = findViewById(R.id.rs_unit);
+        termsBs = findViewById(R.id.bs_terms_of_use);
+        privacyBs = findViewById(R.id.bs_privacy_policy);
+        librariesBs = findViewById(R.id.bs_libraries);
+        contactBs = findViewById(R.id.bs_feedback);
 
         loginBs.setup(getString(R.string.setting_label_login),
                 getString(R.string.settings_description_login),
@@ -77,5 +81,12 @@ public class SettingsActivity extends AppCompatActivity {
                         MyLog.d(TAG, "OnRadioButtonClicked: " + no);
                     }
                 });
+
+        termsBs.setup("Terms of use", null, R.drawable.ic_terms_of_use);
+        privacyBs.setup("Privacy policy", null, R.drawable.ic_privacy_policy);
+        librariesBs.setup("Libraries", "The open source libraries that made Trakr possible",
+                R.drawable.ic_libraries);
+        contactBs.setup("Feedback and report", "Have a problem? Want to suggest an improvement? Tap here!",
+                R.drawable.ic_feedback);
     }
 }
