@@ -8,17 +8,17 @@
     <ImageView
         android:id="@+id/iv_icon"
         style="@style/SettingIcon"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_desc"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_label"
+        app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/ic_login" />
 
     <TextView
         android:id="@+id/tv_label"
         style="@style/SettingLabel"
-        tools:text="@string/setting_label_login"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/setting_label_login" />
 
     <TextView
         android:id="@+id/tv_desc"
@@ -29,31 +29,35 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_label"
         tools:text="@string/settings_description_login" />
 
-    <SeekBar
-        android:id="@+id/seekbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="8dp"
-        android:max="2"
-        android:progress="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_desc"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <FrameLayout
-        android:id="@+id/frameLayout"
+    <RadioGroup
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:focusable="true" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_desc"
+        app:layout_constraintVertical_bias="0.0">
+
+        <RadioButton
+            android:id="@+id/rb_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="RadioButton" />
+
+        <RadioButton
+            android:id="@+id/rb_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="RadioButton" />
+    </RadioGroup>
 
 
 </android.support.constraint.ConstraintLayout>

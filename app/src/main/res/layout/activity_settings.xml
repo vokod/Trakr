@@ -66,8 +66,18 @@
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_preferences">
-        </com.awolity.trakr.customviews.SeekbarSetting>
+            app:layout_constraintTop_toBottomOf="@+id/tv_preferences"/>
+
+        <com.awolity.trakr.customviews.RadiogroupSetting
+            android:id="@+id/rs_unit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ss_accuracy">
+
+        </com.awolity.trakr.customviews.RadiogroupSetting>
 
 
 

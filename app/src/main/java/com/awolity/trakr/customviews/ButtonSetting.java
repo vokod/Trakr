@@ -38,7 +38,7 @@ public class ButtonSetting extends ConstraintLayout {
     }
 
     void inflate() {
-        LayoutInflater.from(context).inflate(R.layout.view_button_setting, this, true);
+        LayoutInflater.from(context).inflate(R.layout.view_setting_button, this, true);
         labelTextView = findViewById(R.id.tv_label);
         descriptionTextView = findViewById(R.id.tv_desc);
         iconImageView = findViewById(R.id.iv_icon);

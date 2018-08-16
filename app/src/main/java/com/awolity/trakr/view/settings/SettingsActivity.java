@@ -8,14 +8,18 @@ import android.widget.SeekBar;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.ButtonSetting;
+import com.awolity.trakr.customviews.RadiogroupSetting;
 import com.awolity.trakr.customviews.SeekbarSetting;
+import com.awolity.trakr.utils.MyLog;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private static final String TAG = "SettingsActivity";
     private ButtonSetting loginBs, logoutBs, deleteBs;
     private SeekbarSetting accuracySs;
+    private RadiogroupSetting unitRs;
 
-    public static Intent getStarterIntent(Context context){
+    public static Intent getStarterIntent(Context context) {
         Intent intent = new Intent(context, SettingsActivity.class);
         return intent;
     }
@@ -27,11 +31,12 @@ public class SettingsActivity extends AppCompatActivity {
         setupWidgets();
     }
 
-    private void setupWidgets(){
+    private void setupWidgets() {
         loginBs = findViewById(R.id.bs_login);
         logoutBs = findViewById(R.id.bs_logout);
         deleteBs = findViewById(R.id.bs_delete_account);
-        accuracySs = findViewById(R.id.bs_accuracy);
+        accuracySs = findViewById(R.id.ss_accuracy);
+        unitRs = findViewById(R.id.rs_unit);
 
         loginBs.setup(getString(R.string.setting_label_login),
                 getString(R.string.settings_description_login),
@@ -48,7 +53,7 @@ public class SettingsActivity extends AppCompatActivity {
         accuracySs.setup(getString(R.string.setting_label_accuracy),
                 getString(R.string.settings_description_accuracy),
                 R.drawable.ic_accuracy,
-                3, 0, new SeekBar.OnSeekBarChangeListener() {
+                2, 0, new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
@@ -62,6 +67,14 @@ public class SettingsActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
 
+                    }
+                });
+
+        unitRs.setup("Units", "Do you prefer km of miles?", R.drawable.ic_unit, "Metric", "Imperial",
+                0, new RadiogroupSetting.RadiogroupSettingListener() {
+                    @Override
+                    public void OnRadioButtonClicked(int no) {
+                        MyLog.d(TAG, "OnRadioButtonClicked: " + no);
                     }
                 });
     }
