@@ -41,6 +41,7 @@ import com.awolity.trakr.view.main.bottom.BottomSheetChartsFragment;
 import com.awolity.trakr.view.main.bottom.BottomSheetFragmentPagerAdapter;
 import com.awolity.trakr.view.main.bottom.BottomSheetPointFragment;
 import com.awolity.trakr.view.main.bottom.BottomSheetTrackFragment;
+import com.awolity.trakr.view.settings.SettingsActivity;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.LocationViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
@@ -495,6 +496,8 @@ public class MainActivity extends AppCompatActivity
                                 new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
                         .build(), RC_SIGN_IN);
             }
+        } else if (id == R.id.action_settings) {
+            startActivity(SettingsActivity.getStarterIntent(this));
         }
         return super.onOptionsItemSelected(item);
     }
