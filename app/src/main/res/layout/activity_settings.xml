@@ -17,88 +17,41 @@
             style="@style/SettingsGroup"
             android:text="@string/settings_group_user"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="16dp"/>
 
-        <ImageView
-            android:id="@+id/iv_icon"
-            style="@style/SettingIcon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:srcCompat="@drawable/ic_login" />
-
-        <TextView
-            android:id="@+id/tv_label"
-            style="@style/SettingLabel"
-            android:text="@string/setting_label_log_in"
-            app:layout_constraintBottom_toTopOf="@+id/tv_desc"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_icon" />
-
-        <TextView
-            android:id="@+id/tv_desc"
-            style="@style/SettingDescription"
+        <com.awolity.trakr.customviews.ButtonSetting
+            android:id="@+id/bs_login"
             android:layout_width="0dp"
-            android:text="@string/settings_login_description"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_label" />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-        <ImageView
-            android:id="@+id/iv_logout"
-            style="@style/SettingIcon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_desc"
-            app:srcCompat="@drawable/ic_logout" />
-
-        <TextView
-            android:id="@+id/tv_logout"
-            style="@style/SettingLabel"
-            android:text="@string/setting_label_log_out"
-            app:layout_constraintBottom_toTopOf="@+id/tv_logout_desc"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_logout" />
-
-        <TextView
-            android:id="@+id/tv_logout_desc"
-            style="@style/SettingDescription"
+        <com.awolity.trakr.customviews.ButtonSetting
+            android:id="@+id/bs_logout"
             android:layout_width="0dp"
-            android:text="@string/settings_logout_description"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_logout"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_logout" />
+            app:layout_constraintTop_toBottomOf="@+id/bs_login"/>
 
-        <ImageView
-            android:id="@+id/iv_delete_account"
-            style="@style/SettingIcon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_logout_desc"
-            app:srcCompat="@drawable/ic_delete_account" />
-
-        <TextView
-            android:id="@+id/tv_delete_account"
-            style="@style/SettingLabel"
-            android:text="@string/setting_label_log_out_and_delete_account"
-            app:layout_constraintBottom_toTopOf="@+id/tv_delete_account_desc"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_delete_account" />
-
-        <TextView
-            android:id="@+id/tv_delete_account_desc"
-            style="@style/SettingDescription"
+        <com.awolity.trakr.customviews.ButtonSetting
+            android:id="@+id/bs_delete_account"
             android:layout_width="0dp"
-            android:text="@string/settings_delete_account_description"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_delete_account"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_delete_account" />
+            app:layout_constraintTop_toBottomOf="@+id/bs_logout"/>
+
 
         <View
             android:id="@+id/divider_1"
             style="@style/SettingDivider"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_delete_account_desc" />
+            app:layout_constraintTop_toBottomOf="@+id/bs_delete_account" />
 
         <TextView
             android:id="@+id/textView2"
