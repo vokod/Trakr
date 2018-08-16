@@ -1,5 +1,6 @@
 package com.awolity.trakr.view.settings;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import com.awolity.trakr.customviews.ButtonSetting;
 import com.awolity.trakr.customviews.RadiogroupSetting;
 import com.awolity.trakr.customviews.SeekbarSetting;
 import com.awolity.trakr.utils.MyLog;
+import com.awolity.trakr.viewmodel.AppUserViewModel;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -20,6 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
     private ButtonSetting loginBs, logoutBs, deleteBs, termsBs, privacyBs, librariesBs, contactBs;
     private SeekbarSetting accuracySs;
     private RadiogroupSetting unitRs;
+    private AppUserViewModel appUserViewModel;
 
     public static Intent getStarterIntent(Context context) {
         Intent intent = new Intent(context, SettingsActivity.class);
@@ -31,6 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         setupWidgets();
+        appUserViewModel = ViewModelProviders.of(this).get(AppUserViewModel.class);
     }
 
     private void setupWidgets() {
@@ -46,7 +50,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         loginBs.setup(getString(R.string.setting_label_login),
                 getString(R.string.settings_description_login),
-                R.drawable.ic_login, new View.OnClickListener() {
+                R.drawable.ic_login, R.drawable.ic_login_disabled, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -55,7 +59,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         logoutBs.setup(getString(R.string.setting_label_logout),
                 getString(R.string.settings_description_logout),
-                R.drawable.ic_logout, new View.OnClickListener() {
+                R.drawable.ic_logout, R.drawable.ic_logout_disabled, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -64,7 +68,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         deleteBs.setup(getString(R.string.setting_label_delete_account),
                 getString(R.string.settings_description_delete_account),
-                R.drawable.ic_delete_account, new View.OnClickListener() {
+                R.drawable.ic_delete_account, R.drawable.ic_delete_account_disabled,
+                new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -104,14 +109,14 @@ public class SettingsActivity extends AppCompatActivity {
                 });
 
         termsBs.setup(getString(R.string.setting_label_terms_of_use), null,
-                R.drawable.ic_terms_of_use, new View.OnClickListener() {
+                R.drawable.ic_terms_of_use, 0, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                     }
                 });
         privacyBs.setup(getString(R.string.setting_label_privacy_policy),
-                null, R.drawable.ic_privacy_policy, new View.OnClickListener() {
+                null, R.drawable.ic_privacy_policy, 0, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -119,7 +124,7 @@ public class SettingsActivity extends AppCompatActivity {
                 });
         librariesBs.setup(getString(R.string.setting_label_libraries),
                 getString(R.string.setting_description_libraries),
-                R.drawable.ic_libraries, new View.OnClickListener() {
+                R.drawable.ic_libraries, 0, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -127,7 +132,7 @@ public class SettingsActivity extends AppCompatActivity {
                 });
         contactBs.setup(getString(R.string.setting_label_feedback),
                 getString(R.string.setting_description_feedback),
-                R.drawable.ic_feedback, new View.OnClickListener() {
+                R.drawable.ic_feedback, 0, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -135,5 +140,22 @@ public class SettingsActivity extends AppCompatActivity {
                 });
     }
 
+    private void checkUserState() {
+        if (appUserViewModel.IsAppUserLoggedIn()) {
+            // user is logged in
+            loginBs.setEnabled(false);
+            logoutBs.setEnabled(true);
+            deleteBs.setEnabled(true);
+        } else {
+            loginBs.setEnabled(true);
+            logoutBs.setEnabled(false);
+            deleteBs.setEnabled(false);
+        }
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkUserState();
+    }
 }
