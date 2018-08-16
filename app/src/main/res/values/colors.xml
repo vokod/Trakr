@@ -14,7 +14,7 @@
     <color name="white">#FFFFFF</color>
     <color name="bottom_sheet_background">#EEEEEE</color>
     <color name="activity_main_activity_type_spinner_dropdown_item_background">#fff</color>
-    <color name="horizontal_line">#757575</color>
+    <color name="horizontal_line">#CCCCCC</color>
 
 </resources>
 
