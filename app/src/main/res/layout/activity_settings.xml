@@ -5,12 +5,12 @@
     android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.settings.SettingsActivity">
+    tools:context=".view.settings.SettingsActivity"
+    android:orientation="vertical">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/textView"
@@ -20,35 +20,35 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/iv_login"
+            android:id="@+id/iv_icon"
             style="@style/SettingIcon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:srcCompat="@drawable/ic_login" />
 
         <TextView
-            android:id="@+id/tv_login"
+            android:id="@+id/tv_label"
             style="@style/SettingLabel"
             android:text="@string/setting_label_log_in"
-            app:layout_constraintBottom_toTopOf="@+id/tv_login_desc"
+            app:layout_constraintBottom_toTopOf="@+id/tv_desc"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_login" />
+            app:layout_constraintTop_toTopOf="@+id/iv_icon" />
 
         <TextView
-            android:id="@+id/tv_login_desc"
+            android:id="@+id/tv_desc"
             style="@style/SettingDescription"
             android:layout_width="0dp"
             android:text="@string/settings_login_description"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_login"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_login" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_label" />
 
         <ImageView
             android:id="@+id/iv_logout"
             style="@style/SettingIcon"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_login_desc"
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc"
             app:srcCompat="@drawable/ic_logout" />
 
         <TextView
