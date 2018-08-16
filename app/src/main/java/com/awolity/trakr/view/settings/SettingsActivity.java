@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.SeekBar;
 
 import com.awolity.trakr.R;
@@ -44,15 +46,30 @@ public class SettingsActivity extends AppCompatActivity {
 
         loginBs.setup(getString(R.string.setting_label_login),
                 getString(R.string.settings_description_login),
-                R.drawable.ic_login);
+                R.drawable.ic_login, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
         logoutBs.setup(getString(R.string.setting_label_logout),
                 getString(R.string.settings_description_logout),
-                R.drawable.ic_logout);
+                R.drawable.ic_logout, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
         deleteBs.setup(getString(R.string.setting_label_delete_account),
                 getString(R.string.settings_description_delete_account),
-                R.drawable.ic_delete_account);
+                R.drawable.ic_delete_account, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
         accuracySs.setup(getString(R.string.setting_label_accuracy),
                 getString(R.string.settings_description_accuracy),
@@ -74,7 +91,11 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 });
 
-        unitRs.setup("Units", "Do you prefer km of miles?", R.drawable.ic_unit, "Metric", "Imperial",
+        unitRs.setup(getString(R.string.setting_label_units),
+                getString(R.string.setting_description_units),
+                R.drawable.ic_unit,
+                getString(R.string.radiobutton_label_metric),
+                getString(R.string.radiobutton_label_implerial),
                 0, new RadiogroupSetting.RadiogroupSettingListener() {
                     @Override
                     public void OnRadioButtonClicked(int no) {
@@ -82,11 +103,37 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 });
 
-        termsBs.setup("Terms of use", null, R.drawable.ic_terms_of_use);
-        privacyBs.setup("Privacy policy", null, R.drawable.ic_privacy_policy);
-        librariesBs.setup("Libraries", "The open source libraries that made Trakr possible",
-                R.drawable.ic_libraries);
-        contactBs.setup("Feedback and report", "Have a problem? Want to suggest an improvement? Tap here!",
-                R.drawable.ic_feedback);
+        termsBs.setup(getString(R.string.setting_label_terms_of_use), null,
+                R.drawable.ic_terms_of_use, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+        privacyBs.setup(getString(R.string.setting_label_privacy_policy),
+                null, R.drawable.ic_privacy_policy, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+        librariesBs.setup(getString(R.string.setting_label_libraries),
+                getString(R.string.setting_description_libraries),
+                R.drawable.ic_libraries, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+        contactBs.setup(getString(R.string.setting_label_feedback),
+                getString(R.string.setting_description_feedback),
+                R.drawable.ic_feedback, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
     }
+
+
 }

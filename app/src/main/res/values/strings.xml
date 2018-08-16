@@ -241,6 +241,16 @@
     <string name="settings_description_delete_account">Also delete all recorded tracks from the cloud backup, but not from your device.</string>
     <string name="setting_label_accuracy">Accuracy</string>
     <string name="settings_description_accuracy">The more accurate the recording, the quicker the app drains the battery. </string>
+    <string name="setting_label_units">Units</string>
+    <string name="setting_description_units">Do you prefer km of miles?</string>
+    <string name="radiobutton_label_metric">Metric</string>
+    <string name="radiobutton_label_implerial">Imperial</string>
+    <string name="setting_label_terms_of_use">Terms of use</string>
+    <string name="setting_label_privacy_policy">Privacy policy</string>
+    <string name="setting_label_libraries">Libraries</string>
+    <string name="setting_description_libraries">The open source libraries that made Trakr possible</string>
+    <string name="setting_label_feedback">Feedback and report</string>
+    <string name="setting_description_feedback">Have a problem? Want to suggest an improvement? Tap here!</string>
 
 
 </resources>

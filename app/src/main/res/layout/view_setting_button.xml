@@ -31,7 +31,7 @@
         tools:text="@string/settings_description_login" />
 
     <FrameLayout
-        android:id="@+id/frameLayout"
+        android:id="@+id/fl_click_overlay"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="?attr/selectableItemBackground"

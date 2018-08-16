@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ public class ButtonSetting extends ConstraintLayout {
     private TextView descriptionTextView;
     private ImageView iconImageView;
     private final Context context;
+    private FrameLayout clickOverlay;
 
     public ButtonSetting(@NonNull Context context) {
         super(context);
@@ -43,6 +46,7 @@ public class ButtonSetting extends ConstraintLayout {
         labelTextView = findViewById(R.id.tv_label);
         descriptionTextView = findViewById(R.id.tv_desc);
         iconImageView = findViewById(R.id.iv_icon);
+        clickOverlay = findViewById(R.id.fl_click_overlay);
     }
 
     private void setLabel(String labelText) {
@@ -65,10 +69,12 @@ public class ButtonSetting extends ConstraintLayout {
         iconImageView.setImageResource(resId);
     }
 
-    public void setup(String label, String description, int iconResource) {
+    public void setup(String label, String description, int iconResource,
+                      View.OnClickListener clickListener) {
         setLabel(label);
         setDescription(description);
         setIcon(iconResource);
+        clickOverlay.setOnClickListener(clickListener);
     }
 
     private static int getInPx(Context context, int dp) {
