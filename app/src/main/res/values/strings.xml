@@ -231,6 +231,9 @@
     <string name="title_activity_settings">Settings</string>
     <string name="settings_group_user">User</string>
     <string name="settings_group_preferences">Preferences</string>
+    <string name="setting_label_log_in">Log in</string>
+    <string name="setting_label_log_out">Log out</string>
+    <string name="setting_label_log_out_and_delete_account">Log out and delete account</string>
 
 
 </resources>

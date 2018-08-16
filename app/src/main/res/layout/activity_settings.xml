@@ -8,20 +8,76 @@
     tools:context=".view.settings.SettingsActivity">
 
     <LinearLayout
-      android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
+            style="@style/SettingsGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/settings_group_user"
-            style="@style/SettingsGroup" />
+            android:text="@string/settings_group_user" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_login"
+                style="@style/SettingIcon"
+                app:srcCompat="@drawable/ic_login" />
+
+            <TextView
+                android:id="@+id/tv_login"
+                style="@style/SettingLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_label_log_in" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_logout"
+                style="@style/SettingIcon"
+                app:srcCompat="@drawable/ic_logout" />
+
+            <TextView
+                android:id="@+id/tv_logout"
+                style="@style/SettingLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_label_log_out" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_delete_account"
+                style="@style/SettingIcon"
+                app:srcCompat="@drawable/ic_delete_account" />
+
+            <TextView
+                android:id="@+id/tv_delete_account"
+                style="@style/SettingLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_label_log_out_and_delete_account" />
+        </FrameLayout>
+
+        <View style="@style/SettingDivider" />
 
         <TextView
+            style="@style/SettingsGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/settings_group_preferences"
-            style="@style/SettingsGroup" />
+            android:text="@string/settings_group_preferences" />
+
     </LinearLayout>
 </ScrollView>
