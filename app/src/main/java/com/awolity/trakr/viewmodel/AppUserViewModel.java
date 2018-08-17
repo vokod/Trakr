@@ -32,6 +32,10 @@ public class AppUserViewModel extends ViewModel {
         appUserRepository.signOut();
     }
 
+    public void deleteAccount(){
+        // TODO
+    }
+
     public void signIn(){
         appUserRepository.signIn();
     }

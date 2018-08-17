@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final float ZOOM_LEVEL_INITIAL = 15;
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int RC_SIGN_IN = 22;
 
     private GoogleMap googleMap;
     private BottomSheetPointFragment pointFragment;
@@ -488,54 +487,14 @@ public class MainActivity extends AppCompatActivity
             return true;
         } else if (id == R.id.action_synchronisation) {
             if (appUserViewModel.IsAppUserLoggedIn()) {
-                MainActivityUtils.showLogoutAlertDialog(this, appUserViewModel, item);
+
             } else {
-                startActivityForResult(AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(Arrays.asList(
-                                new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
-                        .build(), RC_SIGN_IN);
+
             }
         } else if (id == R.id.action_settings) {
             startActivity(SettingsActivity.getStarterIntent(this));
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            // Successfully signed in
-            if (resultCode == RESULT_OK) {
-                MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
-                synchronisationItem.setTitle(getString(R.string.disable_cloud_sync));
-                Toast.makeText(this, getString(R.string.you_are_logged_in), Toast.LENGTH_LONG).show();
-                appUserViewModel.signIn();
-                return;
-            } else {
-                // Sign in failed
-                if (response == null) {
-                    // UserEntity pressed back button
-                    MainActivityUtils.showToast(this, getString(R.string.login_error_cancel));
-                    return;
-                }
-
-                if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    MainActivityUtils.showToast(this, getString(R.string.login_error_no_internet));
-                    return;
-                }
-
-                if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                    MainActivityUtils.showToast(this, getString(R.string.login_error_unknown_error));
-                    return;
-                }
-            }
-            MainActivityUtils.showToast(this, getString(R.string.login_error_unknown_response));
-        }
     }
 
     @Override

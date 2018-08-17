@@ -36,12 +36,6 @@
 
     <string name="start_recording_a_track">Start recording a track!</string>
 
-    <string name="logout_dialog_title">Log out</string>
-    <string name="logout_dialog_message">On logging out, all the tracks saved by this account: %s
-        will be removed from this device. Those tracks will be available on next login.\n\nDo you
-        really want to log out?"</string>
-
-
     <!-- Track list activity -->
     <string name="title_activity_track_list">Recorded tracks</string>
     <string name="night_track">Night track</string>
@@ -237,6 +231,7 @@
     <string name="settings_description_login">Enable cloud backup and synchronisation of your recorded tracks between your devices.</string>
     <string name="setting_label_logout">Log out</string>
     <string name="settings_description_logout">Disable cloud backup and synchronisation of your recorded tracks. All tracks recorded with your account will be deleted from this device (but not from the cloud backup).</string>
+    <string name="settings_description_logout_with_account">Disable cloud backup and synchronisation of your recorded tracks. All tracks recorded with your account (%s) will be deleted from this device (but not from the cloud backup).</string>
     <string name="setting_label_delete_account">Log out and delete account</string>
     <string name="settings_description_delete_account">Also delete all recorded tracks from the cloud backup, but not from your device.</string>
     <string name="setting_label_accuracy">Accuracy</string>
@@ -251,6 +246,14 @@
     <string name="setting_description_libraries">The open source libraries that made Trakr possible</string>
     <string name="setting_label_feedback">Feedback and report</string>
     <string name="setting_description_feedback">Have a problem? Want to suggest an improvement? Tap here!</string>
+
+    <string name="logout_dialog_title">Log out</string>
+    <string name="logout_dialog_message">On logging out, all the tracks saved by this account: %s
+        will be removed from this device. Those tracks will be available on next login.\n\nDo you
+        really want to log out?"</string>
+
+    <string name="delete_account_dialog_title">Delete account</string>
+    <string name="delete_account_dialog_message">Do you really want to delete your Trakr account?</string>
 
 
 </resources>
