@@ -86,7 +86,7 @@ public class SettingsActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        showDeleteAccountAlertDialog();
                     }
                 });
 
@@ -185,6 +185,8 @@ public class SettingsActivity extends AppCompatActivity {
             // Successfully signed in
             if (resultCode == RESULT_OK) {
                 appUserViewModel.signIn();
+                Utility.showToast(this, getString(R.string.login_successful));
+                checkUserState();
                 return;
             } else {
                 // Sign in failed
@@ -220,19 +222,20 @@ public class SettingsActivity extends AppCompatActivity {
                 .setIcon(getDrawable(R.drawable.ic_warning))
                 .setPositiveButton(getString(android.R.string.ok),
                         new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        appUserViewModel.signOut();
-                        Toast.makeText(SettingsActivity.this, getString(R.string.you_are_logged_out),
-                                Toast.LENGTH_LONG).show();
-                    }
-                })
+                            public void onClick(DialogInterface dialog, int id) {
+                                appUserViewModel.signOut();
+                                Toast.makeText(SettingsActivity.this, getString(R.string.you_are_logged_out),
+                                        Toast.LENGTH_LONG).show();
+                                checkUserState();
+                            }
+                        })
                 .setNegativeButton(getString(android.R.string.cancel),
                         new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
