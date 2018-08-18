@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity
     private MainActivityStatus status;
     private long trackId = Constants.NO_LAST_RECORDED_TRACK;
 
-    private Menu menu;
     private PolylineManager polylineManager;
 
     @Override
@@ -128,14 +127,14 @@ public class MainActivity extends AppCompatActivity
 
             trackFragment = (BottomSheetTrackFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, BottomSheetTrackFragment.class.getName());
-            if(trackFragment==null){
+            if (trackFragment == null) {
                 trackFragment = BottomSheetTrackFragment.newInstance(getString(R.string.bottom_sheet_label_track));
             }
             trackFragment.setTitle(getString(R.string.bottom_sheet_label_track));
 
             chartsFragment = (BottomSheetChartsFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, BottomSheetChartsFragment.class.getName());
-            if(chartsFragment==null){
+            if (chartsFragment == null) {
                 chartsFragment = BottomSheetChartsFragment.newInstance(getString(R.string.bottom_sheet_label_charts));
             }
             chartsFragment.setTitle(getString(R.string.bottom_sheet_label_charts));
@@ -477,14 +476,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_main_menu, menu);
-        this.menu = menu;
-
-        MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
-        if (appUserViewModel.IsAppUserLoggedIn()) {
-            synchronisationItem.setTitle(getString(R.string.disable_cloud_sync));
-        } else {
-            synchronisationItem.setTitle(getString(R.string.enable_cloud_sync));
-        }
         return true;
     }
 
