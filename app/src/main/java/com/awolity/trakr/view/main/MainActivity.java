@@ -485,12 +485,6 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_list_tracks) {
             startActivity(TrackListActivity.getStarterIntent(this));
             return true;
-        } else if (id == R.id.action_synchronisation) {
-            if (appUserViewModel.IsAppUserLoggedIn()) {
-
-            } else {
-
-            }
         } else if (id == R.id.action_settings) {
             startActivity(SettingsActivity.getStarterIntent(this));
         }
