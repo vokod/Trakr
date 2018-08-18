@@ -12,10 +12,7 @@ import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
 import com.awolity.trakr.utils.FileLoggingTree;
-import com.awolity.trakr.utils.MyLog;
-import com.awolity.trakr.utils.PreferenceUtils;
 import com.crashlytics.android.Crashlytics;
-import com.google.firebase.database.FirebaseDatabase;
 
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;

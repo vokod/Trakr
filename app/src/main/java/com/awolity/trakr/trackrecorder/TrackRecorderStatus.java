@@ -1,14 +1,14 @@
 package com.awolity.trakr.trackrecorder;
 
-import android.content.Context;
 import android.location.Location;
 
+import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.utils.MyLog;
-import com.awolity.trakr.utils.PreferenceUtils;
-import com.google.android.gms.location.LocationRequest;
+import com.awolity.trakr.repository.SettingsRepository;
 
-class TrackRecorderStatus {
+import javax.inject.Inject;
+
+public class TrackRecorderStatus {
 
     private static final String TAG = "TrackRecorderStatus";
     private boolean isEverythingGoodForRecording = true;
@@ -16,11 +16,18 @@ class TrackRecorderStatus {
     private TrackpointEntity previousSavedTrackpoint, actualSavedTrackpoint, candidateTrackpoint;
     private LowPassFilter altitudeFilter, speedFilter;
     private final AltitudeZeroFilter altitudeZeroFilter;
+    private final RecordParameters recordParameters;
 
-    public TrackRecorderStatus(Context context) {
+    @Inject
+    SettingsRepository settingsRepository;
+
+    public TrackRecorderStatus() {
         // MyLog.d(TAG, "TrackRecorderStatus");
-        altitudeFilter = new LowPassFilter(10);
-        speedFilter = new LowPassFilter(2);
+        TrakrApplication.getInstance().getAppComponent().inject(this);
+
+        recordParameters = settingsRepository.getRecordParameters();
+        altitudeFilter = new LowPassFilter(recordParameters.getAltitudeFilterParameter());
+        speedFilter = new LowPassFilter(recordParameters.getSpeedFilterParameter());
         altitudeZeroFilter = new AltitudeZeroFilter();
     }
 
@@ -85,27 +92,27 @@ class TrackRecorderStatus {
     }
 
     int getTrackingDistance() {
-        return 3;
+        return recordParameters.getTrackingDistance();
     }
 
     int getTrackingAccuracy() {
-        return LocationRequest.PRIORITY_HIGH_ACCURACY;
+        return recordParameters.getTrackingAccuracy();
     }
 
     int getTrackingInterval() {
-        return 3;
+        return recordParameters.getTrackingInterval();
     }
 
     int getMinimalRecordAccuracy() {
-        return 20;
+        return recordParameters.getMinimalRecordAccuracy();
     }
 
     int getAltitudeFilterParameter() {
-        return 10;
+        return recordParameters.getAltitudeFilterParameter();
     }
 
     int getSpeedFilterParameter() {
-        return 2;
+        return recordParameters.getSpeedFilterParameter();
     }
 
     TrackpointEntity getPreviousSavedTrackpoint() {

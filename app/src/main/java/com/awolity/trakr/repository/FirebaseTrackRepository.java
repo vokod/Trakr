@@ -24,7 +24,9 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class FirebaseTrackRepository {
 
     private static final String TAG = "FirebaseTrackRepository";

@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class SyncService extends IntentService {
 
     private static final String TAG = SyncService.class.getSimpleName();

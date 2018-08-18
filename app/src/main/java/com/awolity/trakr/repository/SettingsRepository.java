@@ -9,7 +9,9 @@ import com.awolity.trakr.trackrecorder.RecordParameters;
 import com.awolity.trakr.utils.Constants;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class SettingsRepository {
 
     @Inject

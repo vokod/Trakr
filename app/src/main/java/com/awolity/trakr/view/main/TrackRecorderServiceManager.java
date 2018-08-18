@@ -14,7 +14,9 @@ import com.awolity.trakr.trackrecorder.TrackRecorderService;
 import com.awolity.trakr.utils.PreferenceUtils;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class TrackRecorderServiceManager {
 
     private static final String TAG = TrackRecorderServiceManager.class.getSimpleName();

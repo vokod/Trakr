@@ -8,6 +8,7 @@ import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.sync.DbSanitizer;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
+import com.awolity.trakr.trackrecorder.TrackRecorderStatus;
 import com.awolity.trakr.view.main.TrackRecorderServiceManager;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.SettingsViewModel;
@@ -50,5 +51,7 @@ public interface AppComponent {
     void inject (SettingsRepository target);
 
     void inject (SettingsViewModel target);
+
+    void inject (TrackRecorderStatus target);
 
 }
