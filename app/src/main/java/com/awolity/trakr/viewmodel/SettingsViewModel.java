@@ -23,4 +23,12 @@ public class SettingsViewModel extends ViewModel {
     public void setAccuracy(int accuracy) {
         settingsRepository.setAccuracy(accuracy);
     }
+
+    public int getUnit() {
+        return settingsRepository.getUnit();
+    }
+
+    public void setUnit(int unit) {
+        settingsRepository.setUnit(unit);
+    }
 }

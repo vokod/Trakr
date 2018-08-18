@@ -15,6 +15,7 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.customviews.ButtonSetting;
 import com.awolity.trakr.customviews.RadiogroupSetting;
 import com.awolity.trakr.customviews.SeekbarSetting;
+import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
@@ -129,6 +130,11 @@ public class SettingsActivity extends AppCompatActivity {
                     @Override
                     public void OnRadioButtonClicked(int no) {
                         MyLog.d(TAG, "OnRadioButtonClicked: " + no);
+                        if (no == 0) {
+                            settingsViewModel.setUnit(Constants.UNIT_METRIC);
+                        } else {
+                            settingsViewModel.setUnit(Constants.UNIT_IMPERIAL);
+                        }
                     }
                 });
 
@@ -164,7 +170,7 @@ public class SettingsActivity extends AppCompatActivity {
                 });
     }
 
-    private void checkUserState() {
+    private void showUserLoginState() {
         if (appUserViewModel.IsAppUserLoggedIn()) {
             // user is logged in
             loginBs.setEnabled(false);
@@ -179,15 +185,25 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    private void checkAccuracySettings() {
+    private void showAccuracySetting() {
         accuracySs.setSeekBarPosition(settingsViewModel.getAccuracy());
+    }
+
+    private void showUnitSetting(){
+        int unit = settingsViewModel.getUnit();
+        if (unit == Constants.UNIT_METRIC) {
+            unitRs.setSelected(0);
+        } else if (unit == Constants.UNIT_IMPERIAL) {
+            unitRs.setSelected(1);
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        checkUserState();
-        checkAccuracySettings();
+        showUserLoginState();
+        showAccuracySetting();
+        showUnitSetting();
     }
 
     @Override
@@ -201,7 +217,7 @@ public class SettingsActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 appUserViewModel.signIn();
                 Utility.showToast(this, getString(R.string.login_successful));
-                checkUserState();
+                showUserLoginState();
                 return;
             } else {
                 // Sign in failed
@@ -241,7 +257,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 appUserViewModel.signOut();
                                 Toast.makeText(SettingsActivity.this, getString(R.string.you_are_logged_out),
                                         Toast.LENGTH_LONG).show();
-                                checkUserState();
+                                showUserLoginState();
                             }
                         })
                 .setNegativeButton(getString(android.R.string.cancel),

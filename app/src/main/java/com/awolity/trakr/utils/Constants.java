@@ -42,4 +42,11 @@ public class Constants {
             100,
             10,
             2);
+
+    public final static int ACCURACY_HIGH_ACCURACY = 2;
+    public final static int ACCURACY_BALANCED = 1;
+    public final static int ACCURACY_LOW_POWER = 0;
+    public final static int UNIT_METRIC = 0;
+    public final static int UNIT_IMPERIAL = 1;
+
 }

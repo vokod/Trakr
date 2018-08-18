@@ -70,13 +70,7 @@ public class RadiogroupSetting extends ConstraintLayout {
         firstButton.setText(labelFirst);
         secondButton.setText(labelSecond);
         this.listener = listener;
-        if (selected == 0) {
-            firstButton.setChecked(true);
-            secondButton.setChecked(false);
-        } else if (selected == 1) {
-            firstButton.setChecked(false);
-            secondButton.setChecked(true);
-        }
+        setSelected(selected);
 
         firstButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -103,5 +97,16 @@ public class RadiogroupSetting extends ConstraintLayout {
 
     public interface RadiogroupSettingListener {
         void OnRadioButtonClicked(int selected);
+    }
+
+    public void setSelected(int selected){
+        if (selected == 0) {
+            firstButton.setChecked(true);
+            secondButton.setChecked(false);
+        } else if (selected == 1) {
+            firstButton.setChecked(false);
+            secondButton.setChecked(true);
+        }
+
     }
 }
