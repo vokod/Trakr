@@ -46,7 +46,7 @@ public class TrackListAdapter
 
     public void updateItems(@NonNull final List<TrackWithPoints> newItems) {
         // MyLog.d(TAG, "updateItems");
-        deleteInvalidTracks(newItems);
+        // deleteInvalidTracks(newItems);
         final List<TrackWithPoints> oldItems = new ArrayList<>(this.items);
         this.items.clear();
         this.items.addAll(newItems);

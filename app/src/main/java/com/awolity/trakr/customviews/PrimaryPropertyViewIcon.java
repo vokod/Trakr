@@ -71,6 +71,4 @@ public class PrimaryPropertyViewIcon extends ConstraintLayout {
         setValue(defaultValue);
         setIcon(iconResource);
     }
-
-
 }

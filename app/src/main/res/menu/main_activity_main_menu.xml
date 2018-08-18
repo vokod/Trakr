@@ -11,9 +11,9 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_synchronisation"
+        android:id="@+id/action_settings"
         android:orderInCategory="1"
-        android:title="@string/synchronisation"
+        android:title="@string/title_activity_settings"
         app:showAsAction="never" />
 </menu>
 

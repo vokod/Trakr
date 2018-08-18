@@ -19,7 +19,8 @@ public class LocationViewModel extends AndroidViewModel implements LocationManag
 
     public LocationViewModel(Application application) {
         super(application);
-            locationManager = new LocationManager(2, 1, LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationManager = new LocationManager(2, 1,
+                    LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     public void isLocationSettingsGood(LocationManager.LocationSettingsCallback callback) {

@@ -28,7 +28,9 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
     public static final String TRACKID_BROADCAST_NAME
@@ -59,7 +61,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
       // MyLog.d(TAG, "TrackRecorder");
         TrakrApplication.getInstance().getAppComponent().inject(this);
 
-        status = new TrackRecorderStatus(context);
+        status = new TrackRecorderStatus();
 
         locationManager = new LocationManager(
                 status.getTrackingInterval(),

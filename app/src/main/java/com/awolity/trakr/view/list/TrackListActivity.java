@@ -44,6 +44,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         // MyLog.d(TAG, "onCreate");
         setContentView(R.layout.activity_track_list);
 
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_track_list));
         setupRecyclerView();
@@ -104,6 +105,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
                 getString(R.string.transition_iv_icon));
         Pair<View, String> p6 = Pair.create((View) dateTv,
                 getString(R.string.transition_tv_date));
+        @SuppressWarnings("unchecked")
         ActivityOptionsCompat options = ActivityOptionsCompat.
                 makeSceneTransitionAnimation(this, p1, p2, p3, p4, p5, p6);
         startActivity(intent, options.toBundle());

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
@@ -51,6 +52,11 @@ public class Utility {
                 .buildRound(firstLetter, generator.getColor(colorBase));
         return drawable;
     }
+
+    public static void showToast(Context context, String s) {
+        Toast.makeText(context, s, Toast.LENGTH_LONG).show();
+    }
+
 
 
 }

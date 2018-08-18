@@ -11,9 +11,11 @@
     <color name="primaryText">#212121</color>
     <color name="secondaryText">#757575</color>
     <color name="titleText">#FFFFFF</color>
+    <color name="disabledText">#BBBBBB</color>
     <color name="white">#FFFFFF</color>
     <color name="bottom_sheet_background">#EEEEEE</color>
     <color name="activity_main_activity_type_spinner_dropdown_item_background">#fff</color>
+    <color name="horizontal_line">#CCCCCC</color>
 
 </resources>
 
