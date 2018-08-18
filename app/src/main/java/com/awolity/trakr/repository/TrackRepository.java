@@ -54,6 +54,11 @@ public class TrackRepository {
                 context.getApplicationContext().startService(
                         new Intent(context.getApplicationContext(), SyncService.class));
             }
+
+            @Override
+            public void onDeleteAccount(){
+                removeTracksFromCloud();
+            }
         });
     }
 
@@ -72,6 +77,21 @@ public class TrackRepository {
     @WorkerThread
     public List<TrackEntity> getTracksSync() {
         return roomTrackRepository.getTracksSync();
+    }
+
+    public void removeTracksFromCloud(){
+        discIoExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<TrackEntity> tracks = roomTrackRepository.getTracksSync();
+                for(TrackEntity entity : tracks){
+                    String firebaseId = entity.getFirebaseId();
+                    firebaseTrackRepository.deleteTrackFromCloud(firebaseId);
+                    entity.setFirebaseId(null);
+                    roomTrackRepository.updateTrack(entity);
+                }
+            }
+        });
     }
 
     /**

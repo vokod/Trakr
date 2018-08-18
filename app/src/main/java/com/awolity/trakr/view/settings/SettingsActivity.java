@@ -285,8 +285,10 @@ public class SettingsActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 appUserViewModel.deleteAccount();
                                 Toast.makeText(SettingsActivity.this,
+                                        // TODO: account deleted szöveg
                                         getString(R.string.you_are_logged_out),
                                         Toast.LENGTH_LONG).show();
+                                showUserLoginState();
                             }
                         })
                 .setNegativeButton(getString(android.R.string.cancel),

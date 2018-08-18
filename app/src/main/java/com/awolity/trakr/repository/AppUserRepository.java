@@ -1,5 +1,10 @@
 package com.awolity.trakr.repository;
 
+import android.support.annotation.NonNull;
+
+import com.awolity.trakr.utils.MyLog;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -38,6 +43,24 @@ public class AppUserRepository {
         }
     }
 
+    public void deleteUser(){
+        FirebaseUser user = getAppUser();
+        FirebaseAuth.getInstance().signOut();
+        for (AppUserStatusListener listener : appUserStatusListeners) {
+            listener.onDeleteAccount();
+        }
+        user.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            MyLog.d(TAG, "User account deleted.");
+
+                        }
+                    }
+                });
+    }
+
     public String getAppUserId() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -54,5 +77,7 @@ public class AppUserRepository {
         void onSignOut();
 
         void onSignIn();
+
+        void onDeleteAccount();
     }
 }

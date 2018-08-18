@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModel;
 
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.AppUserRepository;
-import com.google.firebase.auth.FirebaseAuth;
+import com.awolity.trakr.repository.TrackRepository;
 import com.google.firebase.auth.FirebaseUser;
 
 import javax.inject.Inject;
@@ -33,7 +33,7 @@ public class AppUserViewModel extends ViewModel {
     }
 
     public void deleteAccount(){
-        // TODO
+        appUserRepository.deleteUser();
     }
 
     public void signIn(){
