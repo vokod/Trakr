@@ -86,7 +86,7 @@
         <TextView
             android:id="@+id/tv_legal"
             style="@style/SettingsGroup"
-            android:text="Legal"
+            android:text="@string/settings_group_legal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_2" />
 
@@ -126,7 +126,7 @@
         <TextView
             android:id="@+id/tv_contact"
             style="@style/SettingsGroup"
-            android:text="Contact"
+            android:text="@string/settings_group_contact"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_3" />
 
@@ -139,7 +139,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_contact"/>
-
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

@@ -227,6 +227,8 @@
 
     <string name="settings_group_user">User</string>
     <string name="settings_group_preferences">Preferences</string>
+    <string name="settings_group_legal">Legal</string>
+    <string name="settings_group_contact">Contact</string>
 
     <string name="setting_label_login">Log in</string>
     <string name="settings_description_login">Enable cloud backup and synchronisation of your recorded tracks between your devices.</string>
