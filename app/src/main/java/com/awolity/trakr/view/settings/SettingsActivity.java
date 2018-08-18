@@ -195,7 +195,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void showUserLoginState(boolean isAppUserLoggedIn) {
 
-            loginBs.setEnabled(isAppUserLoggedIn);
+            loginBs.setEnabled(!isAppUserLoggedIn);
             logoutBs.setEnabled(isAppUserLoggedIn);
             deleteBs.setEnabled(isAppUserLoggedIn);
             if(isAppUserLoggedIn) {
