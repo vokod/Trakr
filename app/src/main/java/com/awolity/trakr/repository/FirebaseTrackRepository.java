@@ -35,6 +35,8 @@ public class FirebaseTrackRepository {
     Executor discIoExecutor;
     @Inject
     Context context;
+    @Inject
+    AppUserRepository appUserRepository;
 
     private DatabaseReference dbReference, userTracksReference, userTrackpointsReference;
     private String appUserId;
@@ -131,7 +133,7 @@ public class FirebaseTrackRepository {
     }
 
     private void refreshReferences() {
-        appUserId = FirebaseAuth.getInstance().getUid();
+        appUserId = appUserRepository.getAppUserId();
         if (appUserId == null) {
             return;
         }

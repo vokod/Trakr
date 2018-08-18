@@ -45,7 +45,6 @@ public class AppUserRepository {
 
     public void deleteUser(){
         FirebaseUser user = getAppUser();
-        FirebaseAuth.getInstance().signOut();
         for (AppUserStatusListener listener : appUserStatusListeners) {
             listener.onDeleteAccount();
         }
@@ -55,7 +54,7 @@ public class AppUserRepository {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             MyLog.d(TAG, "User account deleted.");
-
+                            FirebaseAuth.getInstance().signOut();
                         }
                     }
                 });

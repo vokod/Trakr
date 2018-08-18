@@ -1,9 +1,11 @@
 package com.awolity.trakr.view.settings;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,6 +51,12 @@ public class SettingsActivity extends AppCompatActivity {
         setupWidgets();
         appUserViewModel = ViewModelProviders.of(this).get(AppUserViewModel.class);
         settingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
+        appUserViewModel.getIsAppUserLoggedIn().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                showUserLoginState(aBoolean);
+            }
+        });
     }
 
     private void setupWidgets() {
@@ -183,6 +191,19 @@ public class SettingsActivity extends AppCompatActivity {
             logoutBs.setEnabled(false);
             deleteBs.setEnabled(false);
         }
+    }
+
+    private void showUserLoginState(boolean isAppUserLoggedIn) {
+
+            loginBs.setEnabled(isAppUserLoggedIn);
+            logoutBs.setEnabled(isAppUserLoggedIn);
+            deleteBs.setEnabled(isAppUserLoggedIn);
+            if(isAppUserLoggedIn) {
+                logoutBs.setDescription(getString(R.string.settings_description_logout_with_account,
+                        appUserViewModel.getAppUser().getEmail()));
+            } else {
+                logoutBs.setDescription(getString(R.string.settings_description_logout));
+            }
     }
 
     private void showAccuracySetting() {
