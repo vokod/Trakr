@@ -35,36 +35,20 @@ public class FirebaseTrackRepository {
     Executor discIoExecutor;
     @Inject
     Context context;
+    @Inject
+    AppUserRepository appUserRepository;
 
     private DatabaseReference dbReference, userTracksReference, userTrackpointsReference;
     private String appUserId;
 
     public FirebaseTrackRepository() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
-        appUserId = FirebaseAuth.getInstance().getUid();
-        if (appUserId == null) {
-            return;
-        }
-
-        dbReference = FirebaseDatabase.getInstance().getReference();
-        userTracksReference = dbReference.child(Constants.NODE_TRACKS).child(appUserId);
-        userTrackpointsReference = dbReference.child(Constants.NODE_TRACKPOINTS).child(appUserId);
-    }
-
-    public void refreshReferences () { // TODO: ezt innen el. egyáltalán, kell ez?
-        appUserId = FirebaseAuth.getInstance().getUid();
-        if (appUserId == null) {
-            return;
-        }
-
-        dbReference = FirebaseDatabase.getInstance().getReference();
-        userTracksReference = dbReference.child(Constants.NODE_TRACKS).child(appUserId);
-        userTrackpointsReference = dbReference.child(Constants.NODE_TRACKPOINTS).child(appUserId);
+        refreshReferences();
     }
 
     public String getIdForNewTrack() {
         if (appUserId == null) return null;
-        return userTracksReference.child(appUserId).push().getKey();
+        return userTracksReference.push().getKey();
     }
 
     @WorkerThread
@@ -75,12 +59,8 @@ public class FirebaseTrackRepository {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(Constants.NODE_TRACKS
                 + "/"
-                + appUserId
-                + "/"
                 + trackFirebaseId, trackEntity);
         childUpdates.put(Constants.NODE_TRACKPOINTS
-                + "/"
-                + appUserId
                 + "/"
                 + trackFirebaseId, trackWithPoints.getTrackPoints());
 
@@ -111,8 +91,8 @@ public class FirebaseTrackRepository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-              // MyLog.e(TAG, "Error in getAllTrackEntitiesFromCloud - onCancelled"
-                      //  + databaseError.getDetails());
+                // MyLog.e(TAG, "Error in getAllTrackEntitiesFromCloud - onCancelled"
+                //  + databaseError.getDetails());
             }
         });
     }
@@ -150,5 +130,16 @@ public class FirebaseTrackRepository {
         userTracksReference.child(firebaseTrackId).removeValue();
         // remove track from trackpoint node
         userTrackpointsReference.child(firebaseTrackId).removeValue();
+    }
+
+    private void refreshReferences() {
+        appUserId = appUserRepository.getAppUserId();
+        if (appUserId == null) {
+            return;
+        }
+
+        dbReference = FirebaseDatabase.getInstance().getReference().child(appUserId);
+        userTracksReference = dbReference.child(Constants.NODE_TRACKS);
+        userTrackpointsReference = dbReference.child(Constants.NODE_TRACKPOINTS);
     }
 }
