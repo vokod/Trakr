@@ -65,6 +65,8 @@ public class TrackListViewModel extends ViewModel {
                                     }
                                     oneResult.setTrackPoints(simplifiedList);
                                     result.add(oneResult);
+                                } else {
+                                    result.add(originalTrackWithPoints);
                                 }
                             }
                             simplifiedTracksWithPoints.postValue(result);

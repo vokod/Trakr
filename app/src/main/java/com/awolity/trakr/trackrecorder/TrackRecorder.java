@@ -61,7 +61,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
       // MyLog.d(TAG, "TrackRecorder");
         TrakrApplication.getInstance().getAppComponent().inject(this);
 
-        status = new TrackRecorderStatus(context);
+        status = new TrackRecorderStatus();
 
         locationManager = new LocationManager(
                 status.getTrackingInterval(),
