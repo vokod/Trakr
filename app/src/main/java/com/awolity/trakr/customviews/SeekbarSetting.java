@@ -72,4 +72,8 @@ public class SeekbarSetting extends ConstraintLayout {
         setIcon(iconResource);
         setSeekBar(max, pos, listener);
     }
+
+    public void setSeekBarPosition(int position){
+        seekBar.setProgress(position);
+    }
 }

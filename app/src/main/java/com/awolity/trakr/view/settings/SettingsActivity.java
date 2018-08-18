@@ -18,6 +18,7 @@ import com.awolity.trakr.customviews.SeekbarSetting;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
+import com.awolity.trakr.viewmodel.SettingsViewModel;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
@@ -33,6 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
     private SeekbarSetting accuracySs;
     private RadiogroupSetting unitRs;
     private AppUserViewModel appUserViewModel;
+    private SettingsViewModel settingsViewModel;
 
     public static Intent getStarterIntent(Context context) {
         Intent intent = new Intent(context, SettingsActivity.class);
@@ -45,6 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         setupWidgets();
         appUserViewModel = ViewModelProviders.of(this).get(AppUserViewModel.class);
+        settingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
     }
 
     private void setupWidgets() {
@@ -96,7 +99,14 @@ public class SettingsActivity extends AppCompatActivity {
                 2, 0, new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                        MyLog.d(TAG, "onProgressChanged");
+                        MyLog.d(TAG, "onProgressChanged - progress: " + progress);
+                        if (fromUser) {
+                            MyLog.d(TAG, "onProgressChanged - from user");
+                            settingsViewModel.setAccuracy(progress);
+                        } else {
+                            MyLog.d(TAG, "onProgressChanged - NOT from user");
+                        }
                     }
 
                     @Override
@@ -169,10 +179,15 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    private void checkAccuracySettings() {
+        accuracySs.setSeekBarPosition(settingsViewModel.getAccuracy());
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         checkUserState();
+        checkAccuracySettings();
     }
 
     @Override
