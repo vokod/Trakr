@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.awolity.trakr.utils;
+package com.awolity.trakrutils;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -22,10 +22,10 @@ import java.util.concurrent.Executors;
 @SuppressWarnings("unused")
 public class AppExecutors {
 
-    private final Executor mDiskIO;
+    private final Executor diskIO;
 
     private AppExecutors(Executor diskIO) {
-        this.mDiskIO = diskIO;
+        this.diskIO = diskIO;
     }
 
     public AppExecutors() {
@@ -33,6 +33,6 @@ public class AppExecutors {
     }
 
     public Executor diskIO() {
-        return mDiskIO;
+        return diskIO;
     }
 }
