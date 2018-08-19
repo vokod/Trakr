@@ -1,4 +1,4 @@
-package com.awolity.trakr.widget;
+package com.awolity.trakr.view.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;

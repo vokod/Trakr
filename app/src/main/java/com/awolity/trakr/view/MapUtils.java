@@ -3,7 +3,6 @@ package com.awolity.trakr.view;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
-import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.viewmodel.model.MapPoint;
@@ -30,8 +29,8 @@ public class MapUtils {
         Polyline polyline = null;
         PolylineOptions polylineOptions = new PolylineOptions()
                 .geodesic(true)
-                .color(ContextCompat.getColor(context, R.color.colorPrimary))
-                .width(context.getResources().getInteger(R.integer.polyline_width))
+                .color(ContextCompat.getColor(context, com.awolity.trakrutils.R.color.colorPrimary))
+                .width(context.getResources().getInteger(com.awolity.trakrutils.R.integer.polyline_width))
                 .zIndex(30)
                 .visible(true);
 
@@ -55,8 +54,8 @@ public class MapUtils {
         Polyline polyline = null;
         PolylineOptions polylineOptions = new PolylineOptions()
                 .geodesic(true)
-                .color(ContextCompat.getColor(context, R.color.colorPrimary))
-                .width(context.getResources().getInteger(R.integer.polyline_width))
+                .color(ContextCompat.getColor(context, com.awolity.trakrutils.R.color.colorPrimary))
+                .width(context.getResources().getInteger(com.awolity.trakrutils.R.integer.polyline_width))
                 .zIndex(30)
                 .visible(true);
 
@@ -76,6 +75,4 @@ public class MapUtils {
                 new LatLng(trackWithPoints.getNorthestPoint(), trackWithPoints.getEasternPoint()));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
     }
-
-
 }

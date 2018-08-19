@@ -16,7 +16,7 @@ import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.repository.TrackRepository;
-import com.awolity.trakr.widget.TrakrWidget;
+import com.awolity.trakr.view.widget.TrakrWidget;
 import com.awolity.trakrutils.StringUtils;
 import com.google.android.gms.location.LocationRequest;
 

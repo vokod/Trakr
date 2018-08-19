@@ -14,7 +14,7 @@ import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.SettingsViewModel;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
-import com.awolity.trakr.widget.TrakrWidget;
+import com.awolity.trakr.view.widget.TrakrWidget;
 
 import javax.inject.Singleton;
 
