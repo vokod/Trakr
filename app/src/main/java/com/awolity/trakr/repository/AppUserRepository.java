@@ -2,7 +2,7 @@ package com.awolity.trakr.repository;
 
 import android.support.annotation.NonNull;
 
-import com.awolity.trakr.utils.MyLog;
+import com.awolity.trakrutils.MyLog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

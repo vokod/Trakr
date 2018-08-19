@@ -1,7 +1,6 @@
 package com.awolity.trakr.trackrecorder;
 
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.utils.MyLog;
 
 public class AltitudeZeroFilter {
 

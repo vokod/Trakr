@@ -12,14 +12,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.transition.Fade;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.AutoTransition;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 

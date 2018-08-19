@@ -1,6 +1,6 @@
-package com.awolity.trakr.utils;
+package com.awolity.trakrutils;
 
-import com.awolity.trakr.BuildConfig;
+import com.awolity.trakrutils.BuildConfig;
 
 import timber.log.Timber;
 

@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.utils.StringUtils;
-import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.MapUtils;
+import com.awolity.trakrutils.StringUtils;
+import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;

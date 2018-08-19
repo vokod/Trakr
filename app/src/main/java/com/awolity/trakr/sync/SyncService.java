@@ -13,7 +13,7 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.AppUserRepository;
 import com.awolity.trakr.repository.TrackRepository;
-import com.awolity.trakr.utils.MyLog;
+import com.awolity.trakrutils.MyLog;
 
 import java.util.ArrayList;
 import java.util.List;

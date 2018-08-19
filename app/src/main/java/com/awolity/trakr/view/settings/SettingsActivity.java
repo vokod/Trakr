@@ -14,11 +14,10 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.utils.Constants;
-import com.awolity.trakr.utils.MyLog;
-import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.SettingsViewModel;
+import com.awolity.trakrutils.Constants;
+import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.ButtonSetting;
 import com.awolity.trakrviews.RadiogroupSetting;
 import com.awolity.trakrviews.SeekbarSetting;
@@ -40,8 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
     private SettingsViewModel settingsViewModel;
 
     public static Intent getStarterIntent(Context context) {
-        Intent intent = new Intent(context, SettingsActivity.class);
-        return intent;
+        return new Intent(context, SettingsActivity.class);
     }
 
     @Override
@@ -108,13 +106,8 @@ public class SettingsActivity extends AppCompatActivity {
                 2, 0, new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        MyLog.d(TAG, "onProgressChanged");
-                        MyLog.d(TAG, "onProgressChanged - progress: " + progress);
                         if (fromUser) {
-                            MyLog.d(TAG, "onProgressChanged - from user");
                             settingsViewModel.setAccuracy(progress);
-                        } else {
-                            MyLog.d(TAG, "onProgressChanged - NOT from user");
                         }
                     }
 
@@ -137,7 +130,6 @@ public class SettingsActivity extends AppCompatActivity {
                 0, new RadiogroupSetting.RadiogroupSettingListener() {
                     @Override
                     public void OnRadioButtonClicked(int no) {
-                        MyLog.d(TAG, "OnRadioButtonClicked: " + no);
                         if (no == 0) {
                             settingsViewModel.setUnit(Constants.UNIT_METRIC);
                         } else {

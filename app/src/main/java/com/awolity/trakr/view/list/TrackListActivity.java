@@ -17,10 +17,10 @@ import android.widget.TextView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.utils.Constants;
-import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
+import com.awolity.trakrutils.Constants;
+import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 
 import java.util.List;

@@ -5,9 +5,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.awolity.trakr.TrakrApplication;
-import com.awolity.trakr.trackrecorder.RecordParameters;
-import com.awolity.trakr.utils.Constants;
-import com.awolity.trakr.utils.MyLog;
+import com.awolity.trakrutils.Constants;
+import com.awolity.trakrutils.MyLog;
+import com.awolity.trakrutils.RecordParameters;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -16,13 +16,23 @@ import javax.inject.Singleton;
 public class SettingsRepository {
 
     private static final String TAG = "SettingsRepository";
+
+    private static final String KEY_LAST_RECORDED_TRACK_ID = "pref_key_last_recorded_track_id";
+    private static final String KEY_LAST_ACTIVITY_TYPE = "pref_key_activity_type";
+    private static final String KEY_USER_ID = "pref_key_user_id";
+
+    public static final long NO_LAST_RECORDED_TRACK = -1;
+
+    private static final String VALUE_USER_NOT_LOGGED_IN = "user_not_logged_in";
+
     private final static String KEY_ACCURACY = "key_accuracy";
-    private final static int ACCURACY_HIGH_ACCURACY = 2;
-    private final static int ACCURACY_BALANCED = 1;
-    private final static int ACCURACY_LOW_POWER = 0;
+    private final static int VALUE_ACCURACY_HIGH_ACCURACY = 2;
+    private final static int VALUE_ACCURACY_BALANCED = 1;
+    private final static int VALUE_ACCURACY_LOW_POWER = 0;
+
     private final static String KEY_UNIT = "key_unit";
-    private final static int UNIT_METRIC = 0;
-    private final static int UNIT_IMPERIAL = 1;
+    private final static int VALUE_UNIT_METRIC = 0;
+    private final static int VALUE_UNIT_IMPERIAL = 1;
 
     @Inject
     Context context;
@@ -69,5 +79,15 @@ public class SettingsRepository {
         editor.apply();
     }
 
+    public long getLastRecordedTrackId() {
 
+        return sharedPreferences.getLong(KEY_LAST_RECORDED_TRACK_ID,
+                Constants.NO_LAST_RECORDED_TRACK);
+    }
+
+    public  void setLastRecordedTrackId( long trackId) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(KEY_LAST_RECORDED_TRACK_ID, trackId);
+        editor.apply();
+    }
 }

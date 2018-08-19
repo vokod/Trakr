@@ -10,7 +10,6 @@ import android.widget.RemoteViews;
 import com.awolity.trakr.R;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.TrackRepository;
-import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.view.main.MainActivity;
 
 import javax.inject.Inject;

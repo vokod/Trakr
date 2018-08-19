@@ -1,4 +1,4 @@
-package com.awolity.trakr.utils;
+package com.awolity.trakrutils;
 
 import android.Manifest;
 import android.content.Context;

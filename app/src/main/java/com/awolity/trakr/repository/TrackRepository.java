@@ -11,7 +11,6 @@ import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.gpx.GpxExporter;
 import com.awolity.trakr.sync.SyncService;
-import com.awolity.trakr.utils.MyLog;
 
 import java.util.List;
 import java.util.concurrent.Executor;

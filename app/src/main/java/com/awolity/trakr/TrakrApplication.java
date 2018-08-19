@@ -11,7 +11,7 @@ import com.awolity.trakr.di.RepositoryModule;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
-import com.awolity.trakr.utils.FileLoggingTree;
+import com.awolity.trakrutils.FileLoggingTree;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;

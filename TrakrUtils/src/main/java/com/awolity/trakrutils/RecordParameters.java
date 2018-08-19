@@ -1,4 +1,4 @@
-package com.awolity.trakr.trackrecorder;
+package com.awolity.trakrutils;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -18,11 +18,11 @@ import android.widget.TextView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.utils.Constants;
-import com.awolity.trakr.utils.StringUtils;
-import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.awolity.trakr.viewmodel.model.ChartPoint;
+import com.awolity.trakrutils.Constants;
+import com.awolity.trakrutils.StringUtils;
+import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;

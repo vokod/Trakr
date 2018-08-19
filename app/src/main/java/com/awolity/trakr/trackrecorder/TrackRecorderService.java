@@ -8,7 +8,6 @@ import android.os.Binder;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.notification.NotificationUtils;
-import com.awolity.trakr.utils.MyLog;
 
 import java.util.ArrayList;
 import java.util.List;

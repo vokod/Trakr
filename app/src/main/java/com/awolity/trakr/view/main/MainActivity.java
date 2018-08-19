@@ -23,17 +23,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
-import com.awolity.trakr.utils.Constants;
-import com.awolity.trakr.utils.MyLog;
-import com.awolity.trakr.utils.PreferenceUtils;
-import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.list.TrackListActivity;
 import com.awolity.trakr.view.main.bottom.BottomSheetBaseFragment;
@@ -44,11 +39,12 @@ import com.awolity.trakr.view.main.bottom.BottomSheetTrackFragment;
 import com.awolity.trakr.view.settings.SettingsActivity;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.LocationViewModel;
+import com.awolity.trakr.viewmodel.SettingsViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
+import com.awolity.trakrutils.Constants;
+import com.awolity.trakrutils.MyLog;
+import com.awolity.trakrutils.Utility;
 import com.crashlytics.android.Crashlytics;
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.ErrorCodes;
-import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -57,7 +53,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -79,6 +74,8 @@ public class MainActivity extends AppCompatActivity
     private LocationViewModel locationViewModel;
     private TrackViewModel trackViewModel;
     private AppUserViewModel appUserViewModel;
+    private SettingsViewModel settingsViewModel;
+    // TODO: refactor viewmodels so that only one is for every activity
 
     private TrackRecorderServiceManager serviceManager;
     private MainActivityStatus status;
@@ -102,7 +99,8 @@ public class MainActivity extends AppCompatActivity
         MainActivityUtils.checkLocationPermission(this, PERMISSION_REQUEST_CODE);
         setupMapFragment();
         setupLocationViewModel();
-        setupAppUserViewModel();
+        appUserViewModel = ViewModelProviders.of(this).get(AppUserViewModel.class);
+        settingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -248,17 +246,13 @@ public class MainActivity extends AppCompatActivity
                 .show();
     }
 
-    private void setupAppUserViewModel() {
-        appUserViewModel = ViewModelProviders.of(this).get(AppUserViewModel.class);
-    }
-
     private void setupTrackRecorderService() {
         MyLog.d(TAG, "setupTrackRecorderService");
         serviceManager = new TrackRecorderServiceManager(this);
         if (TrackRecorderServiceManager.isServiceRunning(this)) {
             MyLog.d(TAG, "setupTrackRecorderService - service is running");
             status.setContinueRecording();
-            long trackId = PreferenceUtils.getLastRecordedTrackId(this);
+            long trackId = settingsViewModel.getLastRecordedTrackId();
             if (trackId != Constants.NO_LAST_RECORDED_TRACK) {
                 polylineManager = new PolylineManager(this);
                 setupTrackViewModel(trackId);
