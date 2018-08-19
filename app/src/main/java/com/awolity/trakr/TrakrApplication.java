@@ -2,6 +2,7 @@ package com.awolity.trakr;
 
 import android.app.Application;
 import android.content.Intent;
+import android.os.StrictMode;
 
 import com.awolity.trakr.di.AppComponent;
 import com.awolity.trakr.di.AppModule;
@@ -41,17 +42,18 @@ public class TrakrApplication extends Application {
             startService(new Intent(this, SyncService.class));
         } catch (IllegalStateException e) {
             Crashlytics.logException(e);
-          // MyLog.e("TrakrApplication", e.getLocalizedMessage());
+            // MyLog.e("TrakrApplication", e.getLocalizedMessage());
         }
 
         TrackRecorder.resetWidget(this);
 
         Timber.plant(new FileLoggingTree(getApplicationContext()));
 
-      /* StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
                 .detectDiskWrites()
-                .detectNetwork()   // or .detectAll() for all detectable problems
+                .detectAll()
+                // .detectNetwork()   // or .detectAll() for all detectable problems
                 .penaltyLog()
                 .build());
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
@@ -59,7 +61,7 @@ public class TrakrApplication extends Application {
                 .detectLeakedClosableObjects()
                 .penaltyLog()
                 .penaltyDeath()
-                .build());*/
+                .build());
     }
 
     public AppComponent getAppComponent() {
