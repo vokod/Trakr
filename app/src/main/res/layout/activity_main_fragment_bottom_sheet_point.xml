@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.awolity.trakr.customviews.PrimaryPropertyView
+            <com.awolity.trakrviews.PrimaryPropertyView
                 android:id="@+id/speedView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.awolity.trakr.customviews.PrimaryPropertyView
+            <com.awolity.trakrviews.PrimaryPropertyView
                 android:id="@+id/altitudeView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 app:layout_constraintStart_toEndOf="@id/speedView"
                 app:layout_constraintTop_toTopOf="@id/speedView" />
 
-            <com.awolity.trakr.customviews.SecondaryPropertyView
+            <com.awolity.trakrviews.SecondaryPropertyView
                 android:id="@+id/accuracyView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                 app:layout_constraintStart_toStartOf="@id/speedView"
                 app:layout_constraintTop_toBottomOf="@id/speedView" />
 
-            <com.awolity.trakr.customviews.SecondaryPropertyView
+            <com.awolity.trakrviews.SecondaryPropertyView
                 android:id="@+id/bearingView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

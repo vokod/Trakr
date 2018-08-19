@@ -14,14 +14,14 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.customviews.ButtonSetting;
-import com.awolity.trakr.customviews.RadiogroupSetting;
-import com.awolity.trakr.customviews.SeekbarSetting;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.SettingsViewModel;
+import com.awolity.trakrviews.ButtonSetting;
+import com.awolity.trakrviews.RadiogroupSetting;
+import com.awolity.trakrviews.SeekbarSetting;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;

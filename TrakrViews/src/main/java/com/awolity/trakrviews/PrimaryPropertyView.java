@@ -1,4 +1,4 @@
-package com.awolity.trakr.customviews;
+package com.awolity.trakrviews;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,8 +7,6 @@ import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.TextView;
-
-import com.awolity.trakr.R;
 
 public class PrimaryPropertyView extends ConstraintLayout {
 

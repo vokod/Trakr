@@ -1,4 +1,4 @@
-package com.awolity.trakr.customviews;
+package com.awolity.trakrviews;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,9 +10,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
-import com.awolity.trakr.R;
-import com.awolity.trakr.utils.MyLog;
 
 public class RadiogroupSetting extends ConstraintLayout {
 
@@ -72,14 +69,14 @@ public class RadiogroupSetting extends ConstraintLayout {
         this.listener = listener;
         setSelected(selected);
 
-        firstButton.setOnClickListener(new OnClickListener() {
+        firstButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.OnRadioButtonClicked(0);
             }
         });
 
-        secondButton.setOnClickListener(new OnClickListener() {
+        secondButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.OnRadioButtonClicked(1);

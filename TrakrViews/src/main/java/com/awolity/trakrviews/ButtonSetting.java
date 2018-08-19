@@ -1,4 +1,4 @@
-package com.awolity.trakr.customviews;
+package com.awolity.trakrviews;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,10 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.awolity.trakr.R;
 
 public class ButtonSetting extends ConstraintLayout {
 
@@ -56,7 +53,7 @@ public class ButtonSetting extends ConstraintLayout {
 
     public void setDescription(String descriptionText) {
         if (descriptionText == null) {
-            descriptionTextView.setVisibility(GONE);
+            descriptionTextView.setVisibility(View.GONE);
             labelTextView.setPadding(labelTextView.getPaddingStart(),
                     getInPx(context, 12),
                     labelTextView.getPaddingEnd(),
@@ -91,12 +88,12 @@ public class ButtonSetting extends ConstraintLayout {
         if (enabled) {
             labelTextView.setTextColor(context.getResources().getColor(R.color.primaryText));
             descriptionTextView.setTextColor(context.getResources().getColor(R.color.secondaryText));
-            clickOverlay.setVisibility(VISIBLE);
+            clickOverlay.setVisibility(View.VISIBLE);
             iconImageView.setImageResource(iconResource);
         } else {
             descriptionTextView.setTextColor(context.getResources().getColor(R.color.disabledText));
             labelTextView.setTextColor(context.getResources().getColor(R.color.disabledText));
-            clickOverlay.setVisibility(GONE);
+            clickOverlay.setVisibility(View.GONE);
             if (disabledIconResource != 0) {
                 iconImageView.setImageResource(disabledIconResource);
             }
