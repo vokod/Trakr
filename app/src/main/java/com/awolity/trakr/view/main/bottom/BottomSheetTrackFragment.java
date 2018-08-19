@@ -12,11 +12,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.customviews.PrimaryPropertyView;
-import com.awolity.trakr.customviews.SecondaryPropertyView;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
+import com.awolity.trakrviews.PrimaryPropertyView;
+import com.awolity.trakrviews.SecondaryPropertyView;
 
 import java.util.Locale;
 

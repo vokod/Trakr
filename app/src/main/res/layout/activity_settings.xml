@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginBottom="16dp"/>
 
-        <com.awolity.trakr.customviews.ButtonSetting
+        <com.awolity.trakrviews.ButtonSetting
             android:id="@+id/bs_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_user" />
 
-        <com.awolity.trakr.customviews.ButtonSetting
+        <com.awolity.trakrviews.ButtonSetting
             android:id="@+id/bs_logout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bs_login"/>
 
-        <com.awolity.trakr.customviews.ButtonSetting
+        <com.awolity.trakrviews.ButtonSetting
             android:id="@+id/bs_delete_account"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_1" />
 
-        <com.awolity.trakr.customviews.SeekbarSetting
+        <com.awolity.trakrviews.SeekbarSetting
             android:id="@+id/ss_accuracy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_preferences"/>
 
-        <com.awolity.trakr.customviews.RadiogroupSetting
+        <com.awolity.trakrviews.RadiogroupSetting
             android:id="@+id/rs_unit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_2" />
 
-        <com.awolity.trakr.customviews.ButtonSetting
+        <com.awolity.trakrviews.ButtonSetting
             android:id="@+id/bs_terms_of_use"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_legal"/>
 
-        <com.awolity.trakr.customviews.ButtonSetting
+        <com.awolity.trakrviews.ButtonSetting
             android:id="@+id/bs_privacy_policy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bs_terms_of_use"/>
 
-        <com.awolity.trakr.customviews.ButtonSetting
+        <com.awolity.trakrviews.ButtonSetting
             android:id="@+id/bs_libraries"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_3" />
 
-        <com.awolity.trakr.customviews.ButtonSetting
+        <com.awolity.trakrviews.ButtonSetting
             android:id="@+id/bs_feedback"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

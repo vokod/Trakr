@@ -1,4 +1,4 @@
-package com.awolity.trakr.customviews;
+package com.awolity.trakrviews;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import com.awolity.trakr.R;
 
 public class SeekbarSetting extends ConstraintLayout {
 

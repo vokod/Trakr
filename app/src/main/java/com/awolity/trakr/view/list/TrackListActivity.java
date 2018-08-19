@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -17,13 +16,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
-import com.awolity.trakr.customviews.SecondaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
+import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 
 import java.util.List;
 
