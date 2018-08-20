@@ -28,6 +28,17 @@
                 android:value=".view.main.MainActivity" />
         </activity>
 
+        <service android:name=".sync.SyncService" />
+
+        <provider
+            android:name=".gpx.GpxFileProvider"
+            android:authorities="com.awolity.trakr.pro.gpx.GpxFileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_path" />
+        </provider>
     </application>
 
 </manifest>

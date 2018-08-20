@@ -40,7 +40,7 @@ public class TrakrApplication extends Application {
 
         Timber.plant(new FileLoggingTree(getApplicationContext()));
 
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+      /*  StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
                 .detectDiskWrites()
                 .detectAll()
@@ -52,7 +52,7 @@ public class TrakrApplication extends Application {
                 .detectLeakedClosableObjects()
                 .penaltyLog()
                 .penaltyDeath()
-                .build());
+                .build());*/
     }
 
     public AppComponent getAppComponent() {

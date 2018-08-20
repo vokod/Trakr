@@ -46,18 +46,7 @@
                 android:value=".view.list.TrackListActivity" />
         </activity>
 
-        <provider
-            android:name=".gpx.GpxFileProvider"
-            android:authorities="com.awolity.trakr.free.gpx.GpxFileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_path" />
-        </provider>
-
         <service android:name=".trackrecorder.TrackRecorderService" />
-        <service android:name=".sync.SyncService" />
 
         <receiver android:name=".view.widget.TrakrWidget">
             <intent-filter>
