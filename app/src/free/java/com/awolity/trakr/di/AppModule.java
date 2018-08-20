@@ -35,5 +35,4 @@ public class AppModule {
     public Executor provideDiscIOExecutor() {
         return executors.diskIO();
     }
-
 }

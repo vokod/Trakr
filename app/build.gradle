@@ -33,7 +33,10 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
+
     compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+
     defaultConfig {
         applicationId "com.awolity.trakr"
         minSdkVersion 21
@@ -51,6 +54,7 @@ android {
             checkReleaseBuilds false
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -61,7 +65,21 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-    buildToolsVersion '27.0.3'
+
+    flavorDimensions "featureset"
+    productFlavors {
+        free {
+            applicationIdSuffix ".free"
+            versionNameSuffix "-free"
+            dimension "featureset"
+        }
+        pro {
+            applicationIdSuffix ".pro"
+            versionNameSuffix "-pro"
+            dimension "featureset"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
@@ -74,10 +92,8 @@ dependencies {
     implementation project(path: ':TrakrViews')
     implementation project(path: ':TrakrUtils')
 
-  //  implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:customtabs:${supportLibVersion}"
     implementation "com.android.support:design:${supportLibVersion}"
-    //implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation "com.android.support:support-v4:${supportLibVersion}"
     implementation "com.android.support:cardview-v7:${supportLibVersion}"
     // maps

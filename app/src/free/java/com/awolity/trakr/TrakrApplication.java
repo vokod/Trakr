@@ -10,7 +10,6 @@ import com.awolity.trakr.di.DaggerAppComponent;
 import com.awolity.trakr.di.DbModule;
 import com.awolity.trakr.di.RepositoryModule;
 import com.awolity.trakr.notification.NotificationUtils;
-import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
 import com.awolity.trakrutils.FileLoggingTree;
 import com.crashlytics.android.Crashlytics;
@@ -36,14 +35,6 @@ public class TrakrApplication extends Application {
         getAppComponent();
 
         NotificationUtils.setupNotificationChannels(this);
-
-        // start syncing
-        try {
-            startService(new Intent(this, SyncService.class));
-        } catch (IllegalStateException e) {
-            Crashlytics.logException(e);
-            // MyLog.e("TrakrApplication", e.getLocalizedMessage());
-        }
 
         TrackRecorder.resetWidget(this);
 

@@ -1,7 +1,5 @@
 package com.awolity.trakr.di;
 
-import com.awolity.trakr.repository.AppUserRepository;
-import com.awolity.trakr.repository.FirebaseTrackRepository;
 import com.awolity.trakr.repository.RoomTrackRepository;
 import com.awolity.trakr.repository.SettingsRepository;
 import com.awolity.trakr.repository.TrackRepository;
@@ -26,20 +24,8 @@ public class RepositoryModule {
 
     @Provides
     @Singleton
-    public FirebaseTrackRepository provideFirebaseTrackRepository() {
-        return new FirebaseTrackRepository();
-    }
-
-    @Provides
-    @Singleton
     public TrackRepository provideTrackRepository() {
         return new TrackRepository();
-    }
-
-    @Provides
-    @Singleton
-    public AppUserRepository provideAppUserRepository() {
-        return new AppUserRepository();
     }
 
     @Provides
