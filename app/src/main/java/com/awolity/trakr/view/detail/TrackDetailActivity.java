@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
+import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 
 public class TrackDetailActivity extends AppCompatActivity
@@ -35,6 +36,7 @@ public class TrackDetailActivity extends AppCompatActivity
     Bitmap icon;
     private BottomNavigationView bottomNavigationView;
     private TrackViewModel trackViewModel;
+    private AppUserViewModel appUserViewModel;
     private TrackEntity trackEntity;
 
     public static Intent getStarterIntent(Context context, long trackId, Bitmap icon) {
@@ -99,6 +101,8 @@ public class TrackDetailActivity extends AppCompatActivity
                 }
             }
         });
+
+        appUserViewModel = ViewModelProviders.of(this).get(AppUserViewModel.class);
     }
 
     private void setupBottomSheetNavigation() {
