@@ -37,7 +37,6 @@ import com.awolity.trakr.view.main.bottom.BottomSheetFragmentPagerAdapter;
 import com.awolity.trakr.view.main.bottom.BottomSheetPointFragment;
 import com.awolity.trakr.view.main.bottom.BottomSheetTrackFragment;
 import com.awolity.trakr.view.settings.SettingsActivity;
-import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.LocationViewModel;
 import com.awolity.trakr.viewmodel.SettingsViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
@@ -73,7 +72,6 @@ public class MainActivity extends AppCompatActivity
 
     private LocationViewModel locationViewModel;
     private TrackViewModel trackViewModel;
-    private AppUserViewModel appUserViewModel;
     private SettingsViewModel settingsViewModel;
     // TODO: refactor viewmodels so that only one is for every activity
 
@@ -99,7 +97,6 @@ public class MainActivity extends AppCompatActivity
         MainActivityUtils.checkLocationPermission(this, PERMISSION_REQUEST_CODE);
         setupMapFragment();
         setupLocationViewModel();
-        appUserViewModel = ViewModelProviders.of(this).get(AppUserViewModel.class);
         settingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
     }
 
