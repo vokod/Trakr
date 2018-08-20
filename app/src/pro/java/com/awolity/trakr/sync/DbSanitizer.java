@@ -1,7 +1,7 @@
 package com.awolity.trakr.sync;
 
-import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.TrakrApplication;
+import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.repository.TrackRepository;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class DbSanitizer {
     Executor discIoExecutor;
 
     public DbSanitizer() {
-      // MyLog.d(TAG, "DbSanitizer");
+        // MyLog.d(TAG, "DbSanitizer");
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 

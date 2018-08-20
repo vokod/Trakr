@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.settings.SettingsActivity"
+    android:orientation="vertical">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_preferences"
+            style="@style/SettingsGroup"
+            android:text="@string/settings_group_preferences"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.awolity.trakrviews.SeekbarSetting
+            android:id="@+id/ss_accuracy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_preferences"/>
+
+        <com.awolity.trakrviews.RadiogroupSetting
+            android:id="@+id/rs_unit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ss_accuracy" />
+
+        <View
+            android:id="@+id/divider_2"
+            style="@style/SettingDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rs_unit" />
+
+        <TextView
+            android:id="@+id/tv_legal"
+            style="@style/SettingsGroup"
+            android:text="@string/settings_group_legal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider_2" />
+
+        <com.awolity.trakrviews.ButtonSetting
+            android:id="@+id/bs_terms_of_use"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_legal"/>
+
+        <com.awolity.trakrviews.ButtonSetting
+            android:id="@+id/bs_privacy_policy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bs_terms_of_use"/>
+
+        <com.awolity.trakrviews.ButtonSetting
+            android:id="@+id/bs_libraries"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bs_privacy_policy"/>
+
+        <View
+            android:id="@+id/divider_3"
+            style="@style/SettingDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bs_libraries" />
+
+        <TextView
+            android:id="@+id/tv_contact"
+            style="@style/SettingsGroup"
+            android:text="@string/settings_group_contact"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider_3" />
+
+        <com.awolity.trakrviews.ButtonSetting
+            android:id="@+id/bs_feedback"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_contact"/>
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

@@ -187,15 +187,15 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void showUserLoginState(boolean isAppUserLoggedIn) {
 
-            loginBs.setEnabled(!isAppUserLoggedIn);
-            logoutBs.setEnabled(isAppUserLoggedIn);
-            deleteBs.setEnabled(isAppUserLoggedIn);
-            if(isAppUserLoggedIn) {
-                logoutBs.setDescription(getString(R.string.settings_description_logout_with_account,
-                        appUserViewModel.getAppUser().getEmail()));
-            } else {
-                logoutBs.setDescription(getString(R.string.settings_description_logout));
-            }
+        loginBs.setEnabled(!isAppUserLoggedIn);
+        logoutBs.setEnabled(isAppUserLoggedIn);
+        deleteBs.setEnabled(isAppUserLoggedIn);
+        if(isAppUserLoggedIn) {
+            logoutBs.setDescription(getString(R.string.settings_description_logout_with_account,
+                    appUserViewModel.getAppUser().getEmail()));
+        } else {
+            logoutBs.setDescription(getString(R.string.settings_description_logout));
+        }
     }
 
     private void showAccuracySetting() {

@@ -9,8 +9,8 @@ import android.support.annotation.WorkerThread;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.TrakrApplication;
+import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.repository.AppUserRepository;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakrutils.MyLog;

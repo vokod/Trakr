@@ -4,10 +4,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
+import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakrutils.Constants;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
