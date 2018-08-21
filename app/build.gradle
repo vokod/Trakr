@@ -132,6 +132,8 @@ dependencies {
     // implementation "com.mikepenz:aboutlibraries:6.2.0-rc01"
     // admob
     freeImplementation 'com.google.android.gms:play-services-ads:15.0.1'
+    freeImplementation 'com.google.firebase:firebase-ads:15.0.1'
+
 
 }
 

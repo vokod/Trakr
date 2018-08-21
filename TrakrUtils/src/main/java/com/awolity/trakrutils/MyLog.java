@@ -1,6 +1,5 @@
 package com.awolity.trakrutils;
 
-import com.awolity.trakrutils.BuildConfig;
 
 import timber.log.Timber;
 
@@ -11,7 +10,7 @@ public class MyLog {
     public static void i(String tag, String string) {
         if (LOG) {
             android.util.Log.i(tag, string);
-            Timber.i(string);
+            // Timber.i(string);
         }
     }
 
@@ -19,35 +18,35 @@ public class MyLog {
     public static void d(String tag, String string) {
         if (LOG) {
             android.util.Log.d(tag, string);
-            Timber.d(string);
+            // Timber.d(string);
         }
     }
 
     public static void e(String tag, String string) {
         if (LOG) {
             android.util.Log.e(tag, string);
-            Timber.e(string);
+            // Timber.e(string);
         }
     }
 
     public static void v(String tag, String string) {
         if (LOG) {
             android.util.Log.v(tag, string);
-            Timber.v(string);
+            // Timber.v(string);
         }
     }
 
     public static void w(String tag, String string) {
         if (LOG) {
             android.util.Log.w(tag, string);
-            Timber.w(string);
+            // Timber.w(string);
         }
     }
 
     public static void wtf(String tag, String string) {
         if (LOG) {
             android.util.Log.wtf(tag, string);
-            Timber.wtf(string);
+            // Timber.wtf(string);
         }
     }
 }

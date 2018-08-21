@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.viewmodel.TrackViewModel;
@@ -88,14 +89,15 @@ public class TrackDetailActivity extends AppCompatActivity
 
     private void setupAdview() {
         AdView adview = findViewById(R.id.adView);
-        // Create an ad request. Check logcat output for the hashed device ID to
-        // get test ads on a physical device. e.g.
-        // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
-        MobileAds.initialize(this);
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("B20AC3BE6C392F942D699800329EDCBD")
-                .build();
-        adview.loadAd(adRequest);
+        if(BuildConfig.DEBUG){
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("B20AC3BE6C392F942D699800329EDCBD")
+                    .build();
+            adview.loadAd(adRequest);
+        } else {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adview.loadAd(adRequest);
+        }
     }
 
     private void setupWidgets() {
