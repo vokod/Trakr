@@ -24,6 +24,8 @@ import com.awolity.trakrviews.SeekbarSetting;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
+import com.instabug.bug.BugReporting;
+import com.instabug.bug.invocation.InvocationMode;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
@@ -173,7 +175,7 @@ public class SettingsActivity extends AppCompatActivity {
                 R.drawable.ic_feedback, 0, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        BugReporting.invoke();
                     }
                 });
     }
@@ -198,7 +200,7 @@ public class SettingsActivity extends AppCompatActivity {
         loginBs.setEnabled(!isAppUserLoggedIn);
         logoutBs.setEnabled(isAppUserLoggedIn);
         deleteBs.setEnabled(isAppUserLoggedIn);
-        if(isAppUserLoggedIn) {
+        if (isAppUserLoggedIn) {
             logoutBs.setDescription(getString(R.string.settings_description_logout_with_account,
                     appUserViewModel.getAppUser().getEmail()));
         } else {
@@ -210,7 +212,7 @@ public class SettingsActivity extends AppCompatActivity {
         accuracySs.setSeekBarPosition(settingsViewModel.getAccuracy());
     }
 
-    private void showUnitSetting(){
+    private void showUnitSetting() {
         int unit = settingsViewModel.getUnit();
         if (unit == Constants.UNIT_METRIC) {
             unitRs.setSelected(0);

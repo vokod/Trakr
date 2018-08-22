@@ -14,6 +14,10 @@ import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
 import com.awolity.trakrutils.FileLoggingTree;
 import com.crashlytics.android.Crashlytics;
+import com.instabug.bug.BugReporting;
+import com.instabug.bug.PromptOption;
+import com.instabug.library.Instabug;
+import com.instabug.library.invocation.InstabugInvocationEvent;
 
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
@@ -30,10 +34,18 @@ public class TrakrApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        getAppComponent();
+
         Fabric.with(this, new Crashlytics());
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
-        getAppComponent();
+        new Instabug.Builder(this, getString(R.string.instabug_token))
+                .setInvocationEvents(InstabugInvocationEvent.NONE,
+                        InstabugInvocationEvent.SCREENSHOT)
+                .build();
+        Instabug.setPrimaryColor(getResources().getColor(R.color.colorPrimary));
+        BugReporting.setPromptOptionsEnabled(PromptOption.BUG, PromptOption.FEEDBACK);
 
         NotificationUtils.setupNotificationChannels(this);
 

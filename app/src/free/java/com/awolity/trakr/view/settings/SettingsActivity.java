@@ -14,6 +14,7 @@ import com.awolity.trakrutils.Constants;
 import com.awolity.trakrviews.ButtonSetting;
 import com.awolity.trakrviews.RadiogroupSetting;
 import com.awolity.trakrviews.SeekbarSetting;
+import com.instabug.bug.BugReporting;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
@@ -118,7 +119,7 @@ public class SettingsActivity extends AppCompatActivity {
                 R.drawable.ic_feedback, 0, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        BugReporting.invoke();
                     }
                 });
     }

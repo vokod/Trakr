@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="admob_app_id" templateMergeStrategy="preserve" translatable="false">ca-app-pub-3793399238287273~2652570305</string>
-    <string name="admob_ad_id_tracklist_activity" templateMergeStrategy="preserve" translatable="false">ca-app-pub-3793399238287273/2902500679</string>
-    <string name="admob_ad_id_trackdetail_activity" templateMergeStrategy="preserve" translatable="false">ca-app-pub-3793399238287273/9740313719</string>
-</resources>
