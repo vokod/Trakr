@@ -75,7 +75,8 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ss_accuracy" />
+            app:layout_constraintTop_toBottomOf="@+id/ss_accuracy"
+            android:visibility="gone"/>
 
         <View
             android:id="@+id/divider_2"
