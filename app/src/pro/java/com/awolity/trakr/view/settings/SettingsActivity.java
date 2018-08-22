@@ -24,6 +24,8 @@ import com.awolity.trakrviews.SeekbarSetting;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import java.util.Arrays;
 
@@ -157,7 +159,13 @@ public class SettingsActivity extends AppCompatActivity {
                 R.drawable.ic_libraries, 0, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        new LibsBuilder()
+                                .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                                .withAboutIconShown(true)
+                                .withAboutVersionShown(true)
+                                .withAboutDescription(getString(R.string.setting_description_libraries))
+                                .withActivityTitle(getString(R.string.setting_label_libraries))
+                                .start(SettingsActivity.this);
                     }
                 });
         contactBs.setup(getString(R.string.setting_label_feedback),

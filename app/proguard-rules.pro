@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# About libraries
+-keep class .R
+-keep class **.R$* {
+    <fields>;
+}

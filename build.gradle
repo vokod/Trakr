@@ -34,4 +34,5 @@ task clean(type: Delete) {
 
 ext {
     supportLibVersion = '27.1.1'
+    androidX = '1.0.0-rc01'
 }
