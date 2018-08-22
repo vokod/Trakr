@@ -147,6 +147,9 @@ dependencies {
     // admob
     freeImplementation 'com.google.android.gms:play-services-ads:15.0.1'
     freeImplementation 'com.google.firebase:firebase-ads:15.0.1'
+
+    // instabug
+    implementation 'com.instabug.library:instabug:8.0.5'
 }
 
 apply plugin: 'com.google.gms.google-services'
