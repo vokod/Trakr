@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimaryLight">#95A8B2</color>
+    <color name="colorPrimaryLight">#6a6180</color>
+    <color name="colorPrimary">#544e66</color>
+    <color name="colorPrimaryAlpha0">#003d384a</color>
+    <color name="colorPrimaryDark">#3d384a</color>
+    <color name="colorAccent">#CDDC39</color>
+    <color name="colorAccentLight">#EBFA57</color>
+    <color name="colorAccentAlpha0">#00CDDC39</color>
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#757575</color>
+    <color name="titleText">#FFFFFF</color>
+    <color name="disabledText">#BBBBBB</color>
+    <color name="white">#FFFFFF</color>
+    <color name="bottom_sheet_background">#EEEEEE</color>
+    <color name="activity_main_activity_type_spinner_dropdown_item_background">#fff</color>
+    <color name="horizontal_line">#CCCCCC</color>
+
+   <!-- <color name="colorPrimaryLight">#95A8B2</color>
     <color name="colorPrimary">#607d8b</color>
     <color name="colorPrimaryAlpha0">#00607D8B</color>
     <color name="colorPrimaryDark">#455A64</color>
@@ -15,7 +31,7 @@
     <color name="white">#FFFFFF</color>
     <color name="bottom_sheet_background">#EEEEEE</color>
     <color name="activity_main_activity_type_spinner_dropdown_item_background">#fff</color>
-    <color name="horizontal_line">#CCCCCC</color>
+    <color name="horizontal_line">#CCCCCC</color>-->
 
 </resources>
 

@@ -20,14 +20,14 @@ public class Constants {
             LocationRequest.PRIORITY_HIGH_ACCURACY,
             20,
             10,
-            2);
+            3);
 
     public static final RecordParameters RECORD_PARAMETERS_BALANCED = new RecordParameters(
             10,
             5,
             LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY,
             50,
-            10,
+            6,
             2);
 
     public static final RecordParameters RECORD_PARAMETERS_LOW_POWER = new RecordParameters(
@@ -35,8 +35,8 @@ public class Constants {
             10,
             LocationRequest.PRIORITY_LOW_POWER,
             100,
-            10,
-            2);
+            3,
+            1);
 
     public final static int ACCURACY_HIGH_ACCURACY = 2;
     public final static int ACCURACY_BALANCED = 1;
