@@ -205,7 +205,7 @@
     <string name="activity_track_detail_fragment_data_ib_edit_content_desc">Edit button</string>
     <string name="activity_track_list_item_track_iv_initial_content_desc">Initial letter of title
     </string>
-    <string name="view_primary_propert_icon_iv_icon_content_desc">Icon of property</string>
+
     <string name="activity_main_dialog_activity_type_list_item_iv_icon_content_desc">Icon of
         activity</string>
     <string name="view_secondary_property_icon_iv_icon_content_desc">Icon of property</string>

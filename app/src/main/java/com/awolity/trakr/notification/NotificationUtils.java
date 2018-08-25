@@ -26,8 +26,10 @@ import static android.support.v4.app.NotificationManagerCompat.IMPORTANCE_LOW;
 
 public class NotificationUtils {
 
-    private static final String NOTIFICATION_CHANNEL_ID_TRACK_RECORD = "com.awolity.trakr.notification.track_recording";
-    private static final String NOTIFICATION_CHANNEL_ID_TRACK_EXPORT = "com.awolity.trakr.notification.track_exporting";
+    private static final String NOTIFICATION_CHANNEL_ID_TRACK_RECORD
+            = "com.awolity.trakr.notification.track_recording";
+    private static final String NOTIFICATION_CHANNEL_ID_TRACK_EXPORT
+            = "com.awolity.trakr.notification.track_exporting";
     public static final int NOTIFICATION_ID_TRACK_RECORD = 20;
     private static final int NOTIFICATION_ID_TRACK_EXPORT = 21;
     private static final String TAG = NotificationUtils.class.getSimpleName();
@@ -35,7 +37,8 @@ public class NotificationUtils {
     public static void showRecordTrackNotification(Context context, List<String> lines) {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID_TRACK_RECORD, getRecordTrackNotification(context, lines));
+        notificationManager.notify(NOTIFICATION_ID_TRACK_RECORD,
+                getRecordTrackNotification(context, lines));
     }
 
     public static Notification getRecordTrackNotification(Context context, List<String> lines) {
@@ -44,12 +47,14 @@ public class NotificationUtils {
                 | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(intent);
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID_TRACK_RECORD)
-                        .setColor(ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark, null))
+                        .setColor(ResourcesCompat.getColor(context.getResources(),
+                                R.color.colorPrimaryDark, null))
                         .setSmallIcon(R.drawable.ic_notification)
                         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
                                 R.mipmap.ic_launcher))
@@ -69,18 +74,21 @@ public class NotificationUtils {
         return notificationBuilder.build();
     }
 
-    public static void showExportTrackNotification(Context context, long trackId, String fileName, String path) {
+    public static void showExportTrackNotification(Context context, long trackId, String fileName,
+                                                   String path) {
         Intent intent = TrackDetailActivity.getStarterIntent(context, trackId, null);
 
         // Create the TaskStackBuilder and add the intent, which inflates the back stack
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(intent);
         // Get the PendingIntent containing the entire back stack
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID_TRACK_EXPORT)
-                        .setColor(ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark, null))
+                        .setColor(ResourcesCompat.getColor(context.getResources(),
+                                R.color.colorPrimaryDark, null))
                         .setSmallIcon(R.drawable.ic_notification)
                         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
                                 R.mipmap.ic_launcher))
@@ -111,18 +119,21 @@ public class NotificationUtils {
         notificationManager.notify(NOTIFICATION_ID_TRACK_EXPORT, notificationBuilder.build());
     }
 
-    public static void showExportTrackErrorNotification(Context context, long trackId, String fileName, String path) {
+    public static void showExportTrackErrorNotification(Context context, long trackId,
+                                                        String fileName, String path) {
         Intent intent = TrackDetailActivity.getStarterIntent(context, trackId, null);
 
         // Create the TaskStackBuilder and add the intent, which inflates the back stack
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(intent);
         // Get the PendingIntent containing the entire back stack
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID_TRACK_EXPORT)
-                        .setColor(ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark, null))
+                        .setColor(ResourcesCompat.getColor(context.getResources(),
+                                R.color.colorPrimaryDark, null))
                         .setSmallIcon(R.drawable.ic_notification)
                         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
                                 R.mipmap.ic_launcher))
@@ -166,7 +177,8 @@ public class NotificationUtils {
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID_TRACK_EXPORT)
-                        .setColor(ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark, null))
+                        .setColor(ResourcesCompat.getColor(context.getResources(),
+                                R.color.colorPrimaryDark, null))
                         .setSmallIcon(R.drawable.ic_notification)
                         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
                                 R.mipmap.ic_launcher))

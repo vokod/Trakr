@@ -10,13 +10,11 @@
         style="@style/SettingIcon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_login" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_label"
         style="@style/SettingLabel"
-        tools:text="@string/setting_label_login"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,8 +25,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_label"
-        tools:text="@string/settings_description_login" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_label" />
 
     <FrameLayout
         android:id="@+id/fl_click_overlay"
@@ -41,6 +38,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:focusable="true" />
-
 
 </android.support.constraint.ConstraintLayout>

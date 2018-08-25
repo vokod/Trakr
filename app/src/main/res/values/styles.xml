@@ -9,87 +9,9 @@
         <item name="android:windowContentTransitions">true</item>
     </style>
 
-    <style name="PrimaryPropertyValue" parent="@android:style/TextAppearance.Large">
-        <item name="android:textSize">32sp</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:typeface">sans</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
-    </style>
-
-    <style name="PrimaryPropertyUnit" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/secondaryText</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:typeface">sans</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
-    </style>
-
-    <style name="PrimaryPropertyLabel" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/secondaryText</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:typeface">sans</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:layout_marginTop">36dp</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="SecondaryPropertyValue" parent="PrimaryPropertyValue">
-        <item name="android:textSize">24sp</item>
-    </style>
-
-    <style name="SecondaryPropertyUnit" parent="PrimaryPropertyUnit">
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="SecondaryPropertyLabel" parent="PrimaryPropertyLabel">
-        <item name="android:layout_marginTop">28dp</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="PrimaryPropertyIconValue" parent="@android:style/TextAppearance.Large">
-        <item name="android:textSize">22sp</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:typeface">sans</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
-    </style>
-
-    <style name="PrimaryPropertyIconUnit" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/secondaryText</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:typeface">sans</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
-    </style>
-
-    <style name="PrimaryPropertyIconLabel" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/secondaryText</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:typeface">sans</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:layout_marginTop">36dp</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="SecondaryPropertyIconValue" parent="PrimaryPropertyValue">
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="SecondaryPropertyIconUnit" parent="PrimaryPropertyUnit">
-        <item name="android:textSize">10sp</item>
-    </style>
-
-    <style name="SecondaryPropertyIconLabel" parent="PrimaryPropertyLabel">
-        <item name="android:layout_marginTop">28dp</item>
-        <item name="android:textSize">10sp</item>
-    </style>
-
     <style name="TrackDetailTitle" parent="@android:style/TextAppearance.Large">
         <item name="android:textSize">22sp</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">sans</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
@@ -110,7 +32,7 @@
 
     <style name="SettingsGroup" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">sans</item>
         <item name="android:fontFamily">sans-serif</item>
@@ -142,12 +64,6 @@
         <item name="android:layout_marginEnd">16dp</item>
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginBottom">8dp</item>
-    </style>
-
-    <style name="SettingIcon" parent="@style/AppTheme">
-        <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="SettingDivider" parent="@style/AppTheme">
