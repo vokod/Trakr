@@ -69,21 +69,26 @@ public class TrackViewModel extends ViewModel {
                     public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
                         if (trackpointEntities != null) {
                             long numOfPoints = trackpointEntities.size();
-                            List<ChartPoint> chartPoints = new ArrayList<>();
+                            List<ChartPoint> chartPoints = new ArrayList<>(maxNumOfPoints);
 
                             if (numOfPoints > maxNumOfPoints) {
                                 long divider = numOfPoints / maxNumOfPoints + 1;
 
-                                double averagedSpeed = 0, averagedAltitude = 0;
+                                double averagedSpeed = 0, averagedAltitude = 0, distance = 0;
 
-                                for (int i = 0; i < numOfPoints; i++) {
+                                for (int i = 1; i < numOfPoints; i++) {
+                                    // TODO: ez egy kicsit csalás, mert a 0. pont mindenképpen kimarad, de az osztás miatt így pontos
+                                    // belső ciklusszámlálóval lehetne elegánsabban csinálni.
+                                    averagedSpeed += trackpointEntities.get(i).getSpeed();
+                                    averagedAltitude += trackpointEntities.get(i).getAltitude();
+                                    distance += trackpointEntities.get(i).getDistance();
+
                                     if (i > 0 && i % divider == 0) {
 
                                         ChartPoint chartPoint = new ChartPoint();
                                         chartPoint.setTime(
                                                 trackpointEntities.get(i).getTime());
-                                        chartPoint.setDistance(
-                                                trackpointEntities.get(i).getDistance());
+                                        chartPoint.setDistance(distance);
 
                                         chartPoint.setSpeed(averagedSpeed / divider);
                                         chartPoint.setAltitude(averagedAltitude / divider);
@@ -93,10 +98,7 @@ public class TrackViewModel extends ViewModel {
                                         averagedSpeed = 0;
                                         averagedAltitude = 0;
                                     } else {
-                                        averagedSpeed = averagedSpeed
-                                                + trackpointEntities.get(i).getSpeed();
-                                        averagedAltitude = averagedAltitude
-                                                + trackpointEntities.get(i).getAltitude();
+
                                     }
                                 }
                             } else {
