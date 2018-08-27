@@ -45,6 +45,7 @@
         </activity>
 
         <service android:name=".trackrecorder.TrackRecorderService" />
+        <service android:name=".sync.SyncService" />
 
         <receiver android:name=".view.widget.TrakrWidget">
             <intent-filter>

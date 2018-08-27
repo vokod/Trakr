@@ -28,7 +28,6 @@
                 android:value=".view.main.MainActivity" />
         </activity>
 
-        <service android:name=".sync.SyncService" />
 
         <provider
             android:name=".gpx.GpxFileProvider"

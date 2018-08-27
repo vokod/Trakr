@@ -124,10 +124,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.1'
 
     // firebase authentication
-    proImplementation 'com.google.firebase:firebase-auth:16.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.1'
 
     // firebaser UI for firebase auth
-    proImplementation 'com.firebaseui:firebase-ui-auth:3.3.1'
+    implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
 
     // MPAndroid Chart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
