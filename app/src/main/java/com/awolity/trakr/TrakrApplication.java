@@ -16,6 +16,7 @@ import com.awolity.trakrutils.FileLoggingTree;
 import com.crashlytics.android.Crashlytics;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.PromptOption;
+import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.library.Instabug;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 
@@ -41,11 +42,12 @@ public class TrakrApplication extends Application {
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         new Instabug.Builder(this, getString(R.string.instabug_token))
-                .setInvocationEvents(InstabugInvocationEvent.NONE,
-                        InstabugInvocationEvent.SCREENSHOT)
+                .setInvocationEvents(InstabugInvocationEvent.NONE)
                 .build();
         Instabug.setPrimaryColor(getResources().getColor(R.color.colorPrimary));
         BugReporting.setPromptOptionsEnabled(PromptOption.BUG, PromptOption.FEEDBACK);
+        BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_OPTIONAL);
+
 
         NotificationUtils.setupNotificationChannels(this);
 
