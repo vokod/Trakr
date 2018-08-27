@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -146,14 +147,18 @@ public class SettingsActivity extends AppCompatActivity {
                 R.drawable.ic_terms_of_use, 0, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("https://trakrapp.github.io/terms.html"));
+                        startActivity(browserIntent);
                     }
                 });
         privacyBs.setup(getString(R.string.setting_label_privacy_policy),
                 null, R.drawable.ic_privacy_policy, 0, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("https://trakrapp.github.io/privacy.html"));
+                        startActivity(browserIntent);
                     }
                 });
         librariesBs.setup(getString(R.string.setting_label_libraries),
