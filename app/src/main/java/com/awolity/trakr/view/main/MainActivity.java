@@ -23,17 +23,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
-import com.awolity.trakr.utils.Constants;
-import com.awolity.trakr.utils.MyLog;
-import com.awolity.trakr.utils.PreferenceUtils;
-import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.list.TrackListActivity;
 import com.awolity.trakr.view.main.bottom.BottomSheetBaseFragment;
@@ -41,13 +36,14 @@ import com.awolity.trakr.view.main.bottom.BottomSheetChartsFragment;
 import com.awolity.trakr.view.main.bottom.BottomSheetFragmentPagerAdapter;
 import com.awolity.trakr.view.main.bottom.BottomSheetPointFragment;
 import com.awolity.trakr.view.main.bottom.BottomSheetTrackFragment;
-import com.awolity.trakr.viewmodel.AppUserViewModel;
+import com.awolity.trakr.view.settings.SettingsActivity;
 import com.awolity.trakr.viewmodel.LocationViewModel;
+import com.awolity.trakr.viewmodel.SettingsViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
+import com.awolity.trakrutils.Constants;
+import com.awolity.trakrutils.MyLog;
+import com.awolity.trakrutils.Utility;
 import com.crashlytics.android.Crashlytics;
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.ErrorCodes;
-import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -56,7 +52,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -68,7 +63,6 @@ public class MainActivity extends AppCompatActivity
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final float ZOOM_LEVEL_INITIAL = 15;
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int RC_SIGN_IN = 22;
 
     private GoogleMap googleMap;
     private BottomSheetPointFragment pointFragment;
@@ -78,13 +72,13 @@ public class MainActivity extends AppCompatActivity
 
     private LocationViewModel locationViewModel;
     private TrackViewModel trackViewModel;
-    private AppUserViewModel appUserViewModel;
+    private SettingsViewModel settingsViewModel;
+    // TODO: refactor viewmodels so that only one is for every activity
 
     private TrackRecorderServiceManager serviceManager;
     private MainActivityStatus status;
     private long trackId = Constants.NO_LAST_RECORDED_TRACK;
 
-    private Menu menu;
     private PolylineManager polylineManager;
 
     @Override
@@ -103,7 +97,7 @@ public class MainActivity extends AppCompatActivity
         MainActivityUtils.checkLocationPermission(this, PERMISSION_REQUEST_CODE);
         setupMapFragment();
         setupLocationViewModel();
-        setupAppUserViewModel();
+        settingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -128,14 +122,14 @@ public class MainActivity extends AppCompatActivity
 
             trackFragment = (BottomSheetTrackFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, BottomSheetTrackFragment.class.getName());
-            if(trackFragment==null){
+            if (trackFragment == null) {
                 trackFragment = BottomSheetTrackFragment.newInstance(getString(R.string.bottom_sheet_label_track));
             }
             trackFragment.setTitle(getString(R.string.bottom_sheet_label_track));
 
             chartsFragment = (BottomSheetChartsFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, BottomSheetChartsFragment.class.getName());
-            if(chartsFragment==null){
+            if (chartsFragment == null) {
                 chartsFragment = BottomSheetChartsFragment.newInstance(getString(R.string.bottom_sheet_label_charts));
             }
             chartsFragment.setTitle(getString(R.string.bottom_sheet_label_charts));
@@ -249,17 +243,13 @@ public class MainActivity extends AppCompatActivity
                 .show();
     }
 
-    private void setupAppUserViewModel() {
-        appUserViewModel = ViewModelProviders.of(this).get(AppUserViewModel.class);
-    }
-
     private void setupTrackRecorderService() {
         MyLog.d(TAG, "setupTrackRecorderService");
         serviceManager = new TrackRecorderServiceManager(this);
         if (TrackRecorderServiceManager.isServiceRunning(this)) {
             MyLog.d(TAG, "setupTrackRecorderService - service is running");
             status.setContinueRecording();
-            long trackId = PreferenceUtils.getLastRecordedTrackId(this);
+            long trackId = settingsViewModel.getLastRecordedTrackId();
             if (trackId != Constants.NO_LAST_RECORDED_TRACK) {
                 polylineManager = new PolylineManager(this);
                 setupTrackViewModel(trackId);
@@ -477,14 +467,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_main_menu, menu);
-        this.menu = menu;
-
-        MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
-        if (appUserViewModel.IsAppUserLoggedIn()) {
-            synchronisationItem.setTitle(getString(R.string.disable_cloud_sync));
-        } else {
-            synchronisationItem.setTitle(getString(R.string.enable_cloud_sync));
-        }
         return true;
     }
 
@@ -494,54 +476,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_list_tracks) {
             startActivity(TrackListActivity.getStarterIntent(this));
             return true;
-        } else if (id == R.id.action_synchronisation) {
-            if (appUserViewModel.IsAppUserLoggedIn()) {
-                MainActivityUtils.showLogoutAlertDialog(this, appUserViewModel, item);
-            } else {
-                startActivityForResult(AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(Arrays.asList(
-                                new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
-                        .build(), RC_SIGN_IN);
-            }
+        } else if (id == R.id.action_settings) {
+            startActivity(SettingsActivity.getStarterIntent(this));
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            // Successfully signed in
-            if (resultCode == RESULT_OK) {
-                MenuItem synchronisationItem = menu.findItem(R.id.action_synchronisation);
-                synchronisationItem.setTitle(getString(R.string.disable_cloud_sync));
-                Toast.makeText(this, getString(R.string.you_are_logged_in), Toast.LENGTH_LONG).show();
-                appUserViewModel.signIn();
-                return;
-            } else {
-                // Sign in failed
-                if (response == null) {
-                    // UserEntity pressed back button
-                    MainActivityUtils.showToast(this, getString(R.string.login_error_cancel));
-                    return;
-                }
-
-                if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    MainActivityUtils.showToast(this, getString(R.string.login_error_no_internet));
-                    return;
-                }
-
-                if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                    MainActivityUtils.showToast(this, getString(R.string.login_error_unknown_error));
-                    return;
-                }
-            }
-            MainActivityUtils.showToast(this, getString(R.string.login_error_unknown_response));
-        }
     }
 
     @Override

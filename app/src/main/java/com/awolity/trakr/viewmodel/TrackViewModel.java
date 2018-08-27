@@ -6,10 +6,10 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.Nullable;
 
+import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.viewmodel.model.ChartPoint;
 import com.awolity.trakr.viewmodel.model.MapPoint;
@@ -153,7 +153,6 @@ public class TrackViewModel extends ViewModel {
     }
 
     public void finishRecording() {
-        trackRepository.saveTrackToCloud(trackId);
     }
 
     public void updateTrack(TrackEntity trackEntity) {

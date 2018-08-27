@@ -33,14 +33,18 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
+
     compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+
     defaultConfig {
         applicationId "com.awolity.trakr"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 15
-        versionName "0.15"
+        versionCode 18
+        versionName "0.18"
         vectorDrawables.useSupportLibrary = true
+        // multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
@@ -50,6 +54,7 @@ android {
             checkReleaseBuilds false
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -60,7 +65,21 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-    buildToolsVersion '27.0.3'
+
+    flavorDimensions "featureset"
+    productFlavors {
+        free {
+            applicationIdSuffix ".free"
+            versionNameSuffix "-free"
+            dimension "featureset"
+        }
+        pro {
+            applicationIdSuffix ".pro"
+            versionNameSuffix "-pro"
+            dimension "featureset"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
@@ -69,48 +88,68 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
+    implementation project(path: ':TrakrViews')
+    implementation project(path: ':TrakrUtils')
     implementation "com.android.support:customtabs:${supportLibVersion}"
     implementation "com.android.support:design:${supportLibVersion}"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
     implementation "com.android.support:support-v4:${supportLibVersion}"
     implementation "com.android.support:cardview-v7:${supportLibVersion}"
+
+    // maps
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
+
+    // location
     implementation 'com.google.android.gms:play-services-location:15.0.1'
+
     //ViewModel and LiveData
     implementation 'android.arch.lifecycle:extensions:1.1.1'
+
     // room
-    implementation 'android.arch.persistence.room:runtime:1.1.0'
-    implementation 'com.android.support:support-v4:27.1.1'
-    annotationProcessor "android.arch.persistence.room:compiler:1.1.0"
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
+    implementation "com.android.support:support-v4:${supportLibVersion}"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+
     // dagger 2
     implementation 'com.google.dagger:dagger-android:2.14.1'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.14.1'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
+
     // firebase
     implementation 'com.google.firebase:firebase-core:16.0.0'
+
     // crashlitycs
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.3'
+
     // firebase realtime database
     implementation 'com.google.firebase:firebase-database:16.0.1'
+
     // firebase authentication
-    implementation 'com.google.firebase:firebase-auth:16.0.1'
+    proImplementation 'com.google.firebase:firebase-auth:16.0.1'
+
     // firebaser UI for firebase auth
-    implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
+    proImplementation 'com.firebaseui:firebase-ui-auth:3.3.1'
+
     // MPAndroid Chart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
     // gpx parser
     implementation 'com.codebutchery.android:gpx_lib:1.0.3'
-    // Timber
-    implementation 'com.jakewharton.timber:timber:4.5.1'
-    // text drawable
-    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+
     // circle imageview
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+
     // switch
     implementation 'lib.kingja.switchbutton:switchbutton:1.1.7'
+
+    // about libraries
+    implementation 'com.mikepenz:aboutlibraries:6.0.0'
+
+    // admob
+    freeImplementation 'com.google.android.gms:play-services-ads:15.0.1'
+    freeImplementation 'com.google.firebase:firebase-ads:15.0.1'
+
+    // instabug
+    implementation 'com.instabug.library:instabug:8.0.5'
 }
-
-
 
 apply plugin: 'com.google.gms.google-services'

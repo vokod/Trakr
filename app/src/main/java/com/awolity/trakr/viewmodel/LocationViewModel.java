@@ -7,7 +7,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.location.Location;
 
 import com.awolity.trakr.location.LocationManager;
-import com.awolity.trakr.utils.MyLog;
 import com.google.android.gms.location.LocationRequest;
 
 public class LocationViewModel extends AndroidViewModel implements LocationManager.LocationManagerCallback {
@@ -19,7 +18,8 @@ public class LocationViewModel extends AndroidViewModel implements LocationManag
 
     public LocationViewModel(Application application) {
         super(application);
-            locationManager = new LocationManager(2, 1, LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationManager = new LocationManager(2, 1,
+                    LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     public void isLocationSettingsGood(LocationManager.LocationSettingsCallback callback) {

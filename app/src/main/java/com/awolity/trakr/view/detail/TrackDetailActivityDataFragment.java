@@ -3,8 +3,6 @@ package com.awolity.trakr.view.detail;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,11 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.utils.StringUtils;
-import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.viewmodel.TrackViewModel;
+import com.awolity.trakrutils.StringUtils;
+import com.awolity.trakrutils.Utility;
+import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 
 import java.util.Locale;
 

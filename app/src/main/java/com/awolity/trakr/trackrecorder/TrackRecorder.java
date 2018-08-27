@@ -10,16 +10,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
+import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.repository.TrackRepository;
-import com.awolity.trakr.utils.MyLog;
-import com.awolity.trakr.utils.PreferenceUtils;
-import com.awolity.trakr.utils.StringUtils;
-import com.awolity.trakr.widget.TrakrWidget;
+import com.awolity.trakr.view.widget.TrakrWidget;
+import com.awolity.trakrutils.StringUtils;
 import com.google.android.gms.location.LocationRequest;
 
 import java.util.ArrayList;
@@ -28,7 +26,9 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
     public static final String TRACKID_BROADCAST_NAME
@@ -59,7 +59,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
       // MyLog.d(TAG, "TrackRecorder");
         TrakrApplication.getInstance().getAppComponent().inject(this);
 
-        status = new TrackRecorderStatus(context);
+        status = new TrackRecorderStatus();
 
         locationManager = new LocationManager(
                 status.getTrackingInterval(),

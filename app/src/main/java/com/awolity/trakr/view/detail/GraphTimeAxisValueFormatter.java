@@ -1,6 +1,5 @@
 package com.awolity.trakr.view.detail;
 
-import com.awolity.trakr.utils.MyLog;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 

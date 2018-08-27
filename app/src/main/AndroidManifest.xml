@@ -13,12 +13,9 @@
     <application
         android:name=".TrakrApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".view.main.MainActivity"
             android:label="@string/title_activity_main"
@@ -26,10 +23,10 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.list.TrackListActivity"
             android:label="@string/title_activity_track_list"
@@ -38,7 +35,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.main.MainActivity" />
         </activity>
-
         <activity
             android:name=".view.detail.TrackDetailActivity"
             android:label="@string/title_activity_track_detail"
@@ -48,20 +44,9 @@
                 android:value=".view.list.TrackListActivity" />
         </activity>
 
-        <provider
-            android:name=".gpx.GpxFileProvider"
-            android:authorities="com.awolity.trakr.gpx.GpxFileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_path" />
-        </provider>
-
         <service android:name=".trackrecorder.TrackRecorderService" />
-        <service android:name=".sync.SyncService" />
 
-        <receiver android:name=".widget.TrakrWidget">
+        <receiver android:name=".view.widget.TrakrWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

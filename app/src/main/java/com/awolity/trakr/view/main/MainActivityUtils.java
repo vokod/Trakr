@@ -11,16 +11,14 @@ import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -116,56 +114,25 @@ class MainActivityUtils {
         return latLngs;
     }
 
-    static void showToast(Context context, String s) {
-        Toast.makeText(context, s, Toast.LENGTH_LONG).show();
-    }
-
-    static void showLogoutAlertDialog(final Context context, final AppUserViewModel appUserViewModel,
-                                      final MenuItem item) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        // set title
-        alertDialogBuilder.setTitle(context.getString(R.string.logout_dialog_title));
-        // set dialog message
-        alertDialogBuilder
-                .setMessage(context.getString(R.string.logout_dialog_message,
-                        appUserViewModel.getAppUser().getEmail()))
-                .setCancelable(true)
-                .setIcon(context.getDrawable(R.drawable.ic_warning))
-                .setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        appUserViewModel.signOut();
-                        item.setTitle(context.getString(R.string.enable_cloud_sync));
-                        Toast.makeText(context,
-                                context.getString(R.string.you_are_logged_out),
-                                Toast.LENGTH_LONG).show();
-                    }
-                })
-                .setNegativeButton(context.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
     static void startFabAnimation(FloatingActionButton fab) {
-        AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) fab.getDrawable();
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) fab.getDrawable();
 
-
-        drawable.registerAnimationCallback(new Animatable2.AnimationCallback() {
-            @Override
-            public void onAnimationEnd(Drawable drawable) {
-                ((Animatable) drawable).start();
-            }
-        });
-        drawable.start();
+            drawable.registerAnimationCallback(new Animatable2.AnimationCallback() {
+                @Override
+                public void onAnimationEnd(Drawable drawable) {
+                    ((Animatable) drawable).start();
+                }
+            });
+            drawable.start();
+        }
     }
 
     static void stopFabAnimation(FloatingActionButton fab) {
-        AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) fab.getDrawable();
-        drawable.clearAnimationCallbacks();
-        drawable.stop();
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) fab.getDrawable();
+            drawable.clearAnimationCallbacks();
+            drawable.stop();
+        }
     }
 }

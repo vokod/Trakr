@@ -4,13 +4,12 @@ import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.support.annotation.WorkerThread;
 
+import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.dao.TrackDao;
 import com.awolity.trakr.data.dao.TrackpointDao;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.TrakrApplication;
-import com.awolity.trakr.utils.MyLog;
 
 import java.util.List;
 import java.util.concurrent.Executor;

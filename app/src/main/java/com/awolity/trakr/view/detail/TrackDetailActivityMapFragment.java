@@ -15,14 +15,11 @@ import android.widget.TextView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.utils.Constants;
-import com.awolity.trakr.utils.MyLog;
-import com.awolity.trakr.utils.StringUtils;
-import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.MapUtils;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.awolity.trakr.viewmodel.model.MapPoint;
+import com.awolity.trakrutils.StringUtils;
+import com.awolity.trakrutils.Utility;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,7 +28,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
-import java.util.Locale;
 
 public class TrackDetailActivityMapFragment extends Fragment implements OnMapReadyCallback {
 

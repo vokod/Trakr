@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.utils.MyLog;
+import com.awolity.trakrutils.MyLog;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
@@ -14,7 +14,6 @@ import java.util.List;
 
 public class PolylineManager {
 
-    private static final String TAG = "PolylineManager";
     private PolylineOptions polylineOptions;
     private Polyline polyline;
     private Context context;
@@ -24,25 +23,19 @@ public class PolylineManager {
     }
 
     void drawPolyline(GoogleMap googleMap, List<LatLng> pointsCoordinates) {
-        MyLog.d(TAG, "drawPolyline");
         if (googleMap != null) {
             clearPolyline(googleMap);
             setupPolyLine(googleMap);
-            MyLog.d(TAG, "drawPolyline - setting points: " + pointsCoordinates.size());
             polyline.setPoints(pointsCoordinates);
-        } else {
-            MyLog.d(TAG, "drawPolyline - google maps is NULL");
         }
     }
 
     void clearPolyline(GoogleMap googleMap) {
-        MyLog.d(TAG, "clearPolyline");
         googleMap.clear();
         polyline = null;
     }
 
     void continuePolyline(GoogleMap googleMap, LatLng currentLatLng) {
-        MyLog.d(TAG, "continuePolyline");
         if (polylineOptions == null && googleMap != null) {
             setupPolyLine(googleMap);
         }
@@ -52,7 +45,6 @@ public class PolylineManager {
     }
 
     private void setupPolyLine(GoogleMap googleMap) {
-        MyLog.d(TAG, "setupPolyLine");
         polylineOptions = new PolylineOptions()
                 .geodesic(true)
                 .color(ContextCompat.getColor(context, R.color.colorPrimary))

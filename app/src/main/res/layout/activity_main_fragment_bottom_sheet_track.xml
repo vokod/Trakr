@@ -34,7 +34,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.awolity.trakr.customviews.PrimaryPropertyView
+            <com.awolity.trakrviews.PrimaryPropertyView
                 android:id="@+id/distanceView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.awolity.trakr.customviews.PrimaryPropertyView
+            <com.awolity.trakrviews.PrimaryPropertyView
                 android:id="@+id/ascentView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
                 app:layout_constraintStart_toEndOf="@id/distanceView"
                 app:layout_constraintTop_toTopOf="@id/distanceView" />
 
-            <com.awolity.trakr.customviews.PrimaryPropertyView
+            <com.awolity.trakrviews.PrimaryPropertyView
                 android:id="@+id/descentView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                 app:layout_constraintStart_toEndOf="@id/ascentView"
                 app:layout_constraintTop_toTopOf="@id/distanceView" />
 
-            <com.awolity.trakr.customviews.SecondaryPropertyView
+            <com.awolity.trakrviews.SecondaryPropertyView
                 android:id="@+id/elapsedTimeView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                 app:layout_constraintStart_toStartOf="@+id/distanceView"
                 app:layout_constraintTop_toBottomOf="@id/distanceView" />
 
-            <com.awolity.trakr.customviews.SecondaryPropertyView
+            <com.awolity.trakrviews.SecondaryPropertyView
                 android:id="@+id/minAltitudeView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
                 app:layout_constraintStart_toStartOf="@+id/ascentView"
                 app:layout_constraintTop_toTopOf="@id/elapsedTimeView" />
 
-            <com.awolity.trakr.customviews.SecondaryPropertyView
+            <com.awolity.trakrviews.SecondaryPropertyView
                 android:id="@+id/maxAltitudeView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                 app:layout_constraintStart_toStartOf="@+id/descentView"
                 app:layout_constraintTop_toTopOf="@id/elapsedTimeView" />
 
-            <com.awolity.trakr.customviews.SecondaryPropertyView
+            <com.awolity.trakrviews.SecondaryPropertyView
                 android:id="@+id/avgSpeedView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                 app:layout_constraintStart_toStartOf="@+id/minAltitudeView"
                 app:layout_constraintTop_toBottomOf="@+id/minAltitudeView" />
 
-            <com.awolity.trakr.customviews.SecondaryPropertyView
+            <com.awolity.trakrviews.SecondaryPropertyView
                 android:id="@+id/maxSpeedView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
                 app:layout_constraintStart_toStartOf="@+id/maxAltitudeView"
                 app:layout_constraintTop_toTopOf="@+id/avgSpeedView">
 
-            </com.awolity.trakr.customviews.SecondaryPropertyView>
+            </com.awolity.trakrviews.SecondaryPropertyView>
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

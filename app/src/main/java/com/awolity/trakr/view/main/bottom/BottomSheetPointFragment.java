@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 
 import com.awolity.trakr.R;
 
-import com.awolity.trakr.customviews.PrimaryPropertyView;
-import com.awolity.trakr.customviews.SecondaryPropertyView;
 import com.awolity.trakr.viewmodel.LocationViewModel;
+import com.awolity.trakrviews.PrimaryPropertyView;
+import com.awolity.trakrviews.SecondaryPropertyView;
 
 import java.util.Locale;
 

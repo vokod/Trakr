@@ -13,12 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.customviews.PrimaryPropertyViewIcon;
-import com.awolity.trakr.customviews.SecondaryPropertyViewIcon;
 import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.utils.StringUtils;
-import com.awolity.trakr.utils.Utility;
 import com.awolity.trakr.view.MapUtils;
+import com.awolity.trakrutils.StringUtils;
+import com.awolity.trakrutils.Utility;
+import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -46,7 +45,7 @@ public class TrackListAdapter
 
     public void updateItems(@NonNull final List<TrackWithPoints> newItems) {
         // MyLog.d(TAG, "updateItems");
-        deleteInvalidTracks(newItems);
+        // deleteInvalidTracks(newItems);
         final List<TrackWithPoints> oldItems = new ArrayList<>(this.items);
         this.items.clear();
         this.items.addAll(newItems);
