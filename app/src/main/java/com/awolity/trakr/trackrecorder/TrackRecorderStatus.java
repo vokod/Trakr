@@ -15,10 +15,12 @@ public class TrackRecorderStatus {
     private boolean isEverythingGoodForRecording = true;
     private int numOfTrackPoints;
     private TrackpointEntity previousSavedTrackpoint, actualSavedTrackpoint, candidateTrackpoint;
-    private LowPassFilter altitudeFilter, speedFilter;
+    private final LowPassFilter altitudeFilter;
+    private final LowPassFilter speedFilter;
     private final AltitudeZeroFilter altitudeZeroFilter;
     private final RecordParameters recordParameters;
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     SettingsRepository settingsRepository;
 
@@ -84,10 +86,12 @@ public class TrackRecorderStatus {
         return actualSavedTrackpoint != null;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean isEverythingGoodForRecording() {
         return isEverythingGoodForRecording;
     }
 
+    @SuppressWarnings("SameParameterValue")
     void setEverythingGoodForRecording(boolean everythingGoodForRecording) {
         isEverythingGoodForRecording = everythingGoodForRecording;
     }

@@ -27,11 +27,14 @@ public class SyncService extends IntentService {
 
     private static final String TAG = SyncService.class.getSimpleName();
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     TrackRepository trackRepository;
+    @SuppressWarnings("WeakerAccess")
     @Inject
     Executor discIoExecutor;
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     AppUserRepository appUserRepository;
 

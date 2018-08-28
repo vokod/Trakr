@@ -21,12 +21,10 @@ import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
 import com.awolity.trakrutils.Constants;
-import com.awolity.trakrutils.MyLog;
 import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import java.util.List;
 

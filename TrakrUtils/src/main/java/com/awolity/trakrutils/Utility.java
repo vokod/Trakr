@@ -42,15 +42,15 @@ public class Utility {
                 == PackageManager.PERMISSION_GRANTED;
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     public static Drawable getInitial(String firstLetter, String colorBase, int widthInPixels) {
         ColorGenerator generator = ColorGenerator.MATERIAL;
-        TextDrawable drawable = TextDrawable.builder()
+        return TextDrawable.builder()
                 .beginConfig()
                 .width(widthInPixels)  // width in px
                 .height(widthInPixels) // height in px
                 .endConfig()
                 .buildRound(firstLetter, generator.getColor(colorBase));
-        return drawable;
     }
 
     public static void showToast(Context context, String s) {

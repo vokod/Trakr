@@ -74,24 +74,16 @@ public class TrackListAdapter
         }).dispatchUpdatesTo(this);
     }
 
-    private void deleteInvalidTracks(List<TrackWithPoints> trackWithPointsList) {
-        Iterator<TrackWithPoints> iterator = trackWithPointsList.iterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().getNumOfTrackPoints() < 2) {
-                iterator.remove();
-            }
-        }
-    }
-
+    @NonNull
     @Override
-    public TrackItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TrackItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // MyLog.d(TAG, "onCreateViewHolder");
         View v = layoutInflater.inflate(R.layout.activity_track_list_item_track_list, parent, false);
         return new TrackItemViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(TrackItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TrackItemViewHolder holder, int position) {
         // MyLog.d(TAG, "onBindViewHolder");
         holder.bind(items.get(position));
     }

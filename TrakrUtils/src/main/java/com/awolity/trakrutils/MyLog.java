@@ -1,8 +1,8 @@
 package com.awolity.trakrutils;
 
+import android.annotation.SuppressLint;
 
-import timber.log.Timber;
-
+@SuppressLint("LogNotTimber")
 public class MyLog {
 
     private static final boolean LOG = BuildConfig.DEBUG;
@@ -13,7 +13,6 @@ public class MyLog {
             // Timber.i(string);
         }
     }
-
 
     public static void d(String tag, String string) {
         if (LOG) {

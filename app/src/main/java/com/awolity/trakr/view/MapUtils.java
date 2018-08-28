@@ -24,6 +24,7 @@ public class MapUtils {
     private MapUtils() {
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static Polyline setupTrackPolyLine(Context context, GoogleMap googleMap,
                                               List<MapPoint> mapPoints) {
         // MyLog.d(TAG, "setupTrackPolyLine");
@@ -52,7 +53,6 @@ public class MapUtils {
 
     public static Polyline setupTrackPolyLine(Context context, GoogleMap googleMap, TrackWithPoints trackWithPoints, boolean moveCamera) {
         // MyLog.d(LOG_TAG, "setupTrackPolyLine");
-        Polyline polyline = null;
         PolylineOptions polylineOptions = new PolylineOptions()
                 .geodesic(true)
                 .color(ContextCompat.getColor(context, R.color.colorPrimary))
@@ -61,7 +61,7 @@ public class MapUtils {
                 .visible(true);
 
 
-        polyline = googleMap.addPolyline(polylineOptions.addAll(trackWithPoints.getPointsLatLng()));
+        Polyline polyline = googleMap.addPolyline(polylineOptions.addAll(trackWithPoints.getPointsLatLng()));
         if (moveCamera) {
             moveCameraToTrack(googleMap, trackWithPoints);
         }
@@ -69,6 +69,7 @@ public class MapUtils {
         return polyline;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static void moveCameraToTrack(GoogleMap googleMap, TrackWithPoints trackWithPoints) {
         // MyLog.d(LOG_TAG, "moveCameraToTrack");
         LatLngBounds bounds = new LatLngBounds(

@@ -1,4 +1,7 @@
 <resources>
     <string name="view_primary_propert_icon_iv_icon_content_desc">Icon of property</string>
     <string name="view_secondary_property_icon_iv_icon_content_desc">Icon of property</string>
+    <string name="setting_button_icon_content_description">Icon of setting</string>
+    <string name="setting_radiogroup_icon_content_description">Icon of setting</string>
+    <string name="setting_seekbar_icon_content_description">Icon of setting</string>
 </resources>

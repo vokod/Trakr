@@ -1,5 +1,6 @@
-package com.awolity.trakrutils;
+/*package com.awolity.trakrutils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
@@ -24,6 +25,7 @@ public class FileLoggingTree extends Timber.DebugTree {
         this.context = context;
     }
 
+    @SuppressLint("LogNotTimber")
     @Override
     protected void log(int priority, String tag, String message, Throwable t) {
 
@@ -57,4 +59,4 @@ public class FileLoggingTree extends Timber.DebugTree {
             Log.e(TAG, "Error while logging into file : " + e);
         }
     }
-}
+}*/

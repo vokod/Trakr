@@ -37,6 +37,7 @@ public class SeekbarSetting extends ConstraintLayout {
         inflate();
     }
 
+    @SuppressWarnings("WeakerAccess")
     void inflate() {
         LayoutInflater.from(context).inflate(R.layout.view_setting_seekbar, this, true);
         labelTextView = findViewById(R.id.tv_label);
@@ -49,6 +50,7 @@ public class SeekbarSetting extends ConstraintLayout {
         labelTextView.setText(labelText);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public void setDescription(String valueText) {
         descriptionTextView.setText(valueText);
     }

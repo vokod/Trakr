@@ -18,7 +18,8 @@ public class ButtonSetting extends ConstraintLayout {
     private ImageView iconImageView;
     private final Context context;
     private FrameLayout clickOverlay;
-    int iconResource, disabledIconResource;
+    private int iconResource;
+    private int disabledIconResource;
 
     public ButtonSetting(@NonNull Context context) {
         super(context);
@@ -39,6 +40,7 @@ public class ButtonSetting extends ConstraintLayout {
         inflate();
     }
 
+    @SuppressWarnings("WeakerAccess")
     void inflate() {
         LayoutInflater.from(context).inflate(R.layout.view_setting_button, this, true);
         labelTextView = findViewById(R.id.tv_label);
@@ -77,7 +79,7 @@ public class ButtonSetting extends ConstraintLayout {
         clickOverlay.setOnClickListener(clickListener);
     }
 
-    private static int getInPx(Context context, int dp) {
+    private static int getInPx(Context context, @SuppressWarnings("SameParameterValue") int dp) {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
     }

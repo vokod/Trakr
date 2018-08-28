@@ -4,11 +4,9 @@
     <!-- MainActivity -->
     <string name="title_activity_main">Trakr</string>
     <string name="action_track_list">Track list</string>
-    <string name="action_select_activity">Select activity</string>
     <string name="bottom_sheet_label_point">Point</string>
     <string name="bottom_sheet_label_track">Track</string>
     <string name="bottom_sheet_label_charts">Charts</string>
-    <string name="select_activity_type">Select activity type</string>
 
     <string name="login_error_cancel">Sign in cancelled</string>
     <string name="login_error_no_internet">No internet connection</string>
@@ -16,24 +14,7 @@
     <string name="login_error_unknown_error">Unknown error</string>
     <string name="login_successful">You are logged in</string>
 
-    <string name="disable_cloud_sync">Disable cloud sync (log out)</string>
-    <string name="enable_cloud_sync">Enable cloud sync (log in)</string>
     <string name="you_are_logged_out">You are logged out</string>
-    <string name="you_are_logged_in">You are logged in</string>
-    <string name="activity_change_disabled">You can\'t change activity type while recording track
-    </string>
-
-    <string name="activity_type_walking">Walking</string>
-    <string name="activity_type_running">Running</string>
-    <string name="activity_type_biking">Biking</string>
-    <string name="activity_type_driving">Driving</string>
-    <string name="activity_type_flying">Flying</string>
-
-    <string name="activity_type_key_walking" translatable="false">walking</string>
-    <string name="activity_type_key_running" translatable="false">running</string>
-    <string name="activity_type_key_biking" translatable="false">biking</string>
-    <string name="activity_type_key_driving" translatable="false">driving</string>
-    <string name="activity_type_key_flying" translatable="false">flying</string>
 
     <string name="start_recording_a_track">Start recording a track!</string>
 
@@ -74,7 +55,6 @@
     <string name="speed_pace">Speed/Pace</string>
     <string name="speed">Speed</string>
     <string name="pace">Pace</string>
-    <string name="show_values_by">Show values by:</string>
 
     <!-- Data views -->
     <string name="max_speed_view_title">Max.Speed</string>
@@ -206,11 +186,6 @@
     <string name="activity_track_list_item_track_iv_initial_content_desc">Initial letter of title
     </string>
 
-    <string name="activity_main_dialog_activity_type_list_item_iv_icon_content_desc">Icon of
-        activity</string>
-    <string name="view_secondary_property_icon_iv_icon_content_desc">Icon of property</string>
-
-    <string name="synchronisation">Synchronisation</string>
     <string name="elevation">Elevation</string>
 
     <!-- Shared transition names -->

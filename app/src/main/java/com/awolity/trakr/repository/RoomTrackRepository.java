@@ -18,12 +18,13 @@ import javax.inject.Inject;
 
 public class RoomTrackRepository {
 
-    private static final String TAG = "RoomTrackRepository";
-
+    @SuppressWarnings("WeakerAccess")
     @Inject
     Executor discIoExecutor;
+    @SuppressWarnings("WeakerAccess")
     @Inject
     TrackDao trackDao;
+    @SuppressWarnings("WeakerAccess")
     @Inject
     TrackpointDao trackpointDao;
     @Inject

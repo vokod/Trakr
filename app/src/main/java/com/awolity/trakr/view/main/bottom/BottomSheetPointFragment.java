@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.location.Location;
 import android.os.Bundle;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,13 +35,14 @@ public class BottomSheetPointFragment extends BottomSheetBaseFragment {
     public BottomSheetPointFragment() {
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.activity_main_fragment_bottom_sheet_point, container, false);
@@ -51,6 +53,7 @@ public class BottomSheetPointFragment extends BottomSheetBaseFragment {
         return view;
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void setupWidgets(View view) {
         speedView = view.findViewById(R.id.speedView);
         altitudeView = view.findViewById(R.id.altitudeView);
@@ -92,6 +95,7 @@ public class BottomSheetPointFragment extends BottomSheetBaseFragment {
         locationViewModel = ViewModelProviders.of(getActivity()).get(LocationViewModel.class);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void startLocationUpdates() {
         locationViewModel.getLocation().observe(getActivity(), new Observer<Location>() {
             @Override

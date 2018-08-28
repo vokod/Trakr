@@ -15,6 +15,7 @@ public class IOUtils {
         return Environment.MEDIA_MOUNTED.equals(state);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void checkCreateFolder(String folder) {
         File directory = new File(folder);
         if (!directory.exists()) {

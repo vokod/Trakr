@@ -48,6 +48,7 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
         return new TrackDetailActivityMapFragment();
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // MyLog.d(TAG, "onCreateView " + this.hashCode());
         View view = inflater.inflate(R.layout.activity_track_detail_fragment_map, container, false);

@@ -217,9 +217,6 @@ public class TrackEntity {
 
     public void increaseElapsedTime(long newTime) {
         elapsedTime = newTime - startTime;
-        if (elapsedTime < 0) {
-            // MyLog.wtf(TAG, "WTF, elapsed time is less than 0!!!");
-        }
     }
 
     public void increaseNumOfTrackpoints() {

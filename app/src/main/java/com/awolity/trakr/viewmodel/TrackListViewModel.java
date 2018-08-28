@@ -23,7 +23,7 @@ public class TrackListViewModel extends ViewModel {
     TrackRepository trackRepository;
 
     private LiveData<List<TrackWithPoints>> tracksWithPoints;
-    private MediatorLiveData<List<TrackWithPoints>> simplifiedTracksWithPoints;
+    private final MediatorLiveData<List<TrackWithPoints>> simplifiedTracksWithPoints;
 
     private static final String TAG = TrackListViewModel.class.getSimpleName();
 

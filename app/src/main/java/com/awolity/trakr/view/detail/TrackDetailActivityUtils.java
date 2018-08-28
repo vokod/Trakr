@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 
 import com.awolity.trakr.R;
 
+@SuppressWarnings("SameParameterValue")
 class TrackDetailActivityUtils {
 
     public static final String TAG = TrackDetailActivityUtils.class.getSimpleName();

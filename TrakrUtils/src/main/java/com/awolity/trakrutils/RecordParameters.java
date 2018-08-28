@@ -58,6 +58,7 @@ public class RecordParameters implements Parcelable {
         dest.writeInt(this.speedFilterParameter);
     }
 
+    @SuppressWarnings("WeakerAccess")
     protected RecordParameters(Parcel in) {
         this.trackingDistance = in.readInt();
         this.trackingAccuracy = in.readInt();

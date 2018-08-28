@@ -15,6 +15,7 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface TrackpointDao {
 
+    @SuppressWarnings("UnusedReturnValue")
     @Insert(onConflict = REPLACE)
     long save(TrackpointEntity trackpointEntity);
 

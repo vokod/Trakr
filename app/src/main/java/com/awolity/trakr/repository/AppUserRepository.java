@@ -14,7 +14,7 @@ import java.util.List;
 public class AppUserRepository {
 
     private static final String TAG = AppUserRepository.class.getSimpleName();
-    private List<AppUserStatusListener> appUserStatusListeners;
+    private final List<AppUserStatusListener> appUserStatusListeners;
 
     public AppUserRepository() {
         appUserStatusListeners = new ArrayList<>();

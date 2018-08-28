@@ -127,7 +127,7 @@ dependencies {
     // firebase authentication
     implementation 'com.google.firebase:firebase-auth:16.0.1'
 
-    // firebaser UI for firebase auth
+    // firebase UI for firebase auth
     implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
 
     // MPAndroid Chart

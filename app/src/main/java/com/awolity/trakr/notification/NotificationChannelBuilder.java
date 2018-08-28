@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+@SuppressWarnings("ALL")
 class NotificationChannelBuilder {
 
     private final NotificationChannel channel;

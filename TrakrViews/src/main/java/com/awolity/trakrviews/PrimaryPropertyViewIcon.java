@@ -51,6 +51,7 @@ public class PrimaryPropertyViewIcon extends ConstraintLayout {
         valueTextView.setText(valueText);
     }
 
+    @SuppressWarnings("unused")
     public String getValue() {
         return valueTextView.getText().toString();
     }

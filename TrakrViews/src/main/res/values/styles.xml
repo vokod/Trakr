@@ -67,20 +67,7 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="SecondaryPropertyIconValue" parent="PrimaryPropertyValue">
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="SecondaryPropertyIconUnit" parent="PrimaryPropertyUnit">
-        <item name="android:textSize">10sp</item>
-    </style>
-
-    <style name="SecondaryPropertyIconLabel" parent="PrimaryPropertyLabel">
-        <item name="android:layout_marginTop">28dp</item>
-        <item name="android:textSize">10sp</item>
-    </style>
-
-    <style name="SettingIcon" parent="@style/AppTheme">
+    <style name="SettingIcon">
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

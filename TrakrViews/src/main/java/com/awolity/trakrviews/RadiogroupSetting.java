@@ -20,7 +20,6 @@ public class RadiogroupSetting extends ConstraintLayout {
     private RadioButton firstButton;
     private RadioButton secondButton;
     private final Context context;
-    private RadiogroupSettingListener listener;
 
     public RadiogroupSetting(@NonNull Context context) {
         super(context);
@@ -41,6 +40,7 @@ public class RadiogroupSetting extends ConstraintLayout {
         inflate();
     }
 
+    @SuppressWarnings("WeakerAccess")
     void inflate() {
         LayoutInflater.from(context).inflate(R.layout.view_setting_radiogroup, this, true);
         labelTextView = findViewById(R.id.tv_label);
@@ -54,6 +54,7 @@ public class RadiogroupSetting extends ConstraintLayout {
         labelTextView.setText(labelText);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public void setDescription(String valueText) {
         descriptionTextView.setText(valueText);
     }
@@ -66,7 +67,6 @@ public class RadiogroupSetting extends ConstraintLayout {
                                  final RadiogroupSettingListener listener) {
         firstButton.setText(labelFirst);
         secondButton.setText(labelSecond);
-        this.listener = listener;
         setSelected(selected);
 
         firstButton.setOnClickListener(new View.OnClickListener() {

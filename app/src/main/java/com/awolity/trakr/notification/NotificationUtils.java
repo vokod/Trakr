@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -24,6 +23,7 @@ import java.util.List;
 
 import static android.support.v4.app.NotificationManagerCompat.IMPORTANCE_LOW;
 
+@SuppressWarnings("ConstantConditions")
 public class NotificationUtils {
 
     private static final String NOTIFICATION_CHANNEL_ID_TRACK_RECORD

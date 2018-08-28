@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -41,9 +42,6 @@ import lib.kingja.switchbutton.SwitchMultiButton;
 
 public class TrackDetailActivityChartsFragment extends Fragment {
 
-    private static final String ARG_TRACK_ID = "track_id";
-    private static final String TAG = TrackDetailActivityChartsFragment.class.getSimpleName();
-
     private PrimaryPropertyViewIcon maxSpeedPpvi, avgSpeedPpvi, ascentPpvi, descentPpvi,
             maxAltitudePpvi, minAltitudePpvi, maxPacePpvi, avgPacePpvi;
     private CheckBox paceCheckBox, speedCheckBox;
@@ -63,13 +61,14 @@ public class TrackDetailActivityChartsFragment extends Fragment {
     public TrackDetailActivityChartsFragment() {
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.activity_track_detail_fragment_charts, container, false);
@@ -220,6 +219,7 @@ public class TrackDetailActivityChartsFragment extends Fragment {
         l.setDrawInside(false);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void setupViewModel() {
         TrackViewModel trackViewModel = ViewModelProviders.of(getActivity())
                 .get(TrackViewModel.class);
@@ -417,6 +417,7 @@ public class TrackDetailActivityChartsFragment extends Fragment {
         elevationDataSet.setDrawFilled(true);
         elevationDataSet.setFormLineWidth(1f);
         elevationDataSet.setFormSize(15.f);
+        @SuppressWarnings("ConstantConditions")
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_primary_color);
         elevationDataSet.setFillDrawable(drawable);
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();

@@ -457,8 +457,6 @@ public class MainActivity extends AppCompatActivity
                             // MyLog.e(TAG, e.getLocalizedMessage());
                         }
                     }
-                } else {
-                    // permission denied, boo!
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.awolity.trakr.location;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -162,6 +163,7 @@ public class LocationManager {
         });
     }
 
+    @SuppressLint("LogNotTimber")
     private void startLocationUpdates() {
         // MyLog.d(TAG, "startLocationUpdates");
         if (isConnected) {
@@ -181,12 +183,7 @@ public class LocationManager {
     private void stopLocationUpdates() {
         // MyLog.d(TAG, "stopLocation");
         try {
-            Task<Void> myTask = fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-            if (myTask.isSuccessful()) {
-                // MyLog.d(TAG, "stopLocation - task successful");
-            } else {
-                // MyLog.d(TAG, "stopLocation - task NOT successful");
-            }
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         } catch (RuntimeException e) {
             Crashlytics.logException(e);
             // MyLog.e(TAG, "unable to remove location callback: " + e.getLocalizedMessage());

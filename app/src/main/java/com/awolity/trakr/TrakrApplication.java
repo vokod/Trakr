@@ -2,7 +2,6 @@ package com.awolity.trakr;
 
 import android.app.Application;
 import android.content.Intent;
-import android.os.StrictMode;
 
 import com.awolity.trakr.di.AppComponent;
 import com.awolity.trakr.di.AppModule;
@@ -12,7 +11,6 @@ import com.awolity.trakr.di.RepositoryModule;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
-import com.awolity.trakrutils.FileLoggingTree;
 import com.crashlytics.android.Crashlytics;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.PromptOption;
@@ -21,7 +19,6 @@ import com.instabug.library.Instabug;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 
 import io.fabric.sdk.android.Fabric;
-import timber.log.Timber;
 
 public class TrakrApplication extends Application {
 
@@ -48,7 +45,6 @@ public class TrakrApplication extends Application {
         BugReporting.setPromptOptionsEnabled(PromptOption.BUG, PromptOption.FEEDBACK);
         BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_OPTIONAL);
 
-
         NotificationUtils.setupNotificationChannels(this);
 
         // start syncing
@@ -61,7 +57,7 @@ public class TrakrApplication extends Application {
 
         TrackRecorder.resetWidget(this);
 
-        Timber.plant(new FileLoggingTree(getApplicationContext()));
+        // Timber.plant(new FileLoggingTree(getApplicationContext()));
 
      /*   StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()

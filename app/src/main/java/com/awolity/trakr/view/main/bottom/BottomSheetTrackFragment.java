@@ -138,7 +138,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         // MyLog.d(TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
         outState.putString(KEY_DISTANCEVIEW_VALUE, distanceView.getValue());

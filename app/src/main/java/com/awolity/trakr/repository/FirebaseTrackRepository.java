@@ -33,6 +33,7 @@ public class FirebaseTrackRepository {
     Executor discIoExecutor;
     @Inject
     Context context;
+    @SuppressWarnings("WeakerAccess")
     @Inject
     AppUserRepository appUserRepository;
 

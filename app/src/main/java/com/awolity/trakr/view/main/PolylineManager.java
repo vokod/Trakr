@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
 import com.awolity.trakr.R;
-import com.awolity.trakrutils.MyLog;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
@@ -12,11 +11,12 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 public class PolylineManager {
 
     private PolylineOptions polylineOptions;
     private Polyline polyline;
-    private Context context;
+    private final Context context;
 
     PolylineManager(Context context) {
         this.context = context;

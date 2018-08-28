@@ -34,10 +34,11 @@ public class SettingsRepository {
     private final static int VALUE_UNIT_METRIC = 0;
     private final static int VALUE_UNIT_IMPERIAL = 1;
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     Context context;
 
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
 
     public SettingsRepository() {
         TrakrApplication.getInstance().getAppComponent().inject(this);

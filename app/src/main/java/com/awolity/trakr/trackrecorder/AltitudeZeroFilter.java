@@ -2,6 +2,7 @@ package com.awolity.trakr.trackrecorder;
 
 import com.awolity.trakr.data.entity.TrackpointEntity;
 
+@SuppressWarnings("WeakerAccess")
 public class AltitudeZeroFilter {
 
     private static final String TAG = "AltitudeZeroFilter";
@@ -17,11 +18,7 @@ public class AltitudeZeroFilter {
             // MyLog.d(TAG, "filterNext - candidateTrackpoint altitude == 0, applying zero " +
             //        "filter. Altitude of previous point: " + lastSavedTrackpoint.getAltitude());
             candidateTrackpoint.setUnfilteredAltitude(lastSavedTrackpoint.getAltitude());
-        } else if(lastSavedTrackpoint == null ){
-            // MyLog.d(TAG, "filterNext - there is no previous point to get the previous " +
-            //        "altitude from filter. Altitude of previous point: ");
         }
-
         lastSavedTrackpoint = candidateTrackpoint;
     }
 }

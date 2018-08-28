@@ -15,9 +15,11 @@ public class DbSanitizer {
 
     private static final String TAG = DbSanitizer.class.getSimpleName();
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     TrackRepository trackRepository;
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     Executor discIoExecutor;
 

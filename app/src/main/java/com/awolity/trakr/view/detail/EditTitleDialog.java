@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.awolity.trakr.R;
 import com.crashlytics.android.Crashlytics;
 
+@SuppressWarnings("ConstantConditions")
 public class EditTitleDialog extends DialogFragment {
 
     public interface EditTitleDialogListener {

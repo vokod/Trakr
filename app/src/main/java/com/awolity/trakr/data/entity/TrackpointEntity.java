@@ -3,7 +3,6 @@ package com.awolity.trakr.data.entity;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.location.Location;
@@ -20,6 +19,7 @@ import android.support.annotation.NonNull;
         indices = {@Index(value = "track_id")})
 public class TrackpointEntity {
 
+    @SuppressWarnings("NullableProblems")
     @NonNull
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "trackpoint_id")

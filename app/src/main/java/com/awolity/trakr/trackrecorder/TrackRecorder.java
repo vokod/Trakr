@@ -33,7 +33,6 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
     public static final String TRACKID_BROADCAST_NAME
             = "com.awolity.trakr.trackrecorder.TrackRecorder.trackIdBroadcast";
-    public static final String BROADCAST_TO_WIDGET = "android.appwidget.action.APPWIDGET_UPDATE";
     public static final String EXTRA_TRACK_ID = "extra_track_id";
     private static final String TAG = TrackRecorder.class.getSimpleName();
     private TrackEntity track;

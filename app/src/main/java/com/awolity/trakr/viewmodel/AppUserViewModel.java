@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModel;
 
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.AppUserRepository;
-import com.awolity.trakr.repository.TrackRepository;
 import com.google.firebase.auth.FirebaseUser;
 
 import javax.inject.Inject;
@@ -14,8 +13,9 @@ import javax.inject.Inject;
 public class AppUserViewModel extends ViewModel {
 
     private static final String TAG = AppUserViewModel.class.getSimpleName();
-    private MutableLiveData<Boolean> isAppUserLoggedIn;
+    private final MutableLiveData<Boolean> isAppUserLoggedIn;
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     AppUserRepository appUserRepository;
 

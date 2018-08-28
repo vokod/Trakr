@@ -21,18 +21,23 @@ import javax.inject.Singleton;
 @Singleton
 public class TrackRepository {
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     Executor discIoExecutor;
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     Context context;
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     RoomTrackRepository roomTrackRepository;
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     FirebaseTrackRepository firebaseTrackRepository;
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     AppUserRepository appUserRepository;
 
@@ -78,6 +83,7 @@ public class TrackRepository {
         return roomTrackRepository.getTracksSync();
     }
 
+    @SuppressWarnings("WeakerAccess")
     public void removeTracksFromCloud(){
         discIoExecutor.execute(new Runnable() {
             @Override

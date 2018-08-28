@@ -26,18 +26,20 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.instabug.bug.BugReporting;
-import com.instabug.bug.invocation.InvocationMode;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
     private static final int RC_SIGN_IN = 22;
 
-    private ButtonSetting loginBs, logoutBs, deleteBs, termsBs, privacyBs, librariesBs, contactBs;
+    private ButtonSetting loginBs;
+    private ButtonSetting logoutBs;
+    private ButtonSetting deleteBs;
     private SeekbarSetting accuracySs;
     private RadiogroupSetting unitRs;
     private AppUserViewModel appUserViewModel;
@@ -57,7 +59,9 @@ public class SettingsActivity extends AppCompatActivity {
         appUserViewModel.getIsAppUserLoggedIn().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                showUserLoginState(aBoolean);
+                if (aBoolean != null) {
+                    showUserLoginState(aBoolean);
+                }
             }
         });
     }
@@ -68,10 +72,10 @@ public class SettingsActivity extends AppCompatActivity {
         deleteBs = findViewById(R.id.bs_delete_account);
         accuracySs = findViewById(R.id.ss_accuracy);
         unitRs = findViewById(R.id.rs_unit);
-        termsBs = findViewById(R.id.bs_terms_of_use);
-        privacyBs = findViewById(R.id.bs_privacy_policy);
-        librariesBs = findViewById(R.id.bs_libraries);
-        contactBs = findViewById(R.id.bs_feedback);
+        ButtonSetting termsBs = findViewById(R.id.bs_terms_of_use);
+        ButtonSetting privacyBs = findViewById(R.id.bs_privacy_policy);
+        ButtonSetting librariesBs = findViewById(R.id.bs_libraries);
+        ButtonSetting contactBs = findViewById(R.id.bs_feedback);
 
         loginBs.setup(getString(R.string.setting_label_login),
                 getString(R.string.settings_description_login),
@@ -80,7 +84,7 @@ public class SettingsActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         startActivityForResult(AuthUI.getInstance()
                                 .createSignInIntentBuilder()
-                                .setAvailableProviders(Arrays.asList(
+                                .setAvailableProviders(Collections.singletonList(
                                         new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
                                 .build(), RC_SIGN_IN);
                     }

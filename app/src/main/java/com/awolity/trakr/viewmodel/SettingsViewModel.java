@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 public class SettingsViewModel extends ViewModel {
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     SettingsRepository settingsRepository;
 

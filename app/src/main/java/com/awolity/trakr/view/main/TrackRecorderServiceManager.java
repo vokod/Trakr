@@ -28,6 +28,7 @@ public class TrackRecorderServiceManager {
     @Inject
     Context context;
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     SettingsRepository settingsRepository;
 
@@ -85,6 +86,7 @@ public class TrackRecorderServiceManager {
         return new Intent(context, TrackRecorderService.class);
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static boolean isServiceRunning(Context context) {
         // MyLog.d(TAG, "isServiceRunning");
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);

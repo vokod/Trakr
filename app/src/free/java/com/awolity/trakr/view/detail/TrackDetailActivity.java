@@ -22,7 +22,6 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 public class TrackDetailActivity extends AppCompatActivity
         implements EditTitleDialog.EditTitleDialogListener {
@@ -35,8 +34,7 @@ public class TrackDetailActivity extends AppCompatActivity
     private static final String EXTRA_TRACK_ID = "extra_track_id";
     private static final String EXTRA_ICON = "extra_icon";
     private static final int PERMISSION_REQUEST_CODE = 2;
-    private long trackId;
-    Bitmap icon;
+    private Bitmap icon;
     private BottomNavigationView bottomNavigationView;
     private TrackViewModel trackViewModel;
     private TrackEntity trackEntity;
@@ -48,17 +46,11 @@ public class TrackDetailActivity extends AppCompatActivity
         return intent;
     }
 
-    public static Intent getStarterIntent(Context context, long trackId) {
-        Intent intent = new Intent(context, TrackDetailActivity.class);
-        intent.putExtra(EXTRA_TRACK_ID, trackId);
-        return intent;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_detail);
-        trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
+        long trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
         icon = getIntent().getParcelableExtra(EXTRA_ICON);
         postponeEnterTransition();
 
@@ -101,6 +93,7 @@ public class TrackDetailActivity extends AppCompatActivity
     }
 
     private void setupWidgets() {
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.app_name);
         bottomNavigationView = findViewById(R.id.navigation);

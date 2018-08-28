@@ -38,18 +38,21 @@ public class TrackRecorderService extends Service {
         return false;
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public void onCreate() {
         super.onCreate();
        // MyLog.d(TAG, "onCreate");
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
        // MyLog.d(TAG, "onConfigurationChanged");
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public void onRebind(Intent intent) {
         super.onRebind(intent);

@@ -11,7 +11,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_placeholder" />
+        tools:srcCompat="@drawable/ic_placeholder"
+        android:contentDescription="@string/setting_radiogroup_icon_content_description" />
 
     <TextView
         android:id="@+id/tv_label"

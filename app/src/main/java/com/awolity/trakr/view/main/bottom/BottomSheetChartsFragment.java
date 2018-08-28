@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -60,7 +61,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.activity_main_fragment_bottom_sheet_chart, container, false);
@@ -107,6 +108,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
         l.setDrawInside(false);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void startObserve(/*long trackId*/) {
         // MyLog.d(TAG, "startObserve");
         trackViewModel.getTrackWithPoints().observe(getActivity(), trackWithPointsObserver);
@@ -198,6 +200,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
         elevationDataSet.setDrawFilled(true);
         elevationDataSet.setFormLineWidth(1f);
         elevationDataSet.setFormSize(15.f);
+        //noinspection ConstantConditions
         Drawable elevationFillDrawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_primary_color);
         elevationDataSet.setFillDrawable(elevationFillDrawable);
 

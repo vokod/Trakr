@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("SameParameterValue")
 class MainActivityUtils {
 
     private MainActivityUtils() {
