@@ -97,16 +97,16 @@ public class TrackViewModel extends ViewModel {
 
                                         averagedSpeed = 0;
                                         averagedAltitude = 0;
-                                    } else {
-
                                     }
                                 }
                             } else {
+                                double distance = 0;
                                 for (TrackpointEntity trackpointEntity : trackpointEntities) {
+                                    distance += trackpointEntity.getDistance();
                                     chartPoints.add(new ChartPoint(trackpointEntity.getTime(),
                                             trackpointEntity.getAltitude(),
                                             trackpointEntity.getSpeed(),
-                                            trackpointEntity.getDistance()));
+                                            distance));
                                 }
                             }
                             chartPointsMediatorLiveData.postValue(chartPoints);

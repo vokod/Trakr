@@ -317,11 +317,8 @@ public class TrackDetailActivityChartsFragment extends Fragment {
     private void setElevationChartDataByDistance(List<ChartPoint> chartPoints) {
         List<Entry> values = new ArrayList<>();
 
-        double rollingDistance = 0;
-
         for (ChartPoint chartPoint : chartPoints) {
-            rollingDistance += chartPoint.getDistance();
-            values.add(new Entry((float) rollingDistance, (float) chartPoint.getAltitude()));
+            values.add(new Entry((float)chartPoint.getDistance(), (float) chartPoint.getAltitude()));
         }
         elevationChart.getXAxis().setValueFormatter(new LargeValueFormatter());
         LineDataSet elevationDataSet = new LineDataSet(values, getString(R.string.elevation_chart_title));
@@ -349,11 +346,9 @@ public class TrackDetailActivityChartsFragment extends Fragment {
 
     private void setSpeedChartDataByDistance(List<ChartPoint> chartPoints) {
         List<Entry> values = new ArrayList<>();
-        double rollingDistance = 0;
 
         for (ChartPoint chartPoint : chartPoints) {
-            rollingDistance += chartPoint.getDistance();
-            values.add(new Entry((float) rollingDistance, (float) chartPoint.getSpeed()));
+            values.add(new Entry((float) chartPoint.getDistance(), (float) chartPoint.getSpeed()));
         }
         speedChart.getXAxis().setValueFormatter(new LargeValueFormatter());
         LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
