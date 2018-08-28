@@ -235,8 +235,8 @@
     <string name="setting_label_logout">Log out</string>
     <string name="settings_description_logout">Disable cloud backup and synchronisation of your recorded tracks. All tracks recorded with your account will be deleted from this device (but not from the cloud backup).</string>
     <string name="settings_description_logout_with_account">Disable cloud backup and synchronisation of your recorded tracks. All tracks recorded with your account (%s) will be deleted from this device (but not from the cloud backup).</string>
-    <string name="setting_label_delete_account">Log out and delete account</string>
-    <string name="settings_description_delete_account">Also delete all recorded tracks from the cloud backup, but not from your device.</string>
+    <string name="setting_label_delete_account">Delete account</string>
+    <string name="settings_description_delete_account">Log out and also delete all recorded tracks from the cloud backup, but not from your device.</string>
     <string name="setting_label_accuracy">Accuracy</string>
     <string name="settings_description_accuracy">The more accurate the recording, the more often individual location-points are saved, and the quicker the app drains the battery. </string>
     <string name="setting_label_units">Units</string>
