@@ -25,3 +25,42 @@
 -keep class **.R$* {
     <fields>;
 }
+
+# Support design
+-dontwarn android.support.design.**
+-keep class android.support.design.** { *; }
+-keep interface android.support.design.** { *; }
+-keep public class android.support.design.R$* { *; }
+
+# Support appcompat
+-keep public class android.support.v7.widget.** { *; }
+-keep public class android.support.v7.internal.widget.** { *; }
+-keep public class android.support.v7.internal.view.menu.** { *; }
+
+-keep public class * extends android.support.v4.view.ActionProvider {
+    public <init>(android.content.Context);
+}
+
+# Support cardview
+-keep class android.support.v7.widget.RoundRectDrawable { *; }
+
+# Dagger 2
+-dontwarn com.google.errorprone.annotations.**
+
+# Chrashlitycs
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+
+# MPAndroid charts
+-keep class com.github.mikephil.charting.** { *; }
+
+# GPX parser
+-keep class com.codebutchery.androidgpx.** { *; }
+
+# Instabug
+-keep class com.instabug.**
+
+# Firebase realtime database
+-keepclassmembers class com.awolity.trakr.data.entity.** {*;}
