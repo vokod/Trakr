@@ -385,19 +385,17 @@ public class TrackDetailActivityChartsFragment extends Fragment {
 
     private void setPaceChartDataByDistance(List<ChartPoint> chartPoints) {
         List<Entry> values = new ArrayList<>();
-        double rollingDistance = 0;
         double highestPaceValue = 0;
 
         for (ChartPoint chartPoint : chartPoints) {
-            rollingDistance += chartPoint.getDistance();
             if (chartPoint.getSpeed() > 1) {
                 double pace = 60 * 60 * (1 / chartPoint.getSpeed());
                 if (pace > highestPaceValue) {
                     highestPaceValue = pace;
                 }
-                values.add(new Entry((float) rollingDistance, (float) pace));
+                values.add(new Entry((float) chartPoint.getDistance(), (float) pace));
             } else {
-                values.add(new Entry((float) rollingDistance, (float) 0));
+                values.add(new Entry((float) chartPoint.getDistance(), (float) 0));
             }
         }
         speedChart.getXAxis().setValueFormatter(new LargeValueFormatter());
