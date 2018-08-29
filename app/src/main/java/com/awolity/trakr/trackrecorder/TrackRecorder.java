@@ -55,7 +55,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     Executor discIoExecutor;
 
     TrackRecorder() {
-      // MyLog.d(TAG, "TrackRecorder");
+        // MyLog.d(TAG, "TrackRecorder");
         TrakrApplication.getInstance().getAppComponent().inject(this);
 
         status = new TrackRecorderStatus();
@@ -76,7 +76,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     }
 
     void startRecording() {
-      // MyLog.d(TAG, "startRecording");
+        // MyLog.d(TAG, "startRecording");
 
         handler = new Handler();
 
@@ -136,7 +136,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
     @Override
     public void onLocationChanged(Location location) {
-      // MyLog.d(TAG, "onLocationChanged");
+        // MyLog.d(TAG, "onLocationChanged");
         status.setCandidateTrackpoint(createTrackPoint(location));
         // if accuracy is below the required level, drop the point
         if (!status.isAccurateEnough()) {
@@ -147,6 +147,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
             if (status.isDistanceFarEnoughFromLastTrackpoint()) {
                 saveTrackAndPointToDb();
             }
+            // if there is no previous saved trackpoint, then save only if there is elevation info
         } else {
             if (status.getCandidateTrackpoint().getAltitude() != 0) {
                 saveTrackAndPointToDb();
@@ -155,7 +156,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     }
 
     private void saveTrackAndPointToDb() {
-      // MyLog.d(TAG, "saveTrackAndPointToDb");
+        // MyLog.d(TAG, "saveTrackAndPointToDb");
         saveTrackpointToDb(status.getCandidateTrackpoint());
         status.saveCandidateTrackpoint();
         updateTrackData();
@@ -163,7 +164,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     }
 
     private void updateTrackData() {
-      // MyLog.d(TAG, "updateTrackData");
+        // MyLog.d(TAG, "updateTrackData");
         track.increaseNumOfTrackpoints();
         if (status.isThereASavedTrackpoint()) {
             track.increaseElapsedTime(status.getActualSavedTrackpoint().getTime());
@@ -176,19 +177,19 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     }
 
     private TrackpointEntity createTrackPoint(Location location) {
-      // MyLog.d(TAG, "createTrackPoint");
+        // MyLog.d(TAG, "createTrackPoint");
         TrackpointEntity tp = TrackpointEntity.fromLocation(location);
         tp.setTrackId(trackId);
         return tp;
     }
 
     private void saveTrackpointToDb(TrackpointEntity trackpointEntity) {
-      // MyLog.d(TAG, "saveTrackpointToDb");
+        // MyLog.d(TAG, "saveTrackpointToDb");
         trackRepository.saveTrackpoint(trackpointEntity);
     }
 
     private void updateTrackInDb(TrackEntity track) {
-      // MyLog.d(TAG, "updateTrackInDb - trackId:" + track.getTrackId());
+        // MyLog.d(TAG, "updateTrackInDb - trackId:" + track.getTrackId());
         trackRepository.updateTrack(track);
     }
 
@@ -278,7 +279,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     }
 
     private static void sendTrackIdBroadcast(Context context, long trackId) {
-      // MyLog.d(TAG, "sendTrackIdBroadcast - trackId:" + trackId);
+        // MyLog.d(TAG, "sendTrackIdBroadcast - trackId:" + trackId);
         Intent intent = new Intent(TRACKID_BROADCAST_NAME);
         intent.putExtra(EXTRA_TRACK_ID, trackId);
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);

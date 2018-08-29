@@ -53,6 +53,11 @@ public class TrackRecorderStatus {
 
             this.candidateTrackpoint.setSpeed(speedFilter.filterNext(
                     this.candidateTrackpoint.getUnfilteredSpeed()));
+        } else {
+            // if there was no previous point then the altitude zero filter can not work
+            // if the second point's altitude is 0
+            // therefore it must be initialized
+            altitudeZeroFilter.setLastSavedTrackpoint(candidateTrackpoint);
         }
     }
 
