@@ -94,6 +94,9 @@ public class SettingsActivity extends AppCompatActivity
                                 .createSignInIntentBuilder()
                                 .setAvailableProviders(Collections.singletonList(
                                         new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
+                                .setLogo(R.mipmap.ic_launcher)
+                                .setPrivacyPolicyUrl("https://trakrapp.github.io/privacy.html")
+                                .setTosUrl("https://trakrapp.github.io/terms.html")
                                 .build(), RC_SIGN_IN);
                     }
                 });
