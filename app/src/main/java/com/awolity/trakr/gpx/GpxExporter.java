@@ -9,6 +9,7 @@ import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakrutils.IOUtils;
+import com.awolity.trakrutils.StringUtils;
 import com.codebutchery.androidgpx.data.GPXDocument;
 import com.codebutchery.androidgpx.data.GPXRoute;
 import com.codebutchery.androidgpx.data.GPXSegment;
@@ -60,7 +61,10 @@ public class GpxExporter {
 
         GPXDocument gpxDocument = new GPXDocument(gpxWayPoints, gpxTracks, gpxRoutes);
 
-        final String fileName = IOUtils.getLegalizedFilename(trackWithPoints.getTitle() + ".gpx");
+        final String fileName = IOUtils.getLegalizedFilename(trackWithPoints.getTitle()
+                + " - "
+                + StringUtils.getDateAsStringLocale(trackWithPoints.getStartTime())
+                + ".gpx");
         GPXFilePrinter printer = new GPXFilePrinter(new GPXFilePrinter.GPXFilePrinterListener() {
             @Override
             public void onGPXPrintStarted() {
@@ -78,7 +82,6 @@ public class GpxExporter {
             public void onGPXPrintError(String message) {
               // MyLog.d(TAG, "onGPXPrintError: " + message);
                 NotificationUtils.showExportTrackErrorNotification(context, trackWithPoints.getTrackId(), fileName, PATH);
-
             }
         });
         printer.print(gpxDocument, PATH + fileName);
