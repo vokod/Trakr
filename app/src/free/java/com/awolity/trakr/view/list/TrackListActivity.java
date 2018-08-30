@@ -19,6 +19,8 @@ import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
+import com.awolity.trakr.view.main.TrackRecorderServiceManager;
+import com.awolity.trakr.viewmodel.SettingsViewModel;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
 import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.Utility;
@@ -55,7 +57,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
 
     private void setupAdview() {
         AdView adview = findViewById(R.id.adView);
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             AdRequest adRequest = new AdRequest.Builder()
                     .addTestDevice("B20AC3BE6C392F942D699800329EDCBD")
                     .build();
@@ -79,7 +81,6 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
     }
 
     private void setupViewModel() {
-        // MyLog.d(TAG, "setupViewModel");
         TrackListViewModel trackListViewModel = ViewModelProviders.of(this)
                 .get(TrackListViewModel.class);
         trackListViewModel.getSimplifiedTracksWithPoints(

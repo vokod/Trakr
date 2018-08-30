@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.repository.SettingsRepository;
 import com.awolity.trakr.repository.TrackRepository;
 
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ public class TrackListViewModel extends ViewModel {
     @SuppressWarnings("WeakerAccess")
     @Inject
     TrackRepository trackRepository;
+
+    @Inject
+    SettingsRepository settingsRepository;
 
     private LiveData<List<TrackWithPoints>> tracksWithPoints;
     private final MediatorLiveData<List<TrackWithPoints>> simplifiedTracksWithPoints;
@@ -44,10 +48,15 @@ public class TrackListViewModel extends ViewModel {
                 new Observer<List<TrackWithPoints>>() {
                     @Override
                     public void onChanged(@Nullable List<TrackWithPoints> tracksWithPoints) {
-                        if (tracksWithPoints != null ) {
-                            List<TrackWithPoints> result = new ArrayList<>();
-
+                        if (tracksWithPoints != null) {
+                            List<TrackWithPoints> result = new ArrayList<>(tracksWithPoints.size());
+                            long trackBeingRecordedRightNowId = settingsRepository.getLastRecordedTrackId();
                             for (TrackWithPoints originalTrackWithPoints : tracksWithPoints) {
+
+                                if (originalTrackWithPoints.getTrackId() == trackBeingRecordedRightNowId) {
+                                    continue;
+                                }
+
                                 long numOfPoints = originalTrackWithPoints.getNumOfTrackPoints();
                                 if (numOfPoints > maxNumOfPoints) {
                                     long divider = numOfPoints / maxNumOfPoints + 1;
@@ -68,7 +77,6 @@ public class TrackListViewModel extends ViewModel {
                                 }
                             }
                             simplifiedTracksWithPoints.postValue(result);
-
                         }
                     }
                 });
