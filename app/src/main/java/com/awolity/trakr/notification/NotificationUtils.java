@@ -170,7 +170,7 @@ public class NotificationUtils {
         Uri fileUri = FileProvider.getUriForFile(context,
                 context.getApplicationContext().getPackageName() + ".gpx.GpxFileProvider",
                 new File(path + fileName));
-        intent.setDataAndType(fileUri, "*/*");
+        intent.setDataAndType(fileUri, "application/gpx+xml");
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
