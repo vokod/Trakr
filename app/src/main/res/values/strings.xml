@@ -231,7 +231,8 @@
         really want to log out?"</string>
 
     <string name="delete_account_dialog_title">Delete account</string>
-    <string name="delete_account_dialog_message">Do you really want to delete your Trakr account?</string>
-
+    <string name="delete_account_dialog_message">Do you really want to delete your Trakr account? \nPlease enter your password </string>
+    <string name="delete_account_toast_invalid_password">Invalid password</string>
+    <string name="delete_account_toast_authentication_error">Authentication error</string>
 
 </resources>

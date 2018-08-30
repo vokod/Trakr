@@ -152,5 +152,7 @@
     <string name="setting_label_feedback">Visszajelzés</string>
     <string name="setting_description_feedback">Valami gond volt? Szeretnél valamilyen funkciót? Koppints ide!</string>
     <string name="delete_account_dialog_title">Fiók törlése</string>
-    <string name="delete_account_dialog_message">Biztosan törölni szeretnéd a Trakr fiókodat?</string>
+    <string name="delete_account_dialog_message">Biztosan törölni szeretnéd a Trakr fiókodat? \nAdd meg a jelszavad a törléshez!</string>
+    <string name="delete_account_toast_invalid_password">Érvénytelen jelszó</string>
+    <string name="delete_account_toast_authentication_error">Azonosítási hiba</string>
 </resources>

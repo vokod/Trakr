@@ -1,22 +1,33 @@
 package com.awolity.trakr.repository;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakrutils.MyLog;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class AppUserRepository {
+
+    @Inject
+    Context context;
 
     private static final String TAG = AppUserRepository.class.getSimpleName();
     private final List<AppUserStatusListener> appUserStatusListeners;
 
     public AppUserRepository() {
+        TrakrApplication.getInstance().getAppComponent().inject(this);
         appUserStatusListeners = new ArrayList<>();
     }
 
@@ -43,7 +54,7 @@ public class AppUserRepository {
         }
     }
 
-    public void deleteUser(){
+    public void deleteUser() {
         FirebaseUser user = getAppUser();
         for (AppUserStatusListener listener : appUserStatusListeners) {
             listener.onDeleteAccount();

@@ -1,6 +1,7 @@
 package com.awolity.trakr.di;
 
 import com.awolity.trakr.location.LocationManager;
+import com.awolity.trakr.repository.AppUserRepository;
 import com.awolity.trakr.repository.FirebaseTrackRepository;
 import com.awolity.trakr.repository.RoomTrackRepository;
 import com.awolity.trakr.repository.SettingsRepository;
@@ -53,5 +54,7 @@ public interface AppComponent {
     void inject (SettingsViewModel target);
 
     void inject (TrackRecorderStatus target);
+
+    void inject (AppUserRepository target);
 
 }

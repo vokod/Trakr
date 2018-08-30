@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.SettingsViewModel;
 import com.awolity.trakrutils.Constants;
+import com.awolity.trakrutils.MyLog;
 import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.ButtonSetting;
 import com.awolity.trakrviews.RadiogroupSetting;
@@ -25,14 +27,20 @@ import com.awolity.trakrviews.SeekbarSetting;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseUser;
 import com.instabug.bug.BugReporting;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
-import java.util.Arrays;
 import java.util.Collections;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity
+        implements DeleteAccountDialog.DeleteAccountDialogListener {
 
     private static final String TAG = "SettingsActivity";
     private static final int RC_SIGN_IN = 22;
@@ -105,7 +113,9 @@ public class SettingsActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showDeleteAccountAlertDialog();
+                        //  showDeleteAccountAlertDialog();
+                        DeleteAccountDialog dialog = new DeleteAccountDialog();
+                        dialog.show(getSupportFragmentManager(), null);
                     }
                 });
 
@@ -303,34 +313,40 @@ public class SettingsActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void showDeleteAccountAlertDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        // set title
-        alertDialogBuilder.setTitle(getString(R.string.delete_account_dialog_title));
-        // set dialog message
-        alertDialogBuilder
-                .setMessage(getString(R.string.delete_account_dialog_message))
-                .setCancelable(true)
-                .setIcon(getDrawable(R.drawable.ic_warning))
-                .setPositiveButton(getString(android.R.string.ok),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                appUserViewModel.deleteAccount();
-                                Toast.makeText(SettingsActivity.this,
-                                        // TODO: account deleted szöveg
-                                        getString(R.string.you_are_logged_out),
-                                        Toast.LENGTH_LONG).show();
-                                showUserLoginState();
-                            }
-                        })
-                .setNegativeButton(getString(android.R.string.cancel),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+    @Override
+    public void onPasswordEntered(char[] password) {
+        final FirebaseUser user = appUserViewModel.getAppUser();
+
+        String passwordString = new String(password);
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(appUserViewModel.getAppUser().getEmail(), passwordString);
+
+        // Prompt the user to re-provide their sign-in credentials
+        user.reauthenticate(credential)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        MyLog.d(TAG, "onSuccess");
+                        appUserViewModel.deleteAccount();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        MyLog.d(TAG, "onFailure");
+                        Toast.makeText(SettingsActivity.this,
+                                getString(R.string.delete_account_toast_authentication_error),
+                                Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+                        MyLog.d(TAG, "onCanceled");
+                        Toast.makeText(SettingsActivity.this,
+                                getString(R.string.delete_account_toast_authentication_error),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }
