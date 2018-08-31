@@ -10,6 +10,7 @@ public class Constants {
     // firebase realtime database nodes
     public static final String NODE_TRACKS = "tracks";
     public static final String NODE_TRACKPOINTS = "trackpoints";
+    public static final String USER_TO_DELETE = "user_to_delete";
 
     public static final int SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_DETAILS = 100;
     public static final int SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_LIST_ITEMS = 50;

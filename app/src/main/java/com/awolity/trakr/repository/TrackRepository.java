@@ -61,7 +61,7 @@ public class TrackRepository {
 
             @Override
             public void onDeleteAccount(){
-                removeTracksFromCloud();
+               // removeTracksFromCloud();
             }
         });
     }
