@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
+import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.main.TrackRecorderServiceManager;
 import com.awolity.trakr.viewmodel.SettingsViewModel;
@@ -24,6 +25,7 @@ import com.awolity.trakr.viewmodel.TrackListViewModel;
 import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
+import com.crashlytics.android.Crashlytics;
 
 import java.util.List;
 
@@ -47,6 +49,10 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_track_list));
+
+        // start syncing
+        startService(new Intent(this, SyncService.class));
+
         setupRecyclerView();
         setupViewModel();
     }

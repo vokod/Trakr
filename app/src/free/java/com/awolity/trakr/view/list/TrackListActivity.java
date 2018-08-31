@@ -50,6 +50,10 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_track_list));
+
+        // start syncing
+        startService(new Intent(this, SyncService.class));
+
         setupAdview();
         setupRecyclerView();
         setupViewModel();
