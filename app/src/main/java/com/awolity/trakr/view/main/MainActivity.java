@@ -259,6 +259,8 @@ public class MainActivity extends AppCompatActivity
                 status.setRecording(true);
                 MainActivityUtils.startFabAnimation(fab);
             }
+        } else {
+            settingsViewModel.setLastRecordedTrackId(Constants.NO_LAST_RECORDED_TRACK);
         }
     }
 
@@ -522,6 +524,7 @@ public class MainActivity extends AppCompatActivity
         status.setRecording(false);
         polylineManager.clearPolyline(googleMap);
         polylineManager = null;
+        settingsViewModel.setLastRecordedTrackId(Constants.NO_LAST_RECORDED_TRACK);
         trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
             @Override
             public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
