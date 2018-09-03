@@ -40,15 +40,15 @@ public class SyncService extends IntentService {
 
     public SyncService() {
         super("SyncService");
-      // MyLog.d(TAG, "SyncService");
+        // MyLog.d(TAG, "SyncService");
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-      // MyLog.d(TAG, "onHandleIntent");
+        // MyLog.d(TAG, "onHandleIntent");
         if (!appUserRepository.IsAppUserLoggedIn()) {
-          // MyLog.d(TAG, "onHandleIntent - user not logged in, no sync :(");
+            // MyLog.d(TAG, "onHandleIntent - user not logged in, no sync :(");
             return;
         }
 
@@ -80,6 +80,8 @@ public class SyncService extends IntentService {
                                 uploadOfflineTracks(onlyOfflineTracks);
                                 // this delete the local tracks that were deleted from the cloud in another installation
                                 deleteCloudDeletedTracks(cloudDeletedOfflineTracks);
+                                // check if there are tracks that's titles are changed locally, then update them
+                                checkForNameChanges(onlineTracks, offlineTracks);
                             }
                         });
                     }
@@ -125,6 +127,25 @@ public class SyncService extends IntentService {
         return onlyOnlineTracks;
     }
 
+    private void checkForNameChanges(List<TrackEntity> onlineTracks,
+                                     List<TrackEntity> offlineTracks) {
+        // get the offline version of every online track
+        // then check if their titles are the same
+        // if not, then save the online title
+        for (TrackEntity onlineTrack : onlineTracks) {
+            for (TrackEntity offlineTrack : offlineTracks) {
+                if (onlineTrack.getStartTime() == offlineTrack.getStartTime()) {
+                    // track is present locally, check titles
+                    if (onlineTrack.getTitle().equals(offlineTrack.getTitle())) {
+                        onlineTrack.setTitle(offlineTrack.getTitle());
+                        trackRepository.updateTrack(onlineTrack);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
     private List<TrackEntity> getCloudDeletedOfflineTracks(List<TrackEntity> onlineTracks,
                                                            List<TrackEntity> offlineTracks) {
         // add those tracks from local tracks
@@ -154,14 +175,14 @@ public class SyncService extends IntentService {
     private void saveOnlyOnlineTracksToDb(List<TrackEntity> onlyOnlineTracks) {
         MyLog.d(TAG, "saveOnlyOnlineTracksToDb");
         for (TrackEntity onlineTrack : onlyOnlineTracks) {
-            MyLog.d(TAG, "saveOnlyOnlineTracksToDb - saving online track: "+ onlineTrack.getFirebaseId());
+            MyLog.d(TAG, "saveOnlyOnlineTracksToDb - saving online track: " + onlineTrack.getFirebaseId());
             trackRepository.saveTrackToLocalDbFromCloud(onlineTrack);
         }
     }
 
     @WorkerThread
     private void uploadOfflineTracks(List<TrackEntity> onlyOfflineTracks) {
-      // MyLog.d(TAG, "uploadOfflineTracks");
+        // MyLog.d(TAG, "uploadOfflineTracks");
         for (TrackEntity trackEntity : onlyOfflineTracks) {
             trackRepository.saveTrackToCloudOnThread(trackEntity.getTrackId());
         }
@@ -169,14 +190,14 @@ public class SyncService extends IntentService {
 
     @WorkerThread
     private void deleteCloudDeletedTracks(List<TrackEntity> cloudSavedOfflineTracks) {
-      // MyLog.d(TAG, "deleteCloudDeletedTracks");
+        // MyLog.d(TAG, "deleteCloudDeletedTracks");
         for (TrackEntity cloudDeletedOfflineTrack : cloudSavedOfflineTracks) {
             trackRepository.deleteLocalTrack(cloudDeletedOfflineTrack.getTrackId());
         }
     }
 
     private static boolean isConnected(Context context) {
-      // MyLog.d(TAG, "isConnected");
+        // MyLog.d(TAG, "isConnected");
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
