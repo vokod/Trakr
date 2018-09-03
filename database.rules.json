@@ -1,0 +1,20 @@
+{
+  "rules": {
+    "$uid": {
+      "tracks": {
+        ".write": "$uid === auth.uid",
+        ".read": "$uid === auth.uid"
+      },
+      "trackpoints": {
+        ".write": "$uid === auth.uid",
+        ".read": "$uid === auth.uid"
+      }
+    },
+    "user_to_delete": {
+      "$uid": {
+        ".write": "$uid === auth.uid",
+        ".read": "$uid === auth.uid"
+      }
+    }
+  }
+}
