@@ -136,9 +136,9 @@ public class SyncService extends IntentService {
             for (TrackEntity offlineTrack : offlineTracks) {
                 if (onlineTrack.getStartTime() == offlineTrack.getStartTime()) {
                     // track is present locally, check titles
-                    if (onlineTrack.getTitle().equals(offlineTrack.getTitle())) {
-                        onlineTrack.setTitle(offlineTrack.getTitle());
-                        trackRepository.updateTrack(onlineTrack);
+                    if (!onlineTrack.getTitle().equals(offlineTrack.getTitle())) {
+                        offlineTrack.setTitle(onlineTrack.getTitle());
+                        trackRepository.updateTrack(offlineTrack);
                     }
                     break;
                 }

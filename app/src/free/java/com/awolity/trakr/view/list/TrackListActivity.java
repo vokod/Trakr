@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
+import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.main.TrackRecorderServiceManager;
 import com.awolity.trakr.viewmodel.SettingsViewModel;
