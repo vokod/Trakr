@@ -155,4 +155,5 @@
     <string name="delete_account_dialog_message">Biztosan törölni szeretnéd a Trakr fiókodat? \nAdd meg a jelszavad a törléshez!</string>
     <string name="delete_account_toast_invalid_password">Érvénytelen jelszó</string>
     <string name="delete_account_toast_authentication_error">Azonosítási hiba</string>
+    <string name="activity_track_list_no_tracks">Nincsenek nyomvonalak. Rögzíts egyet előbb!</string>
 </resources>
