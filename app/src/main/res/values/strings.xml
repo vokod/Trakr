@@ -234,5 +234,6 @@
     <string name="delete_account_dialog_message">Do you really want to delete your Trakr account? \nPlease enter your password </string>
     <string name="delete_account_toast_invalid_password">Invalid password</string>
     <string name="delete_account_toast_authentication_error">Authentication error</string>
+    <string name="activity_track_list_no_tracks">No tracks here. Start by recording one!</string>
 
 </resources>

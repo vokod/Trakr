@@ -20,8 +20,6 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
-import com.awolity.trakr.view.main.TrackRecorderServiceManager;
-import com.awolity.trakr.viewmodel.SettingsViewModel;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
 import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.Utility;
@@ -41,12 +39,14 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
 
     private static final String TAG = TrackListActivity.class.getSimpleName();
     private TrackListAdapter trackListAdapter;
+    private TextView placeholderTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // MyLog.d(TAG, "onCreate");
         setContentView(R.layout.activity_track_list);
+        placeholderTv = findViewById(R.id.tv_placeholder);
 
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -95,6 +95,11 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
                     public void onChanged(@Nullable List<TrackWithPoints> trackWithPointsList) {
                         if (trackWithPointsList != null) {
                             trackListAdapter.updateItems(trackWithPointsList);
+                            if (trackWithPointsList.size() > 0) {
+                                placeholderTv.setVisibility(View.INVISIBLE);
+                            } else {
+                                placeholderTv.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 });
