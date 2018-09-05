@@ -61,7 +61,7 @@ public class TrackRepository {
 
             @Override
             public void onDeleteAccount(){
-               // removeTracksFromCloud();
+                removeFirebaseIdFromTracks();
             }
         });
     }
@@ -84,14 +84,12 @@ public class TrackRepository {
     }
 
     @SuppressWarnings("WeakerAccess")
-    public void removeTracksFromCloud(){
+    private void removeFirebaseIdFromTracks(){
         discIoExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 List<TrackEntity> tracks = roomTrackRepository.getTracksSync();
                 for(TrackEntity entity : tracks){
-                    String firebaseId = entity.getFirebaseId();
-                    firebaseTrackRepository.deleteTrackFromCloud(firebaseId);
                     entity.setFirebaseId(null);
                     roomTrackRepository.updateTrack(entity);
                 }

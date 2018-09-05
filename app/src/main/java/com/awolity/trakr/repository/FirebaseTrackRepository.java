@@ -128,7 +128,7 @@ public class FirebaseTrackRepository {
         // remove track from track node
         userTracksReference.child(firebaseTrackId).removeValue();
         // remove track from trackpoint node
-        userTrackpointsReference.child(firebaseTrackId).removeValue();
+        //userTrackpointsReference.child(firebaseTrackId).removeValue();
     }
 
     private void refreshReferences() {
