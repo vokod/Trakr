@@ -1,10 +1,14 @@
 package com.awolity.trakr.view.main;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Handler;
 import android.provider.Settings;
@@ -18,10 +22,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.awolity.trakr.R;
@@ -95,8 +104,11 @@ public class MainActivity extends AppCompatActivity
 
         setupBottomSheet(savedInstanceState);
         MainActivityUtils.checkLocationPermission(this, PERMISSION_REQUEST_CODE);
+
+        setupFab();
         setupMapFragment();
         setupLocationViewModel();
+
         settingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
     }
 
@@ -210,6 +222,36 @@ public class MainActivity extends AppCompatActivity
         bottomSheetBehavior.setBottomSheetCallback(bottomSheetCallback);
     }
 
+    private void setupFab() {
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!MainActivityUtils.isLocationPermissionEnabled(MainActivity.this)) {
+                    MainActivityUtils.checkLocationPermission(MainActivity.this,
+                            PERMISSION_REQUEST_CODE);
+                    return;
+                }
+
+                if (status.isRecording()) {
+                    showStopDiag();
+                } else {
+                    locationViewModel.isLocationSettingsGood(
+                            new LocationManager.LocationSettingsCallback() {
+                        @Override
+                        public void onLocationSettingsDetermined(boolean isSettingsGood) {
+                            if (isSettingsGood) {
+                                serviceManager.startService();
+                            } else {
+                                showLocationSettingsDialog();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     private void setupMapFragment() {
         // MyLog.d(TAG, "setupMapFragment");
         if (MainActivityUtils.checkPlayServices(this)) {
@@ -285,7 +327,8 @@ public class MainActivity extends AppCompatActivity
             if (status.isRecording()) {
                 centerTrackOnMap();
             } else {
-                updateCamera(CameraPosition.fromLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), ZOOM_LEVEL_INITIAL));
+                updateCamera(CameraPosition.fromLatLngZoom(new LatLng(location.getLatitude(),
+                        location.getLongitude()), ZOOM_LEVEL_INITIAL));
             }
         }
     }
@@ -312,23 +355,6 @@ public class MainActivity extends AppCompatActivity
         }, 500);
     }
 
-    public void onRecordFabClick(View view) {
-        if (!MainActivityUtils.isLocationPermissionEnabled(this)) {
-            MainActivityUtils.checkLocationPermission(this, PERMISSION_REQUEST_CODE);
-            return;
-        }
-        locationViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
-            @Override
-            public void onLocationSettingsDetermined(boolean isSettingsGood) {
-                if (isSettingsGood) {
-                    serviceManager.startStopFabClicked();
-                } else {
-                    showLocationSettingsDialog();
-                }
-            }
-        });
-    }
-
     private void setupTrackViewModel(final long trackId) {
         MyLog.d(TAG, "setupTrackViewModel");
         trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
@@ -340,7 +366,8 @@ public class MainActivity extends AppCompatActivity
         trackViewModel.getActualTrackpoint().observe(this, actualTrackpointObserver);
     }
 
-    private final Observer<List<TrackpointEntity>> trackpointsListObserver = new Observer<List<TrackpointEntity>>() {
+    private final Observer<List<TrackpointEntity>> trackpointsListObserver
+            = new Observer<List<TrackpointEntity>>() {
         @Override
         public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
             if (trackpointEntities != null
@@ -353,13 +380,15 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-    private final Observer<TrackpointEntity> actualTrackpointObserver = new Observer<TrackpointEntity>() {
+    private final Observer<TrackpointEntity> actualTrackpointObserver
+            = new Observer<TrackpointEntity>() {
         @Override
         public void onChanged(@Nullable TrackpointEntity trackpointEntity) {
             if (trackpointEntity != null) {
                 if (polylineManager != null) {
                     polylineManager.continuePolyline(googleMap,
-                            new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
+                            new LatLng(trackpointEntity.getLatitude(),
+                                    trackpointEntity.getLongitude()));
                 }
             }
         }
@@ -444,7 +473,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE: {
                 // If request is cancelled, the result arrays are empty.
@@ -546,4 +576,52 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
+    private void showStopDiag() {
+        final View dialogView = View.inflate(this, R.layout.activity_main_dialog_stop_recording,
+                null);
+        final Dialog dialog = new Dialog(this, R.style.AppTheme);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(dialogView);
+
+        Button continueBtn = dialog.findViewById(R.id.btn_continue);
+        Button stopBtn = dialog.findViewById(R.id.btn_stop);
+
+        continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivityUtils.revealShow(fab, dialogView, false, dialog);
+            }
+        });
+
+        stopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivityUtils.revealShow(fab, dialogView, false, dialog);
+                serviceManager.stopService();
+            }
+        });
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                MainActivityUtils.revealShow(fab, dialogView, true, null);
+            }
+        });
+
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_BACK) {
+                    MainActivityUtils.revealShow(fab, dialogView, false, dialog);
+                    return true;
+                }
+                return false;
+            }
+        });
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+    }
+
+
 }

@@ -136,9 +136,6 @@ dependencies {
     // gpx parser
     implementation 'com.codebutchery.android:gpx_lib:1.0.3'
 
-    // circle imageview
-    implementation 'de.hdodenhof:circleimageview:2.2.0'
-
     // switch
     implementation 'lib.kingja.switchbutton:switchbutton:1.1.7'
 
