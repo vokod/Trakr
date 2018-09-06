@@ -62,7 +62,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/fab_bottom_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:onClick="onRecordFabClick"
         android:src="@drawable/avd_fab"
         app:layout_anchor="@+id/ll_bottom_sheet"
         app:layout_anchorGravity="top|end" />

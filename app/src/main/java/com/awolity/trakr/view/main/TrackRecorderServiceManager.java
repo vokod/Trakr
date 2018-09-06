@@ -52,7 +52,7 @@ public class TrackRecorderServiceManager {
         };
     }
 
-    public void startStopFabClicked() {
+ /*   public void startStopFabClicked() {
         // MyLog.d(TAG, "startStopFabClicked");
         if (isStarted) {
             // MyLog.d(TAG, "startStopFabClicked - service IS running");
@@ -64,10 +64,12 @@ public class TrackRecorderServiceManager {
             startService();
 
         }
-    }
+    }*/
 
-    private void startService() {
+    public void startService() {
         // MyLog.d(TAG, "startService - enter");
+        LocalBroadcastManager.getInstance(context).registerReceiver(trackIdBroadcastReceiver,
+                new IntentFilter(TrackRecorder.TRACKID_BROADCAST_NAME));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(getServiceIntent(context));
         } else {
@@ -75,7 +77,7 @@ public class TrackRecorderServiceManager {
         }
     }
 
-    private void stopService() {
+    public void stopService() {
         // MyLog.d(TAG, "stopService");
         context.stopService(getServiceIntent(context));
         isStarted = false;

@@ -1,7 +1,10 @@
 package com.awolity.trakr.view.main;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +19,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.view.ViewAnimationUtils;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackpointEntity;
@@ -134,6 +139,42 @@ class MainActivityUtils {
             AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) fab.getDrawable();
             drawable.clearAnimationCallbacks();
             drawable.stop();
+        }
+    }
+
+    public static void revealShow(FloatingActionButton fab, View dialogView, boolean b, final Dialog dialog) {
+        final View view = dialogView.findViewById(R.id.stop_dialog);
+
+        int w = view.getWidth();
+        int h = view.getHeight();
+        int endRadius = (int) Math.hypot(w, h);
+
+        int cx = (int) (fab.getX() + (fab.getWidth() / 2));
+        int cy = (int) (fab.getY()) + fab.getHeight() + 56;
+
+        if (b) {
+            Animator revealAnimator = ViewAnimationUtils.createCircularReveal(view, cx, cy, 0, endRadius);
+
+            view.setVisibility(View.VISIBLE);
+            revealAnimator.setDuration(300);
+            revealAnimator.start();
+
+        } else {
+
+            Animator anim =
+                    ViewAnimationUtils.createCircularReveal(view, cx, cy, endRadius, 0);
+
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    dialog.dismiss();
+                    view.setVisibility(View.INVISIBLE);
+
+                }
+            });
+            anim.setDuration(300);
+            anim.start();
         }
     }
 }

@@ -41,8 +41,8 @@ android {
         applicationId "com.awolity.trakr"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 26
-        versionName "0.26"
+        versionCode 27
+        versionName "0.27"
         vectorDrawables.useSupportLibrary = true
         // multiDexEnabled true
         javaCompileOptions {
@@ -135,9 +135,6 @@ dependencies {
 
     // gpx parser
     implementation 'com.codebutchery.android:gpx_lib:1.0.3'
-
-    // circle imageview
-    implementation 'de.hdodenhof:circleimageview:2.2.0'
 
     // switch
     implementation 'lib.kingja.switchbutton:switchbutton:1.1.7'
