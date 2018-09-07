@@ -238,15 +238,15 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     locationViewModel.isLocationSettingsGood(
                             new LocationManager.LocationSettingsCallback() {
-                        @Override
-                        public void onLocationSettingsDetermined(boolean isSettingsGood) {
-                            if (isSettingsGood) {
-                                serviceManager.startService();
-                            } else {
-                                showLocationSettingsDialog();
-                            }
-                        }
-                    });
+                                @Override
+                                public void onLocationSettingsDetermined(boolean isSettingsGood) {
+                                    if (isSettingsGood) {
+                                        serviceManager.startService();
+                                    } else {
+                                        showLocationSettingsDialog();
+                                    }
+                                }
+                            });
                 }
             }
         });
@@ -373,12 +373,15 @@ public class MainActivity extends AppCompatActivity
             if (trackpointEntities != null
                     && trackpointEntities.size() != 0
                     && polylineManager != null) {
+                numOfTrackpoints = trackpointEntities.size();
                 polylineManager.drawPolyline(googleMap,
                         MainActivityUtils.transformTrackpointsToLatLngs(trackpointEntities));
             }
             trackViewModel.getTrackpointsList().removeObserver(this);
         }
     };
+
+    private int numOfTrackpoints = 0;
 
     private final Observer<TrackpointEntity> actualTrackpointObserver
             = new Observer<TrackpointEntity>() {
@@ -389,6 +392,7 @@ public class MainActivity extends AppCompatActivity
                     polylineManager.continuePolyline(googleMap,
                             new LatLng(trackpointEntity.getLatitude(),
                                     trackpointEntity.getLongitude()));
+                    numOfTrackpoints++;
                 }
             }
         }
@@ -555,26 +559,14 @@ public class MainActivity extends AppCompatActivity
         polylineManager.clearPolyline(googleMap);
         polylineManager = null;
         settingsViewModel.setLastRecordedTrackId(Constants.NO_LAST_RECORDED_TRACK);
-        trackViewModel.getTrackWithPoints().observe(this, new Observer<TrackWithPoints>() {
-            @Override
-            public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-                if (!status.isRecording()) {
-                    if (trackWithPoints != null) {
-                        if (trackId != Constants.NO_LAST_RECORDED_TRACK) {
-                            if (trackWithPoints.getTrackPoints().size() > 1) {
-                                trackViewModel.finishRecording();
-                                Intent intent = TrackDetailActivity.getStarterIntent(
-                                        MainActivity.this, trackId, null);
-                                startActivity(intent);
-                                trackViewModel.getTrackWithPoints().removeObserver(this);
-                                trackViewModel.reset();
-                                trackId = Constants.NO_LAST_RECORDED_TRACK;
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        trackViewModel.finishRecording();
+        if (numOfTrackpoints > 1) {
+            Intent intent = TrackDetailActivity.getStarterIntent(
+                    MainActivity.this, trackId, null);
+            startActivity(intent);
+        }
+        trackId = Constants.NO_LAST_RECORDED_TRACK;
+        numOfTrackpoints = 0;
     }
 
     private void showStopDiag() {
@@ -622,6 +614,4 @@ public class MainActivity extends AppCompatActivity
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
     }
-
-
 }

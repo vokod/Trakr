@@ -167,6 +167,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         setDataVisibility(false);
         stopObserve();
         stopElapsedTimer();
+        //resetData();
     }
 
     private void startElapsedTimer() {
@@ -182,9 +183,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         elapsedTimeUpdater.run();
     }
 
-    private void startObserve(/*long trackId*/) {
-        // MyLog.d(TAG, "startObserve");
-        //trackViewModel.init(trackId, BottomSheetTrackFragment.class);
+    private void startObserve() {
         trackViewModel.getTrack().observe(getActivity(), trackEntityObserver);
     }
 

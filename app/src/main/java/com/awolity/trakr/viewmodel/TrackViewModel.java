@@ -13,6 +13,7 @@ import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.viewmodel.model.ChartPoint;
 import com.awolity.trakr.viewmodel.model.MapPoint;
+import com.awolity.trakrutils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +26,8 @@ public class TrackViewModel extends ViewModel {
     @Inject
     TrackRepository trackRepository;
 
-    private static final long NOT_SET = -1;
     private static final String TAG = TrackViewModel.class.getSimpleName();
-    private long trackId = NOT_SET;
+    private long trackId = Constants.NO_LAST_RECORDED_TRACK;
     private MediatorLiveData<List<MapPoint>> mapPointsMediatorLiveData;
     private MediatorLiveData<List<ChartPoint>> chartPointsMediatorLiveData;
 
@@ -36,15 +36,14 @@ public class TrackViewModel extends ViewModel {
     }
 
     public void init(long trackId) {
-        if (this.trackId == NOT_SET) {
-            this.trackId = trackId;
-        }
-        mapPointsMediatorLiveData = new MediatorLiveData<>();
-        chartPointsMediatorLiveData = new MediatorLiveData<>();
+        reset();
+        this.trackId = trackId;
     }
 
     public void reset() {
-        trackId = NOT_SET;
+        trackId = Constants.NO_LAST_RECORDED_TRACK;
+        mapPointsMediatorLiveData = new MediatorLiveData<>();
+        chartPointsMediatorLiveData = new MediatorLiveData<>();
     }
 
     public LiveData<TrackEntity> getTrack() {
@@ -155,6 +154,7 @@ public class TrackViewModel extends ViewModel {
     }
 
     public void finishRecording() {
+        reset();
     }
 
     public void updateTrack(TrackEntity trackEntity) {

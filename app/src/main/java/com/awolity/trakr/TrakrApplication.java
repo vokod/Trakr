@@ -35,15 +35,18 @@ public class TrakrApplication extends Application {
 
         getAppComponent();
 
-        Fabric.with(this, new Crashlytics());
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        if (!BuildConfig.DEBUG) {
 
-        new Instabug.Builder(this, getString(R.string.instabug_token))
-                .setInvocationEvents(InstabugInvocationEvent.NONE)
-                .build();
-        Instabug.setPrimaryColor(getResources().getColor(R.color.colorPrimary));
-        BugReporting.setPromptOptionsEnabled(PromptOption.BUG, PromptOption.FEEDBACK);
-        BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_OPTIONAL);
+            Fabric.with(this, new Crashlytics());
+            //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+            new Instabug.Builder(this, getString(R.string.instabug_token))
+                    .setInvocationEvents(InstabugInvocationEvent.NONE)
+                    .build();
+            Instabug.setPrimaryColor(getResources().getColor(R.color.colorPrimary));
+            BugReporting.setPromptOptionsEnabled(PromptOption.BUG, PromptOption.FEEDBACK);
+            BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_OPTIONAL);
+        }
 
         NotificationUtils.setupNotificationChannels(this);
 
