@@ -103,7 +103,7 @@ public class LocationManager {
                 // MyLog.d(TAG, "isLocationSettingsGood - onSuccess");
                 // All location settings are satisfied. The client can initialize
                 // location requests here.
-                callback.onLocationSettingsDetermined(true);
+                callback.onLocationSettingsDetermined(true, null);
             }
         });
 
@@ -116,13 +116,13 @@ public class LocationManager {
                         // Location settings are not satisfied, but this can be fixed
                         // by showing the user a dialog.
                         // MyLog.d(TAG, "isLocationSettingsGood - onFailure - resolution required");
-                        callback.onLocationSettingsDetermined(false);
+                        callback.onLocationSettingsDetermined(false, e);
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                         // Location settings are not satisfied. However, we have no way
                         // to fix the settings so we won't show the dialog.
                         // MyLog.d(TAG, "isLocationSettingsGood - onFailure - required settings unavailable :(");
-                        callback.onLocationSettingsDetermined(false);
+                        callback.onLocationSettingsDetermined(false, e);
                         break;
                 }
             }
@@ -207,6 +207,6 @@ public class LocationManager {
     }
 
     public interface LocationSettingsCallback {
-        void onLocationSettingsDetermined(boolean isSettingsGood);
+        void onLocationSettingsDetermined(boolean isSettingsGood, Exception e);
     }
 }

@@ -7,6 +7,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
@@ -53,6 +54,7 @@ import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.MyLog;
 import com.awolity.trakrutils.Utility;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity
         TrackRecorderServiceManager.TrackRecorderServiceManagerListener {
 
     private static final int PERMISSION_REQUEST_CODE = 1;
+    private static final int REQUEST_CODE_CHANGE_LOCATION_SETTINGS = 333;
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final float ZOOM_LEVEL_INITIAL = 15;
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -239,11 +242,11 @@ public class MainActivity extends AppCompatActivity
                     locationViewModel.isLocationSettingsGood(
                             new LocationManager.LocationSettingsCallback() {
                                 @Override
-                                public void onLocationSettingsDetermined(boolean isSettingsGood) {
+                                public void onLocationSettingsDetermined(boolean isSettingsGood, Exception e) {
                                     if (isSettingsGood) {
                                         serviceManager.startService();
                                     } else {
-                                        showLocationSettingsDialog();
+                                        showLocationSettingsDialog(e);
                                     }
                                 }
                             });
@@ -251,6 +254,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
 
     private void setupMapFragment() {
         // MyLog.d(TAG, "setupMapFragment");
@@ -268,21 +272,14 @@ public class MainActivity extends AppCompatActivity
         locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
     }
 
-    private void showLocationSettingsDialog() {
-        new AlertDialog.Builder(MainActivity.this)
-                .setTitle(getString(R.string.location_settings_rationale_title))
-                .setMessage(getString(R.string.location_settings_rationale_description))
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // take the user to the settings, where she/he can turn on GPS
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        MainActivity.this.startActivity(intent);
-                    }
-                })
-                .setNegativeButton(android.R.string.no, null)
-                .setIcon(R.mipmap.ic_launcher)
-                .show();
+    private void showLocationSettingsDialog(Exception e) {
+        try {
+            ResolvableApiException resolvable = (ResolvableApiException) e;
+            resolvable.startResolutionForResult(MainActivity.this,
+                    REQUEST_CODE_CHANGE_LOCATION_SETTINGS);
+        } catch (IntentSender.SendIntentException sendEx) {
+            // Ignore the error.
+        }
     }
 
     private void setupTrackRecorderService() {
@@ -434,11 +431,11 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
         locationViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
             @Override
-            public void onLocationSettingsDetermined(boolean isSettingsGood) {
+            public void onLocationSettingsDetermined(boolean isSettingsGood, Exception e) {
                 if (isSettingsGood) {
                     setupTrackRecorderService();
                 } else {
-                    showLocationSettingsDialog();
+                    showLocationSettingsDialog(e);
                 }
             }
         });

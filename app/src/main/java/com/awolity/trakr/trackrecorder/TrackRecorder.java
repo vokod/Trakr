@@ -92,7 +92,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
                 if (locationManager.isLocationEnabled()) {
                     locationManager.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
                         @Override
-                        public void onLocationSettingsDetermined(boolean isSettingsGood) {
+                        public void onLocationSettingsDetermined(boolean isSettingsGood, Exception e ) {
                             if (isSettingsGood) {
                                 // here starts the whole recording
                                 locationManager.start(TrackRecorder.this);
