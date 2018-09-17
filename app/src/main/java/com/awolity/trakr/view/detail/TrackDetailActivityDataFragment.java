@@ -25,7 +25,7 @@ import java.util.Locale;
 
 public class TrackDetailActivityDataFragment extends Fragment {
 
-    private static final String ARG_ICON = "arg_icon";
+  //  private static final String ARG_ICON = "arg_icon";
     private static final String TAG = TrackDetailActivityDataFragment.class.getSimpleName();
 
     private PrimaryPropertyViewIcon durationPpvi, distancePpvi, ascentPpvi, descentPpvi,
@@ -35,10 +35,10 @@ public class TrackDetailActivityDataFragment extends Fragment {
     private ImageButton editTitleImageButton;
     private ImageView initialImageView;
 
-    public static TrackDetailActivityDataFragment newInstance(Bitmap icon) {
+    public static TrackDetailActivityDataFragment newInstance(/*Bitmap icon*/) {
         TrackDetailActivityDataFragment fragment = new TrackDetailActivityDataFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_ICON, icon);
+       // args.putParcelable(ARG_ICON, icon);
         fragment.setArguments(args);
         return fragment;
     }

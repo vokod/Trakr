@@ -32,17 +32,14 @@ public class TrackDetailActivity extends AppCompatActivity
     private static final String TAG_CHARTS_FRAGMENT = "tag_charts_fragment";
     private static final String KEY_SELECTED_FRAGMENT = "key_selected_fragment";
     private static final String EXTRA_TRACK_ID = "extra_track_id";
-    private static final String EXTRA_ICON = "extra_icon";
     private static final int PERMISSION_REQUEST_CODE = 2;
-    private Bitmap icon;
     private BottomNavigationView bottomNavigationView;
     private TrackViewModel trackViewModel;
     private TrackEntity trackEntity;
 
-    public static Intent getStarterIntent(Context context, long trackId, Bitmap icon) {
+    public static Intent getStarterIntent(Context context, long trackId) {
         Intent intent = new Intent(context, TrackDetailActivity.class);
         intent.putExtra(EXTRA_TRACK_ID, trackId);
-        intent.putExtra(EXTRA_ICON, icon);
         return intent;
     }
 
@@ -51,7 +48,7 @@ public class TrackDetailActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_detail);
         long trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
-        icon = getIntent().getParcelableExtra(EXTRA_ICON);
+       // icon = getIntent().getParcelableExtra(EXTRA_ICON);
         postponeEnterTransition();
 
         setupAdview();
@@ -152,7 +149,7 @@ public class TrackDetailActivity extends AppCompatActivity
         TrackDetailActivityDataFragment dataFragment
                 = (TrackDetailActivityDataFragment) getSupportFragmentManager().findFragmentByTag(TAG_DATA_FRAGMENT);
         if (dataFragment == null) {
-            dataFragment = TrackDetailActivityDataFragment.newInstance(icon);
+            dataFragment = TrackDetailActivityDataFragment.newInstance(/*icon*/);
             dataFragment.setEnterTransition(new Fade());
             dataFragment.setExitTransition(new Fade());
         }

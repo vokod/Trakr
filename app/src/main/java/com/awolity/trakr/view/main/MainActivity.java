@@ -1,7 +1,5 @@
 package com.awolity.trakr.view.main;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -12,14 +10,12 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -27,16 +23,13 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
@@ -562,7 +555,7 @@ public class MainActivity extends AppCompatActivity
         trackViewModel.finishRecording();
         if (numOfTrackpoints > 1) {
             Intent intent = TrackDetailActivity.getStarterIntent(
-                    MainActivity.this, trackId, null);
+                    MainActivity.this, trackId);
             startActivity(intent);
         }
         trackId = Constants.NO_LAST_RECORDED_TRACK;

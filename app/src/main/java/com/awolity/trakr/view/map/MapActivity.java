@@ -6,12 +6,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.main.MainActivity;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
 import com.awolity.trakrutils.Constants;
@@ -28,7 +30,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap map;
     private TrackListViewModel trackListViewModel;
@@ -37,10 +39,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        //noinspection ConstantConditions
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getString(R.string.title_activity_map));
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
 
         trackListViewModel = ViewModelProviders.of(this).get(TrackListViewModel.class);
     }
@@ -48,6 +56,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+        map.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
+            @Override
+            public void onPolylineClick(Polyline polyline) {
+                startActivity(TrackDetailActivity.getStarterIntent(MapActivity.this,
+                        (long) polyline.getTag()));
+            }
+        });
         setupPolyLines();
     }
 
@@ -86,12 +101,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                         .zIndex(30)
                                         .visible(true);
                                 Polyline polyline = map.addPolyline(polylineOptions);
+                                polyline.setClickable(true);
+                                polyline.setTag(trackWithPoints.getTrackId());
 
                                 List<LatLng> latLngList = new ArrayList<>(trackWithPoints.getTrackPoints().size());
                                 for (TrackpointEntity trackpointEntity : trackWithPoints.getTrackPoints()) {
                                     latLngList.add(new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
                                 }
-
                                 polyline.setPoints(latLngList);
                             }
 
