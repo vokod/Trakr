@@ -4,6 +4,7 @@
     <!-- MainActivity -->
     <string name="title_activity_main">Trakr</string>
     <string name="action_track_list">Track list</string>
+    <string name="action_track_map">Tracks on map</string>
     <string name="bottom_sheet_label_point">Point</string>
     <string name="bottom_sheet_label_track">Track</string>
     <string name="bottom_sheet_label_charts">Charts</string>
@@ -235,5 +236,7 @@
     <string name="delete_account_toast_invalid_password">Invalid password</string>
     <string name="delete_account_toast_authentication_error">Authentication error</string>
     <string name="activity_track_list_no_tracks">No tracks here. Start by recording one!</string>
+    <string name="title_activity_map">Map</string>
+    <string name="view_secondary_property_icon_iv_icon_content_desc">Icon of field</string>
 
 </resources>

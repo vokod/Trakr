@@ -115,9 +115,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         ImageView iconIv = itemView.findViewById(R.id.iv_icon);
         TextView dateTv = itemView.findViewById(R.id.tv_date);
 
-        Intent intent = TrackDetailActivity.getStarterIntent(this, trackId,
-                Utility.convertToBitmap(iconIv.getDrawable(),
-                        iconIv.getLayoutParams().width, iconIv.getLayoutParams().height));
+        Intent intent = TrackDetailActivity.getStarterIntent(this, trackId);
 
         Pair<View, String> p1 = Pair.create((View) spvDistance,
                 getString(R.string.transition_ppvi_distance));

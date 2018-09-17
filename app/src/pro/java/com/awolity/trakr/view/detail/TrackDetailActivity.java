@@ -141,7 +141,7 @@ public class TrackDetailActivity extends AppCompatActivity
         TrackDetailActivityDataFragment dataFragment
                 = (TrackDetailActivityDataFragment) getSupportFragmentManager().findFragmentByTag(TAG_DATA_FRAGMENT);
         if (dataFragment == null) {
-            dataFragment = TrackDetailActivityDataFragment.newInstance(icon);
+            dataFragment = TrackDetailActivityDataFragment.newInstance();
             dataFragment.setEnterTransition(new Fade());
             dataFragment.setExitTransition(new Fade());
         }

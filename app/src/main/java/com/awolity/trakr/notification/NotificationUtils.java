@@ -76,7 +76,7 @@ public class NotificationUtils {
 
     public static void showExportTrackNotification(Context context, long trackId, String fileName,
                                                    String path) {
-        Intent intent = TrackDetailActivity.getStarterIntent(context, trackId, null);
+        Intent intent = TrackDetailActivity.getStarterIntent(context, trackId);
 
         // Create the TaskStackBuilder and add the intent, which inflates the back stack
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -121,7 +121,7 @@ public class NotificationUtils {
 
     public static void showExportTrackErrorNotification(Context context, long trackId,
                                                         String fileName, String path) {
-        Intent intent = TrackDetailActivity.getStarterIntent(context, trackId, null);
+        Intent intent = TrackDetailActivity.getStarterIntent(context, trackId);
 
         // Create the TaskStackBuilder and add the intent, which inflates the back stack
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);

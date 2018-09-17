@@ -11,11 +11,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:name=".TrakrApplication"
         android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
@@ -26,29 +26,30 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.list.TrackListActivity"
             android:label="@string/title_activity_track_list"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".view.main.MainActivity">
-        </activity>
+            android:parentActivityName=".view.main.MainActivity"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".view.map.MapActivity"
+            android:label="@string/title_activity_map"
+            android:parentActivityName=".view.main.MainActivity"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".view.detail.TrackDetailActivity"
             android:label="@string/title_activity_track_detail"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".view.list.TrackListActivity">
-        </activity>
-
+            android:parentActivityName=".view.list.TrackListActivity"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".view.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".view.main.MainActivity">
-        </activity>
+            android:parentActivityName=".view.main.MainActivity"
+            android:theme="@style/AppTheme"/>
 
         <service android:name=".trackrecorder.TrackRecorderService" />
         <service android:name=".sync.SyncService" />
