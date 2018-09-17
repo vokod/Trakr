@@ -11,6 +11,13 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/action_map_tracks"
+        android:orderInCategory="2"
+        android:title="@string/action_track_map"
+        android:icon="@drawable/ic_map"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="1"
         android:title="@string/title_activity_settings"

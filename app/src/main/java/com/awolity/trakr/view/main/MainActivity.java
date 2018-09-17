@@ -46,6 +46,7 @@ import com.awolity.trakr.view.main.bottom.BottomSheetChartsFragment;
 import com.awolity.trakr.view.main.bottom.BottomSheetFragmentPagerAdapter;
 import com.awolity.trakr.view.main.bottom.BottomSheetPointFragment;
 import com.awolity.trakr.view.main.bottom.BottomSheetTrackFragment;
+import com.awolity.trakr.view.map.MapActivity;
 import com.awolity.trakr.view.settings.SettingsActivity;
 import com.awolity.trakr.viewmodel.LocationViewModel;
 import com.awolity.trakr.viewmodel.SettingsViewModel;
@@ -509,6 +510,8 @@ public class MainActivity extends AppCompatActivity
             return true;
         } else if (id == R.id.action_settings) {
             startActivity(SettingsActivity.getStarterIntent(this));
+        } else if (id == R.id.action_map_tracks){
+            startActivity(new Intent(this, MapActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
