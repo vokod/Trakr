@@ -56,6 +56,10 @@ public class TrackListViewModel extends ViewModel {
                                 if (originalTrackWithPoints.getTrackId() == trackBeingRecordedRightNowId) {
                                     continue;
                                 }
+                                // this is for the event when initial sync is happening right now
+                                if (originalTrackWithPoints.getTrackPoints().size() == 0) {
+                                    continue;
+                                }
 
                                 long numOfPoints = originalTrackWithPoints.getNumOfTrackPoints();
                                 if (numOfPoints > maxNumOfPoints) {

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/CardView.Light"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
     android:layout_marginEnd="8dp"
@@ -12,32 +12,32 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_item"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="8dp">
 
         <ImageView
             android:id="@+id/iv_icon"
-            android:transitionName="@string/transition_iv_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginBottom="12dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
+            android:contentDescription="@string/activity_track_list_item_track_iv_initial_content_desc"
             android:padding="4dp"
             android:scaleType="centerCrop"
+            android:transitionName="@string/transition_iv_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            android:contentDescription="@string/activity_track_list_item_track_iv_initial_content_desc" />
+            app:layout_constraintVertical_chainStyle="spread_inside" />
 
         <TextView
             android:id="@+id/tv_title"
-            android:transitionName="@string/transition_tv_title"
             style="@style/TrackDetailTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:transitionName="@string/transition_tv_title"
             app:layout_constraintBottom_toTopOf="@+id/tv_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_icon"
@@ -46,50 +46,51 @@
 
         <TextView
             android:id="@+id/tv_date"
-            android:transitionName="@string/transition_tv_date"
             style="@style/TrackDetailDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:transitionName="@string/transition_tv_date"
             app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
             tools:text="Subtitle text" />
 
-        <com.awolity.trakrviews.SecondaryPropertyViewIcon
-            android:id="@+id/spv_distance"
-            android:layout_width="wrap_content"
+        <com.awolity.trakrviews.ListPropertyViewIcon
+            android:id="@+id/lpv_distance"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_date" />
+
+        <com.awolity.trakrviews.ListPropertyViewIcon
+            android:id="@+id/lpv_duration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:transitionName="@string/transition_ppvi_distance"
-            app:layout_constraintEnd_toStartOf="@+id/spv_duration"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="@+id/iv_icon"
-            app:layout_constraintTop_toBottomOf="@id/iv_icon" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lpv_distance" />
 
-        <com.awolity.trakrviews.SecondaryPropertyViewIcon
-            android:id="@+id/spv_duration"
-            android:layout_width="wrap_content"
+        <com.awolity.trakrviews.ListPropertyViewIcon
+            android:id="@+id/lpv_ascent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
-            android:transitionName="@string/transition_ppvi_duration"
-            app:layout_constraintEnd_toStartOf="@+id/spv_ascent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/spv_distance"
-            app:layout_constraintTop_toTopOf="@+id/spv_distance" />
-
-        <com.awolity.trakrviews.SecondaryPropertyViewIcon
-            android:id="@+id/spv_ascent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:transitionName="@string/transition_ppvi_ascent"
-            app:layout_constraintEnd_toEndOf="@+id/tv_title"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/spv_duration"
-            app:layout_constraintTop_toTopOf="@+id/spv_distance" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lpv_duration" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

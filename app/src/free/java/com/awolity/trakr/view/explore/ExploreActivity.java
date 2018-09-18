@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -113,6 +111,7 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
                         // TODO: ezt az egészet egy bacground threadbe
                         if (tracksWithPoints != null && tracksWithPoints.size() > 0) {
                             placeholderTv.setVisibility(View.GONE);
+
                             for (TrackWithPoints trackWithPoints : tracksWithPoints) {
                                 setBounds(trackWithPoints.getTrackEntity());
                                 Polyline polyline = setupPolyline(trackWithPoints.getTrackEntity(),
@@ -127,6 +126,7 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
 
                         } else {
                             placeholderTv.setVisibility(View.VISIBLE);
+
                         }
                     }
                 });
@@ -171,51 +171,6 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
             latLngList.add(new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
         }
         return latLngList;
-    }
-
-    private void showDialog(final TrackEntity trackEntity) {
-        final View dialogView = View.inflate(this, R.layout.activity_explore_dialog_track_data,
-                null);
-        final Dialog dialog = new Dialog(this, R.style.AppTheme);
-        dialog.setContentView(dialogView);
-
-        //Button detailsBtn = dialog.findViewById(R.id.btn_details);
-        PrimaryPropertyViewIcon durationView = dialog.findViewById(R.id.spv_duration);
-        PrimaryPropertyViewIcon distanceView = dialog.findViewById(R.id.spv_distance);
-        PrimaryPropertyViewIcon elevationView = dialog.findViewById(R.id.spv_ascent);
-        TextView titleTv = dialog.findViewById(R.id.tv_title);
-        TextView dateTv = dialog.findViewById(R.id.tv_date);
-        ImageView iconIv = dialog.findViewById(R.id.iv_icon);
-
-        titleTv.setText(trackEntity.getTitle());
-        dateTv.setText(DateUtils.getRelativeTimeSpanString(
-                trackEntity.getStartTime()).toString());
-
-        String firstLetter = "";
-        if (trackEntity.getTitle() != null && !trackEntity.getTitle().isEmpty()) {
-            firstLetter = trackEntity.getTitle().substring(0, 1);
-        }
-        iconIv.setImageDrawable(
-                Utility.getInitial(firstLetter,
-                        String.valueOf(trackEntity.getStartTime()),
-                        iconIv.getLayoutParams().width));
-
-        distanceView.setValue(StringUtils.getDistanceAsThreeCharactersString(
-                trackEntity.getDistance()));
-        elevationView.setValue(String.format(Locale.getDefault(),
-                "%.0f", trackEntity.getAscent()));
-        durationView.setValue(StringUtils.getElapsedTimeAsString(
-                trackEntity.getElapsedTime()));
-
-       /* detailsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });*/
-
-
-        dialog.show();
     }
 
     @Override

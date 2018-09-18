@@ -1,15 +1,19 @@
 package com.awolity.trakr.view.explore;
 
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
@@ -18,6 +22,9 @@ import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
 import com.awolity.trakrutils.Constants;
+import com.awolity.trakrutils.StringUtils;
+import com.awolity.trakrutils.Utility;
+import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,8 +36,10 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class ExploreActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class ExploreActivity extends AppCompatActivity implements OnMapReadyCallback,
+        TrackDetailsDialog.TrackDetailsDialogListener{
 
     private GoogleMap map;
     private TrackListViewModel trackListViewModel;
@@ -68,8 +77,10 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
         map.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
             @Override
             public void onPolylineClick(Polyline polyline) {
-                startActivity(TrackDetailActivity.getStarterIntent(ExploreActivity.this,
-                        (long) polyline.getTag()));
+               // showDialog((TrackEntity)polyline.getTag());
+                TrackDetailsDialog dialog = new TrackDetailsDialog();
+                dialog.setTrackEntity((TrackEntity)polyline.getTag());
+                dialog.show(getSupportFragmentManager(), null);
             }
         });
         setupPolyLines();
@@ -84,9 +95,10 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
                         // TODO: ezt az egészet egy bacground threadbe
                         if (tracksWithPoints != null && tracksWithPoints.size() > 0) {
                             placeholderTv.setVisibility(View.GONE);
+
                             for (TrackWithPoints trackWithPoints : tracksWithPoints) {
                                 setBounds(trackWithPoints.getTrackEntity());
-                                Polyline polyline = setupPolyline(trackWithPoints.getTrackId(),
+                                Polyline polyline = setupPolyline(trackWithPoints.getTrackEntity(),
                                         getColor(String.valueOf(trackWithPoints.getStartTime())));
                                 polyline.setPoints(getPoints(trackWithPoints));
                             }
@@ -98,6 +110,7 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
 
                         } else {
                             placeholderTv.setVisibility(View.VISIBLE);
+
                         }
                     }
                 });
@@ -123,7 +136,7 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
         return generator.getColor(s);
     }
 
-    private Polyline setupPolyline(long id, int color) {
+    private Polyline setupPolyline(TrackEntity track, int color) {
         PolylineOptions polylineOptions = new PolylineOptions()
                 .geodesic(true)
                 .color(color)
@@ -132,7 +145,7 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
                 .visible(true);
         Polyline polyline = map.addPolyline(polylineOptions);
         polyline.setClickable(true);
-        polyline.setTag(id);
+        polyline.setTag(track);
         return polyline;
     }
 
@@ -142,5 +155,10 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
             latLngList.add(new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
         }
         return latLngList;
+    }
+
+    @Override
+    public void onViewClicked(long id) {
+        startActivity(TrackDetailActivity.getStarterIntent(ExploreActivity.this, id));
     }
 }

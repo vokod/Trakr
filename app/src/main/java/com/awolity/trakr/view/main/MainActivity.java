@@ -503,7 +503,7 @@ public class MainActivity extends AppCompatActivity
             return true;
         } else if (id == R.id.action_settings) {
             startActivity(SettingsActivity.getStarterIntent(this));
-        } else if (id == R.id.action_map_tracks){
+        } else if (id == R.id.action_map_tracks) {
             startActivity(new Intent(this, ExploreActivity.class));
         }
         return super.onOptionsItemSelected(item);

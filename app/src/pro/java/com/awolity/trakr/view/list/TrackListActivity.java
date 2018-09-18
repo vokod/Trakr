@@ -92,9 +92,9 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
     @Override
     public void onTrackItemClicked(long trackId, View itemView) {
         // MyLog.d(TAG, "onTrackItemClicked");
-        PrimaryPropertyViewIcon spvDistance = itemView.findViewById(R.id.spv_distance);
-        PrimaryPropertyViewIcon spvDuration = itemView.findViewById(R.id.spv_duration);
-        PrimaryPropertyViewIcon spvAscent = itemView.findViewById(R.id.spv_ascent);
+        PrimaryPropertyViewIcon spvDistance = itemView.findViewById(R.id.ppv_distance);
+        PrimaryPropertyViewIcon spvDuration = itemView.findViewById(R.id.ppv_duration);
+        PrimaryPropertyViewIcon spvAscent = itemView.findViewById(R.id.ppv_ascent);
         TextView titleTv = itemView.findViewById(R.id.tv_title);
         ImageView iconIv = itemView.findViewById(R.id.iv_icon);
         TextView dateTv = itemView.findViewById(R.id.tv_date);

@@ -156,6 +156,12 @@
     <string name="delete_account_toast_invalid_password">Érvénytelen jelszó</string>
     <string name="delete_account_toast_authentication_error">Azonosítási hiba</string>
     <string name="activity_track_list_no_tracks">Nincsenek nyomvonalak. Rögzíts egyet előbb!</string>
-    <string name="title_activity_map">Térkép</string>
-    <string name="action_track_map">Térkép</string>
+    <string name="title_activity_map">Felfedezés</string>
+    <string name="action_track_map">Felfedezés</string>
+    <string name="activity_main_dialog_stop_recording_stop_recording">Rögzítés leállítása</string>
+    <string name="activity_main_dialog_stop_recording_continue">Folytatás</string>
+    <string name="activity_main_dialog_stop_recording_stop">Leállítás</string>
+    <string name="title_activity_explore">Felfedezés</string>
+    <string name="activity_explore_no_tracks">Nincsenek nyomvonalak. Rögzíts egyet előbb!</string>
+    <string name="activity_explore_dialog_track_details_view">Megnyitás</string>
 </resources>
