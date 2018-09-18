@@ -1,12 +1,17 @@
 package com.awolity.trakr.view.explore;
 
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.util.ColorGenerator;
@@ -19,6 +24,9 @@ import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
 import com.awolity.trakrutils.Constants;
+import com.awolity.trakrutils.StringUtils;
+import com.awolity.trakrutils.Utility;
+import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,8 +40,10 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class ExploreActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class ExploreActivity extends AppCompatActivity implements OnMapReadyCallback,
+        TrackDetailsDialog.TrackDetailsDialogListener{
 
     private GoogleMap map;
     private TrackListViewModel trackListViewModel;
@@ -85,8 +95,10 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
         map.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
             @Override
             public void onPolylineClick(Polyline polyline) {
-                startActivity(TrackDetailActivity.getStarterIntent(ExploreActivity.this,
-                        (long) polyline.getTag()));
+               // showDialog((TrackEntity)polyline.getTag());
+                TrackDetailsDialog dialog = new TrackDetailsDialog();
+                dialog.setTrackEntity((TrackEntity)polyline.getTag());
+                dialog.show(getSupportFragmentManager(), null);
             }
         });
         setupPolyLines();
@@ -103,7 +115,7 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
                             placeholderTv.setVisibility(View.GONE);
                             for (TrackWithPoints trackWithPoints : tracksWithPoints) {
                                 setBounds(trackWithPoints.getTrackEntity());
-                                Polyline polyline = setupPolyline(trackWithPoints.getTrackId(),
+                                Polyline polyline = setupPolyline(trackWithPoints.getTrackEntity(),
                                         getColor(String.valueOf(trackWithPoints.getStartTime())));
                                 polyline.setPoints(getPoints(trackWithPoints));
                             }
@@ -140,7 +152,7 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
         return generator.getColor(s);
     }
 
-    private Polyline setupPolyline(long id, int color) {
+    private Polyline setupPolyline(TrackEntity track, int color) {
         PolylineOptions polylineOptions = new PolylineOptions()
                 .geodesic(true)
                 .color(color)
@@ -149,7 +161,7 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
                 .visible(true);
         Polyline polyline = map.addPolyline(polylineOptions);
         polyline.setClickable(true);
-        polyline.setTag(id);
+        polyline.setTag(track);
         return polyline;
     }
 
@@ -159,5 +171,55 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
             latLngList.add(new LatLng(trackpointEntity.getLatitude(), trackpointEntity.getLongitude()));
         }
         return latLngList;
+    }
+
+    private void showDialog(final TrackEntity trackEntity) {
+        final View dialogView = View.inflate(this, R.layout.activity_explore_dialog_track_data,
+                null);
+        final Dialog dialog = new Dialog(this, R.style.AppTheme);
+        dialog.setContentView(dialogView);
+
+        //Button detailsBtn = dialog.findViewById(R.id.btn_details);
+        PrimaryPropertyViewIcon durationView = dialog.findViewById(R.id.spv_duration);
+        PrimaryPropertyViewIcon distanceView = dialog.findViewById(R.id.spv_distance);
+        PrimaryPropertyViewIcon elevationView = dialog.findViewById(R.id.spv_ascent);
+        TextView titleTv = dialog.findViewById(R.id.tv_title);
+        TextView dateTv = dialog.findViewById(R.id.tv_date);
+        ImageView iconIv = dialog.findViewById(R.id.iv_icon);
+
+        titleTv.setText(trackEntity.getTitle());
+        dateTv.setText(DateUtils.getRelativeTimeSpanString(
+                trackEntity.getStartTime()).toString());
+
+        String firstLetter = "";
+        if (trackEntity.getTitle() != null && !trackEntity.getTitle().isEmpty()) {
+            firstLetter = trackEntity.getTitle().substring(0, 1);
+        }
+        iconIv.setImageDrawable(
+                Utility.getInitial(firstLetter,
+                        String.valueOf(trackEntity.getStartTime()),
+                        iconIv.getLayoutParams().width));
+
+        distanceView.setValue(StringUtils.getDistanceAsThreeCharactersString(
+                trackEntity.getDistance()));
+        elevationView.setValue(String.format(Locale.getDefault(),
+                "%.0f", trackEntity.getAscent()));
+        durationView.setValue(StringUtils.getElapsedTimeAsString(
+                trackEntity.getElapsedTime()));
+
+       /* detailsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });*/
+
+
+        dialog.show();
+    }
+
+    @Override
+    public void onViewClicked(long id) {
+        startActivity(TrackDetailActivity.getStarterIntent(ExploreActivity.this, id));
     }
 }
