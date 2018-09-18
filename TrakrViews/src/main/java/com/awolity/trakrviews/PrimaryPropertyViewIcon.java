@@ -37,10 +37,10 @@ public class PrimaryPropertyViewIcon extends ConstraintLayout {
 
     void inflate() {
         LayoutInflater.from(context).inflate(R.layout.view_primary_property_icon, this, true);
-        labelTextView = findViewById(R.id.tv_label_duration);
-        valueTextView = findViewById(R.id.tv_value_duration);
-        unitTextView = findViewById(R.id.tv_unit_duration);
-        iconImageView = findViewById(R.id.iv_icon_duration);
+        labelTextView = findViewById(R.id.tv_label);
+        valueTextView = findViewById(R.id.tv_value);
+        unitTextView = findViewById(R.id.tv_unit);
+        iconImageView = findViewById(R.id.iv_icon);
     }
 
     private void setLabel(String labelText) {

@@ -22,7 +22,6 @@ import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.viewmodel.TrackListViewModel;
 import com.awolity.trakrutils.Constants;
-import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -108,9 +107,9 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
     @Override
     public void onTrackItemClicked(long trackId, View itemView) {
         // MyLog.d(TAG, "onTrackItemClicked");
-        PrimaryPropertyViewIcon spvDistance = itemView.findViewById(R.id.spv_distance);
-        PrimaryPropertyViewIcon spvDuration = itemView.findViewById(R.id.spv_duration);
-        PrimaryPropertyViewIcon spvAscent = itemView.findViewById(R.id.spv_ascent);
+        PrimaryPropertyViewIcon spvDistance = itemView.findViewById(R.id.ppv_distance);
+        PrimaryPropertyViewIcon spvDuration = itemView.findViewById(R.id.ppv_duration);
+        PrimaryPropertyViewIcon spvAscent = itemView.findViewById(R.id.ppv_ascent);
         TextView titleTv = itemView.findViewById(R.id.tv_title);
         ImageView iconIv = itemView.findViewById(R.id.iv_icon);
         TextView dateTv = itemView.findViewById(R.id.tv_date);

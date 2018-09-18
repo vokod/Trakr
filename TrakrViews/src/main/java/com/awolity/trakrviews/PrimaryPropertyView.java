@@ -35,9 +35,9 @@ public class PrimaryPropertyView extends ConstraintLayout {
 
     void inflate() {
         LayoutInflater.from(context).inflate(R.layout.view_primary_property, this, true);
-        labelTextView = findViewById(R.id.tv_label_duration);
-        valueTextView = findViewById(R.id.tv_value_duration);
-        unitTextView = findViewById(R.id.tv_unit_duration);
+        labelTextView = findViewById(R.id.tv_label);
+        valueTextView = findViewById(R.id.tv_value);
+        unitTextView = findViewById(R.id.tv_unit);
     }
 
     public void setLabel(String labelText){

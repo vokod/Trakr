@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.view.MapUtils;
-import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.StringUtils;
 import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
@@ -111,9 +110,9 @@ public class TrackListAdapter
             titleTv = itemView.findViewById(R.id.tv_title);
             dateTv = itemView.findViewById(R.id.tv_date);
             initialIv = itemView.findViewById(R.id.iv_icon);
-            distanceView = itemView.findViewById(R.id.spv_distance);
-            durationView = itemView.findViewById(R.id.spv_duration);
-            elevationView = itemView.findViewById(R.id.spv_ascent);
+            distanceView = itemView.findViewById(R.id.ppv_distance);
+            durationView = itemView.findViewById(R.id.ppv_duration);
+            elevationView = itemView.findViewById(R.id.ppv_ascent);
             mapView = itemView.findViewById(R.id.mapView);
 
             durationView.setup(context.getString(R.string.elapsed_time_view_title),
