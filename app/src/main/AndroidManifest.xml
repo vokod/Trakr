@@ -36,8 +36,8 @@
             android:parentActivityName=".view.main.MainActivity"
             android:theme="@style/AppTheme"/>
         <activity
-            android:name=".view.map.MapActivity"
-            android:label="@string/title_activity_map"
+            android:name=".view.explore.ExploreActivity"
+            android:label="@string/title_activity_explore"
             android:parentActivityName=".view.main.MainActivity"
             android:theme="@style/AppTheme"/>
         <activity
