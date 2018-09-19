@@ -1,5 +1,6 @@
 package com.awolity.trakr.view.detail;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,7 +21,6 @@ import com.google.android.gms.ads.AdView;
 public class TrackDetailActivity extends AppCompatActivity
         implements EditTitleDialog.EditTitleDialogListener {
 
-    private static final String TAG = TrackDetailActivity.class.getSimpleName();
     private static final String TAG_MAP_FRAGMENT = "tag_map_fragment";
     private static final String TAG_DATA_FRAGMENT = "tag_data_fragment";
     private static final String TAG_CHARTS_FRAGMENT = "tag_charts_fragment";
@@ -42,9 +42,9 @@ public class TrackDetailActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_detail);
         trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
-       // icon = getIntent().getParcelableExtra(EXTRA_ICON);
         postponeEnterTransition();
 
+        setupViewModel();
         setupAdview();
         setupWidgets();
         setupBottomSheetNavigation();
@@ -66,11 +66,12 @@ public class TrackDetailActivity extends AppCompatActivity
                             + savedInstanceState.getInt(KEY_SELECTED_FRAGMENT));
             }
         }
-        }
+    }
 
     private void setupAdview() {
         AdView adview = findViewById(R.id.adView);
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
+            //noinspection SpellCheckingInspection
             AdRequest adRequest = new AdRequest.Builder()
                     .addTestDevice("B20AC3BE6C392F942D699800329EDCBD")
                     .build();
@@ -86,6 +87,11 @@ public class TrackDetailActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.app_name);
         bottomNavigationView = findViewById(R.id.navigation);
+    }
+
+    private void setupViewModel(){
+        trackDetailViewModel = ViewModelProviders.of(this).get(TrackDetailViewModel.class);
+        trackDetailViewModel.init(trackId);
     }
 
     private void setupBottomSheetNavigation() {
@@ -128,7 +134,7 @@ public class TrackDetailActivity extends AppCompatActivity
         TrackDetailActivityDataFragment dataFragment
                 = (TrackDetailActivityDataFragment) getSupportFragmentManager().findFragmentByTag(TAG_DATA_FRAGMENT);
         if (dataFragment == null) {
-            dataFragment = TrackDetailActivityDataFragment.newInstance(/*icon*/);
+            dataFragment = TrackDetailActivityDataFragment.newInstance();
             dataFragment.setEnterTransition(new Fade());
             dataFragment.setExitTransition(new Fade());
         }
@@ -154,18 +160,14 @@ public class TrackDetailActivity extends AppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        // MyLog.d(TAG, "onRequestPermissionsResult");
-
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // MyLog.d(TAG, "onRequestPermissionsResult - permission granted");
                     // permission was granted, yay!
                     trackDetailViewModel.exportTrack();
                 } else {
-                    // MyLog.d(TAG, "onRequestPermissionsResult - permission denied :(");
                     // permission denied, boo!
                     Toast.makeText(this, getString(R.string.write_permission_denied),
                             Toast.LENGTH_LONG).show();
@@ -198,7 +200,6 @@ public class TrackDetailActivity extends AppCompatActivity
 
     @Override
     public void onTitleEdited(String title) {
-
         trackDetailViewModel.updateTrackTitle(title);
     }
 

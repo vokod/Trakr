@@ -13,10 +13,14 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.gpx.GpxExporter;
+import com.awolity.trakr.model.MapPoint;
 import com.awolity.trakr.model.TrackData;
 import com.awolity.trakr.model.TrackDataTrackEntityConverter;
+import com.awolity.trakr.model.TrackPointMapPointConverter;
 import com.awolity.trakr.sync.SyncService;
+import com.awolity.trakrutils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -46,8 +50,6 @@ public class TrackRepository {
     @Inject
     AppUserRepository appUserRepository;
 
-    private static final String TAG = "TrackRepository";
-
     public TrackRepository() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
         appUserRepository.setAppUserStatusListener(new AppUserRepository.AppUserStatusListener() {
@@ -75,6 +77,27 @@ public class TrackRepository {
      * TrackS methods
      */
 
+    public LiveData<List<TrackWithPoints>> getTracksWithPoints() {
+        return roomTrackRepository.getTracksWithPoints();
+    }
+
+    public LiveData<List<TrackData>> getTracksData() {
+        final MediatorLiveData<List<TrackData>> result = new MediatorLiveData<>();
+        result.addSource(roomTrackRepository.getTracks(), new Observer<List<TrackEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<TrackEntity> trackEntities) {
+                if (trackEntities != null) {
+                    List<TrackData> trackDataList = new ArrayList<>(trackEntities.size());
+                    for (TrackEntity entity : trackEntities) {
+                        trackDataList.add(TrackDataTrackEntityConverter.toTrackData(entity));
+                    }
+                    result.postValue(trackDataList);
+                }
+            }
+        });
+        return result;
+    }
+
     @WorkerThread
     public List<TrackEntity> getTracksSync() {
         return roomTrackRepository.getTracksSync();
@@ -101,6 +124,17 @@ public class TrackRepository {
     @WorkerThread
     public long saveTrackSync(final TrackEntity trackEntity) {
         return roomTrackRepository.saveTrackSync(trackEntity);
+    }
+
+    public void saveTrackToCloud(final long trackId) {
+        discIoExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (roomTrackRepository.getTrackSync(trackId).getNumOfTrackPoints() > 1) {
+                    saveTrackToCloudOnThread(trackId);
+                }
+            }
+        });
     }
 
     public void updateTrack(final TrackEntity trackEntity) {
@@ -144,6 +178,32 @@ public class TrackRepository {
 
     public LiveData<TrackWithPoints> getTrackWithPoints(long id) {
         return roomTrackRepository.getTrackWithPoints(id);
+    }
+
+    public LiveData<List<MapPoint>> getMapPoints(long id) {
+        final MediatorLiveData<List<MapPoint>> mapPoints = new MediatorLiveData<>();
+        mapPoints.addSource(roomTrackRepository.getTrackpointsByTrack(id), new Observer<List<TrackpointEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
+                if (trackpointEntities != null && trackpointEntities.size() > 0) {
+                    List<MapPoint> result = new ArrayList<>(Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE);
+                    long numOfPoints = trackpointEntities.size();
+                    if (numOfPoints > Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE) {
+                        long divider = numOfPoints / Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE + 1;
+
+                        for (int i = 0; i < numOfPoints; i += divider) {
+                            result.add(TrackPointMapPointConverter.toMapPoint(trackpointEntities.get(i)));
+                        }
+                    } else {
+                        for (TrackpointEntity trackpointEntity : trackpointEntities) {
+                            result.add(TrackPointMapPointConverter.toMapPoint(trackpointEntity));
+                        }
+                    }
+                    mapPoints.postValue(result);
+                }
+            }
+        });
+        return mapPoints;
     }
 
     public void exportTrack(final long id) {
@@ -200,17 +260,6 @@ public class TrackRepository {
 
     public LiveData<TrackpointEntity> getActualTrackpoint(final long id) {
         return roomTrackRepository.getActualTrackpoint(id);
-    }
-
-    public void saveTrackToCloud(final long trackId) {
-        discIoExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                if (roomTrackRepository.getTrackSync(trackId).getNumOfTrackPoints() > 1) {
-                    saveTrackToCloudOnThread(trackId);
-                }
-            }
-        });
     }
 
     @WorkerThread

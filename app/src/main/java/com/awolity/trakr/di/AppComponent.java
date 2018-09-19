@@ -11,6 +11,7 @@ import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
 import com.awolity.trakr.trackrecorder.TrackRecorderStatus;
 import com.awolity.trakr.view.detail.TrackDetailViewModel;
+import com.awolity.trakr.view.explore.ExploreViewModel;
 import com.awolity.trakr.view.main.TrackRecorderServiceManager;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.SettingsViewModel;
@@ -45,6 +46,8 @@ public interface AppComponent {
     void inject (TrackRecorderServiceManager serviceManager);
 
     void inject (TrackListViewModel trackListViewModel);
+
+    void inject (ExploreViewModel target);
 
     void inject (SyncService syncService);
 

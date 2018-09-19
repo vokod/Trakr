@@ -31,13 +31,11 @@ public class TrackDetailActivityDataFragment extends Fragment {
     private ImageView initialImageView;
 
     public static TrackDetailActivityDataFragment newInstance() {
-        TrackDetailActivityDataFragment fragment = new TrackDetailActivityDataFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        return new TrackDetailActivityDataFragment();
     }
 
-    public TrackDetailActivityDataFragment() { }
+    public TrackDetailActivityDataFragment() {
+    }
 
     @SuppressWarnings("EmptyMethod")
     @Override
@@ -126,6 +124,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
                 R.drawable.ic_min_altitude);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void setupViewModel() {
         TrackDetailViewModel trackDetailViewModel = ViewModelProviders.of(getActivity())
                 .get(TrackDetailViewModel.class);
