@@ -1,8 +1,11 @@
 package com.awolity.trakr.repository;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
 import com.awolity.trakr.TrakrApplication;
@@ -10,6 +13,8 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.gpx.GpxExporter;
+import com.awolity.trakr.model.TrackData;
+import com.awolity.trakr.model.TrackDataTrackEntityConverter;
 import com.awolity.trakr.sync.SyncService;
 
 import java.util.List;
@@ -60,7 +65,7 @@ public class TrackRepository {
             }
 
             @Override
-            public void onDeleteAccount(){
+            public void onDeleteAccount() {
                 removeFirebaseIdFromTracks();
             }
         });
@@ -70,26 +75,18 @@ public class TrackRepository {
      * TrackS methods
      */
 
-    public LiveData<List<TrackEntity>> getTracks() {
-        return roomTrackRepository.getTracks();
-    }
-
-    public LiveData<List<TrackWithPoints>> getTracksWithPoints() {
-        return roomTrackRepository.getTracksWithPoints();
-    }
-
     @WorkerThread
     public List<TrackEntity> getTracksSync() {
         return roomTrackRepository.getTracksSync();
     }
 
     @SuppressWarnings("WeakerAccess")
-    private void removeFirebaseIdFromTracks(){
+    private void removeFirebaseIdFromTracks() {
         discIoExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 List<TrackEntity> tracks = roomTrackRepository.getTracksSync();
-                for(TrackEntity entity : tracks){
+                for (TrackEntity entity : tracks) {
                     entity.setFirebaseId(null);
                     roomTrackRepository.updateTrack(entity);
                 }
@@ -113,9 +110,37 @@ public class TrackRepository {
         }
     }
 
+    public void updateTrackTitle(final String title, final long id) {
+        discIoExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                TrackEntity entity = roomTrackRepository.getTrackSync(id);
+                entity.setTitle(title);
+                updateTrack(entity);
+                if (appUserRepository.IsAppUserLoggedIn()) {
+                    updateTrackToCloud(entity);
+                }
+            }
+        });
+    }
+
     public LiveData<TrackEntity> getTrack(long id) {
         return roomTrackRepository.getTrack(id);
     }
+
+    public LiveData<TrackData> getTrackData(long id) {
+        final MediatorLiveData<TrackData> result = new MediatorLiveData<>();
+        result.addSource(roomTrackRepository.getTrack(id), new Observer<TrackEntity>() {
+            @Override
+            public void onChanged(@Nullable TrackEntity trackEntity) {
+                if (trackEntity != null) {
+                    result.postValue(TrackDataTrackEntityConverter.toTrackData(trackEntity));
+                }
+            }
+        });
+        return result;
+    }
+
 
     public LiveData<TrackWithPoints> getTrackWithPoints(long id) {
         return roomTrackRepository.getTrackWithPoints(id);

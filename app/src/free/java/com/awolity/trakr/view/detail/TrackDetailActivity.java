@@ -1,14 +1,10 @@
 package com.awolity.trakr.view.detail;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.transition.Fade;
 import android.support.v7.app.AppCompatActivity;
@@ -18,8 +14,6 @@ import android.widget.Toast;
 
 import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
-import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -34,8 +28,8 @@ public class TrackDetailActivity extends AppCompatActivity
     private static final String EXTRA_TRACK_ID = "extra_track_id";
     private static final int PERMISSION_REQUEST_CODE = 2;
     private BottomNavigationView bottomNavigationView;
-    private TrackViewModel trackViewModel;
-    private TrackEntity trackEntity;
+    private TrackDetailViewModel trackDetailViewModel;
+    private long trackId;
 
     public static Intent getStarterIntent(Context context, long trackId) {
         Intent intent = new Intent(context, TrackDetailActivity.class);
@@ -47,7 +41,7 @@ public class TrackDetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_detail);
-        long trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
+        trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
        // icon = getIntent().getParcelableExtra(EXTRA_ICON);
         postponeEnterTransition();
 
@@ -72,9 +66,7 @@ public class TrackDetailActivity extends AppCompatActivity
                             + savedInstanceState.getInt(KEY_SELECTED_FRAGMENT));
             }
         }
-
-        setupViewModel(trackId);
-    }
+        }
 
     private void setupAdview() {
         AdView adview = findViewById(R.id.adView);
@@ -94,19 +86,6 @@ public class TrackDetailActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.app_name);
         bottomNavigationView = findViewById(R.id.navigation);
-    }
-
-    private void setupViewModel(long trackId) {
-        trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
-        trackViewModel.init(trackId);
-        trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
-            @Override
-            public void onChanged(@Nullable TrackEntity trackEntity) {
-                if (trackEntity != null) {
-                    TrackDetailActivity.this.trackEntity = trackEntity;
-                }
-            }
-        });
     }
 
     private void setupBottomSheetNavigation() {
@@ -184,7 +163,7 @@ public class TrackDetailActivity extends AppCompatActivity
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // MyLog.d(TAG, "onRequestPermissionsResult - permission granted");
                     // permission was granted, yay!
-                    trackViewModel.exportTrack();
+                    trackDetailViewModel.exportTrack();
                 } else {
                     // MyLog.d(TAG, "onRequestPermissionsResult - permission denied :(");
                     // permission denied, boo!
@@ -205,12 +184,12 @@ public class TrackDetailActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_delete) {
-            trackViewModel.deleteTrack();
+            trackDetailViewModel.deleteTrack();
             finish();
             return true;
         } else if (id == R.id.action_export) {
             if (TrackDetailActivityUtils.checkPermission(this, PERMISSION_REQUEST_CODE)) {
-                trackViewModel.exportTrack();
+                trackDetailViewModel.exportTrack();
             }
             return true;
         }
@@ -219,8 +198,8 @@ public class TrackDetailActivity extends AppCompatActivity
 
     @Override
     public void onTitleEdited(String title) {
-        trackEntity.setTitle(title);
-        trackViewModel.updateTrack(trackEntity);
+
+        trackDetailViewModel.updateTrackTitle(title);
     }
 
     @Override

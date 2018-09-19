@@ -41,8 +41,8 @@ android {
         applicationId "com.awolity.trakr"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 30
-        versionName "0.30"
+        versionCode 31
+        versionName "0.31-develop"
         vectorDrawables.useSupportLibrary = true
         // multiDexEnabled true
         javaCompileOptions {

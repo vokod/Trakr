@@ -1,4 +1,4 @@
-package com.awolity.trakr.viewmodel;
+package com.awolity.trakr.view.detail;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
@@ -10,9 +10,10 @@ import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.model.ChartPoint;
 import com.awolity.trakr.model.MapPoint;
+import com.awolity.trakr.model.TrackData;
+import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakrutils.Constants;
 
 import java.util.ArrayList;
@@ -20,44 +21,29 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class TrackViewModel extends ViewModel {
+public class TrackDetailViewModel extends ViewModel {
 
     @SuppressWarnings("WeakerAccess")
     @Inject
     TrackRepository trackRepository;
 
-    private static final String TAG = TrackViewModel.class.getSimpleName();
     private long trackId = Constants.NO_LAST_RECORDED_TRACK;
     private MediatorLiveData<List<MapPoint>> mapPointsMediatorLiveData;
     private MediatorLiveData<List<ChartPoint>> chartPointsMediatorLiveData;
 
-    public TrackViewModel() {
+    public TrackDetailViewModel() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
-    }
-
-    public void init(long trackId) {
-        reset();
-        this.trackId = trackId;
-    }
-
-    public void reset() {
-        trackId = Constants.NO_LAST_RECORDED_TRACK;
         mapPointsMediatorLiveData = new MediatorLiveData<>();
         chartPointsMediatorLiveData = new MediatorLiveData<>();
     }
 
-    public LiveData<TrackEntity> getTrack() {
-        checkTrackId();
-        return trackRepository.getTrack(trackId);
+    public void init(long trackId) {
+        this.trackId = trackId;
     }
 
-    public LiveData<TrackWithPoints> getTrackWithPoints() {
+    public LiveData<TrackData> getTrackData() {
         checkTrackId();
-        return trackRepository.getTrackWithPoints(trackId);
-    }
-
-    public LiveData<TrackEntity> getTrackData() {
-        return trackRepository.getTrack(trackId);
+        return trackRepository.getTrackData(trackId);
     }
 
     public LiveData<List<ChartPoint>> getChartPoints(final int maxNumOfPoints) {
@@ -133,16 +119,6 @@ public class TrackViewModel extends ViewModel {
         return mapPointsMediatorLiveData;
     }
 
-    public LiveData<List<TrackpointEntity>> getTrackpointsList() {
-        checkTrackId();
-        return trackRepository.getTrackpointsByTrack(trackId);
-    }
-
-    public LiveData<TrackpointEntity> getActualTrackpoint() {
-        checkTrackId();
-        return trackRepository.getActualTrackpoint(trackId);
-    }
-
     public void deleteTrack() {
         checkTrackId();
         trackRepository.deleteTrack(trackId);
@@ -153,12 +129,8 @@ public class TrackViewModel extends ViewModel {
         trackRepository.exportTrack(trackId);
     }
 
-    public void finishRecording() {
-        reset();
-    }
-
-    public void updateTrack(TrackEntity trackEntity) {
-        trackRepository.updateTrack(trackEntity);
+    public void updateTrackTitle(String title) {
+        trackRepository.updateTrackTitle(title, trackId);
     }
 
     private void checkTrackId() {

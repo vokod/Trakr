@@ -1,4 +1,4 @@
-package com.awolity.trakr.viewmodel.model;
+package com.awolity.trakr.model;
 
 import com.google.android.gms.maps.model.LatLng;
 
