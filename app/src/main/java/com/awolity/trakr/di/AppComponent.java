@@ -15,7 +15,7 @@ import com.awolity.trakr.view.explore.ExploreViewModel;
 import com.awolity.trakr.view.main.TrackRecorderServiceManager;
 import com.awolity.trakr.viewmodel.AppUserViewModel;
 import com.awolity.trakr.viewmodel.SettingsViewModel;
-import com.awolity.trakr.viewmodel.TrackListViewModel;
+import com.awolity.trakr.view.list.TrackListViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.awolity.trakr.view.widget.TrakrWidget;
 

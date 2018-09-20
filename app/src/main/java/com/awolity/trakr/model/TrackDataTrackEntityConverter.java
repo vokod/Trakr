@@ -14,6 +14,7 @@ public class TrackDataTrackEntityConverter {
         result.setStartTime(trackData.getStartTime());
         result.setDistance(trackData.getDistance());
         result.setAscent(trackData.getAscent());
+        result.setDescent(trackData.getDescent());
         result.setElapsedTime(trackData.getElapsedTime());
         result.setNumOfTrackPoints(trackData.getNumOfTrackPoints());
         result.setNorthestPoint(trackData.getNorthestPoint());
@@ -36,6 +37,7 @@ public class TrackDataTrackEntityConverter {
         result.setStartTime(trackEntity.getStartTime());
         result.setDistance(trackEntity.getDistance());
         result.setAscent(trackEntity.getAscent());
+        result.setDescent(trackEntity.getDescent());
         result.setElapsedTime(trackEntity.getElapsedTime());
         result.setNumOfTrackPoints(trackEntity.getNumOfTrackPoints());
         result.setNorthestPoint(trackEntity.getNorthestPoint());

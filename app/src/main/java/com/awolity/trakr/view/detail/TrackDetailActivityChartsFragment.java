@@ -222,7 +222,7 @@ public class TrackDetailActivityChartsFragment extends Fragment {
                 .get(TrackDetailViewModel.class);
 
         trackDetailViewModel.getChartPoints(
-                Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_DETAILS)
+                Constants.CHART_POINT_MAX_NUMBER_FOR_TRACK_DETAIL)
                 .observe(this, new Observer<List<ChartPoint>>() {
                     @Override
                     public void onChanged(@Nullable final List<ChartPoint> chartPoints) {

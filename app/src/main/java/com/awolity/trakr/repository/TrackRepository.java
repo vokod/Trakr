@@ -13,9 +13,11 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.gpx.GpxExporter;
+import com.awolity.trakr.model.ChartPoint;
 import com.awolity.trakr.model.MapPoint;
 import com.awolity.trakr.model.TrackData;
 import com.awolity.trakr.model.TrackDataTrackEntityConverter;
+import com.awolity.trakr.model.TrackDataWithMapPoints;
 import com.awolity.trakr.model.TrackPointMapPointConverter;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakrutils.Constants;
@@ -180,31 +182,6 @@ public class TrackRepository {
         return roomTrackRepository.getTrackWithPoints(id);
     }
 
-    public LiveData<List<MapPoint>> getMapPoints(long id) {
-        final MediatorLiveData<List<MapPoint>> mapPoints = new MediatorLiveData<>();
-        mapPoints.addSource(roomTrackRepository.getTrackpointsByTrack(id), new Observer<List<TrackpointEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
-                if (trackpointEntities != null && trackpointEntities.size() > 0) {
-                    List<MapPoint> result = new ArrayList<>(Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE);
-                    long numOfPoints = trackpointEntities.size();
-                    if (numOfPoints > Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE) {
-                        long divider = numOfPoints / Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE + 1;
-
-                        for (int i = 0; i < numOfPoints; i += divider) {
-                            result.add(TrackPointMapPointConverter.toMapPoint(trackpointEntities.get(i)));
-                        }
-                    } else {
-                        for (TrackpointEntity trackpointEntity : trackpointEntities) {
-                            result.add(TrackPointMapPointConverter.toMapPoint(trackpointEntity));
-                        }
-                    }
-                    mapPoints.postValue(result);
-                }
-            }
-        });
-        return mapPoints;
-    }
 
     public void exportTrack(final long id) {
         discIoExecutor.execute(new Runnable() {
@@ -258,6 +235,176 @@ public class TrackRepository {
         return roomTrackRepository.getTrackpointsByTrack(id);
     }
 
+    public LiveData<List<ChartPoint>> getChartpointsByTrack(long id, final int chartPointNo) {
+        final MediatorLiveData<List<ChartPoint>> result = new MediatorLiveData<>();
+        result.addSource(roomTrackRepository.getTrackpointsByTrack(id),
+                new Observer<List<TrackpointEntity>>() {
+                    @Override
+                    public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
+                        if (trackpointEntities != null && trackpointEntities.size() > 0) {
+
+                            long numOfPoints = trackpointEntities.size();
+                            List<ChartPoint> chartPoints = new ArrayList<>(chartPointNo);
+
+                            if (numOfPoints > chartPointNo) {
+                                long divider = numOfPoints / chartPointNo + 1;
+
+                                double averagedSpeed = 0, averagedAltitude = 0, distance = 0;
+
+                                for (int i = 1; i < numOfPoints; i++) {
+                                    // TODO: ez egy kicsit csalás, mert a 0. pont mindenképpen kimarad,
+                                    // de az osztás miatt így pontos
+                                    // belső ciklusszámlálóval lehetne elegánsabban csinálni.
+                                    averagedSpeed += trackpointEntities.get(i).getSpeed();
+                                    averagedAltitude += trackpointEntities.get(i).getAltitude();
+                                    distance += trackpointEntities.get(i).getDistance();
+
+                                    if (i > 0 && i % divider == 0) {
+
+                                        ChartPoint chartPoint = new ChartPoint();
+                                        chartPoint.setTime(
+                                                trackpointEntities.get(i).getTime());
+                                        chartPoint.setDistance(distance);
+
+                                        chartPoint.setSpeed(averagedSpeed / divider);
+                                        chartPoint.setAltitude(averagedAltitude / divider);
+
+                                        chartPoints.add(chartPoint);
+
+                                        averagedSpeed = 0;
+                                        averagedAltitude = 0;
+                                    }
+                                }
+                            } else {
+                                double distance = 0;
+                                for (TrackpointEntity trackpointEntity : trackpointEntities) {
+                                    distance += trackpointEntity.getDistance();
+                                    chartPoints.add(new ChartPoint(trackpointEntity.getTime(),
+                                            trackpointEntity.getAltitude(),
+                                            trackpointEntity.getSpeed(),
+                                            distance));
+                                }
+                            }
+                            result.postValue(chartPoints);
+                        }
+                    }
+                });
+        return result;
+    }
+
+    public LiveData<List<MapPoint>> getMapPoints(long id) {
+        final MediatorLiveData<List<MapPoint>> mapPoints = new MediatorLiveData<>();
+        mapPoints.addSource(roomTrackRepository.getTrackpointsByTrack(id), new Observer<List<TrackpointEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
+                if (trackpointEntities != null && trackpointEntities.size() > 0) {
+                    List<MapPoint> result = new ArrayList<>(Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE);
+                    long numOfPoints = trackpointEntities.size();
+                    if (numOfPoints > Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE) {
+                        long divider = numOfPoints / Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE + 1;
+
+                        for (int i = 0; i < numOfPoints; i += divider) {
+                            result.add(TrackPointMapPointConverter.toMapPoint(trackpointEntities.get(i)));
+                        }
+                    } else {
+                        for (TrackpointEntity trackpointEntity : trackpointEntities) {
+                            result.add(TrackPointMapPointConverter.toMapPoint(trackpointEntity));
+                        }
+                    }
+                    mapPoints.postValue(result);
+                }
+            }
+        });
+        return mapPoints;
+    }
+
+
+    public LiveData<TrackDataWithMapPoints> getTrackDataWithMapPointsForTrack(
+            long trackId, final int maxNumOfMapPoints) {
+        final MediatorLiveData<TrackDataWithMapPoints> result = new MediatorLiveData<>();
+        final TrackDataWithMapPoints trackDataWithMapPoints = new TrackDataWithMapPoints();
+        result.setValue(trackDataWithMapPoints);
+        result.addSource(roomTrackRepository.getTrackWithPoints(trackId), new Observer<TrackWithPoints>() {
+            @Override
+            public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
+                if (trackWithPoints != null) {
+                    trackDataWithMapPoints.setTrackData(TrackDataTrackEntityConverter
+                            .toTrackData(trackWithPoints.getTrackEntity()));
+
+                    // this is for the event when initial sync is happening right now
+                    if (trackWithPoints.getTrackPoints().size() == 0) {
+                        return;
+                    }
+
+                    long numOfPoints = trackWithPoints.getNumOfTrackPoints();
+                    List<MapPoint> mapPoints = new ArrayList<>(maxNumOfMapPoints);
+                    if (numOfPoints > maxNumOfMapPoints) {
+                        long divider = numOfPoints / maxNumOfMapPoints + 1;
+
+                        for (int i = 0; i < numOfPoints; i += divider) {
+                            mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackWithPoints
+                                    .getTrackPoints().get(i)));
+                        }
+                    } else {
+                        for (TrackpointEntity trackPoint : trackWithPoints.getTrackPoints()) {
+                            mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackPoint));
+                        }
+                    }
+                    trackDataWithMapPoints.setMapPointList(mapPoints);
+
+                }
+                result.postValue(trackDataWithMapPoints);
+            }
+        });
+        return result;
+    }
+
+    public LiveData<List<TrackDataWithMapPoints>> getTrackDataListWithMapPoints(
+            final int maxNumOfMapPoints) {
+        final MediatorLiveData<List<TrackDataWithMapPoints>> result = new MediatorLiveData<>();
+        final List<TrackDataWithMapPoints> trackDataWithMapPointsList = new ArrayList<>();
+        result.postValue(trackDataWithMapPointsList);
+        result.addSource(roomTrackRepository.getTracksWithPoints(), new Observer<List<TrackWithPoints>>() {
+            @Override
+            public void onChanged(@Nullable List<TrackWithPoints> trackWithPointsList) {
+                if (trackWithPointsList != null && trackWithPointsList.size() > 0) {
+                    for (TrackWithPoints trackWithPoints : trackWithPointsList) {
+
+                        // this is for the event when initial sync is happening right now
+                        if (trackWithPoints.getTrackPoints().size() == 0) {
+                            continue;
+                        }
+
+                        final TrackDataWithMapPoints trackDataWithMapPoints = new TrackDataWithMapPoints();
+
+                        trackDataWithMapPoints.setTrackData(TrackDataTrackEntityConverter
+                                .toTrackData(trackWithPoints.getTrackEntity()));
+
+                        long numOfPoints = trackWithPoints.getNumOfTrackPoints();
+                        List<MapPoint> mapPoints = new ArrayList<>(maxNumOfMapPoints);
+                        if (numOfPoints > maxNumOfMapPoints) {
+                            long divider = numOfPoints / maxNumOfMapPoints + 1;
+
+                            for (int i = 0; i < numOfPoints; i += divider) {
+                                mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackWithPoints
+                                        .getTrackPoints().get(i)));
+                            }
+                        } else {
+                            for (TrackpointEntity trackPoint : trackWithPoints.getTrackPoints()) {
+                                mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackPoint));
+                            }
+                        }
+                        trackDataWithMapPoints.setMapPointList(mapPoints);
+                        trackDataWithMapPointsList.add(trackDataWithMapPoints);
+                    }
+                }
+                result.postValue(trackDataWithMapPointsList);
+            }
+        });
+        return result;
+    }
+
+
     public LiveData<TrackpointEntity> getActualTrackpoint(final long id) {
         return roomTrackRepository.getActualTrackpoint(id);
     }
@@ -282,7 +429,8 @@ public class TrackRepository {
         }
     }
 
-    public void getAllTrackEntitiesFromCloud(final GetAllTrackEntitiesFromCloudListener listener) {
+    public void getAllTrackEntitiesFromCloud(
+            final GetAllTrackEntitiesFromCloudListener listener) {
         firebaseTrackRepository.getAllTrackEntitiesFromCloud(listener);
     }
 
