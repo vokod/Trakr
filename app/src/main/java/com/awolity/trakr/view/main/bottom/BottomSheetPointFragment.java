@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.awolity.trakr.R;
 
-import com.awolity.trakr.viewmodel.LocationViewModel;
+import com.awolity.trakr.view.main.MainActivityViewModel;
 import com.awolity.trakrviews.PrimaryPropertyView;
 import com.awolity.trakrviews.SecondaryPropertyView;
 
@@ -22,7 +22,7 @@ import java.util.Locale;
 public class BottomSheetPointFragment extends BottomSheetBaseFragment {
 
     private static final String TAG = BottomSheetPointFragment.class.getSimpleName();
-    private LocationViewModel locationViewModel;
+    private MainActivityViewModel mainActivityViewModel;
     private PrimaryPropertyView speedView, altitudeView;
     private SecondaryPropertyView accuracyView, bearingView;
 
@@ -92,12 +92,12 @@ public class BottomSheetPointFragment extends BottomSheetBaseFragment {
 
     private void setupViewModel() {
         //noinspection ConstantConditions
-        locationViewModel = ViewModelProviders.of(getActivity()).get(LocationViewModel.class);
+        mainActivityViewModel = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
     }
 
     @SuppressWarnings("ConstantConditions")
     private void startLocationUpdates() {
-        locationViewModel.getLocation().observe(getActivity(), new Observer<Location>() {
+        mainActivityViewModel.getLocation().observe(getActivity(), new Observer<Location>() {
             @Override
             public void onChanged(@Nullable Location location) {
                 if (location != null) {
@@ -108,7 +108,7 @@ public class BottomSheetPointFragment extends BottomSheetBaseFragment {
     }
 
     private void stopLocationUpdates() {
-        locationViewModel.stopLocation();
+        mainActivityViewModel.stopLocation();
     }
 
     private void setData(Location location) {
