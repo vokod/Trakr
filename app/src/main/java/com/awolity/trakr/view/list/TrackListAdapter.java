@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.data.entity.TrackWithPoints;
+import com.awolity.trakr.model.TrackDataWithMapPoints;
 import com.awolity.trakr.view.MapUtils;
 import com.awolity.trakrutils.StringUtils;
 import com.awolity.trakrutils.Utility;
@@ -30,8 +30,7 @@ import java.util.Locale;
 public class TrackListAdapter
         extends RecyclerView.Adapter<TrackListAdapter.TrackItemViewHolder> {
 
-    private static final String TAG = TrackListAdapter.class.getSimpleName();
-    private final List<TrackWithPoints> items = new ArrayList<>();
+    private final List<TrackDataWithMapPoints> items = new ArrayList<>();
     private final LayoutInflater layoutInflater;
     private final TrackItemCallback callback;
     private final Context context;
@@ -42,9 +41,9 @@ public class TrackListAdapter
         this.context = context;
     }
 
-    public void updateItems(@NonNull final List<TrackWithPoints> newItems) {
+    public void updateItems(@NonNull final List<TrackDataWithMapPoints> newItems) {
         // MyLog.d(TAG, "updateItems");
-        final List<TrackWithPoints> oldItems = new ArrayList<>(this.items);
+        final List<TrackDataWithMapPoints> oldItems = new ArrayList<>(this.items);
         this.items.clear();
         this.items.addAll(newItems);
         DiffUtil.calculateDiff(new DiffUtil.Callback() {
@@ -93,7 +92,7 @@ public class TrackListAdapter
 
     class TrackItemViewHolder extends RecyclerView.ViewHolder {
 
-        private TrackWithPoints trackWithPoints;
+        private TrackDataWithMapPoints trackDataWithMapPoints;
         private final TextView titleTv;
         private final TextView dateTv;
         private final ImageView initialIv;
@@ -132,28 +131,28 @@ public class TrackListAdapter
             mapView.setClickable(false);
         }
 
-        void bind(final TrackWithPoints trackWithPoints) {
+        void bind(final TrackDataWithMapPoints trackDataWithMapPoints) {
             // MyLog.d(TAG, "bind " + TrackItemViewHolder.this.hashCode());
-            this.trackWithPoints = trackWithPoints;
-            titleTv.setText(this.trackWithPoints.getTitle());
+            this.trackDataWithMapPoints = trackDataWithMapPoints;
+            titleTv.setText(this.trackDataWithMapPoints.getTitle());
             dateTv.setText(DateUtils.getRelativeTimeSpanString(
-                    this.trackWithPoints.getStartTime()).toString());
+                    this.trackDataWithMapPoints.getStartTime()).toString());
 
             String firstLetter = "";
-            if (trackWithPoints.getTitle() != null && !trackWithPoints.getTitle().isEmpty()) {
-                firstLetter = trackWithPoints.getTitle().substring(0, 1);
+            if (trackDataWithMapPoints.getTitle() != null && !trackDataWithMapPoints.getTitle().isEmpty()) {
+                firstLetter = trackDataWithMapPoints.getTitle().substring(0, 1);
             }
             initialIv.setImageDrawable(
                     Utility.getInitial(firstLetter,
-                            String.valueOf(trackWithPoints.getStartTime()),
+                            String.valueOf(trackDataWithMapPoints.getStartTime()),
                             initialIv.getLayoutParams().width));
 
             distanceView.setValue(StringUtils.getDistanceAsThreeCharactersString(
-                    trackWithPoints.getDistance()));
+                    trackDataWithMapPoints.getDistance()));
             elevationView.setValue(String.format(Locale.getDefault(),
-                    "%.0f", trackWithPoints.getAscent()));
+                    "%.0f", trackDataWithMapPoints.getAscent()));
             durationView.setValue(StringUtils.getElapsedTimeAsString(
-                    trackWithPoints.getElapsedTime()));
+                    trackDataWithMapPoints.getElapsedTime()));
 
             mapView.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -162,7 +161,7 @@ public class TrackListAdapter
                         polyline.remove();
                     }
                     polyline = MapUtils.setupTrackPolyLine(context, googleMap,
-                            trackWithPoints, true);
+                            trackDataWithMapPoints, true);
                     mapView.onResume();
                 }
             });
@@ -170,7 +169,7 @@ public class TrackListAdapter
             clickOverlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    callback.onTrackItemClicked(trackWithPoints.getTrackId(), itemView);
+                    callback.onTrackItemClicked(trackDataWithMapPoints.getTrackId(), itemView);
                 }
             });
         }

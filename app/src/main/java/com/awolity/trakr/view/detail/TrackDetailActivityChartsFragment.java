@@ -18,9 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.viewmodel.TrackViewModel;
-import com.awolity.trakr.viewmodel.model.ChartPoint;
+import com.awolity.trakr.model.ChartPoint;
+import com.awolity.trakr.model.TrackData;
 import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.StringUtils;
 import com.awolity.trakrutils.Utility;
@@ -48,7 +47,7 @@ public class TrackDetailActivityChartsFragment extends Fragment {
     private LineChart speedChart, elevationChart;
     private int xAxis = 1;
     private boolean isSpeed = true;
-    private TrackEntity trackEntity;
+    private TrackData trackData;
     private List<ChartPoint> chartPoints;
     private TextView titleTextView, dateTextView;
     private ImageButton editTitleImageButton;
@@ -58,8 +57,7 @@ public class TrackDetailActivityChartsFragment extends Fragment {
         return new TrackDetailActivityChartsFragment();
     }
 
-    public TrackDetailActivityChartsFragment() {
-    }
+    public TrackDetailActivityChartsFragment() { }
 
     @SuppressWarnings("EmptyMethod")
     @Override
@@ -70,7 +68,6 @@ public class TrackDetailActivityChartsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.activity_track_detail_fragment_charts, container, false);
         setupWidgets(view);
         setupCharts();
@@ -87,14 +84,14 @@ public class TrackDetailActivityChartsFragment extends Fragment {
             public void onSwitch(int position, String tabText) {
                 if (xAxis != position) {
                     xAxis = position;
-                    if (position == 0 && trackEntity != null && chartPoints != null) {
+                    if (position == 0 && trackData != null && chartPoints != null) {
                         setElevationChartDataByTime(chartPoints);
                         if (isSpeed) {
                             setSpeedChartDataByTime(chartPoints);
                         } else {
                             setPaceChartDataByTime(chartPoints);
                         }
-                    } else if (position == 1 && trackEntity != null && chartPoints != null) {
+                    } else if (position == 1 && trackData != null && chartPoints != null) {
                         setElevationChartDataByDistance(chartPoints);
                         if (isSpeed) {
                             setSpeedChartDataByDistance(chartPoints);
@@ -126,7 +123,7 @@ public class TrackDetailActivityChartsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 speedCheckBox.setChecked(!b);
-                if (b && trackEntity != null) {
+                if (b && trackData != null) {
                     isSpeed = false;
                     if (xAxis == 0) {
                         setPaceChartDataByTime(chartPoints);
@@ -140,7 +137,7 @@ public class TrackDetailActivityChartsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 paceCheckBox.setChecked(!b);
-                if (b && trackEntity != null) {
+                if (b && trackData != null) {
                     isSpeed = true;
                     if (xAxis == 0) {
                         setSpeedChartDataByTime(chartPoints);
@@ -221,36 +218,36 @@ public class TrackDetailActivityChartsFragment extends Fragment {
 
     @SuppressWarnings("ConstantConditions")
     private void setupViewModel() {
-        TrackViewModel trackViewModel = ViewModelProviders.of(getActivity())
-                .get(TrackViewModel.class);
+        TrackDetailViewModel trackDetailViewModel = ViewModelProviders.of(getActivity())
+                .get(TrackDetailViewModel.class);
 
-        trackViewModel.getChartPoints(
-                Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_DETAILS)
+        trackDetailViewModel.getChartPoints(
+                Constants.CHART_POINT_MAX_NUMBER_FOR_TRACK_DETAIL)
                 .observe(this, new Observer<List<ChartPoint>>() {
                     @Override
                     public void onChanged(@Nullable final List<ChartPoint> chartPoints) {
                         if (chartPoints != null) {
                             TrackDetailActivityChartsFragment.this.chartPoints = chartPoints;
 
-                            setWidgetData(trackEntity);
+                            setWidgetData(trackData);
                             setSpeedChartDataByDistance(chartPoints);
                             setElevationChartDataByDistance(chartPoints);
                         }
                     }
                 });
 
-        trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
+        trackDetailViewModel.getTrackData().observe(this, new Observer<TrackData>() {
             @Override
-            public void onChanged(@Nullable final TrackEntity trackEntity) {
-                if (trackEntity != null) {
-                    TrackDetailActivityChartsFragment.this.trackEntity = trackEntity;
-                    setWidgetData(trackEntity);
+            public void onChanged(@Nullable final TrackData trackData) {
+                if (trackData != null) {
+                    TrackDetailActivityChartsFragment.this.trackData = trackData;
+                    setWidgetData(trackData);
 
                     editTitleImageButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             EditTitleDialog dialog = EditTitleDialog.newInstance(
-                                    trackEntity.getTitle());
+                                    trackData.getTitle());
                             dialog.show(getActivity().getSupportFragmentManager(), null);
                         }
                     });
@@ -259,42 +256,42 @@ public class TrackDetailActivityChartsFragment extends Fragment {
         });
     }
 
-    private void setWidgetData(TrackEntity trackEntity) {
-        if (trackEntity == null) {
+    private void setWidgetData(TrackData trackData) {
+        if (trackData == null) {
             return;
         }
 
         String firstLetter = "";
-        if (trackEntity.getTitle() != null && !trackEntity.getTitle().isEmpty()) {
-            firstLetter = trackEntity.getTitle().substring(0, 1);
+        if (trackData.getTitle() != null && !trackData.getTitle().isEmpty()) {
+            firstLetter = trackData.getTitle().substring(0, 1);
         }
 
         initialImageView.setImageDrawable(
-                Utility.getInitial(firstLetter, String.valueOf(trackEntity.getStartTime()),
+                Utility.getInitial(firstLetter, String.valueOf(trackData.getStartTime()),
                         initialImageView.getLayoutParams().width));
         initialImageView.requestLayout();
 
-        titleTextView.setText(trackEntity.getTitle());
-        dateTextView.setText(StringUtils.getDateAsStringLocale(trackEntity.getStartTime()));
+        titleTextView.setText(trackData.getTitle());
+        dateTextView.setText(StringUtils.getDateAsStringLocale(trackData.getStartTime()));
 
-        maxSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackEntity.getMaxSpeed()));
-        avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackEntity.getAvgSpeed()));
-        double maxSpeed = trackEntity.getMaxSpeed();
+        maxSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackData.getMaxSpeed()));
+        avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackData.getAvgSpeed()));
+        double maxSpeed = trackData.getMaxSpeed();
         if (maxSpeed > 1) {
             maxPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((60 * (1 / maxSpeed))));
         } else {
             maxPacePpvi.setValue("-");
         }
-        double avgSpeed = trackEntity.getAvgSpeed();
+        double avgSpeed = trackData.getAvgSpeed();
         if (avgSpeed > 1) {
             avgPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((60 * (1 / avgSpeed))));
         } else {
             avgPacePpvi.setValue("-");
         }
-        ascentPpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackEntity.getAscent()));
-        descentPpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackEntity.getDescent()));
-        minAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackEntity.getMinAltitude()));
-        maxAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackEntity.getMaxAltitude()));
+        ascentPpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackData.getAscent()));
+        descentPpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackData.getDescent()));
+        minAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackData.getMinAltitude()));
+        maxAltitudePpvi.setValue(String.format(Locale.getDefault(), "%.0f", trackData.getMaxAltitude()));
     }
 
     private void setElevationChartDataByTime(List<ChartPoint> chartPoints) {

@@ -17,11 +17,9 @@ import android.widget.TextView;
 
 import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
-import com.awolity.trakr.data.entity.TrackWithPoints;
+import com.awolity.trakr.model.TrackDataWithMapPoints;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
-import com.awolity.trakr.viewmodel.TrackListViewModel;
-import com.awolity.trakrutils.Constants;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -87,14 +85,13 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
     private void setupViewModel() {
         TrackListViewModel trackListViewModel = ViewModelProviders.of(this)
                 .get(TrackListViewModel.class);
-        trackListViewModel.getSimplifiedTracksWithPoints(
-                Constants.SIMPLIFIED_TRACK_POINT_MAX_NUMBER_FOR_LIST_ITEMS)
-                .observe(this, new Observer<List<TrackWithPoints>>() {
+        trackListViewModel.getTrackDataListWithMapPoints().observe(this,
+                new Observer<List<TrackDataWithMapPoints>>() {
                     @Override
-                    public void onChanged(@Nullable List<TrackWithPoints> trackWithPointsList) {
-                        if (trackWithPointsList != null) {
-                            trackListAdapter.updateItems(trackWithPointsList);
-                            if (trackWithPointsList.size() > 0) {
+                    public void onChanged(@Nullable List<TrackDataWithMapPoints> trackDataWithMapPoints) {
+                        if (trackDataWithMapPoints != null) {
+                            trackListAdapter.updateItems(trackDataWithMapPoints);
+                            if (trackDataWithMapPoints.size() > 0) {
                                 placeholderTv.setVisibility(View.INVISIBLE);
                             } else {
                                 placeholderTv.setVisibility(View.VISIBLE);

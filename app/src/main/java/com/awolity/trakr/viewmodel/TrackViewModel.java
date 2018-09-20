@@ -11,8 +11,8 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.repository.TrackRepository;
-import com.awolity.trakr.viewmodel.model.ChartPoint;
-import com.awolity.trakr.viewmodel.model.MapPoint;
+import com.awolity.trakr.model.ChartPoint;
+import com.awolity.trakr.model.MapPoint;
 import com.awolity.trakrutils.Constants;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.awolity.trakr.viewmodel.model;
+package com.awolity.trakr.model;
 
 public class ChartPoint {
     private long time;

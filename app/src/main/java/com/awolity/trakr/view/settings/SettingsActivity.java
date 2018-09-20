@@ -16,8 +16,6 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.viewmodel.AppUserViewModel;
-import com.awolity.trakr.viewmodel.SettingsViewModel;
 import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.MyLog;
 import com.awolity.trakrutils.Utility;
@@ -50,7 +48,6 @@ public class SettingsActivity extends AppCompatActivity
     private ButtonSetting deleteBs;
     private SeekbarSetting accuracySs;
     private RadiogroupSetting unitRs;
-    private AppUserViewModel appUserViewModel;
     private SettingsViewModel settingsViewModel;
 
     public static Intent getStarterIntent(Context context) {
@@ -62,9 +59,8 @@ public class SettingsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         setupWidgets();
-        appUserViewModel = ViewModelProviders.of(this).get(AppUserViewModel.class);
         settingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
-        appUserViewModel.getIsAppUserLoggedIn().observe(this, new Observer<Boolean>() {
+        settingsViewModel.getIsAppUserLoggedIn().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if (aBoolean != null) {
@@ -203,13 +199,13 @@ public class SettingsActivity extends AppCompatActivity
     }
 
     private void showUserLoginState() {
-        if (appUserViewModel.IsAppUserLoggedIn()) {
+        if (settingsViewModel.IsAppUserLoggedIn()) {
             // user is logged in
             loginBs.setEnabled(false);
             logoutBs.setEnabled(true);
             deleteBs.setEnabled(true);
             logoutBs.setDescription(getString(R.string.settings_description_logout_with_account,
-                    appUserViewModel.getAppUser().getEmail()));
+                    settingsViewModel.getAppUser().getEmail()));
         } else {
             loginBs.setEnabled(true);
             logoutBs.setEnabled(false);
@@ -224,7 +220,7 @@ public class SettingsActivity extends AppCompatActivity
         deleteBs.setEnabled(isAppUserLoggedIn);
         if (isAppUserLoggedIn) {
             logoutBs.setDescription(getString(R.string.settings_description_logout_with_account,
-                    appUserViewModel.getAppUser().getEmail()));
+                    settingsViewModel.getAppUser().getEmail()));
         } else {
             logoutBs.setDescription(getString(R.string.settings_description_logout));
         }
@@ -260,7 +256,7 @@ public class SettingsActivity extends AppCompatActivity
 
             // Successfully signed in
             if (resultCode == RESULT_OK) {
-                appUserViewModel.signIn();
+                settingsViewModel.signIn();
                 Utility.showToast(this, getString(R.string.login_successful));
                 showUserLoginState();
                 return;
@@ -293,13 +289,13 @@ public class SettingsActivity extends AppCompatActivity
         // set dialog message
         alertDialogBuilder
                 .setMessage(getString(R.string.logout_dialog_message,
-                        appUserViewModel.getAppUser().getEmail()))
+                        settingsViewModel.getAppUser().getEmail()))
                 .setCancelable(true)
                 .setIcon(getDrawable(R.drawable.ic_warning))
                 .setPositiveButton(getString(android.R.string.ok),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                appUserViewModel.signOut();
+                                settingsViewModel.signOut();
                                 Toast.makeText(SettingsActivity.this, getString(R.string.you_are_logged_out),
                                         Toast.LENGTH_LONG).show();
                                 showUserLoginState();
@@ -318,11 +314,11 @@ public class SettingsActivity extends AppCompatActivity
 
     @Override
     public void onPasswordEntered(char[] password) {
-        final FirebaseUser user = appUserViewModel.getAppUser();
+        final FirebaseUser user = settingsViewModel.getAppUser();
 
         String passwordString = new String(password);
         AuthCredential credential = EmailAuthProvider
-                .getCredential(appUserViewModel.getAppUser().getEmail(), passwordString);
+                .getCredential(settingsViewModel.getAppUser().getEmail(), passwordString);
 
         // Prompt the user to re-provide their sign-in credentials
         user.reauthenticate(credential)
@@ -330,7 +326,7 @@ public class SettingsActivity extends AppCompatActivity
                     @Override
                     public void onSuccess(Void aVoid) {
                         MyLog.d(TAG, "onSuccess");
-                        appUserViewModel.deleteAccount();
+                        settingsViewModel.deleteAccount();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
