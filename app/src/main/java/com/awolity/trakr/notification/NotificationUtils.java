@@ -50,7 +50,6 @@ public class NotificationUtils {
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID_TRACK_RECORD)
                         .setColor(ResourcesCompat.getColor(context.getResources(),
@@ -65,7 +64,6 @@ public class NotificationUtils {
 
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle(context.getString(R.string.record_track_notification_title));
-        //inboxStyle.addLine(context.getString(R.string.record_track_notification_description));
         for (String line : lines) {
             inboxStyle.addLine(line);
         }
