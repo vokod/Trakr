@@ -120,40 +120,13 @@ public class TrackListAdapter
             elevationView = itemView.findViewById(R.id.ppv_ascent);
             mapView = itemView.findViewById(R.id.mapView);
 
-            if (unit == Constants.UNIT_IMPERIAL) {
-                durationView.setup(context.getString(R.string.elapsed_time_view_title),
-                        context.getString(R.string.elapsed_time_view_unit),
-                        context.getString(R.string.elapsed_time_view_default_value),
-                        R.drawable.ic_duration);
-                distanceView.setup(context.getString(R.string.distance_view_title),
-                        context.getString(R.string.distance_view_unit),
-                        context.getString(R.string.distance_view_default_value),
-                        R.drawable.ic_distance);
-                elevationView.setup(context.getString(R.string.ascent_view_title),
-                        context.getString(R.string.ascent_view_unit),
-                        context.getString(R.string.ascent_view_default_value),
-                        R.drawable.ic_ascent);
-            } else {
-                durationView.setup(context.getString(R.string.elapsed_time_view_title),
-                        context.getString(R.string.elapsed_time_view_unit),
-                        context.getString(R.string.elapsed_time_view_default_value),
-                        R.drawable.ic_duration);
-                distanceView.setup(context.getString(R.string.distance_view_title),
-                        context.getString(R.string.distance_view_unit),
-                        context.getString(R.string.distance_view_default_value),
-                        R.drawable.ic_distance);
-                elevationView.setup(context.getString(R.string.ascent_view_title),
-                        context.getString(R.string.ascent_view_unit),
-                        context.getString(R.string.ascent_view_default_value),
-                        R.drawable.ic_ascent);
-            }
+            resetWidgets();
+
             mapView.onCreate(null);
             mapView.setClickable(false);
-
         }
 
         void bind(final TrackDataWithMapPoints trackDataWithMapPoints) {
-            // MyLog.d(TAG, "bind " + TrackItemViewHolder.this.hashCode());
             this.trackDataWithMapPoints = trackDataWithMapPoints;
             titleTv.setText(this.trackDataWithMapPoints.getTitle());
             dateTv.setText(DateUtils.getRelativeTimeSpanString(
@@ -193,6 +166,33 @@ public class TrackListAdapter
                     callback.onTrackItemClicked(trackDataWithMapPoints.getTrackId(), itemView);
                 }
             });
+        }
+
+        private void resetWidgets() {
+            durationView.setup(context.getString(R.string.elapsed_time_view_title),
+                    context.getString(R.string.elapsed_time_view_unit),
+                    context.getString(R.string.elapsed_time_view_default_value),
+                    R.drawable.ic_duration);
+
+            if (unit == Constants.UNIT_IMPERIAL) {
+                distanceView.setup(context.getString(R.string.distance_view_title),
+                        context.getString(R.string.distance_view_unit_imperial),
+                        context.getString(R.string.distance_view_default_value),
+                        R.drawable.ic_distance);
+                elevationView.setup(context.getString(R.string.ascent_view_title),
+                        context.getString(R.string.ascent_view_unit_imperial),
+                        context.getString(R.string.ascent_view_default_value),
+                        R.drawable.ic_ascent);
+            } else {
+                distanceView.setup(context.getString(R.string.distance_view_title),
+                        context.getString(R.string.distance_view_unit),
+                        context.getString(R.string.distance_view_default_value),
+                        R.drawable.ic_distance);
+                elevationView.setup(context.getString(R.string.ascent_view_title),
+                        context.getString(R.string.ascent_view_unit),
+                        context.getString(R.string.ascent_view_default_value),
+                        R.drawable.ic_ascent);
+            }
         }
     }
 

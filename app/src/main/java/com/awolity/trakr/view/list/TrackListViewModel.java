@@ -31,6 +31,10 @@ public class TrackListViewModel extends ViewModel {
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 
+    public int getUnit(){
+        return settingsRepository.getUnit();
+    }
+
     public LiveData<List<TrackDataWithMapPoints>> getTrackDataListWithMapPoints() {
         final MediatorLiveData<List<TrackDataWithMapPoints>> result = new MediatorLiveData<>();
         result.addSource(trackRepository.getTrackDataListWithMapPoints(

@@ -85,6 +85,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
     private void setupViewModel() {
         TrackListViewModel trackListViewModel = ViewModelProviders.of(this)
                 .get(TrackListViewModel.class);
+        trackListAdapter.setUnit(trackListViewModel.getUnit());
         trackListViewModel.getTrackDataListWithMapPoints().observe(this,
                 new Observer<List<TrackDataWithMapPoints>>() {
                     @Override
