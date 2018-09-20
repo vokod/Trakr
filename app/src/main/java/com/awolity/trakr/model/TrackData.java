@@ -1,5 +1,7 @@
 package com.awolity.trakr.model;
 
+import com.awolity.trakrutils.Constants;
+
 public class TrackData {
 
     private long trackId;
@@ -163,5 +165,15 @@ public class TrackData {
 
     public void setMetadata(String metadata) {
         this.metadata = metadata;
+    }
+
+    public void convertToImperial() {
+        setDistance(getDistance() / Constants.MILE);
+        setAscent(getAscent() / Constants.FOOT);
+        setDescent(getDescent() / Constants.FOOT);
+        setMinAltitude(getMinAltitude() / Constants.FOOT);
+        setMaxAltitude(getMaxAltitude() / Constants.FOOT);
+        setMaxSpeed(getMaxSpeed() / Constants.MILE);
+        setAvgSpeed(getAvgSpeed() / Constants.MILE);
     }
 }

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.model.MapPoint;
 import com.awolity.trakr.model.TrackData;
 import com.awolity.trakr.model.TrackDataWithMapPoints;

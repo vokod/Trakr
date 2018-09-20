@@ -36,6 +36,7 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
     private GoogleMap map;
     private TextView placeholderTv;
     private double np = 0, sp = 0, wp = 0, ep = 0;
+    private ExploreViewModel exploreViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,7 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
             public void onPolylineClick(Polyline polyline) {
                 TrackDetailsDialog dialog = new TrackDetailsDialog();
                 dialog.setTrackData((TrackData) polyline.getTag());
+                dialog.setUnit(exploreViewModel.getUnit());
                 dialog.show(getSupportFragmentManager(), null);
             }
         });
@@ -88,7 +90,7 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void setupViewmodel() {
-        final ExploreViewModel exploreViewModel = ViewModelProviders.of(this)
+        exploreViewModel = ViewModelProviders.of(this)
                 .get(ExploreViewModel.class);
         exploreViewModel.getTracksData().observe(this, new Observer<List<TrackData>>() {
             @Override

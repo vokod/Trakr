@@ -128,25 +128,26 @@ public class TrackListAdapter
 
         void bind(final TrackDataWithMapPoints trackDataWithMapPoints) {
             this.trackDataWithMapPoints = trackDataWithMapPoints;
-            titleTv.setText(this.trackDataWithMapPoints.getTitle());
+            titleTv.setText(this.trackDataWithMapPoints.getTrackData().getTitle());
             dateTv.setText(DateUtils.getRelativeTimeSpanString(
-                    this.trackDataWithMapPoints.getStartTime()).toString());
+                    this.trackDataWithMapPoints.getTrackData().getStartTime()).toString());
 
             String firstLetter = "";
-            if (trackDataWithMapPoints.getTitle() != null && !trackDataWithMapPoints.getTitle().isEmpty()) {
-                firstLetter = trackDataWithMapPoints.getTitle().substring(0, 1);
+            if (trackDataWithMapPoints.getTrackData().getTitle()
+                    != null && !trackDataWithMapPoints.getTrackData().getTitle().isEmpty()) {
+                firstLetter = trackDataWithMapPoints.getTrackData().getTitle().substring(0, 1);
             }
             initialIv.setImageDrawable(
                     Utility.getInitial(firstLetter,
-                            String.valueOf(trackDataWithMapPoints.getStartTime()),
+                            String.valueOf(trackDataWithMapPoints.getTrackData().getStartTime()),
                             initialIv.getLayoutParams().width));
 
             distanceView.setValue(StringUtils.getDistanceAsThreeCharactersString(
-                    trackDataWithMapPoints.getDistance()));
+                    trackDataWithMapPoints.getTrackData().getDistance()));
             elevationView.setValue(String.format(Locale.getDefault(),
-                    "%.0f", trackDataWithMapPoints.getAscent()));
+                    "%.0f", trackDataWithMapPoints.getTrackData().getAscent()));
             durationView.setValue(StringUtils.getElapsedTimeAsString(
-                    trackDataWithMapPoints.getElapsedTime()));
+                    trackDataWithMapPoints.getTrackData().getElapsedTime()));
 
             mapView.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -163,7 +164,8 @@ public class TrackListAdapter
             clickOverlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    callback.onTrackItemClicked(trackDataWithMapPoints.getTrackId(), itemView);
+                    callback.onTrackItemClicked(trackDataWithMapPoints.getTrackData().getTrackId(),
+                            itemView);
                 }
             });
         }
