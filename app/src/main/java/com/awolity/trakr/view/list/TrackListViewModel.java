@@ -30,6 +30,10 @@ public class TrackListViewModel extends ViewModel {
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 
+    public int getUnit(){
+        return settingsRepository.getUnit();
+    }
+
     public LiveData<List<TrackDataWithMapPoints>> getTrackDataListWithMapPoints() {
         final MediatorLiveData<List<TrackDataWithMapPoints>> result = new MediatorLiveData<>();
         result.addSource(trackRepository.getTrackDataListWithMapPoints(
@@ -38,14 +42,21 @@ public class TrackListViewModel extends ViewModel {
                     @Override
                     public void onChanged(@Nullable List<TrackDataWithMapPoints> trackDataListWithMapPoints) {
                         if (trackDataListWithMapPoints != null) {
+                            // get out the last recorded track, if recording right now
                             long lastRecordedTrackId = settingsRepository.getLastRecordedTrackId();
                             for (TrackDataWithMapPoints trackDataWithMapPoints : trackDataListWithMapPoints) {
-                                if (trackDataWithMapPoints.getTrackId() == lastRecordedTrackId) {
+                                if (trackDataWithMapPoints.getTrackData().getTrackId() == lastRecordedTrackId) {
                                     trackDataListWithMapPoints.remove(trackDataWithMapPoints);
                                     break;
                                 }
                             }
-                            result.setValue(trackDataListWithMapPoints);
+                            if (settingsRepository.getUnit() == Constants.UNIT_IMPERIAL) {
+                                for (TrackDataWithMapPoints trackDataWithMapPoints : trackDataListWithMapPoints) {
+                                    trackDataWithMapPoints.getTrackData().convertToImperial();
+                                    trackDataWithMapPoints.getTrackData().getTrackId();
+                                }
+                            }
+                            result.postValue(trackDataListWithMapPoints);
                         }
                     }
                 });

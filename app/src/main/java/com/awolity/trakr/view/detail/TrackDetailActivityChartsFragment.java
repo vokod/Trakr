@@ -52,12 +52,15 @@ public class TrackDetailActivityChartsFragment extends Fragment {
     private TextView titleTextView, dateTextView;
     private ImageButton editTitleImageButton;
     private ImageView initialImageView;
+    private TrackDetailViewModel trackDetailViewModel;
+    private LineDataSet elevationDataSet;
 
     public static TrackDetailActivityChartsFragment newInstance() {
         return new TrackDetailActivityChartsFragment();
     }
 
-    public TrackDetailActivityChartsFragment() { }
+    public TrackDetailActivityChartsFragment() {
+    }
 
     @SuppressWarnings("EmptyMethod")
     @Override
@@ -71,8 +74,12 @@ public class TrackDetailActivityChartsFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_track_detail_fragment_charts, container, false);
         setupWidgets(view);
         setupCharts();
+
+        trackDetailViewModel = ViewModelProviders.of(getActivity())
+                .get(TrackDetailViewModel.class);
+
         resetWidgets();
-        setupViewModel();
+        observe();
         return view;
     }
 
@@ -150,39 +157,73 @@ public class TrackDetailActivityChartsFragment extends Fragment {
     }
 
     private void resetWidgets() {
-        maxSpeedPpvi.setup(getString(R.string.max_speed_view_title),
-                getString(R.string.max_speed_view_unit),
-                getString(R.string.max_speed_view_default_value),
-                R.drawable.ic_max_speed);
-        avgSpeedPpvi.setup(getString(R.string.avg_speed_view_title),
-                getString(R.string.avg_speed_view_unit),
-                getString(R.string.avg_speed_view_default_value),
-                R.drawable.ic_avg_speed);
-        maxPacePpvi.setup(getString(R.string.max_pace_view_title),
-                getString(R.string.max_pace_view_unit),
-                getString(R.string.max_pace_view_default_value),
-                R.drawable.ic_max_speed);
-        avgPacePpvi.setup(getString(R.string.avg_pace_view_title),
-                getString(R.string.avg_pace_view_unit),
-                getString(R.string.avg_pace_view_default_value),
-                R.drawable.ic_avg_speed);
-        ascentPpvi.setup(getString(R.string.ascent_view_title),
-                getString(R.string.ascent_view_unit),
-                getString(R.string.ascent_view_default_value),
-                R.drawable.ic_ascent);
-        descentPpvi.setup(getString(R.string.descent_view_title),
-                getString(R.string.descent_view_unit),
-                getString(R.string.descent_view_default_value),
-                R.drawable.ic_descent);
-        maxAltitudePpvi.setup(getString(R.string.max_altitude_view_title),
-                getString(R.string.max_altitude_view_unit),
-                getString(R.string.max_altitude_view_default_value),
-                R.drawable.ic_max_altitude);
-        minAltitudePpvi.setup(getString(R.string.min_altitude_view_title),
-                getString(R.string.min_altitude_view_unit),
-                getString(R.string.min_altitude_view_default_value),
-                R.drawable.ic_min_altitude);
-
+        if (trackDetailViewModel.getUnit() == Constants.UNIT_IMPERIAL) {
+            maxSpeedPpvi.setup(getString(R.string.max_speed_view_title),
+                    getString(R.string.max_speed_view_unit_imperial),
+                    getString(R.string.max_speed_view_default_value),
+                    R.drawable.ic_max_speed);
+            avgSpeedPpvi.setup(getString(R.string.avg_speed_view_title),
+                    getString(R.string.avg_speed_view_unit_imperial),
+                    getString(R.string.avg_speed_view_default_value),
+                    R.drawable.ic_avg_speed);
+            maxPacePpvi.setup(getString(R.string.max_pace_view_title),
+                    getString(R.string.max_pace_view_unit_imperial),
+                    getString(R.string.max_pace_view_default_value),
+                    R.drawable.ic_max_speed);
+            avgPacePpvi.setup(getString(R.string.avg_pace_view_title),
+                    getString(R.string.avg_pace_view_unit_imperial),
+                    getString(R.string.avg_pace_view_default_value),
+                    R.drawable.ic_avg_speed);
+            ascentPpvi.setup(getString(R.string.ascent_view_title),
+                    getString(R.string.ascent_view_unit_imperial),
+                    getString(R.string.ascent_view_default_value),
+                    R.drawable.ic_ascent);
+            descentPpvi.setup(getString(R.string.descent_view_title),
+                    getString(R.string.descent_view_unit_imperial),
+                    getString(R.string.descent_view_default_value),
+                    R.drawable.ic_descent);
+            maxAltitudePpvi.setup(getString(R.string.max_altitude_view_title),
+                    getString(R.string.max_altitude_view_unit_imperial),
+                    getString(R.string.max_altitude_view_default_value),
+                    R.drawable.ic_max_altitude);
+            minAltitudePpvi.setup(getString(R.string.min_altitude_view_title),
+                    getString(R.string.min_altitude_view_unit_imperial),
+                    getString(R.string.min_altitude_view_default_value),
+                    R.drawable.ic_min_altitude);
+        } else {
+            maxSpeedPpvi.setup(getString(R.string.max_speed_view_title),
+                    getString(R.string.max_speed_view_unit_imperial),
+                    getString(R.string.max_speed_view_default_value),
+                    R.drawable.ic_max_speed);
+            avgSpeedPpvi.setup(getString(R.string.avg_speed_view_title),
+                    getString(R.string.avg_speed_view_unit_imperial),
+                    getString(R.string.avg_speed_view_default_value),
+                    R.drawable.ic_avg_speed);
+            maxPacePpvi.setup(getString(R.string.max_pace_view_title),
+                    getString(R.string.max_pace_view_unit_imperial),
+                    getString(R.string.max_pace_view_default_value),
+                    R.drawable.ic_max_speed);
+            avgPacePpvi.setup(getString(R.string.avg_pace_view_title),
+                    getString(R.string.avg_pace_view_unit_imperial),
+                    getString(R.string.avg_pace_view_default_value),
+                    R.drawable.ic_avg_speed);
+            ascentPpvi.setup(getString(R.string.ascent_view_title),
+                    getString(R.string.ascent_view_unit_imperial),
+                    getString(R.string.ascent_view_default_value),
+                    R.drawable.ic_ascent);
+            descentPpvi.setup(getString(R.string.descent_view_title),
+                    getString(R.string.descent_view_unit_imperial),
+                    getString(R.string.descent_view_default_value),
+                    R.drawable.ic_descent);
+            maxAltitudePpvi.setup(getString(R.string.max_altitude_view_title),
+                    getString(R.string.max_altitude_view_unit_imperial),
+                    getString(R.string.max_altitude_view_default_value),
+                    R.drawable.ic_max_altitude);
+            minAltitudePpvi.setup(getString(R.string.min_altitude_view_title),
+                    getString(R.string.min_altitude_view_unit_imperial),
+                    getString(R.string.min_altitude_view_default_value),
+                    R.drawable.ic_min_altitude);
+        }
         paceCheckBox.setChecked(false);
         speedCheckBox.setChecked(true);
     }
@@ -217,24 +258,19 @@ public class TrackDetailActivityChartsFragment extends Fragment {
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void setupViewModel() {
-        TrackDetailViewModel trackDetailViewModel = ViewModelProviders.of(getActivity())
-                .get(TrackDetailViewModel.class);
+    private void observe() {
+        trackDetailViewModel.getChartPoints().observe(this, new Observer<List<ChartPoint>>() {
+            @Override
+            public void onChanged(@Nullable final List<ChartPoint> chartPoints) {
+                if (chartPoints != null) {
+                    TrackDetailActivityChartsFragment.this.chartPoints = chartPoints;
 
-        trackDetailViewModel.getChartPoints(
-                Constants.CHART_POINT_MAX_NUMBER_FOR_TRACK_DETAIL)
-                .observe(this, new Observer<List<ChartPoint>>() {
-                    @Override
-                    public void onChanged(@Nullable final List<ChartPoint> chartPoints) {
-                        if (chartPoints != null) {
-                            TrackDetailActivityChartsFragment.this.chartPoints = chartPoints;
-
-                            setWidgetData(trackData);
-                            setSpeedChartDataByDistance(chartPoints);
-                            setElevationChartDataByDistance(chartPoints);
-                        }
-                    }
-                });
+                    setWidgetData(trackData);
+                    setSpeedChartDataByDistance(chartPoints);
+                    setElevationChartDataByDistance(chartPoints);
+                }
+            }
+        });
 
         trackDetailViewModel.getTrackData().observe(this, new Observer<TrackData>() {
             @Override
@@ -306,7 +342,12 @@ public class TrackDetailActivityChartsFragment extends Fragment {
             values.add(new Entry((float) elapsedSeconds, (float) chartPoint.getAltitude()));
         }
         elevationChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
-        LineDataSet elevationDataSet = new LineDataSet(values, getString(R.string.elevation_chart_title));
+        LineDataSet elevationDataSet;
+        if (trackDetailViewModel.getUnit() == Constants.UNIT_IMPERIAL) {
+            elevationDataSet = new LineDataSet(values, getString(R.string.elevation_chart_title_imperial));
+        } else {
+            elevationDataSet = new LineDataSet(values, getString(R.string.elevation_chart_title));
+        }
         elevationDataSet.setDrawHighlightIndicators(false);
         setElevationChartData(elevationDataSet);
     }
@@ -315,10 +356,15 @@ public class TrackDetailActivityChartsFragment extends Fragment {
         List<Entry> values = new ArrayList<>();
 
         for (ChartPoint chartPoint : chartPoints) {
-            values.add(new Entry((float)chartPoint.getDistance(), (float) chartPoint.getAltitude()));
+            values.add(new Entry((float) chartPoint.getDistance(), (float) chartPoint.getAltitude()));
         }
         elevationChart.getXAxis().setValueFormatter(new LargeValueFormatter());
-        LineDataSet elevationDataSet = new LineDataSet(values, getString(R.string.elevation_chart_title));
+        LineDataSet elevationDataSet;
+        if (trackDetailViewModel.getUnit() == Constants.UNIT_IMPERIAL) {
+            elevationDataSet = new LineDataSet(values, getString(R.string.elevation_chart_title_imperial));
+        } else {
+            elevationDataSet = new LineDataSet(values, getString(R.string.elevation_chart_title));
+        }
         elevationDataSet.setDrawHighlightIndicators(false);
         setElevationChartData(elevationDataSet);
     }
@@ -336,7 +382,13 @@ public class TrackDetailActivityChartsFragment extends Fragment {
             values.add(new Entry((float) elapsedSeconds, (float) chartPoint.getSpeed()));
         }
         speedChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
-        LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
+
+        LineDataSet speedDataSet;
+        if (trackDetailViewModel.getUnit() == Constants.UNIT_IMPERIAL) {
+            speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title_imperial));
+        } else {
+            speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
+        }
         speedDataSet.setDrawHighlightIndicators(false);
         setSpeedChartData(speedDataSet);
     }
@@ -348,7 +400,12 @@ public class TrackDetailActivityChartsFragment extends Fragment {
             values.add(new Entry((float) chartPoint.getDistance(), (float) chartPoint.getSpeed()));
         }
         speedChart.getXAxis().setValueFormatter(new LargeValueFormatter());
-        LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
+        LineDataSet speedDataSet;
+        if (trackDetailViewModel.getUnit() == Constants.UNIT_IMPERIAL) {
+            speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title_imperial));
+        } else {
+            speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
+        }
         speedDataSet.setDrawHighlightIndicators(false);
         setSpeedChartData(speedDataSet);
     }
@@ -375,7 +432,13 @@ public class TrackDetailActivityChartsFragment extends Fragment {
         }
         speedChart.getXAxis().setValueFormatter(new GraphTimeAxisValueFormatter(durationInSeconds));
         speedChart.getAxisLeft().setValueFormatter(new GraphTimeAxisValueFormatter((long) highestPaceValue));
-        LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.pace_chart_title));
+
+        LineDataSet speedDataSet;
+        if (trackDetailViewModel.getUnit() == Constants.UNIT_IMPERIAL) {
+            speedDataSet = new LineDataSet(values, getString(R.string.pace_chart_title_imperial));
+        } else {
+            speedDataSet = new LineDataSet(values, getString(R.string.pace_chart_title));
+        }
         speedDataSet.setDrawHighlightIndicators(false);
         setSpeedChartData(speedDataSet);
     }
@@ -397,7 +460,12 @@ public class TrackDetailActivityChartsFragment extends Fragment {
         }
         speedChart.getXAxis().setValueFormatter(new LargeValueFormatter());
         speedChart.getAxisLeft().setValueFormatter(new GraphTimeAxisValueFormatter((long) highestPaceValue));
-        LineDataSet speedDataSet = new LineDataSet(values, getString(R.string.speed_chart_title));
+        LineDataSet speedDataSet;
+        if (trackDetailViewModel.getUnit() == Constants.UNIT_IMPERIAL) {
+            speedDataSet = new LineDataSet(values, getString(R.string.pace_chart_title_imperial));
+        } else {
+            speedDataSet = new LineDataSet(values, getString(R.string.pace_chart_title));
+        }
         speedDataSet.setDrawHighlightIndicators(false);
         setSpeedChartData(speedDataSet);
     }

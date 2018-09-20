@@ -15,11 +15,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
 import com.awolity.trakr.model.TrackDataWithMapPoints;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
-import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 
 import java.util.List;
@@ -69,6 +69,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
     private void setupViewModel() {
         TrackListViewModel trackListViewModel = ViewModelProviders.of(this)
                 .get(TrackListViewModel.class);
+        trackListAdapter.setUnit(trackListViewModel.getUnit());
         trackListViewModel.getTrackDataListWithMapPoints().observe(this,
                 new Observer<List<TrackDataWithMapPoints>>() {
                     @Override
@@ -84,6 +85,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
                     }
                 });
     }
+
     @Override
     public void onTrackItemClicked(long trackId, View itemView) {
         // MyLog.d(TAG, "onTrackItemClicked");
@@ -94,9 +96,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         ImageView iconIv = itemView.findViewById(R.id.iv_icon);
         TextView dateTv = itemView.findViewById(R.id.tv_date);
 
-        Intent intent = TrackDetailActivity.getStarterIntent(this, trackId,
-                Utility.convertToBitmap(iconIv.getDrawable(),
-                        iconIv.getLayoutParams().width, iconIv.getLayoutParams().height));
+        Intent intent = TrackDetailActivity.getStarterIntent(this, trackId);
 
         Pair<View, String> p1 = Pair.create((View) spvDistance,
                 getString(R.string.transition_ppvi_distance));

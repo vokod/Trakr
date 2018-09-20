@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.awolity.trakr.R;
 import com.awolity.trakr.model.TrackDataWithMapPoints;
 import com.awolity.trakr.view.MapUtils;
+import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.StringUtils;
 import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
@@ -34,6 +35,7 @@ public class TrackListAdapter
     private final LayoutInflater layoutInflater;
     private final TrackItemCallback callback;
     private final Context context;
+    private int unit = Constants.UNIT_METRIC;
 
     TrackListAdapter(Context context, LayoutInflater layoutInflater, TrackItemCallback callback) {
         this.layoutInflater = layoutInflater;
@@ -90,6 +92,10 @@ public class TrackListAdapter
         return items.size();
     }
 
+    public void setUnit(int unit) {
+        this.unit = unit;
+    }
+
     class TrackItemViewHolder extends RecyclerView.ViewHolder {
 
         private TrackDataWithMapPoints trackDataWithMapPoints;
@@ -114,45 +120,34 @@ public class TrackListAdapter
             elevationView = itemView.findViewById(R.id.ppv_ascent);
             mapView = itemView.findViewById(R.id.mapView);
 
-            durationView.setup(context.getString(R.string.elapsed_time_view_title),
-                    context.getString(R.string.elapsed_time_view_unit),
-                    context.getString(R.string.elapsed_time_view_default_value),
-                    R.drawable.ic_duration);
-            distanceView.setup(context.getString(R.string.distance_view_title),
-                    context.getString(R.string.distance_view_unit),
-                    context.getString(R.string.distance_view_default_value),
-                    R.drawable.ic_distance);
-            elevationView.setup(context.getString(R.string.ascent_view_title),
-                    context.getString(R.string.ascent_view_unit),
-                    context.getString(R.string.ascent_view_default_value),
-                    R.drawable.ic_ascent);
+            resetWidgets();
 
             mapView.onCreate(null);
             mapView.setClickable(false);
         }
 
         void bind(final TrackDataWithMapPoints trackDataWithMapPoints) {
-            // MyLog.d(TAG, "bind " + TrackItemViewHolder.this.hashCode());
             this.trackDataWithMapPoints = trackDataWithMapPoints;
-            titleTv.setText(this.trackDataWithMapPoints.getTitle());
+            titleTv.setText(this.trackDataWithMapPoints.getTrackData().getTitle());
             dateTv.setText(DateUtils.getRelativeTimeSpanString(
-                    this.trackDataWithMapPoints.getStartTime()).toString());
+                    this.trackDataWithMapPoints.getTrackData().getStartTime()).toString());
 
             String firstLetter = "";
-            if (trackDataWithMapPoints.getTitle() != null && !trackDataWithMapPoints.getTitle().isEmpty()) {
-                firstLetter = trackDataWithMapPoints.getTitle().substring(0, 1);
+            if (trackDataWithMapPoints.getTrackData().getTitle()
+                    != null && !trackDataWithMapPoints.getTrackData().getTitle().isEmpty()) {
+                firstLetter = trackDataWithMapPoints.getTrackData().getTitle().substring(0, 1);
             }
             initialIv.setImageDrawable(
                     Utility.getInitial(firstLetter,
-                            String.valueOf(trackDataWithMapPoints.getStartTime()),
+                            String.valueOf(trackDataWithMapPoints.getTrackData().getStartTime()),
                             initialIv.getLayoutParams().width));
 
             distanceView.setValue(StringUtils.getDistanceAsThreeCharactersString(
-                    trackDataWithMapPoints.getDistance()));
+                    trackDataWithMapPoints.getTrackData().getDistance()));
             elevationView.setValue(String.format(Locale.getDefault(),
-                    "%.0f", trackDataWithMapPoints.getAscent()));
+                    "%.0f", trackDataWithMapPoints.getTrackData().getAscent()));
             durationView.setValue(StringUtils.getElapsedTimeAsString(
-                    trackDataWithMapPoints.getElapsedTime()));
+                    trackDataWithMapPoints.getTrackData().getElapsedTime()));
 
             mapView.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -169,9 +164,37 @@ public class TrackListAdapter
             clickOverlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    callback.onTrackItemClicked(trackDataWithMapPoints.getTrackId(), itemView);
+                    callback.onTrackItemClicked(trackDataWithMapPoints.getTrackData().getTrackId(),
+                            itemView);
                 }
             });
+        }
+
+        private void resetWidgets() {
+            durationView.setup(context.getString(R.string.elapsed_time_view_title),
+                    context.getString(R.string.elapsed_time_view_unit),
+                    context.getString(R.string.elapsed_time_view_default_value),
+                    R.drawable.ic_duration);
+
+            if (unit == Constants.UNIT_IMPERIAL) {
+                distanceView.setup(context.getString(R.string.distance_view_title),
+                        context.getString(R.string.distance_view_unit_imperial),
+                        context.getString(R.string.distance_view_default_value),
+                        R.drawable.ic_distance);
+                elevationView.setup(context.getString(R.string.ascent_view_title),
+                        context.getString(R.string.ascent_view_unit_imperial),
+                        context.getString(R.string.ascent_view_default_value),
+                        R.drawable.ic_ascent);
+            } else {
+                distanceView.setup(context.getString(R.string.distance_view_title),
+                        context.getString(R.string.distance_view_unit),
+                        context.getString(R.string.distance_view_default_value),
+                        R.drawable.ic_distance);
+                elevationView.setup(context.getString(R.string.ascent_view_title),
+                        context.getString(R.string.ascent_view_unit),
+                        context.getString(R.string.ascent_view_default_value),
+                        R.drawable.ic_ascent);
+            }
         }
     }
 

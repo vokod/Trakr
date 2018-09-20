@@ -15,8 +15,10 @@ import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.notification.NotificationUtils;
+import com.awolity.trakr.repository.SettingsRepository;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.view.widget.TrakrWidget;
+import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.StringUtils;
 import com.google.android.gms.location.LocationRequest;
 
@@ -41,10 +43,15 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     private Handler handler;
     private final Runnable uiUpdater;
     private final TrackRecorderStatus status;
+    private int unit = Constants.UNIT_METRIC;
 
     @SuppressWarnings("WeakerAccess")
     @Inject
     TrackRepository trackRepository;
+
+    @SuppressWarnings("WeakerAccess")
+    @Inject
+    SettingsRepository settingsRepository;
 
     @SuppressWarnings("WeakerAccess")
     @Inject
@@ -68,8 +75,8 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
         uiUpdater = new Runnable() {
             @Override
             public void run() {
-                updateNotification(context, track);
-                updateWidget(context, track);
+                updateNotification(context, track, unit);
+                updateWidget(context, track, unit);
                 handler.postDelayed(uiUpdater, 1000);
             }
         };
@@ -77,6 +84,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
     void startRecording() {
         // MyLog.d(TAG, "startRecording");
+        unit = settingsRepository.getUnit();
 
         handler = new Handler();
 
@@ -92,7 +100,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
                 if (locationManager.isLocationEnabled()) {
                     locationManager.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
                         @Override
-                        public void onLocationSettingsDetermined(boolean isSettingsGood, Exception e ) {
+                        public void onLocationSettingsDetermined(boolean isSettingsGood, Exception e) {
                             if (isSettingsGood) {
                                 // here starts the whole recording
                                 locationManager.start(TrackRecorder.this);
@@ -236,34 +244,63 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
         return trackId;
     }
 
-    private static void updateNotification(Context context, TrackEntity track) {
+    private static void updateNotification(Context context, TrackEntity track, int unit) {
         // MyLog.d(TAG, "updateNotification");
         List<String> lines = new ArrayList<>(6);
-        lines.add(context.getString(R.string.record_notification_line_1,
-                StringUtils.getElapsedTimeAsString(System.currentTimeMillis() - track.getStartTime())));
-        lines.add(context.getString(R.string.record_notification_line_2,
-                StringUtils.getDistanceAsThreeCharactersString(track.getDistance())));
-        lines.add(context.getString(R.string.record_notification_line_3,
-                String.format(Locale.getDefault(), "%.0f", track.getAscent())));
-        lines.add(context.getString(R.string.record_notification_line_4,
-                String.format(Locale.getDefault(), "%.0f", track.getDescent())));
-        lines.add(context.getString(R.string.record_notification_line_5,
-                String.format(Locale.getDefault(), "%.1f", track.getAvgSpeed())));
-
+        if (unit == Constants.UNIT_IMPERIAL) {
+            lines.add(context.getString(R.string.record_notification_line_1,
+                    StringUtils.getElapsedTimeAsString(System.currentTimeMillis()
+                            - track.getStartTime())));
+            lines.add(context.getString(R.string.record_notification_line_2_imperial,
+                    StringUtils.getDistanceAsThreeCharactersString(track.getDistance()
+                            / Constants.MILE)));
+            lines.add(context.getString(R.string.record_notification_line_3_imperial,
+                    String.format(Locale.getDefault(), "%.0f", track.getAscent()
+                            / Constants.FOOT)));
+            lines.add(context.getString(R.string.record_notification_line_4_imperial,
+                    String.format(Locale.getDefault(), "%.0f", track.getDescent()
+                            / Constants.FOOT)));
+            lines.add(context.getString(R.string.record_notification_line_5_imperial,
+                    String.format(Locale.getDefault(), "%.1f", track.getAvgSpeed()
+                            / Constants.MILE)));
+        } else {
+            lines.add(context.getString(R.string.record_notification_line_1,
+                    StringUtils.getElapsedTimeAsString(System.currentTimeMillis() - track.getStartTime())));
+            lines.add(context.getString(R.string.record_notification_line_2,
+                    StringUtils.getDistanceAsThreeCharactersString(track.getDistance())));
+            lines.add(context.getString(R.string.record_notification_line_3,
+                    String.format(Locale.getDefault(), "%.0f", track.getAscent())));
+            lines.add(context.getString(R.string.record_notification_line_4,
+                    String.format(Locale.getDefault(), "%.0f", track.getDescent())));
+            lines.add(context.getString(R.string.record_notification_line_5,
+                    String.format(Locale.getDefault(), "%.1f", track.getAvgSpeed())));
+        }
         NotificationUtils.showRecordTrackNotification(context, lines);
     }
 
-    private static void updateWidget(Context context, TrackEntity track) {
+    private static void updateWidget(Context context, TrackEntity track, int unit) {
         final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         final ComponentName componentName = new ComponentName(context, TrakrWidget.class);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(componentName);
         for (int appWidgetId : appWidgetIds) {
-            TrakrWidget.updateAppWidget(context,
-                    appWidgetManager,
-                    appWidgetId,
-                    StringUtils.getElapsedTimeAsString(
-                            System.currentTimeMillis() - track.getStartTime()),
-                    StringUtils.getDistanceAsThreeCharactersString(track.getDistance()));
+            if (unit == Constants.UNIT_IMPERIAL) {
+                TrakrWidget.updateAppWidget(context,
+                        appWidgetManager,
+                        appWidgetId,
+                        StringUtils.getElapsedTimeAsString(
+                                System.currentTimeMillis() - track.getStartTime()),
+                        StringUtils.getDistanceAsThreeCharactersString(track.getDistance()
+                                / Constants.MILE),
+                        unit);
+            } else {
+                TrakrWidget.updateAppWidget(context,
+                        appWidgetManager,
+                        appWidgetId,
+                        StringUtils.getElapsedTimeAsString(
+                                System.currentTimeMillis() - track.getStartTime()),
+                        StringUtils.getDistanceAsThreeCharactersString(track.getDistance()),
+                        unit);
+            }
         }
     }
 

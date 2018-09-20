@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.model.TrackData;
+import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.StringUtils;
 import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.ListPropertyViewIcon;
@@ -29,11 +30,15 @@ public class TrackDetailsDialog extends android.support.v4.app.DialogFragment {
     }
 
     private TrackDetailsDialogListener listener;
-
     private TrackData trackData;
+    private int unit = Constants.UNIT_METRIC;
 
     public void setTrackData(TrackData trackData) {
         this.trackData = trackData;
+    }
+
+    public void setUnit(int unit) {
+        this.unit = unit;
     }
 
     @NonNull
@@ -46,11 +51,9 @@ public class TrackDetailsDialog extends android.support.v4.app.DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        @SuppressWarnings("ConstantConditions")
-        final LayoutInflater inflater = getActivity().getLayoutInflater();
+        @SuppressWarnings("ConstantConditions") final LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        @SuppressLint("InflateParams")
-        final View dialog = inflater.inflate(R.layout.activity_explore_dialog_track_data, null);
+        @SuppressLint("InflateParams") final View dialog = inflater.inflate(R.layout.activity_explore_dialog_track_data, null);
 
         ListPropertyViewIcon durationView = dialog.findViewById(R.id.lpv_duration);
         ListPropertyViewIcon distanceView = dialog.findViewById(R.id.lpv_distance);
@@ -63,14 +66,25 @@ public class TrackDetailsDialog extends android.support.v4.app.DialogFragment {
                 getActivity().getString(R.string.elapsed_time_view_unit),
                 getActivity().getString(R.string.elapsed_time_view_default_value),
                 R.drawable.ic_duration);
-        distanceView.setup(getActivity().getString(R.string.distance_view_title),
-                getActivity().getString(R.string.distance_view_unit),
-                getActivity().getString(R.string.distance_view_default_value),
-                R.drawable.ic_distance);
-        elevationView.setup(getActivity().getString(R.string.ascent_view_title),
-                getActivity().getString(R.string.ascent_view_unit),
-                getActivity().getString(R.string.ascent_view_default_value),
-                R.drawable.ic_ascent);
+        if (unit == Constants.UNIT_IMPERIAL) {
+            distanceView.setup(getActivity().getString(R.string.distance_view_title),
+                    getActivity().getString(R.string.distance_view_unit_imperial),
+                    getActivity().getString(R.string.distance_view_default_value),
+                    R.drawable.ic_distance);
+            elevationView.setup(getActivity().getString(R.string.ascent_view_title),
+                    getActivity().getString(R.string.ascent_view_unit_imperial),
+                    getActivity().getString(R.string.ascent_view_default_value),
+                    R.drawable.ic_ascent);
+        } else {
+            distanceView.setup(getActivity().getString(R.string.distance_view_title),
+                    getActivity().getString(R.string.distance_view_unit),
+                    getActivity().getString(R.string.distance_view_default_value),
+                    R.drawable.ic_distance);
+            elevationView.setup(getActivity().getString(R.string.ascent_view_title),
+                    getActivity().getString(R.string.ascent_view_unit),
+                    getActivity().getString(R.string.ascent_view_default_value),
+                    R.drawable.ic_ascent);
+        }
 
         titleTv.setText(trackData.getTitle());
         dateTv.setText(DateUtils.getRelativeTimeSpanString(

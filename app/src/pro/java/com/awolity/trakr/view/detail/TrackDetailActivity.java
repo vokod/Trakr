@@ -1,14 +1,11 @@
 package com.awolity.trakr.view.detail;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.transition.Fade;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
-import com.awolity.trakr.data.entity.TrackEntity;
 
 public class TrackDetailActivity extends AppCompatActivity
         implements EditTitleDialog.EditTitleDialogListener {
@@ -27,20 +24,10 @@ public class TrackDetailActivity extends AppCompatActivity
     private static final String TAG_CHARTS_FRAGMENT = "tag_charts_fragment";
     private static final String KEY_SELECTED_FRAGMENT = "key_selected_fragment";
     private static final String EXTRA_TRACK_ID = "extra_track_id";
-    private static final String EXTRA_ICON = "extra_icon";
     private static final int PERMISSION_REQUEST_CODE = 2;
-    private long trackId;
-    Bitmap icon;
     private BottomNavigationView bottomNavigationView;
     private TrackDetailViewModel trackDetailViewModel;
-    private TrackEntity trackEntity;
-
-    public static Intent getStarterIntent(Context context, long trackId, Bitmap icon) {
-        Intent intent = new Intent(context, TrackDetailActivity.class);
-        intent.putExtra(EXTRA_TRACK_ID, trackId);
-        intent.putExtra(EXTRA_ICON, icon);
-        return intent;
-    }
+    private long trackId;
 
     public static Intent getStarterIntent(Context context, long trackId) {
         Intent intent = new Intent(context, TrackDetailActivity.class);
@@ -53,9 +40,9 @@ public class TrackDetailActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_detail);
         trackId = getIntent().getLongExtra(EXTRA_TRACK_ID, 0);
-        icon = getIntent().getParcelableExtra(EXTRA_ICON);
         postponeEnterTransition();
 
+        setupViewModel();
         setupWidgets();
         setupBottomSheetNavigation();
         if (savedInstanceState == null) {
@@ -76,17 +63,16 @@ public class TrackDetailActivity extends AppCompatActivity
                             + savedInstanceState.getInt(KEY_SELECTED_FRAGMENT));
             }
         }
-
-        setupViewModel(trackId);
     }
 
     private void setupWidgets() {
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.app_name);
         bottomNavigationView = findViewById(R.id.navigation);
     }
 
-    private void setupViewModel(long trackId) {
+    private void setupViewModel(){
         trackDetailViewModel = ViewModelProviders.of(this).get(TrackDetailViewModel.class);
         trackDetailViewModel.init(trackId);
     }

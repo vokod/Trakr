@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.model.TrackData;
+import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.StringUtils;
 import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
@@ -29,6 +30,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
     private TextView titleTextView, dateTextView;
     private ImageButton editTitleImageButton;
     private ImageView initialImageView;
+    private TrackDetailViewModel trackDetailViewModel;
 
     public static TrackDetailActivityDataFragment newInstance() {
         return new TrackDetailActivityDataFragment();
@@ -49,8 +51,12 @@ public class TrackDetailActivityDataFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_track_detail_fragment_data,
                 container, false);
         setupWidgets(view);
+
+        trackDetailViewModel = ViewModelProviders.of(getActivity())
+                .get(TrackDetailViewModel.class);
+
         resetWidgets();
-        setupViewModel();
+        observe();
         return view;
     }
 
@@ -86,48 +92,86 @@ public class TrackDetailActivityDataFragment extends Fragment {
                 getString(R.string.elapsed_time_view_unit),
                 getString(R.string.elapsed_time_view_default_value),
                 R.drawable.ic_duration);
-        distancePpvi.setup(getString(R.string.distance_view_title),
-                getString(R.string.distance_view_unit),
-                getString(R.string.distance_view_default_value),
-                R.drawable.ic_distance);
-        maxSpeedPpvi.setup(getString(R.string.max_speed_view_title),
-                getString(R.string.max_speed_view_unit),
-                getString(R.string.max_speed_view_default_value),
-                R.drawable.ic_max_speed);
-        avgSpeedPpvi.setup(getString(R.string.avg_speed_view_title),
-                getString(R.string.avg_speed_view_unit),
-                getString(R.string.avg_speed_view_default_value),
-                R.drawable.ic_avg_speed);
-        maxPacePpvi.setup(getString(R.string.max_pace_view_title),
-                getString(R.string.max_pace_view_unit),
-                getString(R.string.max_pace_view_default_value),
-                R.drawable.ic_max_speed);
-        avgPacePpvi.setup(getString(R.string.avg_pace_view_title),
-                getString(R.string.avg_pace_view_unit),
-                getString(R.string.avg_pace_view_default_value),
-                R.drawable.ic_avg_speed);
-        ascentPpvi.setup(getString(R.string.ascent_view_title),
-                getString(R.string.ascent_view_unit),
-                getString(R.string.ascent_view_default_value),
-                R.drawable.ic_ascent);
-        descentPpvi.setup(getString(R.string.descent_view_title),
-                getString(R.string.descent_view_unit),
-                getString(R.string.descent_view_default_value),
-                R.drawable.ic_descent);
-        maxAltitudePpvi.setup(getString(R.string.max_altitude_view_title),
-                getString(R.string.max_altitude_view_unit),
-                getString(R.string.max_altitude_view_default_value),
-                R.drawable.ic_max_altitude);
-        minAltitudePpvi.setup(getString(R.string.min_altitude_view_title),
-                getString(R.string.min_altitude_view_unit),
-                getString(R.string.min_altitude_view_default_value),
-                R.drawable.ic_min_altitude);
+
+        if (trackDetailViewModel.getUnit() == Constants.UNIT_IMPERIAL) {
+            distancePpvi.setup(getString(R.string.distance_view_title),
+                    getString(R.string.distance_view_unit_imperial),
+                    getString(R.string.distance_view_default_value),
+                    R.drawable.ic_distance);
+            maxSpeedPpvi.setup(getString(R.string.max_speed_view_title),
+                    getString(R.string.max_speed_view_unit_imperial),
+                    getString(R.string.max_speed_view_default_value),
+                    R.drawable.ic_max_speed);
+            avgSpeedPpvi.setup(getString(R.string.avg_speed_view_title),
+                    getString(R.string.avg_speed_view_unit_imperial),
+                    getString(R.string.avg_speed_view_default_value),
+                    R.drawable.ic_avg_speed);
+            maxPacePpvi.setup(getString(R.string.max_pace_view_title),
+                    getString(R.string.max_pace_view_unit_imperial),
+                    getString(R.string.max_pace_view_default_value),
+                    R.drawable.ic_max_speed);
+            avgPacePpvi.setup(getString(R.string.avg_pace_view_title),
+                    getString(R.string.avg_pace_view_unit_imperial),
+                    getString(R.string.avg_pace_view_default_value),
+                    R.drawable.ic_avg_speed);
+            ascentPpvi.setup(getString(R.string.ascent_view_title),
+                    getString(R.string.ascent_view_unit_imperial),
+                    getString(R.string.ascent_view_default_value),
+                    R.drawable.ic_ascent);
+            descentPpvi.setup(getString(R.string.descent_view_title),
+                    getString(R.string.descent_view_unit_imperial),
+                    getString(R.string.descent_view_default_value),
+                    R.drawable.ic_descent);
+            maxAltitudePpvi.setup(getString(R.string.max_altitude_view_title),
+                    getString(R.string.max_altitude_view_unit_imperial),
+                    getString(R.string.max_altitude_view_default_value),
+                    R.drawable.ic_max_altitude);
+            minAltitudePpvi.setup(getString(R.string.min_altitude_view_title),
+                    getString(R.string.min_altitude_view_unit_imperial),
+                    getString(R.string.min_altitude_view_default_value),
+                    R.drawable.ic_min_altitude);
+        } else {
+            distancePpvi.setup(getString(R.string.distance_view_title),
+                    getString(R.string.distance_view_unit),
+                    getString(R.string.distance_view_default_value),
+                    R.drawable.ic_distance);
+            maxSpeedPpvi.setup(getString(R.string.max_speed_view_title),
+                    getString(R.string.max_speed_view_unit),
+                    getString(R.string.max_speed_view_default_value),
+                    R.drawable.ic_max_speed);
+            avgSpeedPpvi.setup(getString(R.string.avg_speed_view_title),
+                    getString(R.string.avg_speed_view_unit),
+                    getString(R.string.avg_speed_view_default_value),
+                    R.drawable.ic_avg_speed);
+            maxPacePpvi.setup(getString(R.string.max_pace_view_title),
+                    getString(R.string.max_pace_view_unit),
+                    getString(R.string.max_pace_view_default_value),
+                    R.drawable.ic_max_speed);
+            avgPacePpvi.setup(getString(R.string.avg_pace_view_title),
+                    getString(R.string.avg_pace_view_unit),
+                    getString(R.string.avg_pace_view_default_value),
+                    R.drawable.ic_avg_speed);
+            ascentPpvi.setup(getString(R.string.ascent_view_title),
+                    getString(R.string.ascent_view_unit),
+                    getString(R.string.ascent_view_default_value),
+                    R.drawable.ic_ascent);
+            descentPpvi.setup(getString(R.string.descent_view_title),
+                    getString(R.string.descent_view_unit),
+                    getString(R.string.descent_view_default_value),
+                    R.drawable.ic_descent);
+            maxAltitudePpvi.setup(getString(R.string.max_altitude_view_title),
+                    getString(R.string.max_altitude_view_unit),
+                    getString(R.string.max_altitude_view_default_value),
+                    R.drawable.ic_max_altitude);
+            minAltitudePpvi.setup(getString(R.string.min_altitude_view_title),
+                    getString(R.string.min_altitude_view_unit),
+                    getString(R.string.min_altitude_view_default_value),
+                    R.drawable.ic_min_altitude);
+        }
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void setupViewModel() {
-        TrackDetailViewModel trackDetailViewModel = ViewModelProviders.of(getActivity())
-                .get(TrackDetailViewModel.class);
+    private void observe() {
         trackDetailViewModel.getTrackData().observe(this, new Observer<TrackData>() {
             @Override
             public void onChanged(@Nullable final TrackData trackData) {
