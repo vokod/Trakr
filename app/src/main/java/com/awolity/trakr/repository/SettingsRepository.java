@@ -19,7 +19,6 @@ public class SettingsRepository {
 
     private static final String KEY_LAST_RECORDED_TRACK_ID = "pref_key_last_recorded_track_id";
     private static final String KEY_LAST_ACTIVITY_TYPE = "pref_key_activity_type";
-    private static final String KEY_USER_ID = "pref_key_user_id";
 
     public static final long NO_LAST_RECORDED_TRACK = -1;
 
@@ -31,8 +30,6 @@ public class SettingsRepository {
     private final static int VALUE_ACCURACY_LOW_POWER = 0;
 
     private final static String KEY_UNIT = "key_unit";
-    private final static int VALUE_UNIT_METRIC = 0;
-    private final static int VALUE_UNIT_IMPERIAL = 1;
 
     @SuppressWarnings("WeakerAccess")
     @Inject
@@ -46,7 +43,8 @@ public class SettingsRepository {
     }
 
     public int getAccuracy() {
-        return sharedPreferences.getInt(KEY_ACCURACY, 2);
+        return sharedPreferences.getInt(KEY_ACCURACY,
+                VALUE_ACCURACY_HIGH_ACCURACY);
     }
 
     public void setAccuracy(int accuracy) {
@@ -70,11 +68,14 @@ public class SettingsRepository {
 
     public int getUnit() {
         MyLog.d(TAG, "getUnit");
-        return sharedPreferences.getInt(KEY_UNIT, 0);
+        return sharedPreferences.getInt(KEY_UNIT, Constants.VALUE_UNIT_METRIC);
     }
 
     public void setUnit(int unit) {
         MyLog.d(TAG, "setUnit: " + unit);
+        if (unit != Constants.VALUE_UNIT_IMPERIAL && unit != Constants.VALUE_UNIT_METRIC) {
+            unit = Constants.VALUE_UNIT_METRIC;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(KEY_UNIT, unit);
         editor.apply();
@@ -86,7 +87,7 @@ public class SettingsRepository {
                 Constants.NO_LAST_RECORDED_TRACK);
     }
 
-    public  void setLastRecordedTrackId( long trackId) {
+    public void setLastRecordedTrackId(long trackId) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(KEY_LAST_RECORDED_TRACK_ID, trackId);
         editor.apply();

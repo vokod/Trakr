@@ -45,4 +45,11 @@ public class Constants {
     public final static int UNIT_METRIC = 0;
     public final static int UNIT_IMPERIAL = 1;
 
+    public final static int VALUE_UNIT_METRIC = 0;
+    public final static int VALUE_UNIT_IMPERIAL = 1;
+
+    public final static double MILE = 1.609344;
+    public final static double FOOT = 0.3048;
+
+
 }

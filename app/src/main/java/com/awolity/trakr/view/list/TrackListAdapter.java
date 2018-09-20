@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.awolity.trakr.R;
 import com.awolity.trakr.model.TrackDataWithMapPoints;
 import com.awolity.trakr.view.MapUtils;
+import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.StringUtils;
 import com.awolity.trakrutils.Utility;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
@@ -34,6 +35,7 @@ public class TrackListAdapter
     private final LayoutInflater layoutInflater;
     private final TrackItemCallback callback;
     private final Context context;
+    private int unit = Constants.UNIT_METRIC;
 
     TrackListAdapter(Context context, LayoutInflater layoutInflater, TrackItemCallback callback) {
         this.layoutInflater = layoutInflater;
@@ -90,6 +92,10 @@ public class TrackListAdapter
         return items.size();
     }
 
+    public void setUnit(int unit) {
+        this.unit = unit;
+    }
+
     class TrackItemViewHolder extends RecyclerView.ViewHolder {
 
         private TrackDataWithMapPoints trackDataWithMapPoints;
@@ -114,21 +120,36 @@ public class TrackListAdapter
             elevationView = itemView.findViewById(R.id.ppv_ascent);
             mapView = itemView.findViewById(R.id.mapView);
 
-            durationView.setup(context.getString(R.string.elapsed_time_view_title),
-                    context.getString(R.string.elapsed_time_view_unit),
-                    context.getString(R.string.elapsed_time_view_default_value),
-                    R.drawable.ic_duration);
-            distanceView.setup(context.getString(R.string.distance_view_title),
-                    context.getString(R.string.distance_view_unit),
-                    context.getString(R.string.distance_view_default_value),
-                    R.drawable.ic_distance);
-            elevationView.setup(context.getString(R.string.ascent_view_title),
-                    context.getString(R.string.ascent_view_unit),
-                    context.getString(R.string.ascent_view_default_value),
-                    R.drawable.ic_ascent);
-
+            if (unit == Constants.UNIT_IMPERIAL) {
+                durationView.setup(context.getString(R.string.elapsed_time_view_title),
+                        context.getString(R.string.elapsed_time_view_unit),
+                        context.getString(R.string.elapsed_time_view_default_value),
+                        R.drawable.ic_duration);
+                distanceView.setup(context.getString(R.string.distance_view_title),
+                        context.getString(R.string.distance_view_unit),
+                        context.getString(R.string.distance_view_default_value),
+                        R.drawable.ic_distance);
+                elevationView.setup(context.getString(R.string.ascent_view_title),
+                        context.getString(R.string.ascent_view_unit),
+                        context.getString(R.string.ascent_view_default_value),
+                        R.drawable.ic_ascent);
+            } else {
+                durationView.setup(context.getString(R.string.elapsed_time_view_title),
+                        context.getString(R.string.elapsed_time_view_unit),
+                        context.getString(R.string.elapsed_time_view_default_value),
+                        R.drawable.ic_duration);
+                distanceView.setup(context.getString(R.string.distance_view_title),
+                        context.getString(R.string.distance_view_unit),
+                        context.getString(R.string.distance_view_default_value),
+                        R.drawable.ic_distance);
+                elevationView.setup(context.getString(R.string.ascent_view_title),
+                        context.getString(R.string.ascent_view_unit),
+                        context.getString(R.string.ascent_view_default_value),
+                        R.drawable.ic_ascent);
+            }
             mapView.onCreate(null);
             mapView.setClickable(false);
+
         }
 
         void bind(final TrackDataWithMapPoints trackDataWithMapPoints) {
