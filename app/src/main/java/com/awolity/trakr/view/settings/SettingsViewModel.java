@@ -1,4 +1,4 @@
-package com.awolity.trakr.viewmodel;
+package com.awolity.trakr.view.settings;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -6,20 +6,24 @@ import android.arch.lifecycle.ViewModel;
 
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.AppUserRepository;
+import com.awolity.trakr.repository.SettingsRepository;
 import com.google.firebase.auth.FirebaseUser;
 
 import javax.inject.Inject;
 
-public class AppUserViewModel extends ViewModel {
+public class SettingsViewModel extends ViewModel {
 
-    private static final String TAG = AppUserViewModel.class.getSimpleName();
-    private final MutableLiveData<Boolean> isAppUserLoggedIn;
+    @SuppressWarnings("WeakerAccess")
+    @Inject
+    SettingsRepository settingsRepository;
 
     @SuppressWarnings("WeakerAccess")
     @Inject
     AppUserRepository appUserRepository;
 
-    public AppUserViewModel() {
+    private final MutableLiveData<Boolean> isAppUserLoggedIn;
+
+    public SettingsViewModel() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
         isAppUserLoggedIn = new MutableLiveData<>();
         isAppUserLoggedIn.postValue(appUserRepository.IsAppUserLoggedIn());
@@ -66,4 +70,27 @@ public class AppUserViewModel extends ViewModel {
         return isAppUserLoggedIn;
     }
 
+    public int getAccuracy() {
+        return settingsRepository.getAccuracy();
+    }
+
+    public void setAccuracy(int accuracy) {
+        settingsRepository.setAccuracy(accuracy);
+    }
+
+    public int getUnit() {
+        return settingsRepository.getUnit();
+    }
+
+    public void setUnit(int unit) {
+        settingsRepository.setUnit(unit);
+    }
+
+    public long getLastRecordedTrackId(){
+        return settingsRepository.getLastRecordedTrackId();
+    }
+
+    public void setLastRecordedTrackId(long trackId){
+        settingsRepository.setLastRecordedTrackId(trackId);
+    }
 }

@@ -13,8 +13,7 @@ import com.awolity.trakr.trackrecorder.TrackRecorderStatus;
 import com.awolity.trakr.view.detail.TrackDetailViewModel;
 import com.awolity.trakr.view.explore.ExploreViewModel;
 import com.awolity.trakr.view.main.TrackRecorderServiceManager;
-import com.awolity.trakr.viewmodel.AppUserViewModel;
-import com.awolity.trakr.viewmodel.SettingsViewModel;
+import com.awolity.trakr.view.settings.SettingsViewModel;
 import com.awolity.trakr.view.list.TrackListViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.awolity.trakr.view.widget.TrakrWidget;
@@ -40,8 +39,6 @@ public interface AppComponent {
     void inject (TrackViewModel trackViewModel);
 
     void inject (TrackDetailViewModel target);
-
-    void inject (AppUserViewModel target);
 
     void inject (TrackRecorderServiceManager serviceManager);
 

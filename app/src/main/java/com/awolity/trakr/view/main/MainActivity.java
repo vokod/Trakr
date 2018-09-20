@@ -42,7 +42,7 @@ import com.awolity.trakr.view.main.bottom.BottomSheetTrackFragment;
 import com.awolity.trakr.view.explore.ExploreActivity;
 import com.awolity.trakr.view.settings.SettingsActivity;
 import com.awolity.trakr.viewmodel.LocationViewModel;
-import com.awolity.trakr.viewmodel.SettingsViewModel;
+import com.awolity.trakr.view.settings.SettingsViewModel;
 import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.MyLog;
