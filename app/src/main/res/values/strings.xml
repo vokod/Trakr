@@ -110,42 +110,42 @@
     <!-- Data views -->
     <string name="max_speed_view_title">Max.Speed</string>
     <string name="max_speed_view_unit">km/h</string>
-    <string name="max_speed_view_unit_imperial">mi/h</string>
+    <string name="max_speed_view_unit_imperial" translatable="false">mi/h</string>
     <string name="max_speed_view_default_value">0</string>
 
     <string name="avg_speed_view_title">Avg.Speed</string>
     <string name="avg_speed_view_unit">km/h</string>
-    <string name="avg_speed_view_unit_imperial">mi/h</string>
+    <string name="avg_speed_view_unit_imperial" translatable="false">mi/h</string>
     <string name="avg_speed_view_default_value">-</string>
 
     <string name="max_pace_view_title">Max.Pace</string>
     <string name="max_pace_view_unit">min/km</string>
-    <string name="max_pace_view_unit_imperial">min/mi</string>
+    <string name="max_pace_view_unit_imperial" translatable="false">min/mi</string>
     <string name="max_pace_view_default_value">-</string>
 
     <string name="avg_pace_view_title">Avg.Pace</string>
     <string name="avg_pace_view_unit">min/km</string>
-    <string name="avg_pace_view_unit_imperial">min/mi</string>
+    <string name="avg_pace_view_unit_imperial" translatable="false">min/mi</string>
     <string name="avg_pace_view_default_value">-</string>
 
     <string name="ascent_view_title">Ascent</string>
     <string name="ascent_view_unit">m</string>
-    <string name="ascent_view_unit_imperial">ft</string>
+    <string name="ascent_view_unit_imperial" translatable="false">ft</string>
     <string name="ascent_view_default_value">0</string>
 
     <string name="descent_view_title">Descent</string>
     <string name="descent_view_unit">m</string>
-    <string name="descent_view_unit_imperial">ft</string>
+    <string name="descent_view_unit_imperial" translatable="false">ft</string>
     <string name="descent_view_default_value">0</string>
 
     <string name="max_altitude_view_title">Max.Altitude</string>
     <string name="max_altitude_view_unit">m</string>
-    <string name="max_altitude_view_unit_imperial">ft</string>
+    <string name="max_altitude_view_unit_imperial" translatable="false">ft</string>
     <string name="max_altitude_view_default_value">0</string>
 
     <string name="min_altitude_view_title">Min.Altitude</string>
     <string name="min_altitude_view_unit">m</string>
-    <string name="min_altitude_view_unit_imperial">ft</string>
+    <string name="min_altitude_view_unit_imperial" translatable="false">ft</string>
     <string name="min_altitude_view_default_value">0</string>
 
     <string name="elapsed_time_view_title">Duration</string>
@@ -154,17 +154,17 @@
 
     <string name="distance_view_title">Distance</string>
     <string name="distance_view_unit">km</string>
-    <string name="distance_view_unit_imperial">mi</string>
+    <string name="distance_view_unit_imperial" translatable="false">mi</string>
     <string name="distance_view_default_value">0.0</string>
 
     <string name="speed_view_label">Speed</string>
     <string name="speed_view_unit">km/h</string>
-    <string name="speed_view_unit_imperial">mi/h</string>
+    <string name="speed_view_unit_imperial" translatable="false">mi/h</string>
     <string name="speed_view_default_value">0.0</string>
 
     <string name="accuracy_view_label">Accuracy</string>
     <string name="accuracy_view_unit">m</string>
-    <string name="accuracy_view_unit_imperial">ft</string>
+    <string name="accuracy_view_unit_imperial" translatable="false">ft</string>
     <string name="accuracy_view_default_value">-</string>
 
     <string name="bearing_view_label">Bearing</string>
@@ -173,7 +173,7 @@
 
     <string name="altitude_view_label">Altitude</string>
     <string name="altitude_view_unit">m</string>
-    <string name="altitude_view_unit_imperial">ft</string>
+    <string name="altitude_view_unit_imperial" translatable="false">ft</string>
     <string name="altitude_view_default_value">0</string>
 
     <string name="start_time_view_title">Start</string>

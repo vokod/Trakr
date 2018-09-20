@@ -164,4 +164,11 @@
     <string name="title_activity_explore">Felfedezés</string>
     <string name="activity_explore_no_tracks">Nincsenek nyomvonalak. Rögzíts egyet előbb!</string>
     <string name="activity_explore_dialog_track_details_view">Megnyitás</string>
+    <string name="elevation_chart_title_imperial">Szint [ft]</string>
+    <string name="speed_chart_title_imperial">Sebesség [mi/h]</string>
+    <string name="pace_chart_title_imperial">Tempó [min/mi]</string>
+    <string name="record_notification_line_2_imperial">Távolság: %smi</string>
+    <string name="record_notification_line_3_imperial">Szintemelkedés: %sft</string>
+    <string name="record_notification_line_4_imperial">Szintsüllyedés: %sft</string>
+    <string name="record_notification_line_5_imperial">Átl. sebesség: %smi/h</string>
 </resources>
