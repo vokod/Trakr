@@ -68,13 +68,13 @@ public class SettingsRepository {
 
     public int getUnit() {
         MyLog.d(TAG, "getUnit");
-        return sharedPreferences.getInt(KEY_UNIT, Constants.VALUE_UNIT_METRIC);
+        return sharedPreferences.getInt(KEY_UNIT, Constants.UNIT_METRIC);
     }
 
     public void setUnit(int unit) {
         MyLog.d(TAG, "setUnit: " + unit);
-        if (unit != Constants.VALUE_UNIT_IMPERIAL && unit != Constants.VALUE_UNIT_METRIC) {
-            unit = Constants.VALUE_UNIT_METRIC;
+        if (unit != Constants.UNIT_IMPERIAL && unit != Constants.UNIT_METRIC) {
+            unit = Constants.UNIT_METRIC;
         }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(KEY_UNIT, unit);

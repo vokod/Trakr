@@ -35,7 +35,7 @@ public class ExploreViewModel extends ViewModel {
     }
 
     public LiveData<List<TrackData>> getTracksData() {
-        if (getUnit() == Constants.VALUE_UNIT_METRIC) {
+        if (getUnit() == Constants.UNIT_METRIC) {
             return trackRepository.getTracksData();
         } else {
             final MediatorLiveData<List<TrackData>> result = new MediatorLiveData<>();

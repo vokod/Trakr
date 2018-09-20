@@ -54,8 +54,11 @@
     <string name="x_axis_time">time</string>
     <string name="x_axis_distance">distance</string>
     <string name="elevation_chart_title">Elevation [m]</string>
+    <string name="elevation_chart_title_imperial">Elevation [ft]</string>
     <string name="speed_chart_title">Speed [km/h]</string>
+    <string name="speed_chart_title_imperial">Speed [mi/h]</string>
     <string name="pace_chart_title">Pace [min/km]</string>
+    <string name="pace_chart_title_imperial">Pace [min/mi]</string>
     <string name="speed_pace">Speed/Pace</string>
     <string name="speed">Speed</string>
     <string name="pace">Pace</string>

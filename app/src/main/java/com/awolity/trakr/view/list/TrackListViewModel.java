@@ -7,7 +7,6 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.Nullable;
 
 import com.awolity.trakr.TrakrApplication;
-import com.awolity.trakr.model.TrackData;
 import com.awolity.trakr.model.TrackDataWithMapPoints;
 import com.awolity.trakr.repository.SettingsRepository;
 import com.awolity.trakr.repository.TrackRepository;
@@ -51,7 +50,7 @@ public class TrackListViewModel extends ViewModel {
                                     break;
                                 }
                             }
-                            if (settingsRepository.getUnit() == Constants.VALUE_UNIT_IMPERIAL) {
+                            if (settingsRepository.getUnit() == Constants.UNIT_IMPERIAL) {
                                 for (TrackDataWithMapPoints trackDataWithMapPoints : trackDataListWithMapPoints) {
                                     trackDataWithMapPoints.getTrackData().convertToImperial();
                                     trackDataWithMapPoints.getTrackData().getTrackId();

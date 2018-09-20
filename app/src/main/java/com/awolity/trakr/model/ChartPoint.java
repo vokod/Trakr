@@ -1,5 +1,7 @@
 package com.awolity.trakr.model;
 
+import com.awolity.trakrutils.Constants;
+
 public class ChartPoint {
     private long time;
     private double altitude;
@@ -45,5 +47,11 @@ public class ChartPoint {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public void convertToImperial(){
+        altitude = altitude / Constants.FOOT;
+        speed = speed / Constants.MILE;
+        distance = distance / Constants.MILE;
     }
 }
