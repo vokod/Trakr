@@ -85,12 +85,4 @@ public class SettingsViewModel extends ViewModel {
     public void setUnit(int unit) {
         settingsRepository.setUnit(unit);
     }
-
-    public long getLastRecordedTrackId(){
-        return settingsRepository.getLastRecordedTrackId();
-    }
-
-    public void setLastRecordedTrackId(long trackId){
-        settingsRepository.setLastRecordedTrackId(trackId);
-    }
 }

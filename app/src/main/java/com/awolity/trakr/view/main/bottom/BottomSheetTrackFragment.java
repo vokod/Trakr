@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.viewmodel.TrackViewModel;
+import com.awolity.trakr.view.main.MainActivityViewModel;
 import com.awolity.trakrutils.StringUtils;
 import com.awolity.trakrviews.PrimaryPropertyView;
 import com.awolity.trakrviews.SecondaryPropertyView;
@@ -34,7 +34,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     private Handler handler;
     private Runnable elapsedTimeUpdater;
     private long startTime;
-    private TrackViewModel trackViewModel;
+    private MainActivityViewModel mainActivityViewModel;
     private boolean isRecording;
     private PrimaryPropertyView distanceView, ascentView, descentView;
     private SecondaryPropertyView elapsedTimeView, minAltitudeView, maxAltitudeView, avgSpeedView,
@@ -58,7 +58,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         super.onCreate(savedInstanceState);
         // MyLog.d(TAG, "onCreate");
         //noinspection ConstantConditions
-        trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
+        mainActivityViewModel = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
     }
 
     @Override
@@ -184,11 +184,11 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void startObserve() {
-        trackViewModel.getTrack().observe(getActivity(), trackEntityObserver);
+        mainActivityViewModel.getTrack().observe(getActivity(), trackEntityObserver);
     }
 
     private void stopObserve() {
-        trackViewModel.getTrack().removeObserver(trackEntityObserver);
+        mainActivityViewModel.getTrack().removeObserver(trackEntityObserver);
     }
 
     private final Observer<TrackEntity> trackEntityObserver = new Observer<TrackEntity>() {

@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
-import com.awolity.trakr.viewmodel.TrackViewModel;
+import com.awolity.trakr.view.main.MainActivityViewModel;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -33,7 +33,7 @@ import java.util.List;
 public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
 
     private static final String TAG = BottomSheetChartsFragment.class.getSimpleName();
-    private TrackViewModel trackViewModel;
+    private MainActivityViewModel mainActivityViewModel;
     private boolean isRecording;
     private long trackId = -1;
     private LineChart chart;
@@ -57,7 +57,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
         super.onCreate(savedInstanceState);
         // MyLog.d(TAG, "onCreate");
         //noinspection ConstantConditions
-        trackViewModel = ViewModelProviders.of(getActivity()).get(TrackViewModel.class);
+        mainActivityViewModel = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     @SuppressWarnings("ConstantConditions")
     private void startObserve(/*long trackId*/) {
         // MyLog.d(TAG, "startObserve");
-        trackViewModel.getTrackWithPoints().observe(getActivity(), trackWithPointsObserver);
+        mainActivityViewModel.getTrackWithPoints().observe(getActivity(), trackWithPointsObserver);
     }
 
     private final Observer<TrackWithPoints> trackWithPointsObserver = new Observer<TrackWithPoints>() {
@@ -130,7 +130,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
 
     private void stopObserve() {
         // MyLog.d(TAG, "stopObserve");
-        trackViewModel.getTrackWithPoints().removeObserver(trackWithPointsObserver);
+        mainActivityViewModel.getTrackWithPoints().removeObserver(trackWithPointsObserver);
     }
 
     private void startChartUpdater() {

@@ -79,10 +79,6 @@ public class TrackRepository {
      * TrackS methods
      */
 
-    public LiveData<List<TrackWithPoints>> getTracksWithPoints() {
-        return roomTrackRepository.getTracksWithPoints();
-    }
-
     public LiveData<List<TrackData>> getTracksData() {
         final MediatorLiveData<List<TrackData>> result = new MediatorLiveData<>();
         result.addSource(roomTrackRepository.getTracks(), new Observer<List<TrackEntity>>() {
@@ -128,17 +124,6 @@ public class TrackRepository {
         return roomTrackRepository.saveTrackSync(trackEntity);
     }
 
-    public void saveTrackToCloud(final long trackId) {
-        discIoExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                if (roomTrackRepository.getTrackSync(trackId).getNumOfTrackPoints() > 1) {
-                    saveTrackToCloudOnThread(trackId);
-                }
-            }
-        });
-    }
-
     public void updateTrack(final TrackEntity trackEntity) {
         roomTrackRepository.updateTrack(trackEntity);
         if (appUserRepository.IsAppUserLoggedIn()) {
@@ -177,11 +162,9 @@ public class TrackRepository {
         return result;
     }
 
-
     public LiveData<TrackWithPoints> getTrackWithPoints(long id) {
         return roomTrackRepository.getTrackWithPoints(id);
     }
-
 
     public void exportTrack(final long id) {
         discIoExecutor.execute(new Runnable() {
@@ -206,6 +189,10 @@ public class TrackRepository {
         });
     }
 
+    public void deleteLocalTrack(final long trackId) {
+        roomTrackRepository.deleteTrack(trackId);
+    }
+
     private void deleteSyncedLocalTracks() {
         discIoExecutor.execute(new Runnable() {
             @Override
@@ -217,10 +204,6 @@ public class TrackRepository {
                 }
             }
         });
-    }
-
-    public void deleteLocalTrack(final long trackId) {
-        roomTrackRepository.deleteTrack(trackId);
     }
 
     /**
@@ -318,47 +301,6 @@ public class TrackRepository {
         return mapPoints;
     }
 
-
-    public LiveData<TrackDataWithMapPoints> getTrackDataWithMapPointsForTrack(
-            long trackId, final int maxNumOfMapPoints) {
-        final MediatorLiveData<TrackDataWithMapPoints> result = new MediatorLiveData<>();
-        final TrackDataWithMapPoints trackDataWithMapPoints = new TrackDataWithMapPoints();
-        result.setValue(trackDataWithMapPoints);
-        result.addSource(roomTrackRepository.getTrackWithPoints(trackId), new Observer<TrackWithPoints>() {
-            @Override
-            public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
-                if (trackWithPoints != null) {
-                    trackDataWithMapPoints.setTrackData(TrackDataTrackEntityConverter
-                            .toTrackData(trackWithPoints.getTrackEntity()));
-
-                    // this is for the event when initial sync is happening right now
-                    if (trackWithPoints.getTrackPoints().size() == 0) {
-                        return;
-                    }
-
-                    long numOfPoints = trackWithPoints.getNumOfTrackPoints();
-                    List<MapPoint> mapPoints = new ArrayList<>(maxNumOfMapPoints);
-                    if (numOfPoints > maxNumOfMapPoints) {
-                        long divider = numOfPoints / maxNumOfMapPoints + 1;
-
-                        for (int i = 0; i < numOfPoints; i += divider) {
-                            mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackWithPoints
-                                    .getTrackPoints().get(i)));
-                        }
-                    } else {
-                        for (TrackpointEntity trackPoint : trackWithPoints.getTrackPoints()) {
-                            mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackPoint));
-                        }
-                    }
-                    trackDataWithMapPoints.setMapPointList(mapPoints);
-
-                }
-                result.postValue(trackDataWithMapPoints);
-            }
-        });
-        return result;
-    }
-
     public LiveData<List<TrackDataWithMapPoints>> getTrackDataListWithMapPoints(
             final int maxNumOfMapPoints) {
         final MediatorLiveData<List<TrackDataWithMapPoints>> result = new MediatorLiveData<>();
@@ -423,12 +365,6 @@ public class TrackRepository {
         }
     }
 
-    private void updateTrackToCloud(TrackEntity trackEntity) {
-        if (trackEntity.getFirebaseId() != null && !trackEntity.getFirebaseId().isEmpty()) {
-            firebaseTrackRepository.updateTrackToCloud(trackEntity);
-        }
-    }
-
     public void getAllTrackEntitiesFromCloud(
             final GetAllTrackEntitiesFromCloudListener listener) {
         firebaseTrackRepository.getAllTrackEntitiesFromCloud(listener);
@@ -456,6 +392,12 @@ public class TrackRepository {
                 roomTrackRepository.saveAllTrackpoints(trackpointEntities);
             }
         });
+    }
+
+    private void updateTrackToCloud(TrackEntity trackEntity) {
+        if (trackEntity.getFirebaseId() != null && !trackEntity.getFirebaseId().isEmpty()) {
+            firebaseTrackRepository.updateTrackToCloud(trackEntity);
+        }
     }
 
     private void setTrackIdInTrackPointEntities(

@@ -41,9 +41,6 @@ import com.awolity.trakr.view.main.bottom.BottomSheetPointFragment;
 import com.awolity.trakr.view.main.bottom.BottomSheetTrackFragment;
 import com.awolity.trakr.view.explore.ExploreActivity;
 import com.awolity.trakr.view.settings.SettingsActivity;
-import com.awolity.trakr.viewmodel.LocationViewModel;
-import com.awolity.trakr.view.settings.SettingsViewModel;
-import com.awolity.trakr.viewmodel.TrackViewModel;
 import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.MyLog;
 import com.awolity.trakrutils.Utility;
@@ -76,11 +73,7 @@ public class MainActivity extends AppCompatActivity
     private BottomSheetChartsFragment chartsFragment;
     private FloatingActionButton fab;
 
-    private LocationViewModel locationViewModel;
-    private TrackViewModel trackViewModel;
-    private SettingsViewModel settingsViewModel;
-    // TODO: refactor viewmodels so that only one is for every activity
-
+    private MainActivityViewModel mainActivityViewModel;
     private TrackRecorderServiceManager serviceManager;
     private MainActivityStatus status;
     private long trackId = Constants.NO_LAST_RECORDED_TRACK;
@@ -104,9 +97,7 @@ public class MainActivity extends AppCompatActivity
 
         setupFab();
         setupMapFragment();
-        setupLocationViewModel();
-
-        settingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
+        setupViewModel();
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -233,7 +224,7 @@ public class MainActivity extends AppCompatActivity
                 if (status.isRecording()) {
                     showStopDiag();
                 } else {
-                    locationViewModel.isLocationSettingsGood(
+                    mainActivityViewModel.isLocationSettingsGood(
                             new LocationManager.LocationSettingsCallback() {
                                 @Override
                                 public void onLocationSettingsDetermined(boolean isSettingsGood, Exception e) {
@@ -262,8 +253,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void setupLocationViewModel() {
-        locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
+    private void setupViewModel() {
+        mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
     }
 
     private void showLocationSettingsDialog(Exception e) {
@@ -282,7 +273,7 @@ public class MainActivity extends AppCompatActivity
         if (TrackRecorderServiceManager.isServiceRunning(this)) {
             MyLog.d(TAG, "setupTrackRecorderService - service is running");
             status.setContinueRecording();
-            long trackId = settingsViewModel.getLastRecordedTrackId();
+            long trackId = mainActivityViewModel.getLastRecordedTrackId();
             if (trackId != Constants.NO_LAST_RECORDED_TRACK) {
                 polylineManager = new PolylineManager(this);
                 setupTrackViewModel(trackId);
@@ -293,14 +284,14 @@ public class MainActivity extends AppCompatActivity
                 MainActivityUtils.startFabAnimation(fab);
             }
         } else {
-            settingsViewModel.setLastRecordedTrackId(Constants.NO_LAST_RECORDED_TRACK);
+            mainActivityViewModel.setLastRecordedTrackId(Constants.NO_LAST_RECORDED_TRACK);
         }
     }
 
     private void startLocationUpdates() {
         // MyLog.d(TAG, "startLocationUpdates");
         if (Utility.isLocationEnabled(this)) {
-            locationViewModel.getLocation().observe(MainActivity.this, new Observer<Location>() {
+            mainActivityViewModel.getLocation().observe(MainActivity.this, new Observer<Location>() {
                 @Override
                 public void onChanged(@Nullable Location location) {
                     if (location != null) {
@@ -325,7 +316,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void stopLocationUpdates() {
-        locationViewModel.stopLocation();
+        mainActivityViewModel.stopLocation();
     }
 
     private void updateCamera(CameraPosition cameraPosition) {
@@ -348,13 +339,13 @@ public class MainActivity extends AppCompatActivity
 
     private void setupTrackViewModel(final long trackId) {
         MyLog.d(TAG, "setupTrackViewModel");
-        trackViewModel = ViewModelProviders.of(this).get(TrackViewModel.class);
-        trackViewModel.reset();
-        trackViewModel.init(trackId);
+        mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        mainActivityViewModel.reset();
+        mainActivityViewModel.init(trackId);
         if (status.isContinueRecording()) {
-            trackViewModel.getTrackpointsList().observe(this, trackpointsListObserver);
+            mainActivityViewModel.getTrackpointsList().observe(this, trackpointsListObserver);
         }
-        trackViewModel.getActualTrackpoint().observe(this, actualTrackpointObserver);
+        mainActivityViewModel.getActualTrackpoint().observe(this, actualTrackpointObserver);
     }
 
     private final Observer<List<TrackpointEntity>> trackpointsListObserver
@@ -368,7 +359,7 @@ public class MainActivity extends AppCompatActivity
                 polylineManager.drawPolyline(googleMap,
                         MainActivityUtils.transformTrackpointsToLatLngs(trackpointEntities));
             }
-            trackViewModel.getTrackpointsList().removeObserver(this);
+            mainActivityViewModel.getTrackpointsList().removeObserver(this);
         }
     };
 
@@ -391,7 +382,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private void centerTrackOnMap() {
-        trackViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
+        mainActivityViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
             @Override
             public void onChanged(@Nullable TrackEntity track) {
                 // if we already have a cameraposition, than it centering is unnecessary
@@ -423,7 +414,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        locationViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
+        mainActivityViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
             @Override
             public void onLocationSettingsDetermined(boolean isSettingsGood, Exception e) {
                 if (isSettingsGood) {
@@ -551,8 +542,8 @@ public class MainActivity extends AppCompatActivity
         status.setRecording(false);
         polylineManager.clearPolyline(googleMap);
         polylineManager = null;
-        settingsViewModel.setLastRecordedTrackId(Constants.NO_LAST_RECORDED_TRACK);
-        trackViewModel.finishRecording();
+        mainActivityViewModel.setLastRecordedTrackId(Constants.NO_LAST_RECORDED_TRACK);
+        mainActivityViewModel.finishRecording();
         if (numOfTrackpoints > 1) {
             Intent intent = TrackDetailActivity.getStarterIntent(
                     MainActivity.this, trackId);
