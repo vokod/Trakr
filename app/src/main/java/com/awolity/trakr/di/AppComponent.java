@@ -30,34 +30,34 @@ public interface AppComponent {
 
     void inject(TrackRecorder trackRecorder);
 
-    void inject (TrackRepository trackRepository);
+    void inject(TrackRepository trackRepository);
 
-    void inject (RoomTrackRepository roomTrackRepository);
+    void inject(RoomTrackRepository roomTrackRepository);
 
-    void inject (FirebaseTrackRepository firebaseTrackRepository);
+    void inject(FirebaseTrackRepository firebaseTrackRepository);
 
-    void inject (MainActivityViewModel mainActivityViewModel);
+    void inject(MainActivityViewModel mainActivityViewModel);
 
-    void inject (TrackDetailViewModel target);
+    void inject(TrackDetailViewModel target);
 
-    void inject (TrackRecorderServiceManager serviceManager);
+    void inject(TrackRecorderServiceManager serviceManager);
 
-    void inject (TrackListViewModel trackListViewModel);
+    void inject(TrackListViewModel trackListViewModel);
 
-    void inject (ExploreViewModel target);
+    void inject(ExploreViewModel target);
 
-    void inject (SyncService syncService);
+    void inject(SyncService syncService);
 
-    void inject (TrakrWidget trakrWidget);
+    void inject(TrakrWidget trakrWidget);
 
-    void inject (DbSanitizer dbSanitizer);
+    void inject(DbSanitizer dbSanitizer);
 
-    void inject (SettingsRepository target);
+    void inject(SettingsRepository target);
 
-    void inject (SettingsViewModel target);
+    void inject(SettingsViewModel target);
 
-    void inject (TrackRecorderStatus target);
+    void inject(TrackRecorderStatus target);
 
-    void inject (AppUserRepository target);
+    void inject(AppUserRepository target);
 
 }

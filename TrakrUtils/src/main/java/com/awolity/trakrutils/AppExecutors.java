@@ -24,15 +24,22 @@ public class AppExecutors {
 
     private final Executor diskIO;
 
-    private AppExecutors(Executor diskIO) {
+    private final Executor transformationExecutor;
+
+    private AppExecutors(Executor diskIO, Executor transformationExecutor) {
         this.diskIO = diskIO;
+        this.transformationExecutor = transformationExecutor;
     }
 
     public AppExecutors() {
-        this(Executors.newSingleThreadExecutor());
+        this(Executors.newSingleThreadExecutor(), Executors.newSingleThreadExecutor());
     }
 
     public Executor diskIO() {
         return diskIO;
+    }
+
+    public Executor getTransformationExecutor(){
+        return transformationExecutor;
     }
 }

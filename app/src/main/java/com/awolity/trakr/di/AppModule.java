@@ -7,6 +7,7 @@ import com.awolity.trakrutils.AppExecutors;
 
 import java.util.concurrent.Executor;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -30,10 +31,16 @@ public class AppModule {
         return app;
     }
 
-    @Provides
+    @Provides @Named("disc")
     @Singleton
     public Executor provideDiscIOExecutor() {
         return executors.diskIO();
+    }
+
+    @Provides @Named("transformation")
+    @Singleton
+    public Executor provideTransformationExecutor() {
+        return executors.getTransformationExecutor();
     }
 
 }

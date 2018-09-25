@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
@@ -34,7 +35,13 @@ public class TrackRepository {
 
     @SuppressWarnings("WeakerAccess")
     @Inject
+    @Named("disc")
     Executor discIoExecutor;
+
+    @SuppressWarnings("WeakerAccess")
+    @Inject
+    @Named("transformation")
+    Executor transformationExecutor;
 
     @SuppressWarnings("WeakerAccess")
     @Inject
@@ -83,13 +90,18 @@ public class TrackRepository {
         final MediatorLiveData<List<TrackData>> result = new MediatorLiveData<>();
         result.addSource(roomTrackRepository.getTracks(), new Observer<List<TrackEntity>>() {
             @Override
-            public void onChanged(@Nullable List<TrackEntity> trackEntities) {
+            public void onChanged(@Nullable final List<TrackEntity> trackEntities) {
                 if (trackEntities != null) {
-                    List<TrackData> trackDataList = new ArrayList<>(trackEntities.size());
-                    for (TrackEntity entity : trackEntities) {
-                        trackDataList.add(TrackDataTrackEntityConverter.toTrackData(entity));
-                    }
-                    result.postValue(trackDataList);
+                    transformationExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<TrackData> trackDataList = new ArrayList<>(trackEntities.size());
+                            for (TrackEntity entity : trackEntities) {
+                                trackDataList.add(TrackDataTrackEntityConverter.toTrackData(entity));
+                            }
+                            result.postValue(trackDataList);
+                        }
+                    });
                 }
             }
         });
@@ -223,52 +235,56 @@ public class TrackRepository {
         result.addSource(roomTrackRepository.getTrackpointsByTrack(id),
                 new Observer<List<TrackpointEntity>>() {
                     @Override
-                    public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
+                    public void onChanged(@Nullable final List<TrackpointEntity> trackpointEntities) {
                         if (trackpointEntities != null && trackpointEntities.size() > 0) {
+                            transformationExecutor.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    long numOfPoints = trackpointEntities.size();
+                                    List<ChartPoint> chartPoints = new ArrayList<>(chartPointNo);
 
-                            long numOfPoints = trackpointEntities.size();
-                            List<ChartPoint> chartPoints = new ArrayList<>(chartPointNo);
+                                    if (numOfPoints > chartPointNo) {
+                                        long divider = numOfPoints / chartPointNo + 1;
 
-                            if (numOfPoints > chartPointNo) {
-                                long divider = numOfPoints / chartPointNo + 1;
+                                        double averagedSpeed = 0, averagedAltitude = 0, distance = 0;
 
-                                double averagedSpeed = 0, averagedAltitude = 0, distance = 0;
+                                        for (int i = 1; i < numOfPoints; i++) {
+                                            // TODO: ez egy kicsit csalás, mert a 0. pont mindenképpen kimarad,
+                                            // de az osztás miatt így pontos
+                                            // belső ciklusszámlálóval lehetne elegánsabban csinálni.
+                                            averagedSpeed += trackpointEntities.get(i).getSpeed();
+                                            averagedAltitude += trackpointEntities.get(i).getAltitude();
+                                            distance += trackpointEntities.get(i).getDistance();
 
-                                for (int i = 1; i < numOfPoints; i++) {
-                                    // TODO: ez egy kicsit csalás, mert a 0. pont mindenképpen kimarad,
-                                    // de az osztás miatt így pontos
-                                    // belső ciklusszámlálóval lehetne elegánsabban csinálni.
-                                    averagedSpeed += trackpointEntities.get(i).getSpeed();
-                                    averagedAltitude += trackpointEntities.get(i).getAltitude();
-                                    distance += trackpointEntities.get(i).getDistance();
+                                            if (i > 0 && i % divider == 0) {
 
-                                    if (i > 0 && i % divider == 0) {
+                                                ChartPoint chartPoint = new ChartPoint();
+                                                chartPoint.setTime(
+                                                        trackpointEntities.get(i).getTime());
+                                                chartPoint.setDistance(distance);
 
-                                        ChartPoint chartPoint = new ChartPoint();
-                                        chartPoint.setTime(
-                                                trackpointEntities.get(i).getTime());
-                                        chartPoint.setDistance(distance);
+                                                chartPoint.setSpeed(averagedSpeed / divider);
+                                                chartPoint.setAltitude(averagedAltitude / divider);
 
-                                        chartPoint.setSpeed(averagedSpeed / divider);
-                                        chartPoint.setAltitude(averagedAltitude / divider);
+                                                chartPoints.add(chartPoint);
 
-                                        chartPoints.add(chartPoint);
-
-                                        averagedSpeed = 0;
-                                        averagedAltitude = 0;
+                                                averagedSpeed = 0;
+                                                averagedAltitude = 0;
+                                            }
+                                        }
+                                    } else {
+                                        double distance = 0;
+                                        for (TrackpointEntity trackpointEntity : trackpointEntities) {
+                                            distance += trackpointEntity.getDistance();
+                                            chartPoints.add(new ChartPoint(trackpointEntity.getTime(),
+                                                    trackpointEntity.getAltitude(),
+                                                    trackpointEntity.getSpeed(),
+                                                    distance));
+                                        }
                                     }
+                                    result.postValue(chartPoints);
                                 }
-                            } else {
-                                double distance = 0;
-                                for (TrackpointEntity trackpointEntity : trackpointEntities) {
-                                    distance += trackpointEntity.getDistance();
-                                    chartPoints.add(new ChartPoint(trackpointEntity.getTime(),
-                                            trackpointEntity.getAltitude(),
-                                            trackpointEntity.getSpeed(),
-                                            distance));
-                                }
-                            }
-                            result.postValue(chartPoints);
+                            });
                         }
                     }
                 });
@@ -279,22 +295,27 @@ public class TrackRepository {
         final MediatorLiveData<List<MapPoint>> mapPoints = new MediatorLiveData<>();
         mapPoints.addSource(roomTrackRepository.getTrackpointsByTrack(id), new Observer<List<TrackpointEntity>>() {
             @Override
-            public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
+            public void onChanged(@Nullable final List<TrackpointEntity> trackpointEntities) {
                 if (trackpointEntities != null && trackpointEntities.size() > 0) {
-                    List<MapPoint> result = new ArrayList<>(Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE);
-                    long numOfPoints = trackpointEntities.size();
-                    if (numOfPoints > Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE) {
-                        long divider = numOfPoints / Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE + 1;
+                    transformationExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<MapPoint> result = new ArrayList<>(Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE);
+                            long numOfPoints = trackpointEntities.size();
+                            if (numOfPoints > Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE) {
+                                long divider = numOfPoints / Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE + 1;
 
-                        for (int i = 0; i < numOfPoints; i += divider) {
-                            result.add(TrackPointMapPointConverter.toMapPoint(trackpointEntities.get(i)));
+                                for (int i = 0; i < numOfPoints; i += divider) {
+                                    result.add(TrackPointMapPointConverter.toMapPoint(trackpointEntities.get(i)));
+                                }
+                            } else {
+                                for (TrackpointEntity trackpointEntity : trackpointEntities) {
+                                    result.add(TrackPointMapPointConverter.toMapPoint(trackpointEntity));
+                                }
+                            }
+                            mapPoints.postValue(result);
                         }
-                    } else {
-                        for (TrackpointEntity trackpointEntity : trackpointEntities) {
-                            result.add(TrackPointMapPointConverter.toMapPoint(trackpointEntity));
-                        }
-                    }
-                    mapPoints.postValue(result);
+                    });
                 }
             }
         });
@@ -305,47 +326,52 @@ public class TrackRepository {
             final int maxNumOfMapPoints) {
         final MediatorLiveData<List<TrackDataWithMapPoints>> result = new MediatorLiveData<>();
         final List<TrackDataWithMapPoints> trackDataWithMapPointsList = new ArrayList<>();
-        result.postValue(trackDataWithMapPointsList);
+        result.setValue(trackDataWithMapPointsList);
+
         result.addSource(roomTrackRepository.getTracksWithPoints(), new Observer<List<TrackWithPoints>>() {
             @Override
-            public void onChanged(@Nullable List<TrackWithPoints> trackWithPointsList) {
+            public void onChanged(@Nullable final List<TrackWithPoints> trackWithPointsList) {
                 if (trackWithPointsList != null && trackWithPointsList.size() > 0) {
-                    for (TrackWithPoints trackWithPoints : trackWithPointsList) {
+                    transformationExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (TrackWithPoints trackWithPoints : trackWithPointsList) {
 
-                        // this is for the event when initial sync is happening right now
-                        if (trackWithPoints.getTrackPoints().size() == 0) {
-                            continue;
-                        }
+                                // this is for the event when initial sync is happening right now
+                                if (trackWithPoints.getTrackPoints().size() == 0) {
+                                    continue;
+                                }
 
-                        final TrackDataWithMapPoints trackDataWithMapPoints = new TrackDataWithMapPoints();
+                                final TrackDataWithMapPoints trackDataWithMapPoints = new TrackDataWithMapPoints();
 
-                        trackDataWithMapPoints.setTrackData(TrackDataTrackEntityConverter
-                                .toTrackData(trackWithPoints.getTrackEntity()));
+                                trackDataWithMapPoints.setTrackData(TrackDataTrackEntityConverter
+                                        .toTrackData(trackWithPoints.getTrackEntity()));
 
-                        long numOfPoints = trackWithPoints.getNumOfTrackPoints();
-                        List<MapPoint> mapPoints = new ArrayList<>(maxNumOfMapPoints);
-                        if (numOfPoints > maxNumOfMapPoints) {
-                            long divider = numOfPoints / maxNumOfMapPoints + 1;
+                                long numOfPoints = trackWithPoints.getNumOfTrackPoints();
+                                List<MapPoint> mapPoints = new ArrayList<>(maxNumOfMapPoints);
+                                if (numOfPoints > maxNumOfMapPoints) {
+                                    long divider = numOfPoints / maxNumOfMapPoints + 1;
 
-                            for (int i = 0; i < numOfPoints; i += divider) {
-                                mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackWithPoints
-                                        .getTrackPoints().get(i)));
+                                    for (int i = 0; i < numOfPoints; i += divider) {
+                                        mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackWithPoints
+                                                .getTrackPoints().get(i)));
+                                    }
+                                } else {
+                                    for (TrackpointEntity trackPoint : trackWithPoints.getTrackPoints()) {
+                                        mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackPoint));
+                                    }
+                                }
+                                trackDataWithMapPoints.setMapPointList(mapPoints);
+                                trackDataWithMapPointsList.add(trackDataWithMapPoints);
                             }
-                        } else {
-                            for (TrackpointEntity trackPoint : trackWithPoints.getTrackPoints()) {
-                                mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackPoint));
-                            }
+                            result.postValue(trackDataWithMapPointsList);
                         }
-                        trackDataWithMapPoints.setMapPointList(mapPoints);
-                        trackDataWithMapPointsList.add(trackDataWithMapPoints);
-                    }
+                    });
                 }
-                result.postValue(trackDataWithMapPointsList);
             }
         });
         return result;
     }
-
 
     public LiveData<TrackpointEntity> getActualTrackpoint(final long id) {
         return roomTrackRepository.getActualTrackpoint(id);
@@ -419,5 +445,4 @@ public class TrackRepository {
     public interface GetTrackpointsFromCloudListener {
         void onTrackpointsLoaded(List<TrackpointEntity> trackpointEntityList);
     }
-
 }

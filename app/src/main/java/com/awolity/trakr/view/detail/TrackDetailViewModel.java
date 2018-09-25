@@ -15,8 +15,10 @@ import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakrutils.Constants;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 public class TrackDetailViewModel extends ViewModel {
 
@@ -26,6 +28,11 @@ public class TrackDetailViewModel extends ViewModel {
 
     @Inject
     SettingsRepository settingsRepository;
+
+    @SuppressWarnings("WeakerAccess")
+    @Inject
+    @Named("transformation")
+    Executor transformationExecutor;
 
     private long trackId = Constants.NO_LAST_RECORDED_TRACK;
 
@@ -71,12 +78,17 @@ public class TrackDetailViewModel extends ViewModel {
                     Constants.CHART_POINT_MAX_NUMBER_FOR_TRACK_DETAIL),
                     new Observer<List<ChartPoint>>() {
                         @Override
-                        public void onChanged(@Nullable List<ChartPoint> chartPoints) {
+                        public void onChanged(@Nullable final List<ChartPoint> chartPoints) {
                             if (chartPoints != null) {
-                                for (ChartPoint chartPoint : chartPoints) {
-                                    chartPoint.convertToImperial();
-                                }
-                                result.postValue(chartPoints);
+                                transformationExecutor.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        for (ChartPoint chartPoint : chartPoints) {
+                                            chartPoint.convertToImperial();
+                                        }
+                                        result.postValue(chartPoints);
+                                    }
+                                });
                             }
                         }
                     });
