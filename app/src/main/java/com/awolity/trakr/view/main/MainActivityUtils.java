@@ -45,7 +45,6 @@ class MainActivityUtils {
     }
 
     static void scrollMapDown(Context context, GoogleMap googleMap) {
-
         googleMap.animateCamera(CameraUpdateFactory.scrollBy(0, -getScrollBy(context)));
     }
 
