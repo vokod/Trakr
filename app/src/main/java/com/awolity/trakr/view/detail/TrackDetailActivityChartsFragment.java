@@ -314,13 +314,13 @@ public class TrackDetailActivityChartsFragment extends Fragment {
         avgSpeedPpvi.setValue(StringUtils.getSpeedAsThreeCharactersString(trackData.getAvgSpeed()));
         double maxSpeed = trackData.getMaxSpeed();
         if (maxSpeed > 1) {
-            maxPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((60 * (1 / maxSpeed))));
+            maxPacePpvi.setValue(StringUtils.getPaceAsString(maxSpeed));
         } else {
             maxPacePpvi.setValue("-");
         }
         double avgSpeed = trackData.getAvgSpeed();
         if (avgSpeed > 1) {
-            avgPacePpvi.setValue(StringUtils.getSpeedAsThreeCharactersString((60 * (1 / avgSpeed))));
+            avgPacePpvi.setValue(StringUtils.getPaceAsString(avgSpeed));
         } else {
             avgPacePpvi.setValue("-");
         }
