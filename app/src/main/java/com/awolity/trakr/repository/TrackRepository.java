@@ -321,8 +321,6 @@ public class TrackRepository {
     public LiveData<List<TrackDataWithMapPoints>> getTrackDataListWithMapPoints(
             final int maxNumOfMapPoints) {
         final MediatorLiveData<List<TrackDataWithMapPoints>> result = new MediatorLiveData<>();
-        final List<TrackDataWithMapPoints> trackDataWithMapPointsList = new ArrayList<>();
-        result.setValue(trackDataWithMapPointsList);
 
         result.addSource(roomTrackRepository.getTracksWithPoints(), new Observer<List<TrackWithPoints>>() {
             @Override
@@ -331,6 +329,7 @@ public class TrackRepository {
                     transformationExecutor.execute(new Runnable() {
                         @Override
                         public void run() {
+                            List<TrackDataWithMapPoints> trackDataWithMapPointsList = new ArrayList<>();
                             for (TrackWithPoints trackWithPoints : trackWithPointsList) {
 
                                 // this is for the event when initial sync is happening right now
@@ -364,7 +363,6 @@ public class TrackRepository {
                                     for (TrackpointEntity trackpointEntity : trackWithPoints.getTrackPoints()) {
                                         mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackpointEntity));
                                     }
-
                                 }
 
                                 trackDataWithMapPoints.setMapPointList(mapPoints);

@@ -21,6 +21,8 @@
     <string name="activity_main_dialog_stop_recording_stop_recording">Stop recording?</string>
     <string name="activity_main_dialog_stop_recording_continue">Continue</string>
     <string name="activity_main_dialog_stop_recording_stop">Stop</string>
+    <string name="activity_main_dialog_stop_recording_icon_content_desc">Icon of application</string>
+
 
     <!-- Track list activity -->
     <string name="title_activity_track_list">Recorded tracks</string>
@@ -88,6 +90,7 @@
     <string name="setting_description_libraries">The open source libraries that made Trakr possible</string>
     <string name="setting_label_feedback">Feedback and report</string>
     <string name="setting_description_feedback">Have a problem? Want to suggest an improvement? Tap here!</string>
+    <string name="password">password</string>
 
     <string name="logout_dialog_title">Log out</string>
     <string name="logout_dialog_message">On logging out, all the tracks saved by this account: %s

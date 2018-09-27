@@ -2,6 +2,8 @@ package com.awolity.trakr.model;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.Objects;
+
 public class MapPoint {
 
     private double latitude, longitude;
@@ -32,5 +34,20 @@ public class MapPoint {
 
     public LatLng toLatLng() {
         return new LatLng(latitude, longitude);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MapPoint)) return false;
+        MapPoint mapPoint = (MapPoint) o;
+        return Double.compare(mapPoint.getLatitude(), getLatitude()) == 0 &&
+                Double.compare(mapPoint.getLongitude(), getLongitude()) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getLatitude(), getLongitude());
     }
 }

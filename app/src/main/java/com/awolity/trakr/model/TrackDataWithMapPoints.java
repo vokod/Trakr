@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class TrackDataWithMapPoints  {
 
@@ -33,5 +34,20 @@ public class TrackDataWithMapPoints  {
             latLngs[i] = mapPointList.get(i).toLatLng();
         }
         return Arrays.asList(latLngs);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TrackDataWithMapPoints)) return false;
+        TrackDataWithMapPoints that = (TrackDataWithMapPoints) o;
+        return Objects.equals(getMapPointList(), that.getMapPointList()) &&
+                Objects.equals(getTrackData(), that.getTrackData());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getMapPointList(), getTrackData());
     }
 }

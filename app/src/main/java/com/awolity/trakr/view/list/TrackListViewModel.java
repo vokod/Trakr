@@ -30,7 +30,7 @@ public class TrackListViewModel extends ViewModel {
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 
-    public int getUnit(){
+    public int getUnit() {
         return settingsRepository.getUnit();
     }
 
@@ -41,13 +41,15 @@ public class TrackListViewModel extends ViewModel {
                 new Observer<List<TrackDataWithMapPoints>>() {
                     @Override
                     public void onChanged(@Nullable List<TrackDataWithMapPoints> trackDataListWithMapPoints) {
-                        if (trackDataListWithMapPoints != null) {
+                        if (trackDataListWithMapPoints != null && trackDataListWithMapPoints.size() != 0) {
                             // get out the last recorded track, if recording right now
                             long lastRecordedTrackId = settingsRepository.getLastRecordedTrackId();
-                            for (TrackDataWithMapPoints trackDataWithMapPoints : trackDataListWithMapPoints) {
-                                if (trackDataWithMapPoints.getTrackData().getTrackId() == lastRecordedTrackId) {
-                                    trackDataListWithMapPoints.remove(trackDataWithMapPoints);
-                                    break;
+                            if (lastRecordedTrackId != Constants.NO_LAST_RECORDED_TRACK) {
+                                for (TrackDataWithMapPoints trackDataWithMapPoints : trackDataListWithMapPoints) {
+                                    if (trackDataWithMapPoints.getTrackData().getTrackId() == lastRecordedTrackId) {
+                                        trackDataListWithMapPoints.remove(trackDataWithMapPoints);
+                                        break;
+                                    }
                                 }
                             }
                             if (settingsRepository.getUnit() == Constants.UNIT_IMPERIAL) {

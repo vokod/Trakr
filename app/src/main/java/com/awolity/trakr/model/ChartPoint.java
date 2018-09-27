@@ -2,6 +2,8 @@ package com.awolity.trakr.model;
 
 import com.awolity.trakrutils.Constants;
 
+import java.util.Objects;
+
 public class ChartPoint {
     private long time;
     private double altitude;
@@ -53,5 +55,22 @@ public class ChartPoint {
         altitude = altitude / Constants.FOOT;
         speed = speed / Constants.MILE;
         distance = distance / Constants.MILE;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChartPoint)) return false;
+        ChartPoint that = (ChartPoint) o;
+        return getTime() == that.getTime() &&
+                Double.compare(that.getAltitude(), getAltitude()) == 0 &&
+                Double.compare(that.getSpeed(), getSpeed()) == 0 &&
+                Double.compare(that.getDistance(), getDistance()) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getTime(), getAltitude(), getSpeed(), getDistance());
     }
 }

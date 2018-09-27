@@ -2,6 +2,8 @@ package com.awolity.trakr.model;
 
 import com.awolity.trakrutils.Constants;
 
+import java.util.Objects;
+
 public class TrackData {
 
     private long trackId;
@@ -175,5 +177,39 @@ public class TrackData {
         setMaxAltitude(getMaxAltitude() / Constants.FOOT);
         setMaxSpeed(getMaxSpeed() / Constants.MILE);
         setAvgSpeed(getAvgSpeed() / Constants.MILE);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TrackData)) return false;
+        TrackData trackData = (TrackData) o;
+        return getTrackId() == trackData.getTrackId() &&
+                getStartTime() == trackData.getStartTime() &&
+                Double.compare(trackData.getDistance(), getDistance()) == 0 &&
+                Double.compare(trackData.getAscent(), getAscent()) == 0 &&
+                Double.compare(trackData.getDescent(), getDescent()) == 0 &&
+                getElapsedTime() == trackData.getElapsedTime() &&
+                getNumOfTrackPoints() == trackData.getNumOfTrackPoints() &&
+                Double.compare(trackData.getNorthestPoint(), getNorthestPoint()) == 0 &&
+                Double.compare(trackData.getSouthestPoint(), getSouthestPoint()) == 0 &&
+                Double.compare(trackData.getWesternPoint(), getWesternPoint()) == 0 &&
+                Double.compare(trackData.getEasternPoint(), getEasternPoint()) == 0 &&
+                Double.compare(trackData.getMinAltitude(), getMinAltitude()) == 0 &&
+                Double.compare(trackData.getMaxAltitude(), getMaxAltitude()) == 0 &&
+                Double.compare(trackData.getMaxSpeed(), getMaxSpeed()) == 0 &&
+                Double.compare(trackData.getAvgSpeed(), getAvgSpeed()) == 0 &&
+                Objects.equals(getFirebaseId(), trackData.getFirebaseId()) &&
+                Objects.equals(getTitle(), trackData.getTitle()) &&
+                Objects.equals(getMetadata(), trackData.getMetadata());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getTrackId(), getFirebaseId(), getTitle(), getStartTime(),
+                getDistance(), getAscent(), getDescent(), getElapsedTime(), getNumOfTrackPoints(),
+                getNorthestPoint(), getSouthestPoint(), getWesternPoint(), getEasternPoint(),
+                getMinAltitude(), getMaxAltitude(), getMaxSpeed(), getAvgSpeed(), getMetadata());
     }
 }

@@ -171,4 +171,6 @@
     <string name="record_notification_line_3_imperial">Szintemelkedés: %sft</string>
     <string name="record_notification_line_4_imperial">Szintsüllyedés: %sft</string>
     <string name="record_notification_line_5_imperial">Átl. sebesség: %smi/h</string>
+    <string name="activity_main_dialog_stop_recording_icon_content_desc">Az alkalmazás ikonja</string>
+    <string name="password">jelszó</string>
 </resources>
