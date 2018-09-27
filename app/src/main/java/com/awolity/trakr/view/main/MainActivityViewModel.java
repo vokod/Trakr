@@ -3,19 +3,17 @@ package com.awolity.trakr.view.main;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.location.Location;
 
 import com.awolity.trakr.TrakrApplication;
-import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
-import com.awolity.trakr.repository.SettingsRepository;
-import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.model.ChartPoint;
 import com.awolity.trakr.model.MapPoint;
+import com.awolity.trakr.model.TrackData;
+import com.awolity.trakr.model.TrackDataWithMapPoints;
+import com.awolity.trakr.repository.SettingsRepository;
+import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakrutils.Constants;
 import com.google.android.gms.location.LocationRequest;
 
@@ -23,7 +21,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class MainActivityViewModel extends AndroidViewModel implements LocationManager.LocationManagerCallback  {
+public class MainActivityViewModel extends AndroidViewModel implements LocationManager.LocationManagerCallback {
 
     private final LocationManager locationManager;
     private MutableLiveData<Location> lastLocation;
@@ -45,15 +43,15 @@ public class MainActivityViewModel extends AndroidViewModel implements LocationM
                 LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
-    public void init(long trackId) {
+    void init(long trackId) {
         this.trackId = trackId;
     }
 
-    public void reset() {
+    void reset() {
         trackId = Constants.NO_LAST_RECORDED_TRACK;
     }
 
-    public void isLocationSettingsGood(LocationManager.LocationSettingsCallback callback) {
+    void isLocationSettingsGood(LocationManager.LocationSettingsCallback callback) {
         locationManager.isLocationSettingsGood(callback);
     }
 
@@ -76,35 +74,31 @@ public class MainActivityViewModel extends AndroidViewModel implements LocationM
 
     @Override
     public void onLocationChanged(Location location) {
-        // MyLog.d(TAG, "onLocationChanged");
         lastLocation.setValue(location);
     }
 
-    public LiveData<TrackEntity> getTrack() {
+    public LiveData<TrackData> getTrackData() {
         checkTrackId();
-        return trackRepository.getTrack(trackId);
+        return trackRepository.getTrackData(trackId);
     }
 
-    public LiveData<TrackWithPoints> getTrackWithPoints() {
+    public LiveData<List<MapPoint>> getMapPoints() {
         checkTrackId();
-        return trackRepository.getTrackWithPoints(trackId);
+        return trackRepository.getMapPoints(trackId);
     }
 
-    public LiveData<TrackEntity> getTrackData() {
-        return trackRepository.getTrack(trackId);
-    }
-
-    public LiveData<List<TrackpointEntity>> getTrackpointsList() {
-        checkTrackId();
-        return trackRepository.getTrackpointsByTrack(trackId);
-    }
-
-    public LiveData<TrackpointEntity> getActualTrackpoint() {
+    public LiveData<MapPoint> getActualMapPoint() {
         checkTrackId();
         return trackRepository.getActualTrackpoint(trackId);
     }
 
-    public void finishRecording() {
+    public LiveData<List<ChartPoint>> getChartPoints(){
+        checkTrackId();
+        return trackRepository.getChartpointsByTrack(trackId,
+                Constants.CHART_POINT_MAX_NUMBER_FOR_BOTTOM_SHEET_CHARTS_FRAGMENT);
+    }
+
+    void finishRecording() {
         reset();
     }
 
@@ -114,11 +108,11 @@ public class MainActivityViewModel extends AndroidViewModel implements LocationM
         }
     }
 
-    public long getLastRecordedTrackId(){
+    long getLastRecordedTrackId() {
         return settingsRepository.getLastRecordedTrackId();
     }
 
-    public void setLastRecordedTrackId(long trackId){
+    void setLastRecordedTrackId(long trackId) {
         settingsRepository.setLastRecordedTrackId(trackId);
     }
 }

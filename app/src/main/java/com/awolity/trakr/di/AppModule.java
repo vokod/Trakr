@@ -40,7 +40,7 @@ public class AppModule {
     @Provides @Named("transformation")
     @Singleton
     public Executor provideTransformationExecutor() {
-        return executors.getTransformationExecutor();
+        return executors.transformationExecutor();
     }
 
 }

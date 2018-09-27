@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.model.ChartPoint;
+import com.awolity.trakr.model.MapPoint;
 import com.awolity.trakr.view.main.MainActivityViewModel;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -38,10 +38,10 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     private long trackId = -1;
     private LineChart chart;
     private TextView placeholderTextView;
-    private TrackWithPoints trackWithPoints;
     private Handler handler;
     private Runnable chartUpdater;
     private boolean firstRun;
+    private List<ChartPoint> chartPoints;
 
     public static BottomSheetChartsFragment newInstance(String title) {
         BottomSheetChartsFragment fragment = new BottomSheetChartsFragment();
@@ -111,15 +111,15 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
     @SuppressWarnings("ConstantConditions")
     private void startObserve(/*long trackId*/) {
         // MyLog.d(TAG, "startObserve");
-        mainActivityViewModel.getTrackWithPoints().observe(getActivity(), trackWithPointsObserver);
+        mainActivityViewModel.getChartPoints().observe(getActivity(), chartPointsObserver);
     }
 
-    private final Observer<TrackWithPoints> trackWithPointsObserver = new Observer<TrackWithPoints>() {
+    private final Observer<List<ChartPoint>> chartPointsObserver = new Observer<List<ChartPoint>>() {
         @Override
-        public void onChanged(@Nullable TrackWithPoints trackWithPoints) {
+        public void onChanged(@Nullable List<ChartPoint> chartPoints) {
             // MyLog.d(TAG, "trackWithPointsObserver.onChanged");
-            if (trackWithPoints != null) {
-                BottomSheetChartsFragment.this.trackWithPoints = trackWithPoints;
+            if (chartPoints != null) {
+                BottomSheetChartsFragment.this.chartPoints = chartPoints;
                 if (firstRun) {
                     updateChart();
                     firstRun = false;
@@ -130,7 +130,7 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
 
     private void stopObserve() {
         // MyLog.d(TAG, "stopObserve");
-        mainActivityViewModel.getTrackWithPoints().removeObserver(trackWithPointsObserver);
+        mainActivityViewModel.getChartPoints().removeObserver(chartPointsObserver);
     }
 
     private void startChartUpdater() {
@@ -160,30 +160,29 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
         setDataVisibility(false);
         stopObserve();
         stopChartUpdater();
-        trackWithPoints = null;
+        chartPoints = null;
         chart.clear();
     }
 
     private void updateChart() {
         // MyLog.d(TAG, "updateChart");
-        if (trackWithPoints == null) {
+        if (chartPoints == null) {
             // MyLog.d(TAG, "updateChart - track NULL :(");
             return;
         } else {
-            if (trackWithPoints.getTrackPoints().size() < 3) {
+            if (chartPoints.size() < 3) {
                 return;
             }
         }
         // MyLog.d(TAG, "updateChart - track NOT null");
         List<Entry> elevationValues = new ArrayList<>();
         List<Entry> speedValues = new ArrayList<>();
-        List<TrackpointEntity> trackpointEntityList = trackWithPoints.getTrackPoints();
         double rollingDistance = 0;
 
-        for (TrackpointEntity trackpointEntity : trackpointEntityList) {
-            rollingDistance += trackpointEntity.getDistance();
-            elevationValues.add(new Entry((float) rollingDistance, (float) trackpointEntity.getAltitude()));
-            speedValues.add(new Entry((float) rollingDistance, (float) trackpointEntity.getSpeed()));
+        for (ChartPoint chartPoint : chartPoints) {
+            rollingDistance += chartPoint.getDistance();
+            elevationValues.add(new Entry((float) rollingDistance, (float) chartPoint.getAltitude()));
+            speedValues.add(new Entry((float) rollingDistance, (float) chartPoint.getSpeed()));
         }
         chart.getXAxis().setValueFormatter(new LargeValueFormatter());
         LineDataSet elevationDataSet = new LineDataSet(elevationValues, getString(R.string.elevation_chart_title));

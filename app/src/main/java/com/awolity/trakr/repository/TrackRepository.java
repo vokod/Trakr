@@ -157,10 +157,6 @@ public class TrackRepository {
         });
     }
 
-    public LiveData<TrackEntity> getTrack(long id) {
-        return roomTrackRepository.getTrack(id);
-    }
-
     public LiveData<TrackData> getTrackData(long id) {
         final MediatorLiveData<TrackData> result = new MediatorLiveData<>();
         result.addSource(roomTrackRepository.getTrack(id), new Observer<TrackEntity>() {
@@ -348,19 +344,29 @@ public class TrackRepository {
                                         .toTrackData(trackWithPoints.getTrackEntity()));
 
                                 long numOfPoints = trackWithPoints.getNumOfTrackPoints();
-                                List<MapPoint> mapPoints = new ArrayList<>(maxNumOfMapPoints);
-                                if (numOfPoints > maxNumOfMapPoints) {
-                                    long divider = numOfPoints / maxNumOfMapPoints + 1;
+                                List<MapPoint> mapPoints;
+                                if (maxNumOfMapPoints != 0) {
+                                    mapPoints = new ArrayList<>(maxNumOfMapPoints);
+                                    if (numOfPoints > maxNumOfMapPoints) {
+                                        long divider = numOfPoints / maxNumOfMapPoints + 1;
 
-                                    for (int i = 0; i < numOfPoints; i += divider) {
-                                        mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackWithPoints
-                                                .getTrackPoints().get(i)));
+                                        for (int i = 0; i < numOfPoints; i += divider) {
+                                            mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackWithPoints
+                                                    .getTrackPoints().get(i)));
+                                        }
+                                    } else {
+                                        for (TrackpointEntity trackPoint : trackWithPoints.getTrackPoints()) {
+                                            mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackPoint));
+                                        }
                                     }
                                 } else {
-                                    for (TrackpointEntity trackPoint : trackWithPoints.getTrackPoints()) {
-                                        mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackPoint));
+                                    mapPoints = new ArrayList<>((int) numOfPoints);
+                                    for (TrackpointEntity trackpointEntity : trackWithPoints.getTrackPoints()) {
+                                        mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackpointEntity));
                                     }
+
                                 }
+
                                 trackDataWithMapPoints.setMapPointList(mapPoints);
                                 trackDataWithMapPointsList.add(trackDataWithMapPoints);
                             }
@@ -373,8 +379,19 @@ public class TrackRepository {
         return result;
     }
 
-    public LiveData<TrackpointEntity> getActualTrackpoint(final long id) {
-        return roomTrackRepository.getActualTrackpoint(id);
+    public LiveData<MapPoint> getActualTrackpoint(final long id) {
+        final MediatorLiveData<MapPoint> result = new MediatorLiveData<>();
+        result.addSource(roomTrackRepository.getActualTrackpoint(id),
+                new Observer<TrackpointEntity>() {
+                    @Override
+                    public void onChanged(@Nullable TrackpointEntity trackpointEntity) {
+                        if (trackpointEntity != null) {
+                            result.setValue(new MapPoint(trackpointEntity.getLatitude(),
+                                    trackpointEntity.getLongitude()));
+                        }
+                    }
+                });
+        return result;
     }
 
     @WorkerThread

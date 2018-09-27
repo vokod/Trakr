@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
@@ -30,8 +31,10 @@ public class SyncService extends IntentService {
     @SuppressWarnings("WeakerAccess")
     @Inject
     TrackRepository trackRepository;
+
     @SuppressWarnings("WeakerAccess")
     @Inject
+    @Named("disc")
     Executor discIoExecutor;
 
     @SuppressWarnings("WeakerAccess")

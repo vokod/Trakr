@@ -24,6 +24,7 @@ import android.view.ViewAnimationUtils;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.model.MapPoint;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -112,10 +113,10 @@ class MainActivityUtils {
         return true;
     }
 
-    static List<LatLng> transformTrackpointsToLatLngs(List<TrackpointEntity> trackpoints) {
-        List<LatLng> latLngs = new ArrayList<>(trackpoints.size());
-        for (TrackpointEntity trackpoint : trackpoints) {
-            latLngs.add(new LatLng(trackpoint.getLatitude(), trackpoint.getLongitude()));
+    static List<LatLng> transformTrackpointsToLatLngs(List<MapPoint> mapPoints) {
+        List<LatLng> latLngs = new ArrayList<>(mapPoints.size());
+        for (MapPoint mapPoint : mapPoints) {
+            latLngs.add(new LatLng(mapPoint.getLatitude(), mapPoint.getLongitude()));
         }
         return latLngs;
     }

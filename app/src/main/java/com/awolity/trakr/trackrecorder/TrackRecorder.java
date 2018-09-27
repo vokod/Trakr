@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
@@ -58,6 +59,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     Context context;
 
     @SuppressWarnings("WeakerAccess")
+    @Named("disc")
     @Inject
     Executor discIoExecutor;
 

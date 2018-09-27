@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.data.entity.TrackEntity;
+import com.awolity.trakr.model.TrackData;
 import com.awolity.trakr.view.main.MainActivityViewModel;
 import com.awolity.trakrutils.StringUtils;
 import com.awolity.trakrviews.PrimaryPropertyView;
@@ -184,25 +184,25 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void startObserve() {
-        mainActivityViewModel.getTrack().observe(getActivity(), trackEntityObserver);
+        mainActivityViewModel.getTrackData().observe(getActivity(), trackEntityObserver);
     }
 
     private void stopObserve() {
-        mainActivityViewModel.getTrack().removeObserver(trackEntityObserver);
+        mainActivityViewModel.getTrackData().removeObserver(trackEntityObserver);
     }
 
-    private final Observer<TrackEntity> trackEntityObserver = new Observer<TrackEntity>() {
+    private final Observer<TrackData> trackEntityObserver = new Observer<TrackData>() {
         @Override
-        public void onChanged(@Nullable TrackEntity trackEntity) {
+        public void onChanged(@Nullable TrackData trackData) {
             // MyLog.d(TAG, "trackEntityObserver.onChanged");
-            if (trackEntity != null) {
+            if (trackData != null) {
                 // MyLog.d(TAG, "trackEntityObserver.onChanged - track NOT null");
-                setData(trackEntity);
+                setData(trackData);
             }
         }
     };
 
-    private void setData(TrackEntity track) {
+    private void setData(TrackData track) {
         // MyLog.d(TAG, "setData");
         setDistance(track.getDistance());
         setAscent(track.getAscent());

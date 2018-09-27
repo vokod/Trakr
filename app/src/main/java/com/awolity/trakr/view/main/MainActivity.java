@@ -29,9 +29,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
+import com.awolity.trakr.model.MapPoint;
+import com.awolity.trakr.model.TrackData;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.list.TrackListActivity;
 import com.awolity.trakr.view.main.bottom.BottomSheetBaseFragment;
@@ -55,6 +55,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements OnMapReadyCallback,
@@ -343,37 +344,37 @@ public class MainActivity extends AppCompatActivity
         mainActivityViewModel.reset();
         mainActivityViewModel.init(trackId);
         if (status.isContinueRecording()) {
-            mainActivityViewModel.getTrackpointsList().observe(this, trackpointsListObserver);
+            mainActivityViewModel.getMapPoints().observe(this, mapPointListobserver);
         }
-        mainActivityViewModel.getActualTrackpoint().observe(this, actualTrackpointObserver);
+        mainActivityViewModel.getActualMapPoint().observe(this, actualMapPointObserver);
     }
 
-    private final Observer<List<TrackpointEntity>> trackpointsListObserver
-            = new Observer<List<TrackpointEntity>>() {
+    private final Observer<List<MapPoint>> mapPointListobserver
+            = new Observer<List<MapPoint>>() {
         @Override
-        public void onChanged(@Nullable List<TrackpointEntity> trackpointEntities) {
-            if (trackpointEntities != null
-                    && trackpointEntities.size() != 0
+        public void onChanged(@Nullable List<MapPoint> mapPoints) {
+            if (mapPoints != null
+                    && mapPoints.size() != 0
                     && polylineManager != null) {
-                numOfTrackpoints = trackpointEntities.size();
+                numOfTrackpoints = mapPoints.size();
                 polylineManager.drawPolyline(googleMap,
-                        MainActivityUtils.transformTrackpointsToLatLngs(trackpointEntities));
+                        MainActivityUtils.transformTrackpointsToLatLngs(mapPoints));
             }
-            mainActivityViewModel.getTrackpointsList().removeObserver(this);
+            mainActivityViewModel.getMapPoints().removeObserver(this);
         }
     };
 
     private int numOfTrackpoints = 0;
 
-    private final Observer<TrackpointEntity> actualTrackpointObserver
-            = new Observer<TrackpointEntity>() {
+    private final Observer<MapPoint> actualMapPointObserver
+            = new Observer<MapPoint>() {
         @Override
-        public void onChanged(@Nullable TrackpointEntity trackpointEntity) {
-            if (trackpointEntity != null) {
+        public void onChanged(@Nullable MapPoint mapPoint) {
+            if (mapPoint != null) {
                 if (polylineManager != null) {
                     polylineManager.continuePolyline(googleMap,
-                            new LatLng(trackpointEntity.getLatitude(),
-                                    trackpointEntity.getLongitude()));
+                            new LatLng(mapPoint.getLatitude(),
+                                    mapPoint.getLongitude()));
                     numOfTrackpoints++;
                 }
             }
@@ -382,9 +383,9 @@ public class MainActivity extends AppCompatActivity
 
 
     private void centerTrackOnMap() {
-        mainActivityViewModel.getTrack().observe(this, new Observer<TrackEntity>() {
+        mainActivityViewModel.getTrackData().observe(this, new Observer<TrackData>() {
             @Override
-            public void onChanged(@Nullable TrackEntity track) {
+            public void onChanged(@Nullable TrackData track) {
                 // if we already have a cameraposition, than it centering is unnecessary
                 if (status.getCameraPosition() != null) {
                     return;

@@ -8,12 +8,11 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
 public class DbSanitizer {
-
-    private static final String TAG = DbSanitizer.class.getSimpleName();
 
     @SuppressWarnings("WeakerAccess")
     @Inject
@@ -21,10 +20,10 @@ public class DbSanitizer {
 
     @SuppressWarnings("WeakerAccess")
     @Inject
+    @Named("disc")
     Executor discIoExecutor;
 
     public DbSanitizer() {
-        // MyLog.d(TAG, "DbSanitizer");
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 

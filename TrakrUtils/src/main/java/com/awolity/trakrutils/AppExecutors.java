@@ -39,7 +39,7 @@ public class AppExecutors {
         return diskIO;
     }
 
-    public Executor getTransformationExecutor(){
+    public Executor transformationExecutor(){
         return transformationExecutor;
     }
 }

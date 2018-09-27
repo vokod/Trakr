@@ -15,11 +15,13 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 public class RoomTrackRepository {
 
     @SuppressWarnings("WeakerAccess")
     @Inject
+    @Named("disc")
     Executor discIoExecutor;
     @SuppressWarnings("WeakerAccess")
     @Inject

@@ -14,6 +14,8 @@ public class Constants {
     public static final int MAP_POINT_MAX_NUMBER_FOR_EXPLORE = 100;
     public static final int MAP_POINT_MAX_NUMBER_FOR_TRACK_LIST = 50;
     public static final int CHART_POINT_MAX_NUMBER_FOR_TRACK_DETAIL = 200;
+    public static final int CHART_POINT_MAX_NUMBER_FOR_BOTTOM_SHEET_CHARTS_FRAGMENT = 200;
+
 
     public static final RecordParameters RECORD_PARAMETERS_MOST_ACCURATE = new RecordParameters(
             3,
