@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.model.MapPoint;
@@ -453,7 +454,7 @@ public class MainActivity extends AppCompatActivity
         try {
             googleMap.setMyLocationEnabled(true);
         } catch (SecurityException e) {
-            Crashlytics.logException(e);
+            if (!BuildConfig.DEBUG) Crashlytics.logException(e);
         }
 
         if (status.isThereACameraPosition()) {
@@ -500,7 +501,7 @@ public class MainActivity extends AppCompatActivity
                         try {
                             googleMap.setMyLocationEnabled(true);
                         } catch (SecurityException e) {
-                            Crashlytics.logException(e);
+                            if (!BuildConfig.DEBUG) Crashlytics.logException(e);
                             // MyLog.e(TAG, e.getLocalizedMessage());
                         }
                     }

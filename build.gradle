@@ -10,7 +10,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0-alpha08'
+        classpath 'com.android.tools.build:gradle:3.3.0-alpha12'
         classpath 'com.google.gms:google-services:4.0.0'
         classpath 'io.fabric.tools:gradle:1.25.4'
 
@@ -33,6 +33,22 @@ task clean(type: Delete) {
 }
 
 ext {
-    supportLibVersion = '27.1.1'
+    // version code and version name
+    versionCode = 32
+    versionName = "0.32"
+    // Sdk and tools
+    minSdkVersion = 21
+    targetSdkVersion = 28
+    compileSdkVersion = 28
+    buildToolsVersion = '28.0.2'
+    // App dependencies
+    supportLibVersion = '28.0.0'
     androidX = '1.0.0-rc01'
+    junitVersion = '4.12'
+    mockitoVersion = '1.10.19'
+    espressoVersion = '3.0.2'
+    playServicesVersion = '15.0.1'
+    androidArchVersion = '1.1.1'
+    firebaseVersion = '16.0.1'
+    adsVersion = '15.0.1'
 }
