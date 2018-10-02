@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.model.MapPoint;
@@ -55,7 +56,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements OnMapReadyCallback,
@@ -193,10 +193,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    isBottomSheetUp = true;
                     if (googleMap != null) {
                         MainActivityUtils.scrollMapUp(MainActivity.this, googleMap);
                     }
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    isBottomSheetUp = false;
                     if (googleMap != null) {
                         MainActivityUtils.scrollMapDown(MainActivity.this, googleMap);
                     }
@@ -210,6 +212,8 @@ public class MainActivity extends AppCompatActivity
         };
         bottomSheetBehavior.setBottomSheetCallback(bottomSheetCallback);
     }
+
+    private boolean isBottomSheetUp = false;
 
     private void setupFab() {
         fab = findViewById(R.id.fab);
@@ -443,20 +447,45 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
         this.googleMap = googleMap;
         googleMap.getUiSettings().setMapToolbarEnabled(true);
         googleMap.getUiSettings().setCompassEnabled(true);
         try {
             googleMap.setMyLocationEnabled(true);
         } catch (SecurityException e) {
-            Crashlytics.logException(e);
-            // MyLog.e(TAG, e.getLocalizedMessage());
+            if (!BuildConfig.DEBUG) Crashlytics.logException(e);
         }
 
         if (status.isThereACameraPosition()) {
             updateCamera(status.getCameraPosition());
         }
+
+        googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                if (isBottomSheetUp) {
+                    Location myLocation = mainActivityViewModel.getLocation().getValue();
+                    if (myLocation!=null) {
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLng(
+                                new LatLng(myLocation.getLatitude(), myLocation.getLongitude())),
+                                new GoogleMap.CancelableCallback() {
+                            @Override
+                            public void onFinish() {
+                                MainActivityUtils.scrollMapUp(MainActivity.this, googleMap);
+                            }
+
+                            @Override
+                            public void onCancel() {
+
+                            }
+                        });
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -472,7 +501,7 @@ public class MainActivity extends AppCompatActivity
                         try {
                             googleMap.setMyLocationEnabled(true);
                         } catch (SecurityException e) {
-                            Crashlytics.logException(e);
+                            if (!BuildConfig.DEBUG) Crashlytics.logException(e);
                             // MyLog.e(TAG, e.getLocalizedMessage());
                         }
                     }

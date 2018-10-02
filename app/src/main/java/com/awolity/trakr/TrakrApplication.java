@@ -54,7 +54,7 @@ public class TrakrApplication extends Application {
         try {
             startService(new Intent(this, SyncService.class));
         } catch (IllegalStateException e) {
-            Crashlytics.logException(e);
+            if (!BuildConfig.DEBUG) Crashlytics.logException(e);
             // MyLog.e("TrakrApplication", e.getLocalizedMessage());
         }
 
