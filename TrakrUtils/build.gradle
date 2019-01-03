@@ -27,7 +27,7 @@ dependencies {
     // location
     implementation "com.google.android.gms:play-services-location:${playServicesVersion}"
     // Timber
-    api 'com.jakewharton.timber:timber:4.7.0'
+    api 'com.jakewharton.timber:timber:4.7.1'
     // text drawable
     api 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 }

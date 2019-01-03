@@ -16,6 +16,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -46,6 +47,7 @@ import com.awolity.trakrutils.Constants;
 import com.awolity.trakrutils.MyLog;
 import com.awolity.trakrutils.Utility;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -236,6 +238,7 @@ public class MainActivity extends AppCompatActivity
                                     if (isSettingsGood) {
                                         serviceManager.startService();
                                     } else {
+                                        isAirplaneErrorShown = false;
                                         showLocationSettingsDialog(e);
                                     }
                                 }
@@ -244,7 +247,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-
 
     private void setupMapFragment() {
         // MyLog.d(TAG, "setupMapFragment");
@@ -269,7 +271,32 @@ public class MainActivity extends AppCompatActivity
                     REQUEST_CODE_CHANGE_LOCATION_SETTINGS);
         } catch (IntentSender.SendIntentException sendEx) {
             // Ignore the error.
+        } catch (ClassCastException castEx){
+            ApiException unresolvable = (ApiException) e;
+            if(!isAirplaneErrorShown) {
+                showAirplaneModeErrorDialog();
+            }
         }
+    }
+
+    private void showAirplaneModeErrorDialog() {
+        isAirplaneErrorShown = true;
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        // set title
+        alertDialogBuilder.setTitle(R.string.activity_main_dialog_airplane_title);
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(R.string.activity_main_dialog_airplane_message)
+                .setCancelable(true)
+                .setIcon(getDrawable(R.drawable.ic_warning))
+                .setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        determineLocationSettings();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private void setupTrackRecorderService() {
@@ -385,7 +412,6 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-
     private void centerTrackOnMap() {
         mainActivityViewModel.getTrackData().observe(this, new Observer<TrackData>() {
             @Override
@@ -410,15 +436,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        MyLog.d(TAG, "onNewIntent");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void determineLocationSettings(){
         mainActivityViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
             @Override
             public void onLocationSettingsDetermined(boolean isSettingsGood, Exception e) {
@@ -432,8 +450,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        MyLog.d(TAG, "onNewIntent");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        MyLog.d(TAG, "onResume");
         startLocationUpdates();
         if (status.isRecording() && !status.isThereACameraPosition()) {
             centerTrackOnMap();
@@ -443,7 +474,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
+        MyLog.d(TAG, "onPause");
         stopLocationUpdates();
+    }
+
+    private boolean isAirplaneErrorShown = false;
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        MyLog.d(TAG, "onWindowFocusChanged: " + hasFocus);
+        if(hasFocus){
+            determineLocationSettings();
+        }
     }
 
     @Override

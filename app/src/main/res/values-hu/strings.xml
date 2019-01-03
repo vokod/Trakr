@@ -100,7 +100,7 @@
     <string name="speed_chart_title">Sebesség [km/h]</string>
     <string name="pace_chart_title">Tempó [min/km]</string>
     <string name="start_recording_a_track">"Indítsd el a rögzítést!"</string>
-        <string name="speed_pace">Sebesség/Tempó</string>
+    <string name="speed_pace">Sebesség/Tempó</string>
     <string name="speed">Sebesség</string>
     <string name="pace">Tempó</string>
     <string name="login_error_cancel">Belépés megszakítva</string>
@@ -173,4 +173,6 @@
     <string name="record_notification_line_5_imperial">Átl. sebesség: %smi/h</string>
     <string name="activity_main_dialog_stop_recording_icon_content_desc">Az alkalmazás ikonja</string>
     <string name="password">jelszó</string>
+    <string name="activity_main_dialog_airplane_title">Repülőgép üzemmód hiba</string>
+    <string name="activity_main_dialog_airplane_message">A Trakr nem működik, amíg a készülék repülőgép üzemmódban van</string>
 </resources>
