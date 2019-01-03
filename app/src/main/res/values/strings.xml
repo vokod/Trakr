@@ -269,5 +269,7 @@
     <string name="transition_iv_icon" translatable="false">transition_iv_icon</string>
     <string name="transition_title_bar" translatable="false">transition_title_bar</string>
     <string name="title_activity_map">Explore tracks</string>
+    <string name="activity_main_dialog_airplane_message">Trakr cannot run when the device is set to airplane mode.</string>
+    <string name="activity_main_dialog_airplane_title">Airplane mode Error</string>
 
 </resources>
