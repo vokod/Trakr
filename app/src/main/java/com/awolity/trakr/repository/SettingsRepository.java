@@ -67,12 +67,12 @@ public class SettingsRepository {
     }
 
     public int getUnit() {
-        MyLog.d(TAG, "getUnit");
+        // MyLog.d(TAG, "getUnit");
         return sharedPreferences.getInt(KEY_UNIT, Constants.UNIT_METRIC);
     }
 
     public void setUnit(int unit) {
-        MyLog.d(TAG, "setUnit: " + unit);
+        // MyLog.d(TAG, "setUnit: " + unit);
         if (unit != Constants.UNIT_IMPERIAL && unit != Constants.UNIT_METRIC) {
             unit = Constants.UNIT_METRIC;
         }

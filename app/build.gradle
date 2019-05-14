@@ -96,6 +96,9 @@ dependencies {
     implementation "com.android.support:support-v4:${supportLibVersion}"
     implementation "com.android.support:cardview-v7:${supportLibVersion}"
 
+    // Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
     // maps
     implementation "com.google.android.gms:play-services-maps:${playServicesVersion}"
 

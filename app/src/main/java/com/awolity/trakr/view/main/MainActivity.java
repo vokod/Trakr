@@ -300,10 +300,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTrackRecorderService() {
-        MyLog.d(TAG, "setupTrackRecorderService");
+        // MyLog.d(TAG, "setupTrackRecorderService");
         serviceManager = new TrackRecorderServiceManager(this);
         if (TrackRecorderServiceManager.isServiceRunning(this)) {
-            MyLog.d(TAG, "setupTrackRecorderService - service is running");
+            // MyLog.d(TAG, "setupTrackRecorderService - service is running");
             status.setContinueRecording();
             long trackId = mainActivityViewModel.getLastRecordedTrackId();
             if (trackId != Constants.NO_LAST_RECORDED_TRACK) {
@@ -370,7 +370,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTrackViewModel(final long trackId) {
-        MyLog.d(TAG, "setupTrackViewModel");
+        // MyLog.d(TAG, "setupTrackViewModel");
         mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mainActivityViewModel.reset();
         mainActivityViewModel.init(trackId);
@@ -452,7 +452,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        MyLog.d(TAG, "onNewIntent");
+        // MyLog.d(TAG, "onNewIntent");
     }
 
     @Override
@@ -464,7 +464,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        MyLog.d(TAG, "onResume");
+        // MyLog.d(TAG, "onResume");
         startLocationUpdates();
         if (status.isRecording() && !status.isThereACameraPosition()) {
             centerTrackOnMap();
@@ -474,7 +474,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        MyLog.d(TAG, "onPause");
+        // MyLog.d(TAG, "onPause");
         stopLocationUpdates();
     }
 
@@ -483,7 +483,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        MyLog.d(TAG, "onWindowFocusChanged: " + hasFocus);
+        // MyLog.d(TAG, "onWindowFocusChanged: " + hasFocus);
         if(hasFocus){
             determineLocationSettings();
         }

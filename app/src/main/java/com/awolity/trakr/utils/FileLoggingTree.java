@@ -1,4 +1,4 @@
-/*package com.awolity.trakrutils;
+package com.awolity.trakr.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -36,7 +36,7 @@ public class FileLoggingTree extends Timber.DebugTree {
                 direct.mkdir();
             }
 
-            String fileNameTimeStamp = new SimpleDateFormat("yyyy-MM-dd_hh",
+            String fileNameTimeStamp = new SimpleDateFormat("yyyy-MM-dd",
                     Locale.getDefault()).format(new Date());
             String logTimeStamp = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm:ss:SSS aaa",
                     Locale.getDefault()).format(new Date
@@ -59,4 +59,4 @@ public class FileLoggingTree extends Timber.DebugTree {
             Log.e(TAG, "Error while logging into file : " + e);
         }
     }
-}*/
+}
