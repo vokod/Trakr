@@ -5,7 +5,7 @@ import android.location.Location;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.repository.SettingsRepository;
-import com.awolity.trakrutils.RecordParameters;
+import com.awolity.trakr.utils.RecordParameters;
 
 import javax.inject.Inject;
 

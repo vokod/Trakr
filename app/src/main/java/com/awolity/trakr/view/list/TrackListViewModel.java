@@ -10,7 +10,7 @@ import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.model.TrackDataWithMapPoints;
 import com.awolity.trakr.repository.SettingsRepository;
 import com.awolity.trakr.repository.TrackRepository;
-import com.awolity.trakrutils.Constants;
+import com.awolity.trakr.utils.Constants;
 
 import java.util.List;
 

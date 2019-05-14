@@ -5,9 +5,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.awolity.trakr.TrakrApplication;
-import com.awolity.trakrutils.Constants;
-import com.awolity.trakrutils.MyLog;
-import com.awolity.trakrutils.RecordParameters;
+import com.awolity.trakr.utils.Constants;
+import com.awolity.trakr.utils.MyLog;
+import com.awolity.trakr.utils.RecordParameters;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

@@ -91,7 +91,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(path: ':TrakrViews')
-    implementation project(path: ':TrakrUtils')
     implementation "com.android.support:customtabs:${supportLibVersion}"
     implementation "com.android.support:design:${supportLibVersion}"
     implementation "com.android.support:support-v4:${supportLibVersion}"
@@ -114,14 +113,14 @@ dependencies {
 
     // dagger 2
     implementation 'com.google.dagger:dagger-android:2.15'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.14.1'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.16'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
 
     // firebase
     implementation "com.google.firebase:firebase-core:16.0.0"
 
     // crashlitycs
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
 
     // firebase realtime database
     implementation "com.google.firebase:firebase-database:16.0.1"
@@ -150,6 +149,9 @@ dependencies {
 
     // instabug
     implementation 'com.instabug.library:instabug:8.0.5'
+
+    // textDrawable
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

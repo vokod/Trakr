@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.awolity.trakr.R;
 import com.awolity.trakr.model.TrackData;
 import com.awolity.trakr.view.main.MainActivityViewModel;
-import com.awolity.trakrutils.StringUtils;
+import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakrviews.PrimaryPropertyView;
 import com.awolity.trakrviews.SecondaryPropertyView;
 

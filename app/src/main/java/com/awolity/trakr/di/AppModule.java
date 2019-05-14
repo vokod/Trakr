@@ -3,7 +3,7 @@ package com.awolity.trakr.di;
 import android.content.Context;
 
 import com.awolity.trakr.TrakrApplication;
-import com.awolity.trakrutils.AppExecutors;
+import com.awolity.trakr.utils.AppExecutors;
 
 import java.util.concurrent.Executor;
 

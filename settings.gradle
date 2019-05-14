@@ -1,1 +1,1 @@
-include ':app', ':TrakrViews', ':TrakrUtils'
+include ':app', ':TrakrViews'

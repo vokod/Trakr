@@ -1,4 +1,4 @@
-package com.awolity.trakrutils;
+package com.awolity.trakr.utils;
 
 import com.google.android.gms.location.LocationRequest;
 

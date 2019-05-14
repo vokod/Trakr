@@ -11,10 +11,9 @@ import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.model.ChartPoint;
 import com.awolity.trakr.model.MapPoint;
 import com.awolity.trakr.model.TrackData;
-import com.awolity.trakr.model.TrackDataWithMapPoints;
 import com.awolity.trakr.repository.SettingsRepository;
 import com.awolity.trakr.repository.TrackRepository;
-import com.awolity.trakrutils.Constants;
+import com.awolity.trakr.utils.Constants;
 import com.google.android.gms.location.LocationRequest;
 
 import java.util.List;

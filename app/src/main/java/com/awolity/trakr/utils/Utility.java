@@ -1,10 +1,8 @@
-package com.awolity.trakrutils;
+package com.awolity.trakr.utils;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;

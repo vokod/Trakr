@@ -1,6 +1,6 @@
 package com.awolity.trakr.model;
 
-import com.awolity.trakrutils.Constants;
+import com.awolity.trakr.utils.Constants;
 
 import java.util.Objects;
 

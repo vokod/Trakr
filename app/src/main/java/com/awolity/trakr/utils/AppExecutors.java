@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.awolity.trakrutils;
+package com.awolity.trakr.utils;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

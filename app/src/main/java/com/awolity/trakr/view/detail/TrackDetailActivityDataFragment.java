@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.model.TrackData;
-import com.awolity.trakrutils.Constants;
-import com.awolity.trakrutils.StringUtils;
-import com.awolity.trakrutils.Utility;
+import com.awolity.trakr.utils.Constants;
+import com.awolity.trakr.utils.StringUtils;
+import com.awolity.trakr.utils.Utility;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 
 import java.util.Locale;

@@ -1,6 +1,9 @@
-package com.awolity.trakrutils;
+package com.awolity.trakr.utils;
 
 import android.annotation.SuppressLint;
+
+import com.awolity.trakr.BuildConfig;
+
 
 @SuppressLint("LogNotTimber")
 public class MyLog {

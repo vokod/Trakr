@@ -20,7 +20,7 @@ import com.awolity.trakr.model.TrackDataTrackEntityConverter;
 import com.awolity.trakr.model.TrackDataWithMapPoints;
 import com.awolity.trakr.model.TrackPointMapPointConverter;
 import com.awolity.trakr.sync.SyncService;
-import com.awolity.trakrutils.Constants;
+import com.awolity.trakr.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;

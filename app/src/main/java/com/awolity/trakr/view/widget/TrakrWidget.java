@@ -11,7 +11,7 @@ import com.awolity.trakr.R;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.view.main.MainActivity;
-import com.awolity.trakrutils.Constants;
+import com.awolity.trakr.utils.Constants;
 
 import javax.inject.Inject;
 

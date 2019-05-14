@@ -16,9 +16,9 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
-import com.awolity.trakrutils.Constants;
-import com.awolity.trakrutils.MyLog;
-import com.awolity.trakrutils.Utility;
+import com.awolity.trakr.utils.Constants;
+import com.awolity.trakr.utils.MyLog;
+import com.awolity.trakr.utils.Utility;
 import com.awolity.trakrviews.ButtonSetting;
 import com.awolity.trakrviews.RadiogroupSetting;
 import com.awolity.trakrviews.SeekbarSetting;
