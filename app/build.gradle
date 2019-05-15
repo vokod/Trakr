@@ -152,6 +152,9 @@ dependencies {
 
     // textDrawable
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+
+    // SettingViews
+    implementation 'com.github.vokod:SettingViews:0.6'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -20,35 +20,44 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginBottom="16dp"/>
 
-        <com.awolity.trakrviews.ButtonSetting
+        <com.awolity.settingviews.ButtonSetting
             android:id="@+id/bs_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:titleText="@string/setting_label_login"
+            app:descriptionText="@string/settings_description_login"
+            app:iconDrawableResource="@drawable/ic_login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_user" />
 
-        <com.awolity.trakrviews.ButtonSetting
+        <com.awolity.settingviews.ButtonSetting
             android:id="@+id/bs_logout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            app:titleText="@string/setting_label_logout"
+            app:descriptionText="@string/settings_description_logout"
+            app:iconDrawableResource="@drawable/ic_logout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bs_login"/>
 
-        <com.awolity.trakrviews.ButtonSetting
+        <com.awolity.settingviews.ButtonSetting
             android:id="@+id/bs_delete_account"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            app:titleText="@string/setting_label_delete_account"
+            app:descriptionText="@string/settings_description_delete_account"
+            app:iconDrawableResource="@drawable/ic_delete_account"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bs_logout"/>
 
         <View
             android:id="@+id/divider_1"
-            style="@style/SettingDivider"
+            style="@style/SettingGroupDivider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bs_delete_account" />
 
@@ -59,27 +68,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_1" />
 
-        <com.awolity.trakrviews.SeekbarSetting
+        <com.awolity.settingviews.SeekbarSetting
             android:id="@+id/ss_accuracy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            app:titleText="@string/setting_label_accuracy"
+            app:descriptionText="@string/settings_description_accuracy"
+            app:iconDrawableResource="@drawable/ic_accuracy"
+            app:seekbarMax="2"
+            app:seekbarProgress="0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_preferences"/>
 
-        <com.awolity.trakrviews.RadiogroupSetting
+        <com.awolity.settingviews.RadiogroupSetting
             android:id="@+id/rs_unit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:titleText="@string/setting_label_units"
+            app:descriptionText="@string/setting_description_units"
+            app:iconDrawableResource="@drawable/ic_unit"
+            app:selected="0"
+            app:firstRadioButtonText="@string/radiobutton_label_metric"
+            app:secondRadioButtonText="@string/radiobutton_label_implerial"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ss_accuracy" />
 
         <View
             android:id="@+id/divider_2"
-            style="@style/SettingDivider"
+            style="@style/SettingGroupDivider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rs_unit" />
 
@@ -90,36 +110,43 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_2" />
 
-        <com.awolity.trakrviews.ButtonSetting
+        <com.awolity.settingviews.ButtonSetting
             android:id="@+id/bs_terms_of_use"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            app:titleText="@string/setting_label_terms_of_use"
+            app:iconDrawableResource="@drawable/ic_terms_of_use"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_legal"/>
 
-        <com.awolity.trakrviews.ButtonSetting
+        <com.awolity.settingviews.ButtonSetting
             android:id="@+id/bs_privacy_policy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            app:titleText="@string/setting_label_privacy_policy"
+            app:iconDrawableResource="@drawable/ic_privacy_policy"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bs_terms_of_use"/>
 
-        <com.awolity.trakrviews.ButtonSetting
+        <com.awolity.settingviews.ButtonSetting
             android:id="@+id/bs_libraries"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:titleText="@string/setting_label_libraries"
+            app:descriptionText="@string/setting_description_libraries"
+            app:iconDrawableResource="@drawable/ic_libraries"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bs_privacy_policy"/>
 
         <View
             android:id="@+id/divider_3"
-            style="@style/SettingDivider"
+            style="@style/SettingGroupDivider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bs_libraries" />
 
@@ -130,12 +157,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_3" />
 
-        <com.awolity.trakrviews.ButtonSetting
+        <com.awolity.settingviews.ButtonSetting
             android:id="@+id/bs_feedback"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="32dp"
+            app:titleText="@string/setting_label_feedback"
+            app:descriptionText="@string/setting_description_feedback"
+            app:iconDrawableResource="@drawable/ic_feedback"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_contact"/>

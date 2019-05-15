@@ -4,27 +4,25 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.awolity.settingviews.ButtonSetting;
+import com.awolity.settingviews.RadiogroupSetting;
+import com.awolity.settingviews.SeekbarSetting;
 import com.awolity.trakr.R;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.Utility;
-import com.awolity.trakrviews.ButtonSetting;
-import com.awolity.trakrviews.RadiogroupSetting;
-import com.awolity.trakrviews.SeekbarSetting;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
@@ -84,121 +82,78 @@ public class SettingsActivity extends AppCompatActivity
         ButtonSetting librariesBs = findViewById(R.id.bs_libraries);
         ButtonSetting contactBs = findViewById(R.id.bs_feedback);
 
-        loginBs.setup(getString(R.string.setting_label_login),
-                getString(R.string.settings_description_login),
-                R.drawable.ic_login, R.drawable.ic_login_disabled, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivityForResult(AuthUI.getInstance()
-                                .createSignInIntentBuilder()
-                                .setAvailableProviders(Collections.singletonList(
-                                        new AuthUI.IdpConfig.EmailBuilder().build()))
-                                .setLogo(R.mipmap.ic_launcher)
-                                .setPrivacyPolicyUrl("https://trakrapp.github.io/privacy.html")
-                                .setTosUrl("https://trakrapp.github.io/terms.html")
-                                .build(), RC_SIGN_IN);
-                    }
-                });
+        loginBs.setOnClickListener(v ->
+                startActivityForResult(AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(Collections.singletonList(
+                                new AuthUI.IdpConfig.EmailBuilder().build()))
+                        .setLogo(R.mipmap.ic_launcher)
+                        .setPrivacyPolicyUrl("https://trakrapp.github.io/privacy.html")
+                        .setTosUrl("https://trakrapp.github.io/terms.html")
+                        .build(), RC_SIGN_IN));
 
-        logoutBs.setup(getString(R.string.setting_label_logout),
-                getString(R.string.settings_description_logout),
-                R.drawable.ic_logout, R.drawable.ic_logout_disabled, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showLogoutAlertDialog();
-                    }
-                });
+        logoutBs.setOnClickListener(v -> {
+            showLogoutAlertDialog();
+        });
 
-        deleteBs.setup(getString(R.string.setting_label_delete_account),
-                getString(R.string.settings_description_delete_account),
-                R.drawable.ic_delete_account, R.drawable.ic_delete_account_disabled,
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //  showDeleteAccountAlertDialog();
-                        DeleteAccountDialog dialog = new DeleteAccountDialog();
-                        dialog.show(getSupportFragmentManager(), null);
-                    }
-                });
 
-        accuracySs.setup(getString(R.string.setting_label_accuracy),
-                getString(R.string.settings_description_accuracy),
-                R.drawable.ic_accuracy,
-                2, 0, new SeekBar.OnSeekBarChangeListener() {
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        if (fromUser) {
-                            settingsViewModel.setAccuracy(progress);
-                        }
-                    }
+        deleteBs.setOnClickListener(v -> {
+                    DeleteAccountDialog dialog = new DeleteAccountDialog();
+                    dialog.show(getSupportFragmentManager(), null);
+                }
+        );
 
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
 
-                    }
+        int max = accuracySs.getMax();
+        int pos = accuracySs.getPosition();
+        accuracySs.setSeekBarListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    settingsViewModel.setAccuracy(progress);
+                }
+            }
 
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
-                    }
-                });
+            }
 
-        unitRs.setup(getString(R.string.setting_label_units),
-                getString(R.string.setting_description_units),
-                R.drawable.ic_unit,
-                getString(R.string.radiobutton_label_metric),
-                getString(R.string.radiobutton_label_implerial),
-                0, new RadiogroupSetting.RadiogroupSettingListener() {
-                    @Override
-                    public void OnRadioButtonClicked(int no) {
-                        if (no == 0) {
-                            settingsViewModel.setUnit(Constants.UNIT_METRIC);
-                        } else {
-                            settingsViewModel.setUnit(Constants.UNIT_IMPERIAL);
-                        }
-                    }
-                });
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
 
-        termsBs.setup(getString(R.string.setting_label_terms_of_use), null,
-                R.drawable.ic_terms_of_use, 0, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("https://trakrapp.github.io/terms.html"));
-                        startActivity(browserIntent);
-                    }
-                });
-        privacyBs.setup(getString(R.string.setting_label_privacy_policy),
-                null, R.drawable.ic_privacy_policy, 0, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("https://trakrapp.github.io/privacy.html"));
-                        startActivity(browserIntent);
-                    }
-                });
-        librariesBs.setup(getString(R.string.setting_label_libraries),
-                getString(R.string.setting_description_libraries),
-                R.drawable.ic_libraries, 0, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new LibsBuilder()
-                                .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
-                                .withAboutIconShown(true)
-                                .withAboutVersionShown(true)
-                                .withAboutDescription(getString(R.string.setting_description_libraries))
-                                .withActivityTitle(getString(R.string.setting_label_libraries))
-                                .start(SettingsActivity.this);
-                    }
-                });
-        contactBs.setup(getString(R.string.setting_label_feedback),
-                getString(R.string.setting_description_feedback),
-                R.drawable.ic_feedback, 0, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        BugReporting.invoke();
-                    }
-                });
+            }
+        });
+
+        unitRs.setListener(i -> {
+            if (i == 0) {
+                settingsViewModel.setUnit(Constants.UNIT_METRIC);
+            } else {
+                settingsViewModel.setUnit(Constants.UNIT_IMPERIAL);
+            }
+        });
+
+        termsBs.setOnClickListener(v -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://trakrapp.github.io/terms.html"));
+            startActivity(browserIntent);
+        });
+
+        privacyBs.setOnClickListener(v -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://trakrapp.github.io/privacy.html"));
+            startActivity(browserIntent);
+        });
+
+        librariesBs.setOnClickListener(v -> new LibsBuilder()
+                .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                .withAboutIconShown(true)
+                .withAboutVersionShown(true)
+                .withAboutDescription(getString(R.string.setting_description_libraries))
+                .withActivityTitle(getString(R.string.setting_label_libraries))
+                .start(SettingsActivity.this));
+
+        contactBs.setOnClickListener(v -> BugReporting.invoke());
     }
 
     private void showUserLoginState() {
@@ -230,15 +185,15 @@ public class SettingsActivity extends AppCompatActivity
     }
 
     private void showAccuracySetting() {
-        accuracySs.setSeekBarPosition(settingsViewModel.getAccuracy());
+        accuracySs.setSeekBar(settingsViewModel.getAccuracy(), Constants.ACCURACY_MAX_VALUE);
     }
 
     private void showUnitSetting() {
         int unit = settingsViewModel.getUnit();
         if (unit == Constants.UNIT_METRIC) {
-            unitRs.setSelected(0);
+            unitRs.setSelectedRadioButton(0);
         } else if (unit == Constants.UNIT_IMPERIAL) {
-            unitRs.setSelected(1);
+            unitRs.setSelectedRadioButton(1);
         }
     }
 
@@ -292,21 +247,14 @@ public class SettingsActivity extends AppCompatActivity
                 .setCancelable(true)
                 .setIcon(getDrawable(R.drawable.ic_warning))
                 .setPositiveButton(getString(android.R.string.ok),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                settingsViewModel.signOut();
-                                Toast.makeText(SettingsActivity.this, getString(R.string.you_are_logged_out),
-                                        Toast.LENGTH_LONG).show();
-                                showUserLoginState();
-                            }
+                        (dialog, id) -> {
+                            settingsViewModel.signOut();
+                            Toast.makeText(SettingsActivity.this, getString(R.string.you_are_logged_out),
+                                    Toast.LENGTH_LONG).show();
+                            showUserLoginState();
                         })
                 .setNegativeButton(getString(android.R.string.cancel),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
+                        (dialog, which) -> dialog.cancel());
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
