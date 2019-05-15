@@ -1,7 +1,7 @@
 package com.awolity.trakr.view;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.model.MapPoint;

@@ -1,14 +1,14 @@
 package com.awolity.trakr.data.entity;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Index;
-import android.arch.persistence.room.PrimaryKey;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
 import android.location.Location;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
-import com.google.firebase.database.PropertyName;
+import com.google.firebase.firestore.PropertyName;
 
 @SuppressWarnings("WeakerAccess")
 

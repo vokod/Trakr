@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Handler;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;

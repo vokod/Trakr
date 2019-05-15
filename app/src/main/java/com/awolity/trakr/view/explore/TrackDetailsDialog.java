@@ -7,12 +7,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.DialogFragment;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.model.TrackData;
@@ -23,7 +25,7 @@ import com.awolity.trakrviews.ListPropertyViewIcon;
 
 import java.util.Locale;
 
-public class TrackDetailsDialog extends android.support.v4.app.DialogFragment {
+public class TrackDetailsDialog extends DialogFragment {
 
     public interface TrackDetailsDialogListener {
         void onViewClicked(long id);

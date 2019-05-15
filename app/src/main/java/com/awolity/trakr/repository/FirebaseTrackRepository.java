@@ -1,24 +1,35 @@
 package com.awolity.trakr.repository;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.WorkerThread;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.WorkerThread;
 
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.utils.Constants;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.awolity.trakr.utils.MyLog;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
@@ -37,7 +48,9 @@ public class FirebaseTrackRepository {
     @Inject
     AppUserRepository appUserRepository;
 
-    private DatabaseReference dbReference, userTracksReference, userTrackpointsReference;
+    private static final String TAG = "FirebaseTrackRepository";
+    private DocumentReference userReference;
+    private CollectionReference userTracksReference;
     private String appUserId;
 
     public FirebaseTrackRepository() {
@@ -45,90 +58,108 @@ public class FirebaseTrackRepository {
         refreshReferences();
     }
 
-    public String getIdForNewTrack() {
+    String getIdForNewTrack() {
         if (appUserId == null) return null;
-        return userTracksReference.push().getKey();
+        return userTracksReference.document().getId();
     }
 
     @WorkerThread
-    public void saveTrackToCloudOnThread(TrackWithPoints trackWithPoints, String trackFirebaseId) {
+    void saveTrackToCloudOnThread(TrackWithPoints trackWithPoints, String trackFirebaseId) {
+        MyLog.d(TAG, "saveTrackToCloudOnThread() called with: trackWithPoints = [" + trackWithPoints + "], trackFirebaseId = [" + trackFirebaseId + "]");
         refreshReferences();
         TrackEntity trackEntity = TrackEntity.fromTrackWithPoints(trackWithPoints);
 
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(Constants.NODE_TRACKS
-                + "/"
-                + trackFirebaseId, trackEntity);
-        childUpdates.put(Constants.NODE_TRACKPOINTS
-                + "/"
-                + trackFirebaseId, trackWithPoints.getTrackPoints());
+        DocumentReference trackReference = userTracksReference.document(trackFirebaseId);
+        trackReference.set(trackEntity);
+        CollectionReference pointsReference = trackReference.collection(Constants.COLLECTION_TRACKPOINTS);
 
-        dbReference.updateChildren(childUpdates);
+        int batchesNumber = trackWithPoints.getTrackPoints().size() / Constants.BATCH;
+        for (int i = 0; i <= batchesNumber; i++) {
+            int start = i * Constants.BATCH;
+            int end = (i + 1) * Constants.BATCH;
+            if (end > trackWithPoints.getTrackPoints().size()) {
+                end = trackWithPoints.getTrackPoints().size();
+            }
+            writeBatch(pointsReference, start, end, trackWithPoints.getTrackPoints());
+        }
     }
 
-    public void updateTrackToCloud(TrackEntity trackEntity) {
+    @WorkerThread
+    private void writeBatch(CollectionReference pointsReference, int start, int end, List<TrackpointEntity> points) {
+        MyLog.d(TAG, "writeBatch() called with: pointsReference = [" + pointsReference + "], start = [" + start + "], end = [" + end + "], points = [" + points + "]");
+        WriteBatch batch = FirebaseFirestore.getInstance().batch();
+        for (int i = start; i < end; i++) {
+            TrackpointEntity point = points.get(i);
+            pointsReference.document(String.valueOf(i)).set(point);
+        }
+        try {
+            Tasks.await(batch.commit());
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void updateTrackToCloud(TrackEntity trackEntity) {
         refreshReferences();
-        final DatabaseReference trackDbReference
-                = userTracksReference.child(trackEntity.getFirebaseId());
-
-        trackDbReference.setValue(trackEntity);
+        final DocumentReference trackReference
+                = userTracksReference.document(trackEntity.getFirebaseId());
+        trackReference.set(trackEntity);
     }
 
-    public void getAllTrackEntitiesFromCloud(
+    void getAllTrackEntitiesFromCloud(
             final TrackRepository.GetAllTrackEntitiesFromCloudListener listener) {
         refreshReferences();
-
-        userTracksReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        userTracksReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
                 List<TrackEntity> trackEntities = new ArrayList<>();
-                for (DataSnapshot trackEntitySnapshot : dataSnapshot.getChildren()) {
-                    trackEntities.add(trackEntitySnapshot.getValue(TrackEntity.class));
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    trackEntities.add(doc.toObject(TrackEntity.class));
                 }
                 listener.onAllTracksLoaded(trackEntities);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // MyLog.e(TAG, "Error in getAllTrackEntitiesFromCloud - onCancelled"
-                //  + databaseError.getDetails());
+            } else {
+                MyLog.e(TAG, "Error in getAllTrackEntitiesFromCloud "
+                        + task.getException().getLocalizedMessage());
             }
         });
     }
 
-    public void getTrackPoints(String firebaseTrackId,
-                               final TrackRepository.GetTrackpointsFromCloudListener listener) {
+    void getTrackPoints(String firebaseTrackId,
+                        final TrackRepository.GetTrackpointsFromCloudListener listener) {
         refreshReferences();
 
-        final DatabaseReference trackpointDbReference
-                = userTrackpointsReference.child(firebaseTrackId);
+        final CollectionReference pointsReference = userTracksReference
+                .document(firebaseTrackId)
+                .collection(Constants.COLLECTION_TRACKPOINTS);
 
-        trackpointDbReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                final List<TrackpointEntity> trackpointEntities = new ArrayList<>();
-
-                for (DataSnapshot trackPointSnapshot : dataSnapshot.getChildren()) {
-                    TrackpointEntity trackPointEntity
-                            = trackPointSnapshot.getValue(TrackpointEntity.class);
-                    trackpointEntities.add(trackPointEntity);
+        pointsReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                final List<TrackpointEntity> points = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    points.add(doc.toObject(TrackpointEntity.class));
                 }
-                listener.onTrackpointsLoaded(trackpointEntities);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // TODO ?
+                listener.onTrackpointsLoaded(points);
+            } else {
+                MyLog.e(TAG, "Error in getTrackPoints "
+                        + task.getException().getLocalizedMessage());
             }
         });
     }
 
-    public void deleteTrackFromCloud(String firebaseTrackId) {
+    void deleteTrackFromCloud(String firebaseTrackId) {
         refreshReferences();
-        // remove track from track node
-        userTracksReference.child(firebaseTrackId).removeValue();
-        // remove track from trackpoint node
-        //userTrackpointsReference.child(firebaseTrackId).removeValue();
+        FirebaseFunctions functions = FirebaseFunctions.getInstance();
+        Map<String, Object> data = new HashMap<>();
+        data.put("path", Constants.COLLECTION_USERS + "/" + appUserId + "/" + firebaseTrackId);
+        functions.getHttpsCallable("recursiveDelete")
+                .call(data)
+                .continueWith(task -> {
+                    // This continuation runs on either success or failure, but if the task
+                    // has failed then getResult() will throw an Exception which will be
+                    // propagated down.
+                    String result = (String) task.getResult().getData();
+                    MyLog.d(TAG, result);
+                    return result;
+                });
     }
 
     private void refreshReferences() {
@@ -136,9 +167,8 @@ public class FirebaseTrackRepository {
         if (appUserId == null) {
             return;
         }
-
-        dbReference = FirebaseDatabase.getInstance().getReference().child(appUserId);
-        userTracksReference = dbReference.child(Constants.NODE_TRACKS);
-        userTrackpointsReference = dbReference.child(Constants.NODE_TRACKPOINTS);
+        userReference = FirebaseFirestore.getInstance()
+                .collection(Constants.COLLECTION_USERS).document(appUserId);
+        userTracksReference = userReference.collection(Constants.COLLECTION_TRACKS);
     }
 }

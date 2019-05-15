@@ -1,12 +1,12 @@
 package com.awolity.trakr.repository;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
-import android.arch.lifecycle.Observer;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackEntity;
@@ -400,9 +400,9 @@ public class TrackRepository {
         // TODO: ezt átalakítani úgy, hogy a user logint hamarabb teszteljük
         if (trackFirebaseId != null) {
             // update the local instance with the firebase id
-            roomTrackRepository.setTrackFirebaseIdSync(trackEntity, trackFirebaseId);
             trackWithPoints.setFirebaseId(trackFirebaseId);
             firebaseTrackRepository.saveTrackToCloudOnThread(trackWithPoints, trackFirebaseId);
+            roomTrackRepository.setTrackFirebaseIdSync(trackEntity, trackFirebaseId);
         }
     }
 

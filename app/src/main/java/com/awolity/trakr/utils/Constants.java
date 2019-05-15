@@ -8,8 +8,11 @@ public class Constants {
     public static final long NO_LAST_RECORDED_TRACK = -1;
 
     // firebase realtime database nodes
-    public static final String NODE_TRACKS = "tracks";
-    public static final String NODE_TRACKPOINTS = "trackpoints";
+    public static final String COLLECTION_TRACKS = "tracks";
+    public static final String COLLECTION_TRACKPOINTS = "points";
+    public static final String COLLECTION_USERS = "users";
+    public static final int BATCH = 400;
+
 
     public static final int MAP_POINT_MAX_NUMBER_FOR_EXPLORE = 100;
     public static final int MAP_POINT_MAX_NUMBER_FOR_TRACK_LIST = 50;

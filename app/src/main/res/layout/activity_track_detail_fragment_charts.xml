@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/title_bar"
             android:transitionName="@string/transition_title_bar"
             style="@style/CardView.Light"
@@ -23,7 +23,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp">
 
-            <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -78,11 +78,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_title" />
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             style="@style/CardView.Light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp">
 
-            <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -117,7 +117,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_speed_chart_title" />
 
-                <android.support.constraint.Guideline
+                <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -182,11 +182,11 @@
                     app:layout_constraintTop_toTopOf="@+id/cb_speed" />
 
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             style="@style/CardView.Light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -195,7 +195,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp">
 
-            <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -218,11 +218,11 @@
                     app:switchTabs="@array/x_axis_label_array"
                     app:textSize="14sp" />
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             style="@style/CardView.Light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -231,7 +231,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp">
 
-            <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -257,7 +257,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title_elevation" />
 
-                <android.support.constraint.Guideline
+                <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -301,9 +301,9 @@
                     app:layout_constraintTop_toTopOf="@+id/ppvi_min_altitude" />
 
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 

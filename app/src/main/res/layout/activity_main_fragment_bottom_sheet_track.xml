@@ -7,7 +7,7 @@
     tools:context="com.awolity.trakr.view.main.bottom.BottomSheetTrackFragment"
     tools:ignore="Overdraw">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/cardview_margin"
@@ -16,7 +16,7 @@
         android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -111,8 +111,8 @@
 
             </com.awolity.trakrviews.SecondaryPropertyView>
 
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>
 

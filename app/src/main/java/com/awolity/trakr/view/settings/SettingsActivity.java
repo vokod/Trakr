@@ -1,15 +1,18 @@
 package com.awolity.trakr.view.settings;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SeekBar;
@@ -89,7 +92,7 @@ public class SettingsActivity extends AppCompatActivity
                         startActivityForResult(AuthUI.getInstance()
                                 .createSignInIntentBuilder()
                                 .setAvailableProviders(Collections.singletonList(
-                                        new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
+                                        new AuthUI.IdpConfig.EmailBuilder().build()))
                                 .setLogo(R.mipmap.ic_launcher)
                                 .setPrivacyPolicyUrl("https://trakrapp.github.io/privacy.html")
                                 .setTosUrl("https://trakrapp.github.io/terms.html")
@@ -272,11 +275,7 @@ public class SettingsActivity extends AppCompatActivity
                     Utility.showToast(this, getString(R.string.login_error_no_internet));
                     return;
                 }
-
-                if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                    Utility.showToast(this, getString(R.string.login_error_unknown_error));
-                    return;
-                }
+                Utility.showToast(this, getString(R.string.login_error_unknown_error));
             }
             Utility.showToast(this, getString(R.string.login_error_unknown_response));
         }

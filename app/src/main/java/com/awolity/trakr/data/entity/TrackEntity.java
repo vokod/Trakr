@@ -1,15 +1,15 @@
 package com.awolity.trakr.data.entity;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.awolity.trakr.R;
-import com.google.firebase.database.Exclude;
-import com.google.firebase.database.PropertyName;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.PropertyName;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -378,6 +378,12 @@ public class TrackEntity {
     @Override
     public int hashCode() {
         return Objects.hash(getTrackId(), getFirebaseId(), getTitle(), getStartTime(), getDistance(), getAscent(), getDescent(), getElapsedTime(), getNumOfTrackPoints(), getNorthestPoint(), getSouthestPoint(), getWesternPoint(), getEasternPoint(), getMinAltitude(), getMaxAltitude(), getMaxSpeed(), getAvgSpeed(), getMetadata());
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "TrackEntity: id: "+ trackId+ " firebaseId: "+ firebaseId + " name: "+ title;
     }
 
     public static String getDefaultName(Context context, long startTime) {

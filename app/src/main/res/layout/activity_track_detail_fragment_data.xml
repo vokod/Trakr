@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".view.detail.TrackDetailActivityDataFragment">
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/CardView.Light"
         android:id="@+id/title_bar"
         android:transitionName="@string/transition_title_bar"
@@ -18,7 +18,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp">
 
-        <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -73,16 +73,16 @@
                 app:layout_constraintTop_toTopOf="@+id/tv_title"
                 android:contentDescription="@string/activity_track_detail_fragment_data_ib_edit_content_desc" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             style="@style/CardView.Light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,11 +91,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp">
 
-            <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <android.support.constraint.Guideline
+                <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -210,9 +210,9 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline"
                     app:layout_constraintTop_toTopOf="@+id/ppvi_min_altitude" />
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </ScrollView>
 
 

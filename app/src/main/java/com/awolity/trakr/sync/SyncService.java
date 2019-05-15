@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.WorkerThread;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;

@@ -9,9 +9,9 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v4.content.res.ResourcesCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.FileProvider;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
@@ -21,7 +21,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.v4.app.NotificationManagerCompat.IMPORTANCE_LOW;
+import static androidx.core.app.NotificationManagerCompat.IMPORTANCE_LOW;
 
 @SuppressWarnings("ConstantConditions")
 public class NotificationUtils {

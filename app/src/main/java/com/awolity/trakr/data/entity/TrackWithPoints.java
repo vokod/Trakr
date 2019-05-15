@@ -1,9 +1,9 @@
 package com.awolity.trakr.data.entity;
 
-import android.arch.persistence.room.Relation;
+import androidx.room.Relation;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.ArrayList;
 import java.util.List;

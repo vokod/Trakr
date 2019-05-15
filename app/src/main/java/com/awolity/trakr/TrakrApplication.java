@@ -2,6 +2,7 @@ package com.awolity.trakr;
 
 import android.app.Application;
 import android.content.Intent;
+import android.os.StrictMode;
 
 import com.awolity.trakr.di.AppComponent;
 import com.awolity.trakr.di.AppModule;
@@ -13,6 +14,7 @@ import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
 import com.awolity.trakr.utils.FileLoggingTree;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.MobileAds;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.PromptOption;
 import com.instabug.bug.invocation.InvocationOption;
@@ -34,9 +36,30 @@ public class TrakrApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         getAppComponent();
+        setupAds();
+        setupCrashlitics();
+        setupNotifications();
+        setupLogging();
+        // setupStrictMode();
+        TrackRecorder.resetWidget(this);
+        sync();
 
+
+    }
+
+    public AppComponent getAppComponent() {
+        if (appComponent == null) {
+            appComponent = DaggerAppComponent.builder()
+                    .appModule(new AppModule(this))
+                    .dbModule(new DbModule(this))
+                    .repositoryModule(new RepositoryModule())
+                    .build();
+        }
+        return appComponent;
+    }
+
+    private void setupCrashlitics() {
         if (!BuildConfig.DEBUG) {
 
             Fabric.with(this, new Crashlytics());
@@ -49,9 +72,23 @@ public class TrakrApplication extends Application {
             BugReporting.setPromptOptionsEnabled(PromptOption.BUG, PromptOption.FEEDBACK);
             BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_OPTIONAL);
         }
+    }
 
+    private void setupNotifications() {
         NotificationUtils.setupNotificationChannels(this);
+    }
 
+    private void setupAds() {
+        MobileAds.initialize(this, "ca-app-pub-3793399238287273~2652570305");
+    }
+
+    private void setupLogging() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new FileLoggingTree(getApplicationContext()));
+        }
+    }
+
+    private void sync() {
         // start syncing
         try {
             startService(new Intent(this, SyncService.class));
@@ -59,14 +96,10 @@ public class TrakrApplication extends Application {
             if (!BuildConfig.DEBUG) Crashlytics.logException(e);
             // MyLog.e("TrakrApplication", e.getLocalizedMessage());
         }
+    }
 
-        TrackRecorder.resetWidget(this);
-
-        if(BuildConfig.DEBUG) {
-            Timber.plant(new FileLoggingTree(getApplicationContext()));
-        }
-
-     /*   StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+    private void setupStrictMode(){
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
                 .detectDiskWrites()
                 .detectAll()
@@ -78,17 +111,6 @@ public class TrakrApplication extends Application {
                 .detectLeakedClosableObjects()
                 .penaltyLog()
                 .penaltyDeath()
-                .build());*/
-    }
-
-    public AppComponent getAppComponent() {
-        if (appComponent == null) {
-            appComponent = DaggerAppComponent.builder()
-                    .appModule(new AppModule(this))
-                    .dbModule(new DbModule(this))
-                    .repositoryModule(new RepositoryModule())
-                    .build();
-        }
-        return appComponent;
+                .build());
     }
 }

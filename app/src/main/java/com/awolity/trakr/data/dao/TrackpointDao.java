@@ -1,16 +1,16 @@
 package com.awolity.trakr.data.dao;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.Query;
+import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Query;
 
 import com.awolity.trakr.data.entity.TrackpointEntity;
 
 import java.util.List;
 
-import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
-import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+import static androidx.room.OnConflictStrategy.IGNORE;
+import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface TrackpointDao {

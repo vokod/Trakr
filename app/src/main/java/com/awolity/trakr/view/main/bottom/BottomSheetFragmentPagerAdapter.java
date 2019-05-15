@@ -1,7 +1,7 @@
 package com.awolity.trakr.view.main.bottom;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 public class BottomSheetFragmentPagerAdapter extends FragmentPagerAdapter {
 
