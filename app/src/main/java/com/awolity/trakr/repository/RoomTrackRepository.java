@@ -59,9 +59,30 @@ public class RoomTrackRepository {
      */
 
     @WorkerThread
-    public long saveTrackSync(final TrackEntity trackData) {
+    public long saveTrackEntitySync(final TrackEntity trackData) {
         return trackDao.save(trackData);
     }
+
+
+    public long saveTrackWithPoints(final TrackWithPoints track) {
+        discIoExecutor.execute(() -> {
+            TrackEntity entity = TrackWithPoints.fromTrackWithPoints(track);
+            long id = trackDao.save(entity);
+            List<TrackpointEntity> points = track.getTrackPoints();
+            setTrackIdInTrackPointEntities(points,id);
+            trackpointDao.saveAll(points);
+        });
+        return trackDao.save(track);
+    }
+
+    private void setTrackIdInTrackPointEntities(
+            List<TrackpointEntity> trackpointEntities, long id) {
+        for (TrackpointEntity trackpointEntity : trackpointEntities) {
+            trackpointEntity.setTrackId(id);
+            trackpointEntity.setTrackpointId(0);
+        }
+    }
+
 
     public void updateTrack(final TrackEntity trackData) {
         discIoExecutor.execute(new Runnable() {

@@ -148,11 +148,11 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     public void onLocationChanged(Location location) {
         // MyLog.d(TAG, "onLocationChanged");
         status.setCandidateTrackpoint(createTrackPoint(location));
-        // if accuracy is below the required level, drop the point
+        // if accuracy is below the required level, drop the points
         if (!status.isAccurateEnough()) {
             return;
         }
-        // filtering is only possible if there is a previous data point
+        // filtering is only possible if there is a previous data points
         if (status.isThereASavedTrackpoint()) {
             if (status.isDistanceFarEnoughFromLastTrackpoint()) {
                 saveTrackAndPointToDb();
@@ -207,37 +207,37 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
         String priority;
         switch (locationManager.getLocationRequestPriority()) {
             case LocationRequest.PRIORITY_HIGH_ACCURACY:
-                priority = "High accuracy";
+                priority = "High";
                 break;
             case LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY:
-                priority = "Balanced power accuracy";
+                priority = "Balanced";
                 break;
             case LocationRequest.PRIORITY_LOW_POWER:
-                priority = "Low power mode";
+                priority = "Low power";
                 break;
             case LocationRequest.PRIORITY_NO_POWER:
-                priority = "Passive mode";
+                priority = "Passive";
                 break;
             default:
                 priority = "unknown";
         }
 
-        return "Tracking interval: "
+        return "Tp: "
                 + locationManager.getLocationRequestInterval() / 1000
                 + "s. "
-                + "Minimal distance between two points: "
+                + "Smin: "
                 + status.getTrackingDistance()
                 + "m. "
-                + "Geolocation accuracy: "
+                + "Accuracy: "
                 + priority
                 + ". "
-                + "Altitude filter parameter: "
+                + "F(a): "
                 + status.getAltitudeFilterParameter()
                 + ". "
-                + "Speed filter parameter: "
+                + "F(s): "
                 + status.getSpeedFilterParameter()
                 + ". "
-                + "Minimum accuracy to record points: "
+                + "Amin: "
                 + status.getMinimalRecordAccuracy()
                 + "m. ";
     }

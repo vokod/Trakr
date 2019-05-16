@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.awolity.trakr.R;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackEntity;
+import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.repository.AppUserRepository;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.utils.MyLog;
@@ -62,17 +63,17 @@ public class SyncService extends IntentService {
             return;
         }
 
-        trackRepository.getAllTrackEntitiesFromCloud(
-                new TrackRepository.GetAllTrackEntitiesFromCloudListener() {
+        trackRepository.getAllTracksFromCloud(
+                new TrackRepository.GetAllTracksFromCloudListener() {
                     @Override
-                    public void onAllTracksLoaded(final List<TrackEntity> onlineTracks) {
+                    public void onAllTracksLoaded(final List<TrackWithPoints> onlineTracks) {
                         discIoExecutor.execute(new Runnable() {
                             @Override
                             public void run() {
                                 List<TrackEntity> offlineTracks = trackRepository.getTracksSync();
                                 List<TrackEntity> onlyOfflineTracks = getOnyOfflineTracks(
                                         offlineTracks);
-                                List<TrackEntity> onlyOnlineTracks = getOnyOnlineTracks(
+                                List<TrackWithPoints> onlyOnlineTracks = getOnyOnlineTracks(
                                         onlineTracks, offlineTracks);
                                 List<TrackEntity> cloudDeletedOfflineTracks
                                         = getCloudDeletedOfflineTracks(onlineTracks, offlineTracks);
@@ -107,14 +108,14 @@ public class SyncService extends IntentService {
         return onlyOfflineTracks;
     }
 
-    private List<TrackEntity> getOnyOnlineTracks(List<TrackEntity> onlineTracks,
+    private List<TrackWithPoints> getOnyOnlineTracks(List<TrackWithPoints> onlineTracks,
                                                  List<TrackEntity> offlineTracks) {
         // add those tracks from the online tracks
         // that are not present locally
         // to a list
         // the TrackEntity objects are not equal, they have different id-s, so compare start time
-        List<TrackEntity> onlyOnlineTracks = new ArrayList<>();
-        for (TrackEntity onlineTrack : onlineTracks) {
+        List<TrackWithPoints> onlyOnlineTracks = new ArrayList<>();
+        for (TrackWithPoints onlineTrack : onlineTracks) {
             boolean isOnlyOnline = true;
             for (TrackEntity offlineTrack : offlineTracks) {
                 if (onlineTrack.getStartTime() == offlineTrack.getStartTime()) {
@@ -130,7 +131,7 @@ public class SyncService extends IntentService {
         return onlyOnlineTracks;
     }
 
-    private void checkForNameChanges(List<TrackEntity> onlineTracks,
+    private void checkForNameChanges(List<TrackWithPoints> onlineTracks,
                                      List<TrackEntity> offlineTracks) {
         // get the offline version of every online track
         // then check if their titles are the same
@@ -149,7 +150,7 @@ public class SyncService extends IntentService {
         }
     }
 
-    private List<TrackEntity> getCloudDeletedOfflineTracks(List<TrackEntity> onlineTracks,
+    private List<TrackEntity> getCloudDeletedOfflineTracks(List<TrackWithPoints> onlineTracks,
                                                            List<TrackEntity> offlineTracks) {
         // add those tracks from local tracks
         // that has a firebaseId (was uploaded earlier)
@@ -175,9 +176,9 @@ public class SyncService extends IntentService {
         return cloudDeletedOfflineTracks;
     }
 
-    private void saveOnlyOnlineTracksToDb(List<TrackEntity> onlyOnlineTracks) {
+    private void saveOnlyOnlineTracksToDb(List<TrackWithPoints> onlyOnlineTracks) {
         MyLog.d(TAG, "saveOnlyOnlineTracksToDb");
-        for (TrackEntity onlineTrack : onlyOnlineTracks) {
+        for (TrackWithPoints onlineTrack : onlyOnlineTracks) {
             MyLog.d(TAG, "saveOnlyOnlineTracksToDb - saving online track: " + onlineTrack.getFirebaseId());
             trackRepository.saveTrackToLocalDbFromCloud(onlineTrack);
         }

@@ -55,5 +55,7 @@ public class Constants {
     public final static double MILE = 1.609344;
     public final static double FOOT = 0.3048;
 
+    public final static String STRING_DEFAULT_VALUE = "";
+
 
 }

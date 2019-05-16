@@ -1,7 +1,7 @@
 package com.awolity.trakr.di;
 
 import com.awolity.trakr.repository.AppUserRepository;
-import com.awolity.trakr.repository.FirebaseTrackRepository;
+import com.awolity.trakr.repository.remote.FirebaseTrackRepository;
 import com.awolity.trakr.repository.RoomTrackRepository;
 import com.awolity.trakr.repository.SettingsRepository;
 import com.awolity.trakr.repository.TrackRepository;

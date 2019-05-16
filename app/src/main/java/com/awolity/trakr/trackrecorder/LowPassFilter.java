@@ -2,7 +2,6 @@ package com.awolity.trakr.trackrecorder;
 
 class LowPassFilter {
 
-
     private boolean isFirstTime = true;
     private final double[] alphas;
     private final int size;
