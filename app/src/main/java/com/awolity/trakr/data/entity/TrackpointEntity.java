@@ -42,7 +42,6 @@ public class TrackpointEntity {
     double unfilteredSpeed;
     @Ignore
     double accuracy;
-    @Ignore
     double distance;
 
     @NonNull
