@@ -1,5 +1,7 @@
 package com.awolity.trakr.view.settings;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -7,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.repository.AppUserRepository;
 import com.awolity.trakr.repository.SettingsRepository;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseUser;
 
 import javax.inject.Inject;
@@ -21,10 +24,16 @@ public class SettingsViewModel extends ViewModel {
     @Inject
     AppUserRepository appUserRepository;
 
+    @SuppressWarnings("WeakerAccess")
+    @Inject
+    Context context;
+
     private final MutableLiveData<Boolean> isAppUserLoggedIn;
+    private FirebaseAnalytics firebaseAnalytics;
 
     public SettingsViewModel() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(context);
         isAppUserLoggedIn = new MutableLiveData<>();
         isAppUserLoggedIn.postValue(appUserRepository.IsAppUserLoggedIn());
 
@@ -36,6 +45,7 @@ public class SettingsViewModel extends ViewModel {
 
             @Override
             public void onSignIn() {
+                logLoginEvent();
                 isAppUserLoggedIn.postValue(true);
             }
 
@@ -54,15 +64,15 @@ public class SettingsViewModel extends ViewModel {
         return appUserRepository.IsAppUserLoggedIn();
     }
 
-    public void signOut(){
+    public void signOut() {
         appUserRepository.signOut();
     }
 
-    public void deleteAccount(){
+    public void deleteAccount() {
         appUserRepository.deleteUser();
     }
 
-    public void signIn(){
+    public void signIn() {
         appUserRepository.signIn();
     }
 
@@ -84,5 +94,9 @@ public class SettingsViewModel extends ViewModel {
 
     public void setUnit(int unit) {
         settingsRepository.setUnit(unit);
+    }
+
+    private void logLoginEvent(){
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN,null);
     }
 }

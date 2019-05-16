@@ -1,8 +1,10 @@
 package com.awolity.trakr.view.main;
 
 import android.app.Dialog;
+
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -10,11 +12,14 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,6 +60,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 
@@ -68,6 +74,8 @@ public class MainActivity extends AppCompatActivity
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final float ZOOM_LEVEL_INITIAL = 15;
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private FirebaseAnalytics firebaseAnalytics;
 
     private GoogleMap googleMap;
     private BottomSheetPointFragment pointFragment;
@@ -87,6 +95,7 @@ public class MainActivity extends AppCompatActivity
         // MyLog.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         status = new MainActivityStatus();
         fab = findViewById(R.id.fab);
 
@@ -236,6 +245,7 @@ public class MainActivity extends AppCompatActivity
                                 public void onLocationSettingsDetermined(boolean isSettingsGood, Exception e) {
                                     if (isSettingsGood) {
                                         serviceManager.startService();
+                                        MainActivityUtils.logStartRecordingEvent(firebaseAnalytics);
                                     } else {
                                         isAirplaneErrorShown = false;
                                         showLocationSettingsDialog(e);
@@ -246,6 +256,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
 
     private void setupMapFragment() {
         // MyLog.d(TAG, "setupMapFragment");
@@ -270,9 +281,9 @@ public class MainActivity extends AppCompatActivity
                     REQUEST_CODE_CHANGE_LOCATION_SETTINGS);
         } catch (IntentSender.SendIntentException sendEx) {
             // Ignore the error.
-        } catch (ClassCastException castEx){
+        } catch (ClassCastException castEx) {
             ApiException unresolvable = (ApiException) e;
-            if(!isAirplaneErrorShown) {
+            if (!isAirplaneErrorShown) {
                 showAirplaneModeErrorDialog();
             }
         }
@@ -435,7 +446,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void determineLocationSettings(){
+    private void determineLocationSettings() {
         mainActivityViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
             @Override
             public void onLocationSettingsDetermined(boolean isSettingsGood, Exception e) {
@@ -483,7 +494,7 @@ public class MainActivity extends AppCompatActivity
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         // MyLog.d(TAG, "onWindowFocusChanged: " + hasFocus);
-        if(hasFocus){
+        if (hasFocus) {
             determineLocationSettings();
         }
     }
@@ -508,20 +519,20 @@ public class MainActivity extends AppCompatActivity
             public boolean onMyLocationButtonClick() {
                 if (isBottomSheetUp) {
                     Location myLocation = mainActivityViewModel.getLocation().getValue();
-                    if (myLocation!=null) {
+                    if (myLocation != null) {
                         googleMap.animateCamera(CameraUpdateFactory.newLatLng(
                                 new LatLng(myLocation.getLatitude(), myLocation.getLongitude())),
                                 new GoogleMap.CancelableCallback() {
-                            @Override
-                            public void onFinish() {
-                                MainActivityUtils.scrollMapUp(MainActivity.this, googleMap);
-                            }
+                                    @Override
+                                    public void onFinish() {
+                                        MainActivityUtils.scrollMapUp(MainActivity.this, googleMap);
+                                    }
 
-                            @Override
-                            public void onCancel() {
+                                    @Override
+                                    public void onCancel() {
 
-                            }
-                        });
+                                    }
+                                });
                     }
                     return true;
                 }
@@ -647,6 +658,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 MainActivityUtils.revealShow(fab, dialogView, false, dialog);
                 serviceManager.stopService();
+                MainActivityUtils.logStopRecordingEvent(firebaseAnalytics);
             }
         });
 

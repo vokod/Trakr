@@ -19,6 +19,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
+
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 
@@ -29,6 +31,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,7 +144,7 @@ class MainActivityUtils {
         }
     }
 
-    public static void revealShow(FloatingActionButton fab, View dialogView, boolean b, final Dialog dialog) {
+    static void revealShow(FloatingActionButton fab, View dialogView, boolean b, final Dialog dialog) {
         final View view = dialogView.findViewById(R.id.stop_dialog);
 
         int w = view.getWidth();
@@ -175,5 +178,13 @@ class MainActivityUtils {
             anim.setDuration(300);
             anim.start();
         }
+    }
+
+    static void logStartRecordingEvent(FirebaseAnalytics analytics){
+        analytics.logEvent(FirebaseAnalytics.Event.LEVEL_START,null);
+    }
+
+    static void logStopRecordingEvent(FirebaseAnalytics analytics){
+        analytics.logEvent(FirebaseAnalytics.Event.LEVEL_END,null);
     }
 }

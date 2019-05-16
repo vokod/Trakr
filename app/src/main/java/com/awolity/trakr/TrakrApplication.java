@@ -39,13 +39,12 @@ public class TrakrApplication extends Application {
         getAppComponent();
         setupAds();
         setupCrashlitics();
+        setupInstabug();
         setupNotifications();
         setupLogging();
         // setupStrictMode();
         TrackRecorder.resetWidget(this);
         sync();
-
-
     }
 
     public AppComponent getAppComponent() {
@@ -60,11 +59,11 @@ public class TrakrApplication extends Application {
     }
 
     private void setupCrashlitics() {
+        Fabric.with(this, new Crashlytics());
+    }
+
+    private void setupInstabug() {
         if (!BuildConfig.DEBUG) {
-
-            Fabric.with(this, new Crashlytics());
-            //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-
             new Instabug.Builder(this, getString(R.string.instabug_token))
                     .setInvocationEvents(InstabugInvocationEvent.NONE)
                     .build();
@@ -98,7 +97,7 @@ public class TrakrApplication extends Application {
         }
     }
 
-    private void setupStrictMode(){
+    private void setupStrictMode() {
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
                 .detectDiskWrites()
