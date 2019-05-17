@@ -54,8 +54,8 @@ public class TrackRecorderStatus {
             this.candidateTrackpoint.setSpeed(speedFilter.filterNext(
                     this.candidateTrackpoint.getUnfilteredSpeed()));
         } else {
-            // if there was no previous points then the altitudes zero filter can not work
-            // if the second points's altitudes is 0
+            // if there was no previous pointGeoPoints then the pointAltitudes zero filter can not work
+            // if the second pointGeoPoints's pointAltitudes is 0
             // therefore it must be initialized
             altitudeZeroFilter.setLastSavedTrackpoint(candidateTrackpoint);
         }

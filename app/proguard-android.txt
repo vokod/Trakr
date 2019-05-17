@@ -10,7 +10,7 @@
 -dontpreverify
 # Note that if you want to enable optimization, you cannot just
 # include optimization flags in your own project configuration file;
-# instead you will need to points to the
+# instead you will need to pointGeoPoints to the
 # "proguard-android-optimize.txt" file instead of this one from your
 # project.properties file.
 -keepattributes *Annotation*

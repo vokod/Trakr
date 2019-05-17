@@ -3,9 +3,10 @@ package com.awolity.trakr.repository.remote.model
 import com.awolity.trakr.data.entity.TrackEntity
 import com.awolity.trakr.data.entity.TrackWithPoints
 import com.awolity.trakr.data.entity.TrackpointEntity
+import com.awolity.trakr.utils.MyLog
 import com.google.firebase.firestore.GeoPoint
 
-fun trackWithpointsToFirestoreTrack(input: TrackWithPoints): FirestoreTrack {
+fun trackWithPointsToFirestoreTrack(input: TrackWithPoints): FirestoreTrack {
     return FirestoreTrack(input.firebaseId, input.title, input.startTime, input.distance,
             input.ascent, input.descent, input.elapsedTime, input.numOfTrackPoints,
             input.northestPoint, input.southestPoint, input.westernPoint, input.easternPoint,
@@ -14,7 +15,8 @@ fun trackWithpointsToFirestoreTrack(input: TrackWithPoints): FirestoreTrack {
             trackPointsToTimesArray(input.trackPoints),
             trackPointsToGeopointArray(input.trackPoints),
             trackPointsToSpeedArray(input.trackPoints),
-            trackPointsToAltitudeArray(input.trackPoints))
+            trackPointsToAltitudeArray(input.trackPoints),
+            trackPointsToDistanceArray(input.trackPoints))
 }
 
 fun trackEntityToFirestoreTrack(input: TrackEntity): FirestoreTrack {
@@ -41,7 +43,18 @@ private fun trackPointsToGeopointArray(input: List<TrackpointEntity>): List<GeoP
     return input.map { GeoPoint(it.latitude, it.longitude) }
 }
 
+private fun trackPointsToDistanceArray(input: List<TrackpointEntity>): List<Double> {
+    return input.map { it.distance }
+}
+
 fun firestoreTrackToTrackWithPoints(input: FirestoreTrack): TrackWithPoints {
+    val result = TrackWithPoints()
+    result.trackEntity = firestoreTrackToTrackEntity(input)
+    result.trackPoints = firestoreTrackToTrackPointEntities(input)
+    return result
+}
+
+fun firestoreTrackToTrackEntity(input: FirestoreTrack): TrackEntity {
     val result = TrackWithPoints()
     result.firebaseId = input.firebaseId
     result.title = input.title
@@ -60,20 +73,23 @@ fun firestoreTrackToTrackWithPoints(input: FirestoreTrack): TrackWithPoints {
     result.maxSpeed = input.maxSpeed
     result.avgSpeed = input.avgSpeed
     result.metadata = input.metadata
-    result.trackPoints = firestoreTrackToTrackPointEntities(input)
     return result
 }
 
 private fun firestoreTrackToTrackPointEntities(input: FirestoreTrack): List<TrackpointEntity> {
-    val result = ArrayList<TrackpointEntity>(input.altitudes.size)
-    for (i in 0 until input.altitudes.size) {
+    MyLog.d(TAG, "firestoreTrackToTrackPointEntities")
+    val result = ArrayList<TrackpointEntity>(input.pointAltitudes.size)
+    for (i in 0 until input.pointAltitudes.size) {
         val item = TrackpointEntity()
-        item.speed = input.speeds[i]
-        item.altitude = input.altitudes[i]
-        item.time = input.times[i]
-        item.latitude = input.points[i].latitude
-        item.longitude = input.points[i].longitude
+        item.speed = input.pointSpeeds[i]
+        item.altitude = input.pointAltitudes[i]
+        item.time = input.pointTimes[i]
+        item.latitude = input.pointGeoPoints[i].latitude
+        item.longitude = input.pointGeoPoints[i].longitude
+        item.distance = input.pointDistances[i]
         result.add(item)
     }
     return result
 }
+
+const val TAG = "ConvertersKT"

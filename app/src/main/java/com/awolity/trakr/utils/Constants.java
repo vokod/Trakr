@@ -9,7 +9,7 @@ public class Constants {
 
     // firebase realtime database nodes
     public static final String COLLECTION_TRACKS = "tracks";
-    public static final String COLLECTION_TRACKPOINTS = "points";
+    public static final String COLLECTION_TRACKPOINTS = "pointGeoPoints";
     public static final String COLLECTION_USERS = "users";
     public static final int BATCH = 400;
 
