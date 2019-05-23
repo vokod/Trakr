@@ -9,6 +9,7 @@ import com.awolity.trakr.repository.AppUserRepository;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.repository.remote.model.ConvertersKt;
 import com.awolity.trakr.repository.remote.model.FirestoreTrack;
+import com.awolity.trakr.repository.remote.model.FirestoreTrackData;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
 
@@ -16,7 +17,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,17 +92,17 @@ public class FirebaseTrackRepository {
         });
     }
 
-    public void getAllTracksFromCloudWithoutPoints(
-            final TrackRepository.GetAllTracksWithoutPointsFromCloudListener listener) {
+    public void getAllTrackDatasFromCloud(
+            final TrackRepository.GetAllTrackDatasFromCloudListener listener) {
         refreshReferences();
-        userTracksReference.get().addOnCompleteListener(task -> {
+        userTrackdatasReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<TrackEntity> tracks = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : task.getResult()) {
-                    FirestoreTrack firestoreTrack = doc.toObject(FirestoreTrack.class);
-                    tracks.add(ConvertersKt.firestoreTrackToTrackWithPoints(firestoreTrack));
+                    FirestoreTrackData firestoreTrackData = doc.toObject(FirestoreTrackData.class);
+                    tracks.add(ConvertersKt.firestoreTrackDataToTrackEntity(firestoreTrackData));
                 }
-                listener.onAllTracksLoaded(tracks);
+                listener.onAllTrackdatasLoaded(tracks);
             } else {
                 MyLog.e(TAG, "Error in getAllTracksFromCloudWithoutPoints "
                         + task.getException().getLocalizedMessage());

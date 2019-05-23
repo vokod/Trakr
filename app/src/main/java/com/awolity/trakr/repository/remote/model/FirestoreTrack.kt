@@ -67,7 +67,7 @@ data class FirestoreTrack(
         var pointSpeeds: List<Double> = listOf(),
         @get:PropertyName("aa")
         @set:PropertyName("aa")
-        var altitudes: List<Double> = listOf(),
+        var pointAltitudes: List<Double> = listOf(),
         @get:PropertyName("ad")
         @set:PropertyName("ad")
-        var distances: List<Double> = listOf())
+        var pointDistances: List<Double> = listOf())

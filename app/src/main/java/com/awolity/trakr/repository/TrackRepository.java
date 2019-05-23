@@ -346,7 +346,7 @@ public class TrackRepository {
         TrackWithPoints trackWithPoints = roomTrackRepository.getTrackWithPointsSync(trackId);
         TrackEntity trackEntity = TrackEntity.fromTrackWithPoints(trackWithPoints);
         String trackFirebaseId = firebaseTrackRepository.getIdForNewTrack();
-        // TODO: ezt átalakítani úgy, hogy a user logint hamarabb teszteljük
+
         if (trackFirebaseId != null) {
             // update the local instance with the firebase id
             trackWithPoints.setFirebaseId(trackFirebaseId);
@@ -360,9 +360,9 @@ public class TrackRepository {
         firebaseTrackRepository.getAllTracksFromCloud(listener);
     }
 
-    public void getAllTracksWithoutPointsFromCloud(
-            final GetAllTracksWithoutPointsFromCloudListener listener) {
-        firebaseTrackRepository.getAllTracksFromCloudWithoutPoints(listener);
+    public void getAllTrackdatasFromCloud(
+            final GetAllTrackDatasFromCloudListener listener) {
+        firebaseTrackRepository.getAllTrackDatasFromCloud(listener);
     }
 
     public void saveTrackToLocalDbFromCloud(final TrackEntity onlineTrack) {
@@ -388,5 +388,13 @@ public class TrackRepository {
 
     public interface GetAllTracksFromCloudListener {
         void onAllTracksLoaded(List<TrackWithPoints> tracks);
+    }
+
+    public interface GetAllTrackDatasFromCloudListener {
+        void onAllTrackdatasLoaded(List<TrackEntity> tracks);
+    }
+
+    public interface GetTrackFromCloudListener {
+        void onTrackLoaded(TrackWithPoints trackWithPoints);
     }
 }

@@ -65,12 +65,12 @@ public class SyncService extends IntentService {
             return;
         }
 
-        trackRepository.getAllTracksFromCloud(
+        trackRepository.getAllTrackdatasFromCloud(
                 onlineTracks -> discIoExecutor.execute(() -> {
                     List<TrackEntity> offlineTracks = trackRepository.getTracksSync();
                     List<TrackEntity> onlyOfflineTracks = getOnyOfflineTracks(
                             offlineTracks);
-                    List<TrackWithPoints> onlyOnlineTracks = getOnyOnlineTracks(
+                    List<TrackEntity> onlyOnlineTracks = getOnyOnlineTracks(
                             onlineTracks, offlineTracks);
                     List<TrackEntity> cloudDeletedOfflineTracks
                             = getCloudDeletedOfflineTracks(onlineTracks, offlineTracks);
