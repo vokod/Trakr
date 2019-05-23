@@ -148,11 +148,11 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     public void onLocationChanged(Location location) {
         // MyLog.d(TAG, "onLocationChanged");
         status.setCandidateTrackpoint(createTrackPoint(location));
-        // if accuracy is below the required level, drop the points
+        // if accuracy is below the required level, drop the pointGeoPoints
         if (!status.isAccurateEnough()) {
             return;
         }
-        // filtering is only possible if there is a previous data points
+        // filtering is only possible if there is a previous data pointGeoPoints
         if (status.isThereASavedTrackpoint()) {
             if (status.isDistanceFarEnoughFromLastTrackpoint()) {
                 saveTrackAndPointToDb();

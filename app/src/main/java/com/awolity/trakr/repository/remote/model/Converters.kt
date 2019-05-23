@@ -3,6 +3,7 @@ package com.awolity.trakr.repository.remote.model
 import com.awolity.trakr.data.entity.TrackEntity
 import com.awolity.trakr.data.entity.TrackWithPoints
 import com.awolity.trakr.data.entity.TrackpointEntity
+import com.awolity.trakr.utils.MyLog
 import com.google.firebase.firestore.GeoPoint
 
 fun trackWithPointsToFirestoreTrack(input: TrackWithPoints): FirestoreTrack {
@@ -56,6 +57,13 @@ private fun trackPointsToDistancesArray(input: List<TrackpointEntity>): List<Dou
 
 fun firestoreTrackToTrackWithPoints(input: FirestoreTrack): TrackWithPoints {
     val result = TrackWithPoints()
+    result.trackEntity = firestoreTrackToTrackEntity(input)
+    result.trackPoints = firestoreTrackToTrackPointEntities(input)
+    return result
+}
+
+fun firestoreTrackToTrackEntity(input: FirestoreTrack): TrackEntity {
+    val result = TrackWithPoints()
     result.firebaseId = input.firebaseId
     result.title = input.title
     result.startTime = input.startTime
@@ -73,13 +81,13 @@ fun firestoreTrackToTrackWithPoints(input: FirestoreTrack): TrackWithPoints {
     result.maxSpeed = input.maxSpeed
     result.avgSpeed = input.avgSpeed
     result.metadata = input.metadata
-    result.trackPoints = firestoreTrackToTrackPointEntities(input)
     return result
 }
 
 private fun firestoreTrackToTrackPointEntities(input: FirestoreTrack): List<TrackpointEntity> {
-    val result = ArrayList<TrackpointEntity>(input.altitudes.size)
-    for (i in 0 until input.altitudes.size) {
+    MyLog.d(TAG, "firestoreTrackToTrackPointEntities")
+    val result = ArrayList<TrackpointEntity>(input.pointAltitudes.size)
+    for (i in 0 until input.pointAltitudes.size) {
         val item = TrackpointEntity()
         item.speed = input.speeds[i]
         item.altitude = input.altitudes[i]

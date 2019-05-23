@@ -162,10 +162,10 @@ public class TrackpointEntity {
                 ", time=" + time +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", altitudes=" + altitude +
+                ", pointAltitudes=" + altitude +
                 ", unfilteredAltitude=" + unfilteredAltitude +
                 ", bearing=" + bearing +
-                ", speeds=" + speed +
+                ", pointSpeeds=" + speed +
                 ", unfilteredSpeed=" + unfilteredSpeed +
                 ", accuracy=" + accuracy +
                 ", distance=" + distance +

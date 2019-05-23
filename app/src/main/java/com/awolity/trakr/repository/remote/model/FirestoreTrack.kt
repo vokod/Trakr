@@ -58,13 +58,13 @@ data class FirestoreTrack(
         var metadata: String = STRING_DEFAULT_VALUE,
         @get:PropertyName("at")
         @set:PropertyName("at")
-        var times: List<Long> = listOf(),
+        var pointTimes: List<Long> = listOf(),
         @get:PropertyName("ap")
         @set:PropertyName("ap")
-        var points: List<GeoPoint> = listOf(),
+        var pointGeoPoints: List<GeoPoint> = listOf(),
         @get:PropertyName("as")
         @set:PropertyName("as")
-        var speeds: List<Double> = listOf(),
+        var pointSpeeds: List<Double> = listOf(),
         @get:PropertyName("aa")
         @set:PropertyName("aa")
         var altitudes: List<Double> = listOf(),

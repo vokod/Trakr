@@ -13,6 +13,7 @@ import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.trackrecorder.TrackRecorder;
 import com.awolity.trakr.utils.FileLoggingTree;
+import com.awolity.trakr.utils.MyLog;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.MobileAds;
 import com.instabug.bug.BugReporting;
@@ -93,7 +94,7 @@ public class TrakrApplication extends Application {
             startService(new Intent(this, SyncService.class));
         } catch (IllegalStateException e) {
             if (!BuildConfig.DEBUG) Crashlytics.logException(e);
-            // MyLog.e("TrakrApplication", e.getLocalizedMessage());
+            MyLog.e("TrakrApplication", e.getLocalizedMessage());
         }
     }
 

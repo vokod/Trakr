@@ -19,9 +19,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
@@ -92,6 +90,40 @@ public class FirebaseTrackRepository {
                         + task.getException().getLocalizedMessage());
             }
         });
+    }
+
+    public void getAllTracksFromCloudWithoutPoints(
+            final TrackRepository.GetAllTracksWithoutPointsFromCloudListener listener) {
+        refreshReferences();
+        userTracksReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<TrackEntity> tracks = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    FirestoreTrack firestoreTrack = doc.toObject(FirestoreTrack.class);
+                    tracks.add(ConvertersKt.firestoreTrackToTrackWithPoints(firestoreTrack));
+                }
+                listener.onAllTracksLoaded(tracks);
+            } else {
+                MyLog.e(TAG, "Error in getAllTracksFromCloudWithoutPoints "
+                        + task.getException().getLocalizedMessage());
+            }
+        });
+    }
+
+    public void getTrackFromCloud(final String id,
+                                  final TrackRepository.GetTrackFromCloudListener listener){
+        refreshReferences();
+        userTracksReference.document(id).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                listener.onTrackLoaded(ConvertersKt.firestoreTrackToTrackWithPoints(
+                        task.getResult().toObject(FirestoreTrack.class)));
+            } else {
+                MyLog.e(TAG, "Error in getTrackFromCloud "
+                        + task.getException().getLocalizedMessage());
+
+            }
+        });
+
     }
 
     public void deleteTrackFromCloud(String firebaseTrackId) {
