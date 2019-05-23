@@ -2,13 +2,9 @@ package com.awolity.trakr.repository.remote;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.WorkerThread;
-
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.data.entity.TrackpointEntity;
 import com.awolity.trakr.repository.AppUserRepository;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.repository.remote.model.ConvertersKt;
@@ -16,13 +12,11 @@ import com.awolity.trakr.repository.remote.model.FirestoreTrack;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +43,7 @@ public class FirebaseTrackRepository {
     private static final String TAG = "FirebaseTrackRepository";
     private DocumentReference userReference;
     private CollectionReference userTracksReference;
+    private CollectionReference userTrackdatasReference;
     private String appUserId;
 
     public FirebaseTrackRepository() {
@@ -61,21 +56,24 @@ public class FirebaseTrackRepository {
         return userTracksReference.document().getId();
     }
 
-    @WorkerThread
-    public void saveTrackToCloudOnThread(TrackWithPoints trackWithPoints, String trackFirebaseId) {
-        MyLog.d(TAG, "saveTrackToCloudOnThread() called with: trackWithPoints = [" + trackWithPoints + "], trackFirebaseId = [" + trackFirebaseId + "]");
+    public void saveTrackToCloud(TrackWithPoints trackWithPoints, String trackFirebaseId) {
         refreshReferences();
-        FirestoreTrack firestoreTrack = ConvertersKt.trackWithpointsToFirestoreTrack(trackWithPoints);
-        DocumentReference trackReference = userTracksReference.document(trackFirebaseId);
+        FirestoreTrack firestoreTrack = ConvertersKt.trackWithPointsToFirestoreTrack(trackWithPoints);
+        final DocumentReference trackReference = userTracksReference.document(trackFirebaseId);
         trackReference.set(firestoreTrack);
+
+        final DocumentReference trackDataReference = userTrackdatasReference.document(trackFirebaseId);
+        trackDataReference.set(
+                ConvertersKt.trackEntityToFirestoreTrackData(trackWithPoints.getTrackEntity()));
     }
 
-    public void updateTrackToCloud(TrackEntity trackEntity) {
+    public void updateTrackTitleToCloud(String firebaseId, String title) {
         refreshReferences();
-        FirestoreTrack firestoreTrack = ConvertersKt.trackEntityToFirestoreTrack(trackEntity);
-        final DocumentReference trackReference
-                = userTracksReference.document(firestoreTrack.getFirebaseId());
-        trackReference.set(firestoreTrack);
+        final DocumentReference trackReference = userTracksReference.document(firebaseId);
+        final DocumentReference trackDataReference = userTrackdatasReference.document(firebaseId);
+
+        trackReference.update("t",title);
+        trackDataReference.update("t",title);
     }
 
     public void getAllTracksFromCloud(
@@ -105,6 +103,14 @@ public class FirebaseTrackRepository {
                 .addOnFailureListener(e -> {
                     MyLog.e(TAG, "deleteTrackFromCloud - error: " + e.getLocalizedMessage());
                 });
+
+        userTrackdatasReference.document(firebaseTrackId).delete()
+                .addOnSuccessListener(aVoid -> {
+                    MyLog.d(TAG, "deleteTrackFromCloud - success");
+                })
+                .addOnFailureListener(e -> {
+                    MyLog.e(TAG, "deleteTrackFromCloud - error: " + e.getLocalizedMessage());
+                });
     }
 
     private void refreshReferences() {
@@ -115,5 +121,6 @@ public class FirebaseTrackRepository {
         userReference = FirebaseFirestore.getInstance()
                 .collection(Constants.COLLECTION_USERS).document(appUserId);
         userTracksReference = userReference.collection(Constants.COLLECTION_TRACKS);
+        userTrackdatasReference = userReference.collection(Constants.COLLECTION_TRACKDATAS);
     }
 }

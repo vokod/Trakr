@@ -3,24 +3,6 @@ const admin = require('firebase-admin');
 // admin.initializeApp();
 admin.initializeApp(functions.config().firebase);
 
-/*exports.deleteUserTracks = functions.auth.user().onDelete((user) => {
-    const email = user.email;
-    const uid = user.uid;
-    console.log('A user is deleted. Email: ', email, ', uid: ',uid);
-    const userTracks = '/' + uid;
-    return admin.database().ref(userTracks).remove();
-});*/
-
-/*exports.deleteTrackPoints = functions.database.ref('{uId}/tracks/{tId}')
-.onDelete((snapshot, context) => {
-    const userId = context.params.uId;
-    const trackId = context.params.tId;
-    console.log('A track is deleted. UserId: ', userId, ', trackId: ',trackId);
-    const trackPoints = '/' + userId + '/trackpoints/' + trackId;
-    return admin.database().ref(trackPoints).remove();
-});*/
-
-
 exports.onUserCreate_createUserDoc = functions.auth.user().onCreate((user) => {
   const email = user.email; // The email of the user.
   const displayName = user.displayName; // The display name of the user.
@@ -79,6 +61,24 @@ exports.onUserDelete_deleteUserDoc = functions.auth.user().onDelete((user) => {
      const deleteTracks = deleteCollection(admin.firestore(), tracksRef, BATCH_SIZE)
      return Promise.all([deleteTracks]);
   });
+
+  
+  exports.onUserDocDelete_deleteTrackdatas = functions.firestore
+  .document('users/{userID}')
+  .onDelete((snap, context) => {
+      // Get an object representing the document prior to deletion
+    // e.g. {'name': 'Marie', 'age': 66}
+    const deletedValue = snap.data();
+    const userID = context.params.userID;
+    console.log('Deleting tracks of user: ', userID);
+
+    const BATCH_SIZE = 500;
+    const tracksRef = admin.firestore().collection('users').doc(userID).collection('trackdatas');
+
+    const deleteTracks = deleteCollection(admin.firestore(), tracksRef, BATCH_SIZE)
+    return Promise.all([deleteTracks]);
+ });
+
 
 
 /**

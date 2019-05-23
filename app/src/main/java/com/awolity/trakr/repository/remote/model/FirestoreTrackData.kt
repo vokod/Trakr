@@ -4,7 +4,7 @@ import com.awolity.trakr.utils.Constants.STRING_DEFAULT_VALUE
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.PropertyName
 
-data class FirestoreTrack(
+data class FirestoreTrackData(
         @get:PropertyName("id")
         @set:PropertyName("id")
         var firebaseId: String = STRING_DEFAULT_VALUE,
@@ -55,19 +55,4 @@ data class FirestoreTrack(
         var avgSpeed: Double = 0.toDouble(),
         @get:PropertyName("m")
         @set:PropertyName("m")
-        var metadata: String = STRING_DEFAULT_VALUE,
-        @get:PropertyName("at")
-        @set:PropertyName("at")
-        var times: List<Long> = listOf(),
-        @get:PropertyName("ap")
-        @set:PropertyName("ap")
-        var points: List<GeoPoint> = listOf(),
-        @get:PropertyName("as")
-        @set:PropertyName("as")
-        var speeds: List<Double> = listOf(),
-        @get:PropertyName("aa")
-        @set:PropertyName("aa")
-        var altitudes: List<Double> = listOf(),
-        @get:PropertyName("ad")
-        @set:PropertyName("ad")
-        var distances: List<Double> = listOf())
+        var metadata: String = STRING_DEFAULT_VALUE)

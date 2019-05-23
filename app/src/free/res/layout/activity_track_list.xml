@@ -20,17 +20,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/activity_track_list_item_track_list"/>
 
-    <TextView
-        android:id="@+id/tv_placeholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:text="@string/activity_track_list_no_tracks"
-        app:layout_constraintBottom_toTopOf="@+id/adView"
-        app:layout_constraintEnd_toEndOf="@+id/rv_track_list"
-        app:layout_constraintStart_toStartOf="@+id/rv_track_list"
-        app:layout_constraintTop_toTopOf="@+id/rv_track_list" />
-
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="match_parent"
@@ -40,4 +29,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_placeholder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/activity_track_list_no_tracks"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintEnd_toEndOf="@+id/rv_track_list"
+        app:layout_constraintStart_toStartOf="@+id/rv_track_list"
+        app:layout_constraintTop_toTopOf="@+id/rv_track_list" />
 </androidx.constraintlayout.widget.ConstraintLayout>

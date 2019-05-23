@@ -22,7 +22,7 @@ public class TrackEntity {
     @NonNull
     @ColumnInfo(name = "track_id")
     long trackId;
-    @ColumnInfo(name = "firabase_id")
+    @ColumnInfo(name = "firebase_id")
     String firebaseId;
     String title;
     @ColumnInfo(name = "start_time")

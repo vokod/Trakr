@@ -97,6 +97,8 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
                             } else {
                                 placeholderTv.setVisibility(View.VISIBLE);
                             }
+                        } else {
+                            placeholderTv.setVisibility(View.VISIBLE);
                         }
                     }
                 });

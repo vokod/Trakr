@@ -127,20 +127,18 @@ public class TrackRepository {
         return roomTrackRepository.saveTrackEntitySync(trackEntity);
     }
 
-    public void updateTrack(final TrackEntity trackEntity) {
+    public void updateTrackInDb(final TrackEntity trackEntity) {
         roomTrackRepository.updateTrack(trackEntity);
-        if (appUserRepository.IsAppUserLoggedIn()) {
-            updateTrackToCloud(trackEntity);
-        }
     }
+
 
     public void updateTrackTitle(final String title, final long id) {
         discIoExecutor.execute(() -> {
             TrackEntity entity = roomTrackRepository.getTrackSync(id);
             entity.setTitle(title);
-            updateTrack(entity);
+            updateTrackInDb(entity);
             if (appUserRepository.IsAppUserLoggedIn()) {
-                updateTrackToCloud(entity);
+                updateTrackTitleToCloud(entity);
             }
         });
     }
@@ -154,10 +152,6 @@ public class TrackRepository {
         });
         return result;
     }
-
-   /* public LiveData<TrackWithPoints> getTrackWithPoints(long id) {
-        return roomTrackRepository.getTrackWithPoints(id);
-    }*/
 
     public void exportTrack(final long id) {
         discIoExecutor.execute(() -> {
@@ -356,7 +350,7 @@ public class TrackRepository {
         if (trackFirebaseId != null) {
             // update the local instance with the firebase id
             trackWithPoints.setFirebaseId(trackFirebaseId);
-            firebaseTrackRepository.saveTrackToCloudOnThread(trackWithPoints, trackFirebaseId);
+            firebaseTrackRepository.saveTrackToCloud(trackWithPoints, trackFirebaseId);
             roomTrackRepository.setTrackFirebaseIdSync(trackEntity, trackFirebaseId);
         }
     }
@@ -375,9 +369,10 @@ public class TrackRepository {
         roomTrackRepository.saveTrackWithPoints(track);
     }
 
-    private void updateTrackToCloud(TrackEntity trackEntity) {
+    private void updateTrackTitleToCloud(TrackEntity trackEntity) {
         if (trackEntity.getFirebaseId() != null && !trackEntity.getFirebaseId().isEmpty()) {
-            firebaseTrackRepository.updateTrackToCloud(trackEntity);
+            firebaseTrackRepository.updateTrackTitleToCloud(trackEntity.getFirebaseId(),
+                    trackEntity.getTitle());
         }
     }
 
@@ -387,9 +382,5 @@ public class TrackRepository {
 
     public interface GetAllTracksFromCloudListener {
         void onAllTracksLoaded(List<TrackWithPoints> tracks);
-    }
-
-    public interface GetTrackpointsFromCloudListener {
-        void onTrackpointsLoaded(List<TrackpointEntity> trackpointEntityList);
     }
 }

@@ -9,15 +9,13 @@ public class Constants {
 
     // firebase realtime database nodes
     public static final String COLLECTION_TRACKS = "tracks";
-    public static final String COLLECTION_TRACKPOINTS = "points";
+    public static final String COLLECTION_TRACKDATAS = "trackdatas";
     public static final String COLLECTION_USERS = "users";
-    public static final int BATCH = 400;
 
-
-    public static final int MAP_POINT_MAX_NUMBER_FOR_EXPLORE = 100;
+    public static final int MAP_POINT_MAX_NUMBER_FOR_EXPLORE = 200;
     public static final int MAP_POINT_MAX_NUMBER_FOR_TRACK_LIST = 50;
-    public static final int CHART_POINT_MAX_NUMBER_FOR_TRACK_DETAIL = 200;
-    public static final int CHART_POINT_MAX_NUMBER_FOR_BOTTOM_SHEET_CHARTS_FRAGMENT = 200;
+    public static final int CHART_POINT_MAX_NUMBER_FOR_TRACK_DETAIL = 300;
+    public static final int CHART_POINT_MAX_NUMBER_FOR_BOTTOM_SHEET_CHARTS_FRAGMENT = 100;
 
 
     public static final RecordParameters RECORD_PARAMETERS_MOST_ACCURATE = new RecordParameters(

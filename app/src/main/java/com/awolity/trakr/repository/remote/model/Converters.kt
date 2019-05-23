@@ -5,7 +5,7 @@ import com.awolity.trakr.data.entity.TrackWithPoints
 import com.awolity.trakr.data.entity.TrackpointEntity
 import com.google.firebase.firestore.GeoPoint
 
-fun trackWithpointsToFirestoreTrack(input: TrackWithPoints): FirestoreTrack {
+fun trackWithPointsToFirestoreTrack(input: TrackWithPoints): FirestoreTrack {
     return FirestoreTrack(input.firebaseId, input.title, input.startTime, input.distance,
             input.ascent, input.descent, input.elapsedTime, input.numOfTrackPoints,
             input.northestPoint, input.southestPoint, input.westernPoint, input.easternPoint,
@@ -14,11 +14,20 @@ fun trackWithpointsToFirestoreTrack(input: TrackWithPoints): FirestoreTrack {
             trackPointsToTimesArray(input.trackPoints),
             trackPointsToGeopointArray(input.trackPoints),
             trackPointsToSpeedArray(input.trackPoints),
-            trackPointsToAltitudeArray(input.trackPoints))
+            trackPointsToAltitudeArray(input.trackPoints),
+            trackPointsToDistancesArray(input.trackPoints))
 }
 
 fun trackEntityToFirestoreTrack(input: TrackEntity): FirestoreTrack {
     return FirestoreTrack(input.firebaseId, input.title, input.startTime, input.distance,
+            input.ascent, input.descent, input.elapsedTime, input.numOfTrackPoints,
+            input.northestPoint, input.southestPoint, input.westernPoint, input.easternPoint,
+            input.minAltitude, input.maxAltitude, input.maxSpeed, input.avgSpeed,
+            input.metadata)
+}
+
+fun trackEntityToFirestoreTrackData(input: TrackEntity):FirestoreTrackData{
+    return FirestoreTrackData(input.firebaseId, input.title, input.startTime, input.distance,
             input.ascent, input.descent, input.elapsedTime, input.numOfTrackPoints,
             input.northestPoint, input.southestPoint, input.westernPoint, input.easternPoint,
             input.minAltitude, input.maxAltitude, input.maxSpeed, input.avgSpeed,
@@ -39,6 +48,10 @@ private fun trackPointsToAltitudeArray(input: List<TrackpointEntity>): List<Doub
 
 private fun trackPointsToGeopointArray(input: List<TrackpointEntity>): List<GeoPoint> {
     return input.map { GeoPoint(it.latitude, it.longitude) }
+}
+
+private fun trackPointsToDistancesArray(input: List<TrackpointEntity>): List<Double> {
+    return input.map { it.distance }
 }
 
 fun firestoreTrackToTrackWithPoints(input: FirestoreTrack): TrackWithPoints {
@@ -73,6 +86,7 @@ private fun firestoreTrackToTrackPointEntities(input: FirestoreTrack): List<Trac
         item.time = input.times[i]
         item.latitude = input.points[i].latitude
         item.longitude = input.points[i].longitude
+        item.distance = input.distances[i]
         result.add(item)
     }
     return result

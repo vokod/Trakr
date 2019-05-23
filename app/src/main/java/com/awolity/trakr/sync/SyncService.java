@@ -64,32 +64,24 @@ public class SyncService extends IntentService {
         }
 
         trackRepository.getAllTracksFromCloud(
-                new TrackRepository.GetAllTracksFromCloudListener() {
-                    @Override
-                    public void onAllTracksLoaded(final List<TrackWithPoints> onlineTracks) {
-                        discIoExecutor.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                List<TrackEntity> offlineTracks = trackRepository.getTracksSync();
-                                List<TrackEntity> onlyOfflineTracks = getOnyOfflineTracks(
-                                        offlineTracks);
-                                List<TrackWithPoints> onlyOnlineTracks = getOnyOnlineTracks(
-                                        onlineTracks, offlineTracks);
-                                List<TrackEntity> cloudDeletedOfflineTracks
-                                        = getCloudDeletedOfflineTracks(onlineTracks, offlineTracks);
+                onlineTracks -> discIoExecutor.execute(() -> {
+                    List<TrackEntity> offlineTracks = trackRepository.getTracksSync();
+                    List<TrackEntity> onlyOfflineTracks = getOnyOfflineTracks(
+                            offlineTracks);
+                    List<TrackWithPoints> onlyOnlineTracks = getOnyOnlineTracks(
+                            onlineTracks, offlineTracks);
+                    List<TrackEntity> cloudDeletedOfflineTracks
+                            = getCloudDeletedOfflineTracks(onlineTracks, offlineTracks);
 
-                                // this saves tracks that are present in cloud but not in the device
-                                saveOnlyOnlineTracksToDb(onlyOnlineTracks);
-                                // this uploads the tracks that were recorded on this device and were not yet uploaded
-                                uploadOfflineTracks(onlyOfflineTracks);
-                                // this delete the local tracks that were deleted from the cloud in another installation
-                                deleteCloudDeletedTracks(cloudDeletedOfflineTracks);
-                                // check if there are tracks that's titles are changed locally, then update them
-                                checkForNameChanges(onlineTracks, offlineTracks);
-                            }
-                        });
-                    }
-                });
+                    // this saves tracks that are present in cloud but not in the device
+                    saveOnlyOnlineTracksToDb(onlyOnlineTracks);
+                    // this uploads the tracks that were recorded on this device and were not yet uploaded
+                    uploadOfflineTracks(onlyOfflineTracks);
+                    // this delete the local tracks that were deleted from the cloud in another installation
+                    deleteCloudDeletedTracks(cloudDeletedOfflineTracks);
+                    // check if there are tracks that's titles are changed locally, then update them
+                    checkForNameChanges(onlineTracks, offlineTracks);
+                }));
 
         new DbSanitizer().sanitizeDb();
     }
@@ -142,7 +134,7 @@ public class SyncService extends IntentService {
                     // track is present locally, check titles
                     if (!onlineTrack.getTitle().equals(offlineTrack.getTitle())) {
                         offlineTrack.setTitle(onlineTrack.getTitle());
-                        trackRepository.updateTrack(offlineTrack);
+                        trackRepository.updateTrackInDb(offlineTrack);
                     }
                     break;
                 }

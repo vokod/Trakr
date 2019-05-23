@@ -200,7 +200,7 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
     private void updateTrackInDb(TrackEntity track) {
         // MyLog.d(TAG, "updateTrackInDb - trackId:" + track.getTrackId());
-        trackRepository.updateTrack(track);
+        trackRepository.updateTrackInDb(track);
     }
 
     private String buildMetadataString() {
