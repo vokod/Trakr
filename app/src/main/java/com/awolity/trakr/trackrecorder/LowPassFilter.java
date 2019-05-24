@@ -7,7 +7,7 @@ class LowPassFilter {
     private final int size;
     private final double invertedSize;
 
-    public LowPassFilter(int parameter) {
+    LowPassFilter(int parameter) {
         size = parameter;
         alphas = new double[size];
         invertedSize = (double) 1 / (double) size;
@@ -23,7 +23,7 @@ class LowPassFilter {
         return result;
     }
 
-    public double filterNext(double current) {
+    double filterNext(double current) {
         if (isFirstTime) {
             for (int i = 0; i < size; i++) {
                 alphas[i] = current;

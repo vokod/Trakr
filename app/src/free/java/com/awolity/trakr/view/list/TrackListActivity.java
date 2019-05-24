@@ -1,11 +1,9 @@
 package com.awolity.trakr.view.list;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,16 +15,11 @@ import android.widget.TextView;
 
 import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
-import com.awolity.trakr.model.TrackDataWithMapPoints;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-
-import java.util.List;
-
-import static android.widget.LinearLayout.VERTICAL;
 
 public class TrackListActivity extends AppCompatActivity implements TrackListAdapter.TrackItemCallback {
 
@@ -34,7 +27,6 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         return new Intent(context, TrackListActivity.class);
     }
 
-    private static final String TAG = TrackListActivity.class.getSimpleName();
     private TrackListAdapter trackListAdapter;
     private TextView placeholderTv;
 
@@ -74,9 +66,8 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
         // MyLog.d(TAG, "setupRecyclerView");
         RecyclerView trackListRv = findViewById(R.id.rv_track_list);
         LinearLayoutManager trackListLayoutManager = new LinearLayoutManager(this);
-        trackListLayoutManager.setOrientation(VERTICAL);
+        trackListLayoutManager.setOrientation(RecyclerView.VERTICAL);
         trackListRv.setLayoutManager(trackListLayoutManager);
-        //noinspection ConstantConditions
         trackListAdapter = new TrackListAdapter(this, getLayoutInflater(), this);
         trackListRv.setAdapter(trackListAdapter);
         trackListRv.setHasFixedSize(true);
@@ -87,19 +78,16 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
                 .get(TrackListViewModel.class);
         trackListAdapter.setUnit(trackListViewModel.getUnit());
         trackListViewModel.getTrackDataListWithMapPoints().observe(this,
-                new Observer<List<TrackDataWithMapPoints>>() {
-                    @Override
-                    public void onChanged(@Nullable List<TrackDataWithMapPoints> trackDataWithMapPoints) {
-                        if (trackDataWithMapPoints != null) {
-                            trackListAdapter.updateItems(trackDataWithMapPoints);
-                            if (trackDataWithMapPoints.size() > 0) {
-                                placeholderTv.setVisibility(View.INVISIBLE);
-                            } else {
-                                placeholderTv.setVisibility(View.VISIBLE);
-                            }
+                trackDataWithMapPoints -> {
+                    if (trackDataWithMapPoints != null) {
+                        trackListAdapter.updateItems(trackDataWithMapPoints);
+                        if (trackDataWithMapPoints.size() > 0) {
+                            placeholderTv.setVisibility(View.INVISIBLE);
                         } else {
                             placeholderTv.setVisibility(View.VISIBLE);
                         }
+                    } else {
+                        placeholderTv.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -116,17 +104,17 @@ public class TrackListActivity extends AppCompatActivity implements TrackListAda
 
         Intent intent = TrackDetailActivity.getStarterIntent(this, trackId);
 
-        Pair<View, String> p1 = Pair.create((View) spvDistance,
+        Pair<View, String> p1 = Pair.create(spvDistance,
                 getString(R.string.transition_ppvi_distance));
-        Pair<View, String> p2 = Pair.create((View) spvDuration,
+        Pair<View, String> p2 = Pair.create(spvDuration,
                 getString(R.string.transition_ppvi_duration));
-        Pair<View, String> p3 = Pair.create((View) spvAscent,
+        Pair<View, String> p3 = Pair.create(spvAscent,
                 getString(R.string.transition_ppvi_ascent));
-        Pair<View, String> p4 = Pair.create((View) titleTv,
+        Pair<View, String> p4 = Pair.create(titleTv,
                 getString(R.string.transition_tv_title));
-        Pair<View, String> p5 = Pair.create((View) iconIv,
+        Pair<View, String> p5 = Pair.create(iconIv,
                 getString(R.string.transition_iv_icon));
-        Pair<View, String> p6 = Pair.create((View) dateTv,
+        Pair<View, String> p6 = Pair.create(dateTv,
                 getString(R.string.transition_tv_date));
         @SuppressWarnings("unchecked")
         ActivityOptionsCompat options = ActivityOptionsCompat.

@@ -31,7 +31,6 @@ import java.util.List;
 
 public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
 
-    private static final String TAG = BottomSheetChartsFragment.class.getSimpleName();
     private MainActivityViewModel mainActivityViewModel;
     private boolean isRecording;
     private long trackId = -1;
@@ -78,12 +77,9 @@ public class BottomSheetChartsFragment extends BottomSheetBaseFragment {
 
     private void setupChartUpdater() {
         handler = new Handler();
-        chartUpdater = new Runnable() {
-            @Override
-            public void run() {
-                updateChart();
-                handler.postDelayed(chartUpdater, 10000);
-            }
+        chartUpdater = () -> {
+            updateChart();
+            handler.postDelayed(chartUpdater, 10000);
         };
     }
 

@@ -37,7 +37,6 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     public static final String TRACKID_BROADCAST_NAME
             = "com.awolity.trakr.trackrecorder.TrackRecorder.trackIdBroadcast";
     public static final String EXTRA_TRACK_ID = "extra_track_id";
-    private static final String TAG = TrackRecorder.class.getSimpleName();
     private TrackEntity track;
     private long trackId;
     private final LocationManager locationManager;
@@ -46,19 +45,15 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
     private final TrackRecorderStatus status;
     private int unit = Constants.UNIT_METRIC;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     TrackRepository trackRepository;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     SettingsRepository settingsRepository;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     Context context;
 
-    @SuppressWarnings("WeakerAccess")
     @Named("disc")
     @Inject
     Executor discIoExecutor;
@@ -90,34 +85,21 @@ public class TrackRecorder implements LocationManager.LocationManagerCallback {
 
         handler = new Handler();
 
-        discIoExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                track = getBaseTrack();
-                trackId = trackRepository.saveTrackSync(track);
-                track.setTrackId(trackId);
+        discIoExecutor.execute(() -> {
+            track = getBaseTrack();
+            trackId = trackRepository.saveTrackSync(track);
+            track.setTrackId(trackId);
 
-                sendTrackIdBroadcast(context, trackId);
+            sendTrackIdBroadcast(context, trackId);
 
-                if (locationManager.isLocationEnabled()) {
-                    locationManager.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
-                        @Override
-                        public void onLocationSettingsDetermined(boolean isSettingsGood, Exception e) {
-                            if (isSettingsGood) {
-                                // here starts the whole recording
-                                locationManager.start(TrackRecorder.this);
-                                uiUpdater.run();
-                            } else {
-                                status.setEverythingGoodForRecording(false);
-                            }
-                        }
-                    });
-                } else {
-                    status.setEverythingGoodForRecording(false);
-                }
-                if (!status.isEverythingGoodForRecording()) {
-                    // TODO: throw something
-                }
+            if (locationManager.isLocationEnabled()) {
+                locationManager.isLocationSettingsGood((isSettingsGood, e) -> {
+                    if (isSettingsGood) {
+                        // here starts the whole recording
+                        locationManager.start(TrackRecorder.this);
+                        uiUpdater.run();
+                    }
+                });
             }
         });
     }

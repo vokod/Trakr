@@ -57,13 +57,10 @@ public class AppUserRepository {
             listener.onDeleteAccount();
         }
         user.delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            MyLog.d(TAG, "User account deleted.");
-                            FirebaseAuth.getInstance().signOut();
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        MyLog.d(TAG, "User account deleted.");
+                        FirebaseAuth.getInstance().signOut();
                     }
                 });
     }

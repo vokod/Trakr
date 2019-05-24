@@ -6,29 +6,6 @@ public class TrackDataTrackEntityConverter {
 
     private TrackDataTrackEntityConverter(){}
 
-    public static TrackEntity toTrackEntity(TrackData trackData){
-        TrackEntity result = new TrackEntity();
-        result.setTrackId(trackData.getTrackId());
-        result.setFirebaseId(trackData.getFirebaseId());
-        result.setTitle(trackData.getTitle());
-        result.setStartTime(trackData.getStartTime());
-        result.setDistance(trackData.getDistance());
-        result.setAscent(trackData.getAscent());
-        result.setDescent(trackData.getDescent());
-        result.setElapsedTime(trackData.getElapsedTime());
-        result.setNumOfTrackPoints(trackData.getNumOfTrackPoints());
-        result.setNorthestPoint(trackData.getNorthestPoint());
-        result.setSouthestPoint(trackData.getSouthestPoint());
-        result.setWesternPoint(trackData.getWesternPoint());
-        result.setEasternPoint(trackData.getEasternPoint());
-        result.setMinAltitude(trackData.getMinAltitude());
-        result.setMaxAltitude(trackData.getMaxAltitude());
-        result.setMaxSpeed(trackData.getMaxSpeed());
-        result.setAvgSpeed(trackData.getAvgSpeed());
-        result.setMetadata(trackData.getMetadata());
-        return result;
-    }
-
     public static TrackData toTrackData(TrackEntity trackEntity){
         TrackData result = new TrackData();
         result.setTrackId(trackEntity.getTrackId());

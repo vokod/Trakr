@@ -2,7 +2,6 @@ package com.awolity.trakr;
 
 import android.app.Application;
 import android.content.Intent;
-import android.os.StrictMode;
 
 import com.awolity.trakr.di.AppComponent;
 import com.awolity.trakr.di.AppModule;
@@ -84,7 +83,7 @@ public class TrakrApplication extends Application {
 
     private void setupLogging() {
         if (BuildConfig.DEBUG) {
-            Timber.plant(new FileLoggingTree(getApplicationContext()));
+            Timber.plant(new FileLoggingTree());
         }
     }
 
@@ -98,7 +97,7 @@ public class TrakrApplication extends Application {
         }
     }
 
-    private void setupStrictMode() {
+  /*  private void setupStrictMode() {
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
                 .detectDiskWrites()
@@ -112,5 +111,5 @@ public class TrakrApplication extends Application {
                 .penaltyLog()
                 .penaltyDeath()
                 .build());
-    }
+    }*/
 }

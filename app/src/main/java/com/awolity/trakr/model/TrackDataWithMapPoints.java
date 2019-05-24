@@ -7,12 +7,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings("WeakerAccess")
 public class TrackDataWithMapPoints  {
 
     private List<MapPoint> mapPointList;
     private TrackData trackData;
 
-    public List<MapPoint> getMapPointList() {
+    List<MapPoint> getMapPointList() {
         return mapPointList;
     }
 

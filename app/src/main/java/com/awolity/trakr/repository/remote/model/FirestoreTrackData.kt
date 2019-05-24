@@ -1,7 +1,6 @@
 package com.awolity.trakr.repository.remote.model
 
 import com.awolity.trakr.utils.Constants.STRING_DEFAULT_VALUE
-import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.PropertyName
 
 data class FirestoreTrackData(

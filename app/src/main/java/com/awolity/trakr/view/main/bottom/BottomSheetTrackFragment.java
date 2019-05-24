@@ -48,8 +48,6 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         return fragment;
     }
 
-    private static final String TAG = BottomSheetTrackFragment.class.getSimpleName();
-
     public BottomSheetTrackFragment() {
     }
 
@@ -95,12 +93,9 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
 
     private void setupElapsedTimeUpdater() {
         handler = new Handler();
-        elapsedTimeUpdater = new Runnable() {
-            @Override
-            public void run() {
-                updateElapsedTime();
-                handler.postDelayed(elapsedTimeUpdater, 1000);
-            }
+        elapsedTimeUpdater = () -> {
+            updateElapsedTime();
+            handler.postDelayed(elapsedTimeUpdater, 1000);
         };
     }
 
@@ -184,6 +179,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
     }
 
     private void startObserve() {
+        //noinspection ConstantConditions
         mainActivityViewModel.getTrackData().observe(getActivity(), trackEntityObserver);
     }
 
@@ -191,14 +187,11 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         mainActivityViewModel.getTrackData().removeObserver(trackEntityObserver);
     }
 
-    private final Observer<TrackData> trackEntityObserver = new Observer<TrackData>() {
-        @Override
-        public void onChanged(@Nullable TrackData trackData) {
-            // MyLog.d(TAG, "trackEntityObserver.onChanged");
-            if (trackData != null) {
-                // MyLog.d(TAG, "trackEntityObserver.onChanged - track NOT null");
-                setData(trackData);
-            }
+    private final Observer<TrackData> trackEntityObserver = trackData -> {
+        // MyLog.d(TAG, "trackEntityObserver.onChanged");
+        if (trackData != null) {
+            // MyLog.d(TAG, "trackEntityObserver.onChanged - track NOT null");
+            setData(trackData);
         }
     };
 
@@ -260,6 +253,7 @@ public class BottomSheetTrackFragment extends BottomSheetBaseFragment {
         }
 
         startTime = 0;
+        //noinspection ConstantConditions
         distanceView.setValue(getActivity().getString(R.string.distance_view_default_value));
         distanceView.setUnit(getActivity().getString(R.string.distance_view_unit));
         distanceView.setLabel(getActivity().getString(R.string.distance_view_title));

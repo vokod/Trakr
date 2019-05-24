@@ -1,9 +1,7 @@
 package com.awolity.trakr.view.explore;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import androidx.annotation.Nullable;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
@@ -57,6 +55,7 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
     private void setupMapView() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        //noinspection ConstantConditions
         mapFragment.getMapAsync(this);
     }
 
@@ -77,14 +76,11 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        map.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
-            @Override
-            public void onPolylineClick(Polyline polyline) {
-                TrackDetailsDialog dialog = new TrackDetailsDialog();
-                dialog.setTrackData((TrackData) polyline.getTag());
-                dialog.setUnit(exploreViewModel.getUnit());
-                dialog.show(getSupportFragmentManager(), null);
-            }
+        map.setOnPolylineClickListener(polyline -> {
+            TrackDetailsDialog dialog = new TrackDetailsDialog();
+            dialog.setTrackData((TrackData) polyline.getTag());
+            dialog.setUnit(exploreViewModel.getUnit());
+            dialog.show(getSupportFragmentManager(), null);
         });
         setupViewmodel();
     }
@@ -92,31 +88,25 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
     private void setupViewmodel() {
         exploreViewModel = ViewModelProviders.of(this)
                 .get(ExploreViewModel.class);
-        exploreViewModel.getTracksData().observe(this, new Observer<List<TrackData>>() {
-            @Override
-            public void onChanged(@Nullable List<TrackData> tracksData) {
-                if (tracksData != null && tracksData.size() > 0) {
-                    for (TrackData trackData : tracksData) {
-                        setBounds(trackData);
+        exploreViewModel.getTracksData().observe(this, tracksData -> {
+            if (tracksData != null && tracksData.size() > 0) {
+                for (TrackData trackData : tracksData) {
+                    setBounds(trackData);
 
-                        final Polyline polyline = setupPolyline(trackData,
-                                getColor(String.valueOf(trackData.getStartTime())));
+                    final Polyline polyline = setupPolyline(trackData,
+                            getColor(String.valueOf(trackData.getStartTime())));
 
-                        exploreViewModel.getMapPointsOfTrack(trackData.getTrackId())
-                                .observe(ExploreActivity.this, new Observer<List<MapPoint>>() {
-                                    @Override
-                                    public void onChanged(@Nullable List<MapPoint> mapPoints) {
-                                        if (mapPoints != null) {
-                                            polyline.setPoints(toLatLngList(mapPoints));
-                                        }
-                                    }
-                                });
-                    }
-                } else {
-                    placeholderTv.setVisibility(View.VISIBLE);
+                    exploreViewModel.getMapPointsOfTrack(trackData.getTrackId())
+                            .observe(ExploreActivity.this, mapPoints -> {
+                                if (mapPoints != null) {
+                                    polyline.setPoints(toLatLngList(mapPoints));
+                                }
+                            });
                 }
-
+            } else {
+                placeholderTv.setVisibility(View.VISIBLE);
             }
+
         });
     }
 

@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.awolity.trakr.R;
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.repository.AppUserRepository;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.utils.MyLog;
@@ -31,16 +30,13 @@ public class SyncService extends IntentService {
 
     private static final String TAG = SyncService.class.getSimpleName();
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     TrackRepository trackRepository;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     @Named("disc")
     Executor discIoExecutor;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     AppUserRepository appUserRepository;
 
@@ -198,6 +194,7 @@ public class SyncService extends IntentService {
         // MyLog.d(TAG, "isConnected");
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        //noinspection ConstantConditions
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();

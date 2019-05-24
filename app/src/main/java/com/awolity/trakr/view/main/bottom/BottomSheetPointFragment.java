@@ -1,12 +1,10 @@
 package com.awolity.trakr.view.main.bottom;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,12 +95,9 @@ public class BottomSheetPointFragment extends BottomSheetBaseFragment {
 
     @SuppressWarnings("ConstantConditions")
     private void startLocationUpdates() {
-        mainActivityViewModel.getLocation().observe(getActivity(), new Observer<Location>() {
-            @Override
-            public void onChanged(@Nullable Location location) {
-                if (location != null) {
-                    setData(location);
-                }
+        mainActivityViewModel.getLocation().observe(getActivity(), location -> {
+            if (location != null) {
+                setData(location);
             }
         });
     }

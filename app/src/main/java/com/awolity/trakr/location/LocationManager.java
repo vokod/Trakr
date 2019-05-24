@@ -41,7 +41,6 @@ public class LocationManager {
     private LocationManagerCallback locationManagerCallback;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     Context context;
     private boolean isConnected;
@@ -97,34 +96,26 @@ public class LocationManager {
         SettingsClient client = LocationServices.getSettingsClient(context);
         Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
 
-        task.addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
-            @Override
-            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                // MyLog.d(TAG, "isLocationSettingsGood - onSuccess");
-                // All location settings are satisfied. The client can initialize
-                // location requests here.
-                callback.onLocationSettingsDetermined(true, null);
-            }
+        task.addOnSuccessListener(locationSettingsResponse -> {
+            // MyLog.d(TAG, "isLocationSettingsGood - onSuccess");
+            // All location settings are satisfied. The client can initialize
+            // location requests here.
+            callback.onLocationSettingsDetermined(true, null);
         });
 
-        task.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                int statusCode = ((ApiException) e).getStatusCode();
-                switch (statusCode) {
-                    case CommonStatusCodes.RESOLUTION_REQUIRED:
-                        // Location settings are not satisfied, but this can be fixed
-                        // by showing the user a dialog.
-                        // MyLog.d(TAG, "isLocationSettingsGood - onFailure - resolution required");
-                        callback.onLocationSettingsDetermined(false, e);
-                        break;
-                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        // Location settings are not satisfied. However, we have no way
-                        // to fix the settings so we won't show the dialog.
-                        // MyLog.d(TAG, "isLocationSettingsGood - onFailure - required settings unavailable :(");
-                        callback.onLocationSettingsDetermined(false, e);
-                        break;
-                }
+        task.addOnFailureListener(e -> {
+            int statusCode = ((ApiException) e).getStatusCode();
+            switch (statusCode) {
+                case CommonStatusCodes.RESOLUTION_REQUIRED:
+                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                    // Location settings are not satisfied. However, we have no way
+                    // to fix the settings so we won't show the dialog.
+                    // MyLog.d(TAG, "isLocationSettingsGood - onFailure - required settings unavailable :(");
+                    // Location settings are not satisfied, but this can be fixed
+                    // by showing the user a dialog.
+                    // MyLog.d(TAG, "isLocationSettingsGood - onFailure - resolution required");
+                    callback.onLocationSettingsDetermined(false, e);
+                    break;
             }
         });
     }
@@ -151,15 +142,12 @@ public class LocationManager {
         SettingsClient client = LocationServices.getSettingsClient(context);
         Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
 
-        task.addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
-            @Override
-            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                // MyLog.d(TAG, "setLocationSettings - onSuccess");
-                // All location settings are satisfied. The client can initialize
-                // location requests here.
-                isConnected = true;
-                startLocationUpdates();
-            }
+        task.addOnSuccessListener(locationSettingsResponse -> {
+            // MyLog.d(TAG, "setLocationSettings - onSuccess");
+            // All location settings are satisfied. The client can initialize
+            // location requests here.
+            isConnected = true;
+            startLocationUpdates();
         });
     }
 
@@ -192,10 +180,6 @@ public class LocationManager {
 
     public int getLocationRequestInterval() {
         return locationRequestInterval;
-    }
-
-    public int getLocationRequestFastestInterval() {
-        return locationRequestFastestInterval;
     }
 
     public int getLocationRequestPriority() {

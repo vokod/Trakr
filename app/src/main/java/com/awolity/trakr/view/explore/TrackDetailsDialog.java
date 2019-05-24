@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import android.text.format.DateUtils;
@@ -109,16 +108,12 @@ public class TrackDetailsDialog extends DialogFragment {
                 trackData.getElapsedTime()));
 
         builder.setView(dialog)
-                .setPositiveButton(R.string.activity_explore_dialog_track_details_view, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        listener.onViewClicked(trackData.getTrackId());
-                    }
-                });
+                .setPositiveButton(R.string.activity_explore_dialog_track_details_view, (dialog1, id) -> listener.onViewClicked(trackData.getTrackId()));
         return builder.create();
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         Activity activity = getActivity();
         try {

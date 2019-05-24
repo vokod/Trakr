@@ -15,11 +15,8 @@ import java.util.Objects;
 @SuppressWarnings("WeakerAccess")
 @Entity(tableName = "track_table")
 public class TrackEntity {
-    @Ignore
-    private static final String TAG = TrackEntity.class.getSimpleName();
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     @ColumnInfo(name = "track_id")
     long trackId;
     @ColumnInfo(name = "firebase_id")
@@ -54,12 +51,11 @@ public class TrackEntity {
     @Ignore
     private boolean isValidElevationData = false;
 
-    @NonNull
     public long getTrackId() {
         return trackId;
     }
 
-    public void setTrackId(@NonNull long trackId) {
+    public void setTrackId(long trackId) {
         this.trackId = trackId;
     }
 

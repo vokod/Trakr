@@ -11,8 +11,6 @@ import javax.inject.Inject;
 
 public class TrackRecorderStatus {
 
-    private static final String TAG = "TrackRecorderStatus";
-    private boolean isEverythingGoodForRecording = true;
     private int numOfTrackPoints;
     private TrackpointEntity previousSavedTrackpoint, actualSavedTrackpoint, candidateTrackpoint;
     private final LowPassFilter altitudeFilter;
@@ -20,11 +18,10 @@ public class TrackRecorderStatus {
     private final AltitudeZeroFilter altitudeZeroFilter;
     private final RecordParameters recordParameters;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     SettingsRepository settingsRepository;
 
-    public TrackRecorderStatus() {
+     TrackRecorderStatus() {
         // MyLog.d(TAG, "TrackRecorderStatus");
         TrakrApplication.getInstance().getAppComponent().inject(this);
 
@@ -89,16 +86,6 @@ public class TrackRecorderStatus {
 
     boolean isThereASavedTrackpoint() {
         return actualSavedTrackpoint != null;
-    }
-
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    boolean isEverythingGoodForRecording() {
-        return isEverythingGoodForRecording;
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    void setEverythingGoodForRecording(boolean everythingGoodForRecording) {
-        isEverythingGoodForRecording = everythingGoodForRecording;
     }
 
     int getTrackingDistance() {

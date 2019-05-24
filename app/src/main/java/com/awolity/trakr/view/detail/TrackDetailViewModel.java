@@ -2,9 +2,7 @@ package com.awolity.trakr.view.detail;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
-import androidx.annotation.Nullable;
 
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.model.ChartPoint;
@@ -22,14 +20,12 @@ import javax.inject.Named;
 
 public class TrackDetailViewModel extends ViewModel {
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     TrackRepository trackRepository;
 
     @Inject
     SettingsRepository settingsRepository;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     @Named("transformation")
     Executor transformationExecutor;
@@ -40,7 +36,7 @@ public class TrackDetailViewModel extends ViewModel {
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 
-    public void init(long trackId) {
+    void init(long trackId) {
         this.trackId = trackId;
     }
 
@@ -54,20 +50,17 @@ public class TrackDetailViewModel extends ViewModel {
             return trackRepository.getTrackData(trackId);
         } else {
             final MediatorLiveData<TrackData> result = new MediatorLiveData<>();
-            result.addSource(trackRepository.getTrackData(trackId), new Observer<TrackData>() {
-                @Override
-                public void onChanged(@Nullable TrackData trackData) {
-                    if (trackData != null) {
-                        trackData.convertToImperial();
-                        result.postValue(trackData);
-                    }
+            result.addSource(trackRepository.getTrackData(trackId), trackData -> {
+                if (trackData != null) {
+                    trackData.convertToImperial();
+                    result.postValue(trackData);
                 }
             });
             return result;
         }
     }
 
-    public LiveData<List<ChartPoint>> getChartPoints() {
+    LiveData<List<ChartPoint>> getChartPoints() {
         checkTrackId();
         if (getUnit() == Constants.UNIT_METRIC) {
             return trackRepository.getChartpointsByTrack(trackId,
@@ -76,42 +69,36 @@ public class TrackDetailViewModel extends ViewModel {
             final MediatorLiveData<List<ChartPoint>> result = new MediatorLiveData<>();
             result.addSource(trackRepository.getChartpointsByTrack(trackId,
                     Constants.CHART_POINT_MAX_NUMBER_FOR_TRACK_DETAIL),
-                    new Observer<List<ChartPoint>>() {
-                        @Override
-                        public void onChanged(@Nullable final List<ChartPoint> chartPoints) {
-                            if (chartPoints != null) {
-                                transformationExecutor.execute(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        for (ChartPoint chartPoint : chartPoints) {
-                                            chartPoint.convertToImperial();
-                                        }
-                                        result.postValue(chartPoints);
-                                    }
-                                });
-                            }
+                    chartPoints -> {
+                        if (chartPoints != null) {
+                            transformationExecutor.execute(() -> {
+                                for (ChartPoint chartPoint : chartPoints) {
+                                    chartPoint.convertToImperial();
+                                }
+                                result.postValue(chartPoints);
+                            });
                         }
                     });
             return result;
         }
     }
 
-    public LiveData<List<MapPoint>> getMapPoints() {
+    LiveData<List<MapPoint>> getMapPoints() {
         checkTrackId();
         return trackRepository.getMapPoints(trackId);
     }
 
-    public void deleteTrack() {
+    void deleteTrack() {
         checkTrackId();
         trackRepository.deleteTrack(trackId);
     }
 
-    public void exportTrack() {
+    void exportTrack() {
         checkTrackId();
         trackRepository.exportTrack(trackId);
     }
 
-    public void updateTrackTitle(String title) {
+    void updateTrackTitle(String title) {
         trackRepository.updateTrackTitle(title, trackId);
     }
 

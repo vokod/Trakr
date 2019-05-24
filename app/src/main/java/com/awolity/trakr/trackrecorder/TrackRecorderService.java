@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Binder;
 import android.os.Build;
+import android.os.IBinder;
 import android.os.PowerManager;
+
+import androidx.annotation.Nullable;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.notification.NotificationUtils;
@@ -16,13 +19,12 @@ import com.awolity.trakr.utils.MyLog;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 public class TrackRecorderService extends Service {
 
     public static final String TAG = TrackRecorderService.class.getSimpleName();
     public static final String WAKELOCK_TAG = "Trakr::WakelockTag";
     private TrackRecorder recorder;
-    private final TrackRecorderServiceBinder binder = new TrackRecorderServiceBinder();
-    private PowerManager pwrMngr;
     private PowerManager.WakeLock wakeLock;
 
     @Override
@@ -30,12 +32,6 @@ public class TrackRecorderService extends Service {
         super.onDestroy();
         MyLog.d(TAG, "onDestroy");
         stopRecordTrack();
-    }
-
-    @Override
-    public TrackRecorderServiceBinder onBind(Intent intent) {
-        MyLog.d(TAG, "onBind");
-        return binder;
     }
 
     @Override
@@ -59,6 +55,12 @@ public class TrackRecorderService extends Service {
         MyLog.d(TAG, "onConfigurationChanged");
     }
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
     @SuppressWarnings("EmptyMethod")
     @Override
     public void onRebind(Intent intent) {
@@ -75,10 +77,11 @@ public class TrackRecorderService extends Service {
         return START_STICKY;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @SuppressLint("WakelockTimeout")
     private void acquireWakeLock() {
         MyLog.d(TAG, "acquireWakeLock");
-        pwrMngr = (PowerManager) getSystemService(POWER_SERVICE);
+        PowerManager pwrMngr = (PowerManager) getSystemService(POWER_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             wakeLock = pwrMngr.newWakeLock(PowerManager.LOCATION_MODE_NO_CHANGE
                             | PowerManager.PARTIAL_WAKE_LOCK,
@@ -109,12 +112,6 @@ public class TrackRecorderService extends Service {
         }
         releaseWakeLock();
         stopForeground(true);
-    }
-
-    class TrackRecorderServiceBinder extends Binder {
-        TrackRecorderService getService() {
-            return TrackRecorderService.this;
-        }
     }
 
     private static List<String> getNotificationDetails(Context context) {

@@ -34,29 +34,23 @@ import javax.inject.Singleton;
 @Singleton
 public class TrackRepository {
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     @Named("disc")
     Executor discIoExecutor;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     @Named("transformation")
     Executor transformationExecutor;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     Context context;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     RoomTrackRepository roomTrackRepository;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     FirebaseTrackRepository firebaseTrackRepository;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     AppUserRepository appUserRepository;
 
@@ -177,6 +171,7 @@ public class TrackRepository {
     private void deleteSyncedLocalTracks() {
         discIoExecutor.execute(() -> {
             for (TrackEntity trackEntity : roomTrackRepository.getTracksSync()) {
+                //noinspection ConstantConditions
                 if (trackEntity.getFirebaseId() != null || trackEntity.getFirebaseId().isEmpty()) {
                     deleteLocalTrack(trackEntity.getTrackId());
                 }
@@ -355,11 +350,6 @@ public class TrackRepository {
         }
     }
 
-    public void getAllTracksFromCloud(
-            final GetAllTracksFromCloudListener listener) {
-        firebaseTrackRepository.getAllTracksFromCloud(listener);
-    }
-
     public void getAllTrackdatasFromCloud(
             final GetAllTrackDatasFromCloudListener listener) {
         firebaseTrackRepository.getAllTrackDatasFromCloud(listener);
@@ -367,8 +357,8 @@ public class TrackRepository {
 
     public void saveTrackToLocalDbFromCloud(final TrackEntity onlineTrack) {
         onlineTrack.setTrackId(0);
-        firebaseTrackRepository.getTrackFromCloud(onlineTrack.getFirebaseId(), trackWithPoints ->
-                saveTrackWithPointsToDb(trackWithPoints));
+        firebaseTrackRepository.getTrackFromCloud(onlineTrack.getFirebaseId(),
+                this::saveTrackWithPointsToDb);
     }
 
     private void saveTrackWithPointsToDb(final TrackWithPoints track) {

@@ -1,13 +1,10 @@
 package com.awolity.trakr.view.settings;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -62,12 +59,9 @@ public class SettingsActivity extends AppCompatActivity
         setContentView(R.layout.activity_settings);
         setupWidgets();
         settingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
-        settingsViewModel.getIsAppUserLoggedIn().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if (aBoolean != null) {
-                    showUserLoginState(aBoolean);
-                }
+        settingsViewModel.getIsAppUserLoggedIn().observe(this, aBoolean -> {
+            if (aBoolean != null) {
+                showUserLoginState(aBoolean);
             }
         });
     }
@@ -89,13 +83,11 @@ public class SettingsActivity extends AppCompatActivity
                         .setAvailableProviders(Collections.singletonList(
                                 new AuthUI.IdpConfig.EmailBuilder().build()))
                         .setLogo(R.mipmap.ic_launcher)
-                        .setPrivacyPolicyUrl("https://trakrapp.github.io/privacy.html")
-                        .setTosUrl("https://trakrapp.github.io/terms.html")
+                        .setTosAndPrivacyPolicyUrls("https://trakrapp.github.io/terms.html"
+                                ,"https://trakrapp.github.io/privacy.html")
                         .build(), RC_SIGN_IN));
 
-        logoutBs.setOnClickListener(v -> {
-            showLogoutAlertDialog();
-        });
+        logoutBs.setOnClickListener(v -> showLogoutAlertDialog());
 
 
         deleteBs.setOnClickListener(v -> {
@@ -105,8 +97,6 @@ public class SettingsActivity extends AppCompatActivity
         );
 
 
-        int max = accuracySs.getMax();
-        int pos = accuracySs.getPosition();
         accuracySs.setSeekBarListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -227,6 +217,7 @@ public class SettingsActivity extends AppCompatActivity
                     return;
                 }
 
+                //noinspection ConstantConditions
                 if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
                     Utility.showToast(this, getString(R.string.login_error_no_internet));
                     return;
@@ -265,35 +256,26 @@ public class SettingsActivity extends AppCompatActivity
         final FirebaseUser user = settingsViewModel.getAppUser();
 
         String passwordString = new String(password);
-        AuthCredential credential = EmailAuthProvider
+        @SuppressWarnings("ConstantConditions") AuthCredential credential = EmailAuthProvider
                 .getCredential(settingsViewModel.getAppUser().getEmail(), passwordString);
 
         // Prompt the user to re-provide their sign-in credentials
         user.reauthenticate(credential)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        MyLog.d(TAG, "onSuccess");
-                        settingsViewModel.deleteAccount();
-                    }
+                .addOnSuccessListener(aVoid -> {
+                    MyLog.d(TAG, "onSuccess");
+                    settingsViewModel.deleteAccount();
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        MyLog.d(TAG, "onFailure");
-                        Toast.makeText(SettingsActivity.this,
-                                getString(R.string.delete_account_toast_authentication_error),
-                                Toast.LENGTH_LONG).show();
-                    }
+                .addOnFailureListener(e -> {
+                    MyLog.d(TAG, "onFailure");
+                    Toast.makeText(SettingsActivity.this,
+                            getString(R.string.delete_account_toast_authentication_error),
+                            Toast.LENGTH_LONG).show();
                 })
-                .addOnCanceledListener(new OnCanceledListener() {
-                    @Override
-                    public void onCanceled() {
-                        MyLog.d(TAG, "onCanceled");
-                        Toast.makeText(SettingsActivity.this,
-                                getString(R.string.delete_account_toast_authentication_error),
-                                Toast.LENGTH_LONG).show();
-                    }
+                .addOnCanceledListener(() -> {
+                    MyLog.d(TAG, "onCanceled");
+                    Toast.makeText(SettingsActivity.this,
+                            getString(R.string.delete_account_toast_authentication_error),
+                            Toast.LENGTH_LONG).show();
                 });
     }
 

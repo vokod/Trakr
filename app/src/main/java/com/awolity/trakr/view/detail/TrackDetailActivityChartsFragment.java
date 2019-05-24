@@ -1,18 +1,18 @@
 package com.awolity.trakr.view.detail;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -74,6 +74,7 @@ public class TrackDetailActivityChartsFragment extends Fragment {
         setupWidgets(view);
         setupCharts();
 
+        //noinspection ConstantConditions
         trackDetailViewModel = ViewModelProviders.of(getActivity())
                 .get(TrackDetailViewModel.class);
 
@@ -85,25 +86,22 @@ public class TrackDetailActivityChartsFragment extends Fragment {
     private void setupWidgets(View view) {
         SwitchMultiButton switchMultiButton = view.findViewById(R.id.smb_xaxis);
         switchMultiButton.setSelectedTab(xAxis);
-        switchMultiButton.setOnSwitchListener(new SwitchMultiButton.OnSwitchListener() {
-            @Override
-            public void onSwitch(int position, String tabText) {
-                if (xAxis != position) {
-                    xAxis = position;
-                    if (position == 0 && trackData != null && chartPoints != null) {
-                        setElevationChartDataByTime(chartPoints);
-                        if (isSpeed) {
-                            setSpeedChartDataByTime(chartPoints);
-                        } else {
-                            setPaceChartDataByTime(chartPoints);
-                        }
-                    } else if (position == 1 && trackData != null && chartPoints != null) {
-                        setElevationChartDataByDistance(chartPoints);
-                        if (isSpeed) {
-                            setSpeedChartDataByDistance(chartPoints);
-                        } else {
-                            setPaceChartDataByDistance(chartPoints);
-                        }
+        switchMultiButton.setOnSwitchListener((position, tabText) -> {
+            if (xAxis != position) {
+                xAxis = position;
+                if (position == 0 && trackData != null && chartPoints != null) {
+                    setElevationChartDataByTime(chartPoints);
+                    if (isSpeed) {
+                        setSpeedChartDataByTime(chartPoints);
+                    } else {
+                        setPaceChartDataByTime(chartPoints);
+                    }
+                } else if (position == 1 && trackData != null && chartPoints != null) {
+                    setElevationChartDataByDistance(chartPoints);
+                    if (isSpeed) {
+                        setSpeedChartDataByDistance(chartPoints);
+                    } else {
+                        setPaceChartDataByDistance(chartPoints);
                     }
                 }
             }
@@ -125,31 +123,25 @@ public class TrackDetailActivityChartsFragment extends Fragment {
         minAltitudePpvi = view.findViewById(R.id.ppvi_min_altitude);
         paceCheckBox = view.findViewById(R.id.cb_pace);
         speedCheckBox = view.findViewById(R.id.cb_speed);
-        paceCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                speedCheckBox.setChecked(!b);
-                if (b && trackData != null) {
-                    isSpeed = false;
-                    if (xAxis == 0) {
-                        setPaceChartDataByTime(chartPoints);
-                    } else if (xAxis == 1) {
-                        setPaceChartDataByDistance(chartPoints);
-                    }
+        paceCheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
+            speedCheckBox.setChecked(!b);
+            if (b && trackData != null) {
+                isSpeed = false;
+                if (xAxis == 0) {
+                    setPaceChartDataByTime(chartPoints);
+                } else if (xAxis == 1) {
+                    setPaceChartDataByDistance(chartPoints);
                 }
             }
         });
-        speedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                paceCheckBox.setChecked(!b);
-                if (b && trackData != null) {
-                    isSpeed = true;
-                    if (xAxis == 0) {
-                        setSpeedChartDataByTime(chartPoints);
-                    } else if (xAxis == 1) {
-                        setSpeedChartDataByDistance(chartPoints);
-                    }
+        speedCheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
+            paceCheckBox.setChecked(!b);
+            if (b && trackData != null) {
+                isSpeed = true;
+                if (xAxis == 0) {
+                    setSpeedChartDataByTime(chartPoints);
+                } else if (xAxis == 1) {
+                    setSpeedChartDataByDistance(chartPoints);
                 }
             }
         });
@@ -258,35 +250,26 @@ public class TrackDetailActivityChartsFragment extends Fragment {
 
     @SuppressWarnings("ConstantConditions")
     private void observe() {
-        trackDetailViewModel.getChartPoints().observe(this, new Observer<List<ChartPoint>>() {
-            @Override
-            public void onChanged(@Nullable final List<ChartPoint> chartPoints) {
-                if (chartPoints != null) {
-                    TrackDetailActivityChartsFragment.this.chartPoints = chartPoints;
+        trackDetailViewModel.getChartPoints().observe(this, chartPoints -> {
+            if (chartPoints != null) {
+                TrackDetailActivityChartsFragment.this.chartPoints = chartPoints;
 
-                    setWidgetData(trackData);
-                    setSpeedChartDataByDistance(chartPoints);
-                    setElevationChartDataByDistance(chartPoints);
-                }
+                setWidgetData(trackData);
+                setSpeedChartDataByDistance(chartPoints);
+                setElevationChartDataByDistance(chartPoints);
             }
         });
 
-        trackDetailViewModel.getTrackData().observe(this, new Observer<TrackData>() {
-            @Override
-            public void onChanged(@Nullable final TrackData trackData) {
-                if (trackData != null) {
-                    TrackDetailActivityChartsFragment.this.trackData = trackData;
-                    setWidgetData(trackData);
+        trackDetailViewModel.getTrackData().observe(this, trackData -> {
+            if (trackData != null) {
+                TrackDetailActivityChartsFragment.this.trackData = trackData;
+                setWidgetData(trackData);
 
-                    editTitleImageButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            EditTitleDialog dialog = EditTitleDialog.newInstance(
-                                    trackData.getTitle());
-                            dialog.show(getActivity().getSupportFragmentManager(), null);
-                        }
-                    });
-                }
+                editTitleImageButton.setOnClickListener(view -> {
+                    EditTitleDialog dialog = EditTitleDialog.newInstance(
+                            trackData.getTitle());
+                    dialog.show(getActivity().getSupportFragmentManager(), null);
+                });
             }
         });
     }
@@ -502,6 +485,7 @@ public class TrackDetailActivityChartsFragment extends Fragment {
         speedDataSet.setDrawFilled(true);
         speedDataSet.setFormLineWidth(1f);
         speedDataSet.setFormSize(15.f);
+        @SuppressWarnings("ConstantConditions")
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_accent_color);
         speedDataSet.setFillDrawable(drawable);
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();

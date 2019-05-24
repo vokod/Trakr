@@ -4,6 +4,7 @@ import com.awolity.trakr.utils.Constants;
 
 import java.util.Objects;
 
+@SuppressWarnings("WeakerAccess")
 public class TrackData {
 
     private long trackId;

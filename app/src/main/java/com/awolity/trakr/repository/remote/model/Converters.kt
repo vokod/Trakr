@@ -18,14 +18,6 @@ fun trackWithPointsToFirestoreTrack(input: TrackWithPoints): FirestoreTrack {
             trackPointsToDistancesArray(input.trackPoints))
 }
 
-fun trackEntityToFirestoreTrack(input: TrackEntity): FirestoreTrack {
-    return FirestoreTrack(input.firebaseId, input.title, input.startTime, input.distance,
-            input.ascent, input.descent, input.elapsedTime, input.numOfTrackPoints,
-            input.northestPoint, input.southestPoint, input.westernPoint, input.easternPoint,
-            input.minAltitude, input.maxAltitude, input.maxSpeed, input.avgSpeed,
-            input.metadata)
-}
-
 fun trackEntityToFirestoreTrackData(input: TrackEntity):FirestoreTrackData{
     return FirestoreTrackData(input.firebaseId, input.title, input.startTime, input.distance,
             input.ascent, input.descent, input.elapsedTime, input.numOfTrackPoints,

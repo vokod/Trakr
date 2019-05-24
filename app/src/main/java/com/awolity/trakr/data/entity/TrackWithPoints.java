@@ -1,11 +1,7 @@
 package com.awolity.trakr.data.entity;
 
 import androidx.room.Relation;
-
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.Exclude;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class TrackWithPoints  extends TrackEntity{
@@ -21,15 +17,6 @@ public class TrackWithPoints  extends TrackEntity{
 
     public void setTrackPoints(List<TrackpointEntity> trackPoints) {
         this.trackPoints = trackPoints;
-    }
-
-    @Exclude
-    public List<LatLng> getPointsLatLng(){
-        List<LatLng> latLngs = new ArrayList<>(trackPoints.size());
-        for(TrackpointEntity trackpointEntity : trackPoints){
-            latLngs.add(new LatLng(trackpointEntity.getLatitude(),trackpointEntity.getLongitude()));
-        }
-        return latLngs;
     }
 
     @Exclude

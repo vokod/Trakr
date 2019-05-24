@@ -12,7 +12,6 @@ import android.location.Location;
 import androidx.annotation.NonNull;
 
 @SuppressWarnings("WeakerAccess")
-
 @Entity(tableName = "trackpoint_table",
         foreignKeys =
         @ForeignKey(entity = TrackEntity.class,
@@ -44,12 +43,11 @@ public class TrackpointEntity {
     double accuracy;
     double distance;
 
-    @NonNull
     public long getTrackpointId() {
         return trackpointId;
     }
 
-    public void setTrackpointId(@NonNull long trackpointId) {
+    public void setTrackpointId(long trackpointId) {
         this.trackpointId = trackpointId;
     }
 
@@ -99,10 +97,6 @@ public class TrackpointEntity {
 
     public void setUnfilteredAltitude(double unfilteredAltitude) {
         this.unfilteredAltitude = unfilteredAltitude;
-    }
-
-    public double getBearing() {
-        return bearing;
     }
 
     public void setBearing(double bearing) {

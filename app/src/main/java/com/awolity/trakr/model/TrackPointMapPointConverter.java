@@ -12,5 +12,4 @@ public class TrackPointMapPointConverter {
         result.setLongitude(trackpoint.getLongitude());
         return result;
     }
-
 }

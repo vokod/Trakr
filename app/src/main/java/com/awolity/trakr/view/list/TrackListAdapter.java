@@ -43,7 +43,7 @@ public class TrackListAdapter
         this.context = context;
     }
 
-    public void updateItems(@NonNull final List<TrackDataWithMapPoints> newItems) {
+    void updateItems(@NonNull final List<TrackDataWithMapPoints> newItems) {
         // MyLog.d(TAG, "updateItems");
         final List<TrackDataWithMapPoints> oldItems = new ArrayList<>(this.items);
         this.items.clear();
@@ -61,11 +61,9 @@ public class TrackListAdapter
 
             @Override
             public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                //noinspection ConstantConditions
                 return oldItems.get(oldItemPosition).equals(newItems.get(newItemPosition));
             }
 
-            @SuppressWarnings("ConstantConditions")
             @Override
             public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                 return oldItems.get(oldItemPosition).equals(newItems.get(newItemPosition));
@@ -98,7 +96,6 @@ public class TrackListAdapter
 
     class TrackItemViewHolder extends RecyclerView.ViewHolder {
 
-        private TrackDataWithMapPoints trackDataWithMapPoints;
         private final TextView titleTv;
         private final TextView dateTv;
         private final ImageView initialIv;
@@ -127,10 +124,9 @@ public class TrackListAdapter
         }
 
         void bind(final TrackDataWithMapPoints trackDataWithMapPoints) {
-            this.trackDataWithMapPoints = trackDataWithMapPoints;
-            titleTv.setText(this.trackDataWithMapPoints.getTrackData().getTitle());
+            titleTv.setText(trackDataWithMapPoints.getTrackData().getTitle());
             dateTv.setText(DateUtils.getRelativeTimeSpanString(
-                    this.trackDataWithMapPoints.getTrackData().getStartTime()).toString());
+                    trackDataWithMapPoints.getTrackData().getStartTime()).toString());
 
             String firstLetter = "";
             if (trackDataWithMapPoints.getTrackData().getTitle()
@@ -149,25 +145,17 @@ public class TrackListAdapter
             durationView.setValue(StringUtils.getElapsedTimeAsString(
                     trackDataWithMapPoints.getTrackData().getElapsedTime()));
 
-            mapView.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(final GoogleMap googleMap) {
-                    if (polyline != null) {
-                        polyline.remove();
-                    }
-                    polyline = MapUtils.setupTrackPolyLine(context, googleMap,
-                            trackDataWithMapPoints, true);
-                    mapView.onResume();
+            mapView.getMapAsync(googleMap -> {
+                if (polyline != null) {
+                    polyline.remove();
                 }
+                polyline = MapUtils.setupTrackPolyLine(context, googleMap,
+                        trackDataWithMapPoints, true);
+                mapView.onResume();
             });
 
-            clickOverlay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callback.onTrackItemClicked(trackDataWithMapPoints.getTrackData().getTrackId(),
-                            itemView);
-                }
-            });
+            clickOverlay.setOnClickListener(v -> callback.onTrackItemClicked(trackDataWithMapPoints.getTrackData().getTrackId(),
+                    itemView));
         }
 
         private void resetWidgets() {

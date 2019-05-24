@@ -15,19 +15,9 @@ import javax.inject.Singleton;
 @Singleton
 public class SettingsRepository {
 
-    private static final String TAG = "SettingsRepository";
-
     private static final String KEY_LAST_RECORDED_TRACK_ID = "pref_key_last_recorded_track_id";
-    private static final String KEY_LAST_ACTIVITY_TYPE = "pref_key_activity_type";
-
-    public static final long NO_LAST_RECORDED_TRACK = -1;
-
-    private static final String VALUE_USER_NOT_LOGGED_IN = "user_not_logged_in";
-
     private final static String KEY_ACCURACY = "key_accuracy";
     private final static int VALUE_ACCURACY_HIGH_ACCURACY = 2;
-    private final static int VALUE_ACCURACY_BALANCED = 1;
-    private final static int VALUE_ACCURACY_LOW_POWER = 0;
 
     private final static String KEY_UNIT = "key_unit";
 

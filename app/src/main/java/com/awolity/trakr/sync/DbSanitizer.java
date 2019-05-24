@@ -14,28 +14,23 @@ import javax.inject.Singleton;
 @Singleton
 public class DbSanitizer {
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     TrackRepository trackRepository;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     @Named("disc")
     Executor discIoExecutor;
 
-    public DbSanitizer() {
+    DbSanitizer() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
     }
 
-    public void sanitizeDb() {
-        discIoExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                List<TrackEntity> trackEntities = trackRepository.getTracksSync();
-                for (TrackEntity trackEntity : trackEntities) {
-                    if (trackEntity.getNumOfTrackPoints() < 2) {
-                        trackRepository.deleteTrack(trackEntity.getTrackId());
-                    }
+    void sanitizeDb() {
+        discIoExecutor.execute(() -> {
+            List<TrackEntity> trackEntities = trackRepository.getTracksSync();
+            for (TrackEntity trackEntity : trackEntities) {
+                if (trackEntity.getNumOfTrackPoints() < 2) {
+                    trackRepository.deleteTrack(trackEntity.getTrackId());
                 }
             }
         });

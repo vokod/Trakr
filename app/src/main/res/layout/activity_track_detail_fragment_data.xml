@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".view.detail.TrackDetailActivityDataFragment">
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView
         style="@style/CardView.Light"
         android:id="@+id/title_bar"
         android:transitionName="@string/transition_title_bar"
@@ -18,7 +18,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -82,7 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.cardview.widget.CardView
             style="@style/CardView.Light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

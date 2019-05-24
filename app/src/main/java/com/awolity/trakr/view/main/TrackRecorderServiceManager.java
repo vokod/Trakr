@@ -19,25 +19,20 @@ import javax.inject.Singleton;
 @Singleton
 public class TrackRecorderServiceManager {
 
-    private static final String TAG = TrackRecorderServiceManager.class.getSimpleName();
     private final TrackRecorderServiceManagerListener listener;
     private BroadcastReceiver trackIdBroadcastReceiver;
-    private boolean isStarted;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     Context context;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     SettingsRepository settingsRepository;
 
-    public TrackRecorderServiceManager(final TrackRecorderServiceManagerListener listener) {
+     TrackRecorderServiceManager(final TrackRecorderServiceManagerListener listener) {
         // MyLog.d(TAG, "TrackRecorderServiceManager");
         TrakrApplication.getInstance().getAppComponent().inject(this);
         this.listener = listener;
 
-        isStarted = isServiceRunning(context);
 
         trackIdBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -47,26 +42,11 @@ public class TrackRecorderServiceManager {
                 //  Log.d(TAG, "onReceive - trackId:" + id);
                 settingsRepository.setLastRecordedTrackId(id);
                 listener.onServiceStarted(id);
-                isStarted = true;
             }
         };
     }
 
- /*   public void startStopFabClicked() {
-        // MyLog.d(TAG, "startStopFabClicked");
-        if (isStarted) {
-            // MyLog.d(TAG, "startStopFabClicked - service IS running");
-            stopService();
-        } else {
-            // MyLog.d(TAG, "startStopFabClicked - service is NOT running");
-            LocalBroadcastManager.getInstance(context).registerReceiver(trackIdBroadcastReceiver,
-                    new IntentFilter(TrackRecorder.TRACKID_BROADCAST_NAME));
-            startService();
-
-        }
-    }*/
-
-    public void startService() {
+    void startService() {
         // MyLog.d(TAG, "startService - enter");
         LocalBroadcastManager.getInstance(context).registerReceiver(trackIdBroadcastReceiver,
                 new IntentFilter(TrackRecorder.TRACKID_BROADCAST_NAME));
@@ -77,10 +57,9 @@ public class TrackRecorderServiceManager {
         }
     }
 
-    public void stopService() {
+    void stopService() {
         // MyLog.d(TAG, "stopService");
         context.stopService(getServiceIntent(context));
-        isStarted = false;
         listener.onServiceStopped();
     }
 
@@ -89,7 +68,7 @@ public class TrackRecorderServiceManager {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static boolean isServiceRunning(Context context) {
+    static boolean isServiceRunning(Context context) {
         // MyLog.d(TAG, "isServiceRunning");
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {

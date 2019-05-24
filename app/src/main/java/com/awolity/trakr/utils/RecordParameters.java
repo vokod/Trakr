@@ -8,7 +8,7 @@ public class RecordParameters implements Parcelable {
     private final int trackingDistance, trackingAccuracy, trackingInterval, minimalRecordAccuracy,
             altitudeFilterParameter, speedFilterParameter;
 
-    public RecordParameters(int trackingDistance, int trackingInterval, int trackingAccuracy,
+    RecordParameters(int trackingDistance, int trackingInterval, int trackingAccuracy,
                             int minimalRecordAccuracy, int altitudeFilterParameter,
                             int speedFilterParameter) {
         this.trackingDistance = trackingDistance;

@@ -1,9 +1,10 @@
 package com.awolity.trakr.utils;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,21 +19,18 @@ public class FileLoggingTree extends Timber.DebugTree {
 
     private static final String TAG = FileLoggingTree.class.getSimpleName();
     private static final String PATH = Environment.getExternalStorageDirectory() + "/Trakr";
-
-    private Context context;
-
-    public FileLoggingTree(Context context) {
-        this.context = context;
+    public FileLoggingTree() {
     }
 
     @SuppressLint("LogNotTimber")
     @Override
-    protected void log(int priority, String tag, String message, Throwable t) {
+    protected void log(int priority, String tag, @NonNull String message, Throwable t) {
 
         try {
             File direct = new File(PATH);
 
             if (!direct.exists()) {
+                //noinspection ResultOfMethodCallIgnored
                 direct.mkdir();
             }
 
@@ -47,6 +45,7 @@ public class FileLoggingTree extends Timber.DebugTree {
             File file = new File(PATH
                     + File.separator + fileName);
 
+            //noinspection ResultOfMethodCallIgnored
             file.createNewFile();
 
             if (file.exists()) {

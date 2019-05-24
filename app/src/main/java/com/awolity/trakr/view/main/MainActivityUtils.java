@@ -6,7 +6,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Animatable;
@@ -20,7 +19,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 
@@ -66,13 +64,9 @@ class MainActivityUtils {
                 new AlertDialog.Builder(activity)
                         .setTitle(activity.getResources().getString(R.string.location_permission_rationale_title))
                         .setMessage(activity.getResources().getString(R.string.location_permission_rationale_description))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(activity,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        permissionRequestCode);
-                            }
-                        })
+                        .setPositiveButton(android.R.string.yes, (dialog, which) -> ActivityCompat.requestPermissions(activity,
+                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                permissionRequestCode))
                         .setIcon(R.mipmap.ic_launcher)
                         .show();
             } else {
@@ -98,12 +92,10 @@ class MainActivityUtils {
                 new AlertDialog.Builder(context)
                         .setTitle(context.getResources().getString(R.string.location_permission_rationale_title))
                         .setMessage(context.getResources().getString(R.string.location_permission_rationale_description))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent i = new Intent(android.content.Intent.ACTION_VIEW);
-                                i.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.gms"));
-                                context.startActivity(i);
-                            }
+                        .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.gms"));
+                            context.startActivity(i);
                         })
                         .setNegativeButton(android.R.string.no, null)
                         .setIcon(R.mipmap.ic_launcher)

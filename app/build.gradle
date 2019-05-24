@@ -115,7 +115,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:16.0.9"
 
     // crashlitycs
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     // Firebase firestore
     implementation "com.google.firebase:firebase-firestore:19.0.0"

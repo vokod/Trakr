@@ -27,11 +27,9 @@ public class MainActivityViewModel extends AndroidViewModel implements LocationM
     private boolean isLocationUpdating;
     private long trackId = Constants.NO_LAST_RECORDED_TRACK;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     TrackRepository trackRepository;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     SettingsRepository settingsRepository;
 
@@ -81,12 +79,12 @@ public class MainActivityViewModel extends AndroidViewModel implements LocationM
         return trackRepository.getTrackData(trackId);
     }
 
-    public LiveData<List<MapPoint>> getMapPoints() {
+     LiveData<List<MapPoint>> getMapPoints() {
         checkTrackId();
         return trackRepository.getMapPoints(trackId);
     }
 
-    public LiveData<MapPoint> getActualMapPoint() {
+     LiveData<MapPoint> getActualMapPoint() {
         checkTrackId();
         return trackRepository.getActualTrackpoint(trackId);
     }
@@ -111,7 +109,7 @@ public class MainActivityViewModel extends AndroidViewModel implements LocationM
         return settingsRepository.getLastRecordedTrackId();
     }
 
-    void setLastRecordedTrackId(long trackId) {
-        settingsRepository.setLastRecordedTrackId(trackId);
+    void clearLastRecordedTrackId() {
+        settingsRepository.setLastRecordedTrackId(Constants.NO_LAST_RECORDED_TRACK);
     }
 }

@@ -19,8 +19,6 @@ import java.util.List;
 
 public class MapUtils {
 
-    private static final String TAG = "MapUtils";
-
     private MapUtils() {
     }
 
@@ -28,7 +26,6 @@ public class MapUtils {
     public static Polyline setupTrackPolyLine(Context context, GoogleMap googleMap,
                                               List<MapPoint> mapPoints) {
         // MyLog.d(TAG, "setupTrackPolyLine");
-        Polyline polyline = null;
         PolylineOptions polylineOptions = new PolylineOptions()
                 .geodesic(true)
                 .color(ContextCompat.getColor(context, R.color.colorPrimary))

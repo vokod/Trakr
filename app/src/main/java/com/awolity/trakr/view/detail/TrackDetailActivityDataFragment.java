@@ -52,6 +52,7 @@ public class TrackDetailActivityDataFragment extends Fragment {
                 container, false);
         setupWidgets(view);
 
+        //noinspection ConstantConditions
         trackDetailViewModel = ViewModelProviders.of(getActivity())
                 .get(TrackDetailViewModel.class);
 
@@ -172,22 +173,16 @@ public class TrackDetailActivityDataFragment extends Fragment {
 
     @SuppressWarnings("ConstantConditions")
     private void observe() {
-        trackDetailViewModel.getTrackData().observe(this, new Observer<TrackData>() {
-            @Override
-            public void onChanged(@Nullable final TrackData trackData) {
-                if (trackData != null) {
-                    setData(trackData);
+        trackDetailViewModel.getTrackData().observe(this, trackData -> {
+            if (trackData != null) {
+                setData(trackData);
 
-                    editTitleImageButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            EditTitleDialog dialog = EditTitleDialog.newInstance(
-                                    trackData.getTitle());
-                            dialog.show(getActivity().getSupportFragmentManager(), null);
-                        }
-                    });
-                    getActivity().startPostponedEnterTransition();
-                }
+                editTitleImageButton.setOnClickListener(view -> {
+                    EditTitleDialog dialog = EditTitleDialog.newInstance(
+                            trackData.getTitle());
+                    dialog.show(getActivity().getSupportFragmentManager(), null);
+                });
+                getActivity().startPostponedEnterTransition();
             }
         });
     }

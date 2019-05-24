@@ -36,10 +36,6 @@ public interface TrackDao {
     TrackEntity loadByIdSync(long trackId);
 
     @Transaction
-    @Query("SELECT * FROM track_table WHERE track_id = :trackId")
-    LiveData<TrackWithPoints> loadByIdWithPoints(long trackId);
-
-    @Transaction
     @Query("SELECT * FROM track_table ORDER BY start_time DESC")
     LiveData<List<TrackWithPoints>> loadAllWithPoints();
 
@@ -52,5 +48,4 @@ public interface TrackDao {
 
     @Query("DELETE FROM track_table WHERE firebase_id = :firebaseId")
     void delete(String firebaseId);
-
 }

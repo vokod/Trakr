@@ -73,37 +73,29 @@ public class TrackDetailActivityMapFragment extends Fragment implements OnMapRea
 
     private void setupViewModel() {
         // MyLog.d(TAG, "setupViewModel");
-        TrackDetailViewModel trackDetailViewModel = ViewModelProviders.of(getActivity())
+        @SuppressWarnings("ConstantConditions") TrackDetailViewModel trackDetailViewModel = ViewModelProviders.of(getActivity())
                 .get(TrackDetailViewModel.class);
 
-        trackDetailViewModel.getMapPoints().observe(this, new Observer<List<MapPoint>>() {
-            @Override
-            public void onChanged(@Nullable List<MapPoint> mapPoints) {
-                if (mapPoints != null) {
-                    TrackDetailActivityMapFragment.this.mapPoints = mapPoints;
-                    setTrack();
+        trackDetailViewModel.getMapPoints().observe(this, mapPoints -> {
+            if (mapPoints != null) {
+                TrackDetailActivityMapFragment.this.mapPoints = mapPoints;
+                setTrack();
 
-                    editTitleImageButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            EditTitleDialog dialog = EditTitleDialog.newInstance(
-                                    trackData.getTitle());
-                            dialog.show(getActivity().getSupportFragmentManager(), null);
-                        }
-                    });
-                    getActivity().startPostponedEnterTransition();
-                }
+                editTitleImageButton.setOnClickListener(view -> {
+                    EditTitleDialog dialog = EditTitleDialog.newInstance(
+                            trackData.getTitle());
+                    dialog.show(getActivity().getSupportFragmentManager(), null);
+                });
+                //noinspection ConstantConditions
+                getActivity().startPostponedEnterTransition();
             }
         });
 
-        trackDetailViewModel.getTrackData().observe(this, new Observer<TrackData>() {
-            @Override
-            public void onChanged(@Nullable TrackData trackEntity) {
-                if (trackEntity != null) {
-                    TrackDetailActivityMapFragment.this.trackData = trackEntity;
-                    setData(trackEntity);
-                    setTrack();
-                }
+        trackDetailViewModel.getTrackData().observe(this, trackEntity -> {
+            if (trackEntity != null) {
+                TrackDetailActivityMapFragment.this.trackData = trackEntity;
+                setData(trackEntity);
+                setTrack();
             }
         });
     }

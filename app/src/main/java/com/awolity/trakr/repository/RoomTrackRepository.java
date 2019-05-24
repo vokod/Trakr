@@ -19,14 +19,11 @@ import javax.inject.Named;
 
 public class RoomTrackRepository {
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     @Named("disc")
     Executor discIoExecutor;
-    @SuppressWarnings("WeakerAccess")
     @Inject
     TrackDao trackDao;
-    @SuppressWarnings("WeakerAccess")
     @Inject
     TrackpointDao trackpointDao;
     @Inject
@@ -40,16 +37,16 @@ public class RoomTrackRepository {
      * TrackS methods
      */
 
-    public LiveData<List<TrackEntity>> getTracks() {
+    LiveData<List<TrackEntity>> getTracks() {
         return trackDao.loadAll();
     }
 
-    public LiveData<List<TrackWithPoints>> getTracksWithPoints() {
+    LiveData<List<TrackWithPoints>> getTracksWithPoints() {
         return trackDao.loadAllWithPoints();
     }
 
     @WorkerThread
-    public List<TrackEntity> getTracksSync() {
+    List<TrackEntity> getTracksSync() {
         return trackDao.loadAllSync();
     }
 
@@ -59,20 +56,20 @@ public class RoomTrackRepository {
      */
 
     @WorkerThread
-    public long saveTrackEntitySync(final TrackEntity trackData) {
+    long saveTrackEntitySync(final TrackEntity trackData) {
         return trackDao.save(trackData);
     }
 
 
-    public long saveTrackWithPoints(final TrackWithPoints track) {
+    void saveTrackWithPoints(final TrackWithPoints track) {
         discIoExecutor.execute(() -> {
             TrackEntity entity = TrackWithPoints.fromTrackWithPoints(track);
             long id = trackDao.save(entity);
             List<TrackpointEntity> points = track.getTrackPoints();
             setTrackIdInTrackPointEntities(points,id);
             trackpointDao.saveAll(points);
+            trackDao.save(track);
         });
-        return trackDao.save(track);
     }
 
     private void setTrackIdInTrackPointEntities(
@@ -84,39 +81,30 @@ public class RoomTrackRepository {
     }
 
 
-    public void updateTrack(final TrackEntity trackData) {
-        discIoExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                trackDao.update(trackData);
-            }
-        });
+    void updateTrack(final TrackEntity trackData) {
+        discIoExecutor.execute(() -> trackDao.update(trackData));
     }
 
-    public LiveData<TrackEntity> getTrack(long id) {
+    LiveData<TrackEntity> getTrack(long id) {
         return trackDao.loadById(id);
     }
 
     @WorkerThread
-    public TrackEntity getTrackSync(long id) {
+    TrackEntity getTrackSync(long id) {
         return trackDao.loadByIdSync(id);
     }
 
-    public LiveData<TrackWithPoints> getTrackWithPoints(long id) {
-        return trackDao.loadByIdWithPoints(id);
-    }
-
     @WorkerThread
-    public TrackWithPoints getTrackWithPointsSync(long id) {
+    TrackWithPoints getTrackWithPointsSync(long id) {
         return trackDao.loadByIdWithPointsSync(id);
     }
 
     @WorkerThread
-    public void deleteTrack(final long trackId) {
+    void deleteTrack(final long trackId) {
         trackDao.delete(trackId);
     }
 
-    public void setTrackFirebaseIdSync(TrackEntity trackEntity, String firebaseId) {
+    void setTrackFirebaseIdSync(TrackEntity trackEntity, String firebaseId) {
         trackEntity.setFirebaseId(firebaseId);
         trackDao.update(trackEntity);
     }
@@ -125,25 +113,18 @@ public class RoomTrackRepository {
      * Trackpoint methods
      */
 
-    public void saveTrackpoint(final TrackpointEntity trackpoint) {
-        discIoExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                // MyLog.d("saveTrackpoint - ", trackpoint.toString());
-                trackpointDao.save(trackpoint);
-            }
+    void saveTrackpoint(final TrackpointEntity trackpoint) {
+        discIoExecutor.execute(() -> {
+            // MyLog.d("saveTrackpoint - ", trackpoint.toString());
+            trackpointDao.save(trackpoint);
         });
     }
 
-    public LiveData<List<TrackpointEntity>> getTrackpointsByTrack(long id) {
+    LiveData<List<TrackpointEntity>> getTrackpointsByTrack(long id) {
         return trackpointDao.loadByTrack(id);
     }
 
-    public LiveData<TrackpointEntity> getActualTrackpoint(final long id) {
+    LiveData<TrackpointEntity> getActualTrackpoint(final long id) {
         return trackpointDao.loadActualTrackpointByTrack(id);
-    }
-
-    public void saveAllTrackpoints(List<TrackpointEntity> trackpointEntities) {
-        trackpointDao.saveAll(trackpointEntities);
     }
 }

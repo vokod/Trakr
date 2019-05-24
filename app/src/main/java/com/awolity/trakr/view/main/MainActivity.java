@@ -5,7 +5,6 @@ import android.app.Dialog;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -36,9 +35,7 @@ import android.widget.LinearLayout;
 
 import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
-import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.model.MapPoint;
-import com.awolity.trakr.model.TrackData;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.list.TrackListActivity;
 import com.awolity.trakr.view.main.bottom.BottomSheetBaseFragment;
@@ -51,7 +48,6 @@ import com.awolity.trakr.view.settings.SettingsActivity;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.Utility;
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -73,7 +69,6 @@ public class MainActivity extends AppCompatActivity
     private static final int REQUEST_CODE_CHANGE_LOCATION_SETTINGS = 333;
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final float ZOOM_LEVEL_INITIAL = 15;
-    private static final String TAG = MainActivity.class.getSimpleName();
 
     private FirebaseAnalytics firebaseAnalytics;
 
@@ -100,7 +95,7 @@ public class MainActivity extends AppCompatActivity
         fab = findViewById(R.id.fab);
 
         if (savedInstanceState != null) {
-            status.setCameraPosition((CameraPosition) savedInstanceState.getParcelable(KEY_CAMERA_POSITION));
+            status.setCameraPosition(savedInstanceState.getParcelable(KEY_CAMERA_POSITION));
         }
 
         setupBottomSheet(savedInstanceState);
@@ -227,32 +222,26 @@ public class MainActivity extends AppCompatActivity
 
     private void setupFab() {
         fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!MainActivityUtils.isLocationPermissionEnabled(MainActivity.this)) {
-                    MainActivityUtils.checkLocationPermission(MainActivity.this,
-                            PERMISSION_REQUEST_CODE);
-                    return;
-                }
+        fab.setOnClickListener(v -> {
+            if (!MainActivityUtils.isLocationPermissionEnabled(MainActivity.this)) {
+                MainActivityUtils.checkLocationPermission(MainActivity.this,
+                        PERMISSION_REQUEST_CODE);
+                return;
+            }
 
-                if (status.isRecording()) {
-                    showStopDiag();
-                } else {
-                    mainActivityViewModel.isLocationSettingsGood(
-                            new LocationManager.LocationSettingsCallback() {
-                                @Override
-                                public void onLocationSettingsDetermined(boolean isSettingsGood, Exception e) {
-                                    if (isSettingsGood) {
-                                        serviceManager.startService();
-                                        MainActivityUtils.logStartRecordingEvent(firebaseAnalytics);
-                                    } else {
-                                        isAirplaneErrorShown = false;
-                                        showLocationSettingsDialog(e);
-                                    }
-                                }
-                            });
-                }
+            if (status.isRecording()) {
+                showStopDiag();
+            } else {
+                mainActivityViewModel.isLocationSettingsGood(
+                        (isSettingsGood, e) -> {
+                            if (isSettingsGood) {
+                                serviceManager.startService();
+                                MainActivityUtils.logStartRecordingEvent(firebaseAnalytics);
+                            } else {
+                                isAirplaneErrorShown = false;
+                                showLocationSettingsDialog(e);
+                            }
+                        });
             }
         });
     }
@@ -263,6 +252,7 @@ public class MainActivity extends AppCompatActivity
         if (MainActivityUtils.checkPlayServices(this)) {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.mapFragment);
+            //noinspection ConstantConditions
             mapFragment.getMapAsync(this);
         } else {
             FrameLayout mapOverlay = findViewById(R.id.map_overlay);
@@ -282,7 +272,6 @@ public class MainActivity extends AppCompatActivity
         } catch (IntentSender.SendIntentException sendEx) {
             // Ignore the error.
         } catch (ClassCastException castEx) {
-            ApiException unresolvable = (ApiException) e;
             if (!isAirplaneErrorShown) {
                 showAirplaneModeErrorDialog();
             }
@@ -299,12 +288,7 @@ public class MainActivity extends AppCompatActivity
                 .setMessage(R.string.activity_main_dialog_airplane_message)
                 .setCancelable(true)
                 .setIcon(getDrawable(R.drawable.ic_warning))
-                .setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        determineLocationSettings();
-                    }
-                });
+                .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> determineLocationSettings());
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
@@ -326,19 +310,16 @@ public class MainActivity extends AppCompatActivity
                 MainActivityUtils.startFabAnimation(fab);
             }
         } else {
-            mainActivityViewModel.setLastRecordedTrackId(Constants.NO_LAST_RECORDED_TRACK);
+            mainActivityViewModel.clearLastRecordedTrackId();
         }
     }
 
     private void startLocationUpdates() {
         // MyLog.d(TAG, "startLocationUpdates");
         if (Utility.isLocationEnabled(this)) {
-            mainActivityViewModel.getLocation().observe(MainActivity.this, new Observer<Location>() {
-                @Override
-                public void onChanged(@Nullable Location location) {
-                    if (location != null) {
-                        updateMap(location);
-                    }
+            mainActivityViewModel.getLocation().observe(MainActivity.this, location -> {
+                if (location != null) {
+                    updateMap(location);
                 }
             });
         }
@@ -370,12 +351,9 @@ public class MainActivity extends AppCompatActivity
 
     private void updateCamera(final LatLngBounds bounds) {
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
-                status.setCameraPosition(googleMap.getCameraPosition());
-            }
+        handler.postDelayed(() -> {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+            status.setCameraPosition(googleMap.getCameraPosition());
         }, 500);
     }
 
@@ -423,23 +401,20 @@ public class MainActivity extends AppCompatActivity
     };
 
     private void centerTrackOnMap() {
-        mainActivityViewModel.getTrackData().observe(this, new Observer<TrackData>() {
-            @Override
-            public void onChanged(@Nullable TrackData track) {
-                // if we already have a cameraposition, than it centering is unnecessary
-                if (status.getCameraPosition() != null) {
-                    return;
-                }
-                if (track != null) {
-                    if (track.getNorthestPoint() != 0 || track.getSouthestPoint() != 0
-                            || track.getWesternPoint() != 0 || track.getEasternPoint() != 0) {
-                        LatLngBounds bounds = new LatLngBounds(
-                                new LatLng(track.getSouthestPoint(), track.getWesternPoint()),
-                                new LatLng(track.getNorthestPoint(), track.getEasternPoint()));
-                        if (googleMap != null) {
-                            updateCamera(bounds);
-                            status.setCameraPosition(googleMap.getCameraPosition());
-                        }
+        mainActivityViewModel.getTrackData().observe(this, track -> {
+            // if we already have a cameraposition, than it centering is unnecessary
+            if (status.getCameraPosition() != null) {
+                return;
+            }
+            if (track != null) {
+                if (track.getNorthestPoint() != 0 || track.getSouthestPoint() != 0
+                        || track.getWesternPoint() != 0 || track.getEasternPoint() != 0) {
+                    LatLngBounds bounds = new LatLngBounds(
+                            new LatLng(track.getSouthestPoint(), track.getWesternPoint()),
+                            new LatLng(track.getNorthestPoint(), track.getEasternPoint()));
+                    if (googleMap != null) {
+                        updateCamera(bounds);
+                        status.setCameraPosition(googleMap.getCameraPosition());
                     }
                 }
             }
@@ -447,14 +422,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void determineLocationSettings() {
-        mainActivityViewModel.isLocationSettingsGood(new LocationManager.LocationSettingsCallback() {
-            @Override
-            public void onLocationSettingsDetermined(boolean isSettingsGood, Exception e) {
-                if (isSettingsGood) {
-                    setupTrackRecorderService();
-                } else {
-                    showLocationSettingsDialog(e);
-                }
+        mainActivityViewModel.isLocationSettingsGood((isSettingsGood, e) -> {
+            if (isSettingsGood) {
+                setupTrackRecorderService();
+            } else {
+                showLocationSettingsDialog(e);
             }
         });
     }
@@ -514,49 +486,43 @@ public class MainActivity extends AppCompatActivity
             updateCamera(status.getCameraPosition());
         }
 
-        googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                if (isBottomSheetUp) {
-                    Location myLocation = mainActivityViewModel.getLocation().getValue();
-                    if (myLocation != null) {
-                        googleMap.animateCamera(CameraUpdateFactory.newLatLng(
-                                new LatLng(myLocation.getLatitude(), myLocation.getLongitude())),
-                                new GoogleMap.CancelableCallback() {
-                                    @Override
-                                    public void onFinish() {
-                                        MainActivityUtils.scrollMapUp(MainActivity.this, googleMap);
-                                    }
+        googleMap.setOnMyLocationButtonClickListener(() -> {
+            if (isBottomSheetUp) {
+                Location myLocation = mainActivityViewModel.getLocation().getValue();
+                if (myLocation != null) {
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLng(
+                            new LatLng(myLocation.getLatitude(), myLocation.getLongitude())),
+                            new GoogleMap.CancelableCallback() {
+                                @Override
+                                public void onFinish() {
+                                    MainActivityUtils.scrollMapUp(MainActivity.this, googleMap);
+                                }
 
-                                    @Override
-                                    public void onCancel() {
+                                @Override
+                                public void onCancel() {
 
-                                    }
-                                });
-                    }
-                    return true;
+                                }
+                            });
                 }
-                return false;
+                return true;
             }
+            return false;
         });
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay!
-                    if (googleMap != null) {
-                        try {
-                            googleMap.setMyLocationEnabled(true);
-                        } catch (SecurityException e) {
-                            if (!BuildConfig.DEBUG) Crashlytics.logException(e);
-                            // MyLog.e(TAG, e.getLocalizedMessage());
-                        }
+        if (requestCode == PERMISSION_REQUEST_CODE) {// If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission was granted, yay!
+                if (googleMap != null) {
+                    try {
+                        googleMap.setMyLocationEnabled(true);
+                    } catch (SecurityException e) {
+                        if (!BuildConfig.DEBUG) Crashlytics.logException(e);
+                        // MyLog.e(TAG, e.getLocalizedMessage());
                     }
                 }
             }
@@ -584,7 +550,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         if (googleMap != null) {
             outState.putParcelable(KEY_CAMERA_POSITION, googleMap.getCameraPosition());
 
@@ -625,7 +591,7 @@ public class MainActivity extends AppCompatActivity
         status.setRecording(false);
         polylineManager.clearPolyline(googleMap);
         polylineManager = null;
-        mainActivityViewModel.setLastRecordedTrackId(Constants.NO_LAST_RECORDED_TRACK);
+        mainActivityViewModel.clearLastRecordedTrackId();
         mainActivityViewModel.finishRecording();
         if (numOfTrackpoints > 1) {
             Intent intent = TrackDetailActivity.getStarterIntent(
@@ -646,39 +612,24 @@ public class MainActivity extends AppCompatActivity
         Button continueBtn = dialog.findViewById(R.id.btn_continue);
         Button stopBtn = dialog.findViewById(R.id.btn_stop);
 
-        continueBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        continueBtn.setOnClickListener(v -> MainActivityUtils.revealShow(fab, dialogView, false, dialog));
+
+        stopBtn.setOnClickListener(v -> {
+            MainActivityUtils.revealShow(fab, dialogView, false, dialog);
+            serviceManager.stopService();
+            MainActivityUtils.logStopRecordingEvent(firebaseAnalytics);
+        });
+
+        dialog.setOnShowListener(dialogInterface -> MainActivityUtils.revealShow(fab, dialogView, true, null));
+
+        dialog.setOnKeyListener((dialogInterface, i, keyEvent) -> {
+            if (i == KeyEvent.KEYCODE_BACK) {
                 MainActivityUtils.revealShow(fab, dialogView, false, dialog);
+                return true;
             }
+            return false;
         });
-
-        stopBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivityUtils.revealShow(fab, dialogView, false, dialog);
-                serviceManager.stopService();
-                MainActivityUtils.logStopRecordingEvent(firebaseAnalytics);
-            }
-        });
-
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialogInterface) {
-                MainActivityUtils.revealShow(fab, dialogView, true, null);
-            }
-        });
-
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
-                if (i == KeyEvent.KEYCODE_BACK) {
-                    MainActivityUtils.revealShow(fab, dialogView, false, dialog);
-                    return true;
-                }
-                return false;
-            }
-        });
+        //noinspection ConstantConditions
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
     }

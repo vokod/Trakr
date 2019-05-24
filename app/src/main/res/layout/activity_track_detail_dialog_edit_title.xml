@@ -26,5 +26,5 @@
         android:fontFamily="sans-serif"
         android:inputType="textCapSentences|textAutoComplete"
         android:selectAllOnFocus="true"
-        tools:ignore="LabelFor" />
+        tools:ignore="Autofill,LabelFor" />
 </LinearLayout>

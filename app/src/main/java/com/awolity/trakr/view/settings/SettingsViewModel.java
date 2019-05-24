@@ -16,20 +16,17 @@ import javax.inject.Inject;
 
 public class SettingsViewModel extends ViewModel {
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     SettingsRepository settingsRepository;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     AppUserRepository appUserRepository;
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
     Context context;
 
     private final MutableLiveData<Boolean> isAppUserLoggedIn;
-    private FirebaseAnalytics firebaseAnalytics;
+    private final FirebaseAnalytics firebaseAnalytics;
 
     public SettingsViewModel() {
         TrakrApplication.getInstance().getAppComponent().inject(this);
@@ -56,27 +53,27 @@ public class SettingsViewModel extends ViewModel {
         });
     }
 
-    public FirebaseUser getAppUser() {
+    FirebaseUser getAppUser() {
         return appUserRepository.getAppUser();
     }
 
-    public boolean IsAppUserLoggedIn() {
+    boolean IsAppUserLoggedIn() {
         return appUserRepository.IsAppUserLoggedIn();
     }
 
-    public void signOut() {
+    void signOut() {
         appUserRepository.signOut();
     }
 
-    public void deleteAccount() {
+    void deleteAccount() {
         appUserRepository.deleteUser();
     }
 
-    public void signIn() {
+    void signIn() {
         appUserRepository.signIn();
     }
 
-    public LiveData<Boolean> getIsAppUserLoggedIn() {
+    LiveData<Boolean> getIsAppUserLoggedIn() {
         return isAppUserLoggedIn;
     }
 
@@ -96,7 +93,7 @@ public class SettingsViewModel extends ViewModel {
         settingsRepository.setUnit(unit);
     }
 
-    private void logLoginEvent(){
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN,null);
+    private void logLoginEvent() {
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, null);
     }
 }

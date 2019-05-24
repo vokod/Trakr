@@ -96,23 +96,20 @@ public class TrackDetailActivity extends AppCompatActivity
 
     private void setupBottomSheetNavigation() {
         bottomNavigationView.setSelectedItemId(R.id.action_data);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_map:
-                        // MyLog.d(TAG, "onNavigationItemSelected - action_map");
-                        showMapFragment();
-                        return true;
-                    case R.id.action_data:
-                        showDataFragment();
-                        return true;
-                    case R.id.action_charts:
-                        showChartsFragment();
-                        return true;
-                }
-                return false;
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_map:
+                    // MyLog.d(TAG, "onNavigationItemSelected - action_map");
+                    showMapFragment();
+                    return true;
+                case R.id.action_data:
+                    showDataFragment();
+                    return true;
+                case R.id.action_charts:
+                    showChartsFragment();
+                    return true;
             }
+            return false;
         });
     }
 
@@ -159,19 +156,16 @@ public class TrackDetailActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay!
-                    trackDetailViewModel.exportTrack();
-                } else {
-                    // permission denied, boo!
-                    Toast.makeText(this, getString(R.string.write_permission_denied),
-                            Toast.LENGTH_LONG).show();
-                }
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {// If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission was granted, yay!
+                trackDetailViewModel.exportTrack();
+            } else {
+                // permission denied, boo!
+                Toast.makeText(this, getString(R.string.write_permission_denied),
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -204,7 +198,7 @@ public class TrackDetailActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_SELECTED_FRAGMENT, bottomNavigationView.getSelectedItemId());
     }

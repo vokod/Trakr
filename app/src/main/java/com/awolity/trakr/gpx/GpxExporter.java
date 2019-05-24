@@ -24,7 +24,6 @@ import java.util.List;
 
 public class GpxExporter {
 
-    private static final String TAG = GpxExporter.class.getSimpleName();
     private static final String PATH = Environment.getExternalStorageDirectory() + "/Trakr/";
 
     public static void export(final Context context, final TrackWithPoints trackWithPoints) {

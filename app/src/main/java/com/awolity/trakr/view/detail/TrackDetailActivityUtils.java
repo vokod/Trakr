@@ -2,7 +2,6 @@ package com.awolity.trakr.view.detail;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -28,13 +27,11 @@ class TrackDetailActivityUtils {
                 new AlertDialog.Builder(activity)
                         .setTitle(activity.getResources().getString(R.string.external_storage_permission_rationale_title))
                         .setMessage(activity.getResources().getString(R.string.external_storage_permission_rationale_description))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                              // MyLog.d(TAG, "checkPermission - shouldshowrationale - onclick - requesting permission");
-                                ActivityCompat.requestPermissions(activity,
-                                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                        permissionRequestCode);
-                            }
+                        .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                          // MyLog.d(TAG, "checkPermission - shouldshowrationale - onclick - requesting permission");
+                            ActivityCompat.requestPermissions(activity,
+                                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                    permissionRequestCode);
                         })
                         .setIcon(R.mipmap.ic_launcher)
                         .show();

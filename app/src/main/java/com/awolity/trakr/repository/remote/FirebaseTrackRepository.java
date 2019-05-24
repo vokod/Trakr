@@ -34,12 +34,10 @@ public class FirebaseTrackRepository {
     Executor discIoExecutor;
     @Inject
     Context context;
-    @SuppressWarnings("WeakerAccess")
     @Inject
     AppUserRepository appUserRepository;
 
     private static final String TAG = "FirebaseTrackRepository";
-    private DocumentReference userReference;
     private CollectionReference userTracksReference;
     private CollectionReference userTrackdatasReference;
     private String appUserId;
@@ -70,8 +68,8 @@ public class FirebaseTrackRepository {
         final DocumentReference trackReference = userTracksReference.document(firebaseId);
         final DocumentReference trackDataReference = userTrackdatasReference.document(firebaseId);
 
-        trackReference.update("t",title);
-        trackDataReference.update("t",title);
+        trackReference.update("t", title);
+        trackDataReference.update("t", title);
     }
 
     public void getAllTracksFromCloud(
@@ -80,12 +78,14 @@ public class FirebaseTrackRepository {
         userTracksReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<TrackWithPoints> tracksWithPoints = new ArrayList<>();
+                if (task.getResult() == null) return;
                 for (QueryDocumentSnapshot doc : task.getResult()) {
                     FirestoreTrack firestoreTrack = doc.toObject(FirestoreTrack.class);
                     tracksWithPoints.add(ConvertersKt.firestoreTrackToTrackWithPoints(firestoreTrack));
                 }
                 listener.onAllTracksLoaded(tracksWithPoints);
             } else {
+                if (task.getException() == null) return;
                 MyLog.e(TAG, "Error in getAllTracksFromCloud "
                         + task.getException().getLocalizedMessage());
             }
@@ -98,12 +98,14 @@ public class FirebaseTrackRepository {
         userTrackdatasReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<TrackEntity> tracks = new ArrayList<>();
+                if (task.getResult() == null) return;
                 for (QueryDocumentSnapshot doc : task.getResult()) {
                     FirestoreTrackData firestoreTrackData = doc.toObject(FirestoreTrackData.class);
                     tracks.add(ConvertersKt.firestoreTrackDataToTrackEntity(firestoreTrackData));
                 }
                 listener.onAllTrackdatasLoaded(tracks);
             } else {
+                if (task.getException() == null) return;
                 MyLog.e(TAG, "Error in getAllTracksFromCloudWithoutPoints "
                         + task.getException().getLocalizedMessage());
             }
@@ -111,38 +113,31 @@ public class FirebaseTrackRepository {
     }
 
     public void getTrackFromCloud(final String id,
-                                  final TrackRepository.GetTrackFromCloudListener listener){
+                                  final TrackRepository.GetTrackFromCloudListener listener) {
         refreshReferences();
         userTracksReference.document(id).get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                listener.onTrackLoaded(ConvertersKt.firestoreTrackToTrackWithPoints(
-                        task.getResult().toObject(FirestoreTrack.class)));
+            if (task.isSuccessful()) {
+                if (task.getResult() == null) return;
+                FirestoreTrack track = task.getResult().toObject(FirestoreTrack.class);
+                if (track == null) return;
+                listener.onTrackLoaded(ConvertersKt.firestoreTrackToTrackWithPoints(track));
             } else {
+                if (task.getException() == null) return;
                 MyLog.e(TAG, "Error in getTrackFromCloud "
                         + task.getException().getLocalizedMessage());
-
             }
         });
-
     }
 
     public void deleteTrackFromCloud(String firebaseTrackId) {
         refreshReferences();
         userTracksReference.document(firebaseTrackId).delete()
-                .addOnSuccessListener(aVoid -> {
-                    MyLog.d(TAG, "deleteTrackFromCloud - success");
-                })
-                .addOnFailureListener(e -> {
-                    MyLog.e(TAG, "deleteTrackFromCloud - error: " + e.getLocalizedMessage());
-                });
+                .addOnSuccessListener(aVoid -> MyLog.d(TAG, "deleteTrackFromCloud - success"))
+                .addOnFailureListener(e -> MyLog.e(TAG, "deleteTrackFromCloud - error: " + e.getLocalizedMessage()));
 
         userTrackdatasReference.document(firebaseTrackId).delete()
-                .addOnSuccessListener(aVoid -> {
-                    MyLog.d(TAG, "deleteTrackFromCloud - success");
-                })
-                .addOnFailureListener(e -> {
-                    MyLog.e(TAG, "deleteTrackFromCloud - error: " + e.getLocalizedMessage());
-                });
+                .addOnSuccessListener(aVoid -> MyLog.d(TAG, "deleteTrackFromCloud - success"))
+                .addOnFailureListener(e -> MyLog.e(TAG, "deleteTrackFromCloud - error: " + e.getLocalizedMessage()));
     }
 
     private void refreshReferences() {
@@ -150,7 +145,7 @@ public class FirebaseTrackRepository {
         if (appUserId == null) {
             return;
         }
-        userReference = FirebaseFirestore.getInstance()
+        DocumentReference userReference = FirebaseFirestore.getInstance()
                 .collection(Constants.COLLECTION_USERS).document(appUserId);
         userTracksReference = userReference.collection(Constants.COLLECTION_TRACKS);
         userTrackdatasReference = userReference.collection(Constants.COLLECTION_TRACKDATAS);

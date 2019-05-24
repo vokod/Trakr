@@ -59,9 +59,9 @@ public class StringUtils {
         fPart = fPart * 0.6;
         int fPartInt = (int) (fPart * 100);
         if ((fPartInt - 10) < 0) {
-            return String.valueOf(iPart) + ":" + "0" + String.valueOf(fPartInt);
+            return iPart + ":" + "0" + fPartInt;
         } else {
-            return String.valueOf(iPart) + ":" + String.valueOf(fPartInt);
+            return iPart + ":" + fPartInt;
         }
     }
 
