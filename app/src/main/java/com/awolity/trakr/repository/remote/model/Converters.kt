@@ -11,11 +11,11 @@ fun trackWithPointsToFirestoreTrack(input: TrackWithPoints): FirestoreTrack {
             input.northestPoint, input.southestPoint, input.westernPoint, input.easternPoint,
             input.minAltitude, input.maxAltitude, input.maxSpeed, input.avgSpeed,
             input.metadata,
-            trackPointsToTimesArray(input.trackPoints),
-            trackPointsToGeopointArray(input.trackPoints),
-            trackPointsToSpeedArray(input.trackPoints),
-            trackPointsToAltitudeArray(input.trackPoints),
-            trackPointsToDistancesArray(input.trackPoints))
+            trackPointsToTimesList(input.trackPoints),
+            trackPointsToGeopointList(input.trackPoints),
+            trackPointsToSpeedList(input.trackPoints),
+            trackPointsToAltitudeList(input.trackPoints),
+            trackPointsToDistancesList(input.trackPoints))
 }
 
 fun trackEntityToFirestoreTrackData(input: TrackEntity):FirestoreTrackData{
@@ -48,23 +48,23 @@ fun firestoreTrackDataToTrackEntity(input: FirestoreTrackData):TrackEntity{
     return result
 }
 
-private fun trackPointsToSpeedArray(input: List<TrackpointEntity>): List<Double> {
+fun trackPointsToSpeedList(input: List<TrackpointEntity>): List<Double> {
     return input.map { it.speed }
 }
 
-private fun trackPointsToTimesArray(input: List<TrackpointEntity>): List<Long> {
+fun trackPointsToTimesList(input: List<TrackpointEntity>): List<Long> {
     return input.map { it.time }
 }
 
-private fun trackPointsToAltitudeArray(input: List<TrackpointEntity>): List<Double> {
+fun trackPointsToAltitudeList(input: List<TrackpointEntity>): List<Double> {
     return input.map { it.altitude }
 }
 
-private fun trackPointsToGeopointArray(input: List<TrackpointEntity>): List<GeoPoint> {
+fun trackPointsToGeopointList(input: List<TrackpointEntity>): List<GeoPoint> {
     return input.map { GeoPoint(it.latitude, it.longitude) }
 }
 
-private fun trackPointsToDistancesArray(input: List<TrackpointEntity>): List<Double> {
+fun trackPointsToDistancesList(input: List<TrackpointEntity>): List<Double> {
     return input.map { it.distance }
 }
 

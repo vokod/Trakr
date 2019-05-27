@@ -11,6 +11,11 @@ public class Constants {
     public static final String COLLECTION_TRACKS = "tracks";
     public static final String COLLECTION_TRACKDATAS = "trackdatas";
     public static final String COLLECTION_USERS = "users";
+    public static final String DOCUMENT_GEOPOINTS = "pg";
+    public static final String DOCUMENT_DISTANCES = "pd";
+    public static final String DOCUMENT_ALTITUDES = "pa";
+    public static final String DOCUMENT_TIMES = "pt";
+    public static final String COLLECTION_POINTS = "points";
 
     public static final int MAP_POINT_MAX_NUMBER_FOR_EXPLORE = 200;
     public static final int MAP_POINT_MAX_NUMBER_FOR_TRACK_LIST = 50;

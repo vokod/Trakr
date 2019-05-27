@@ -19,7 +19,7 @@ import com.awolity.trakr.model.TrackData;
 import com.awolity.trakr.model.TrackDataTrackEntityConverter;
 import com.awolity.trakr.model.TrackDataWithMapPoints;
 import com.awolity.trakr.model.TrackPointMapPointConverter;
-import com.awolity.trakr.repository.remote.FirebaseTrackRepository;
+import com.awolity.trakr.repository.remote.FirestoreTrackRepository;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.utils.Constants;
 
@@ -49,7 +49,7 @@ public class TrackRepository {
     RoomTrackRepository roomTrackRepository;
 
     @Inject
-    FirebaseTrackRepository firebaseTrackRepository;
+    FirestoreTrackRepository firestoreTrackRepository;
 
     @Inject
     AppUserRepository appUserRepository;
@@ -340,24 +340,24 @@ public class TrackRepository {
     public void saveTrackToCloudOnThread(final long trackId) {
         TrackWithPoints trackWithPoints = roomTrackRepository.getTrackWithPointsSync(trackId);
         TrackEntity trackEntity = TrackEntity.fromTrackWithPoints(trackWithPoints);
-        String trackFirebaseId = firebaseTrackRepository.getIdForNewTrack();
+        String trackFirebaseId = firestoreTrackRepository.getIdForNewTrack();
 
         if (trackFirebaseId != null) {
             // update the local instance with the firebase id
             trackWithPoints.setFirebaseId(trackFirebaseId);
-            firebaseTrackRepository.saveTrackToCloud(trackWithPoints, trackFirebaseId);
+            firestoreTrackRepository.saveTrackToCloud(trackWithPoints, trackFirebaseId);
             roomTrackRepository.setTrackFirebaseIdSync(trackEntity, trackFirebaseId);
         }
     }
 
     public void getAllTrackdatasFromCloud(
             final GetAllTrackDatasFromCloudListener listener) {
-        firebaseTrackRepository.getAllTrackDatasFromCloud(listener);
+        firestoreTrackRepository.getAllTrackDatasFromCloud(listener);
     }
 
     public void saveTrackToLocalDbFromCloud(final TrackEntity onlineTrack) {
         onlineTrack.setTrackId(0);
-        firebaseTrackRepository.getTrackFromCloud(onlineTrack.getFirebaseId(),
+        firestoreTrackRepository.getTrackFromCloud(onlineTrack.getFirebaseId(),
                 this::saveTrackWithPointsToDb);
     }
 
@@ -367,13 +367,13 @@ public class TrackRepository {
 
     private void updateTrackTitleToCloud(TrackEntity trackEntity) {
         if (trackEntity.getFirebaseId() != null && !trackEntity.getFirebaseId().isEmpty()) {
-            firebaseTrackRepository.updateTrackTitleToCloud(trackEntity.getFirebaseId(),
+            firestoreTrackRepository.updateTrackTitleToCloud(trackEntity.getFirebaseId(),
                     trackEntity.getTitle());
         }
     }
 
     private void deleteTrackFromCloud(String firebaseId) {
-        firebaseTrackRepository.deleteTrackFromCloud(firebaseId);
+        firestoreTrackRepository.deleteTrackFromCloud(firebaseId);
     }
 
     public interface GetAllTracksFromCloudListener {

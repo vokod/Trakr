@@ -2,7 +2,7 @@ package com.awolity.trakr.di;
 
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.repository.AppUserRepository;
-import com.awolity.trakr.repository.remote.FirebaseTrackRepository;
+import com.awolity.trakr.repository.remote.FirestoreTrackRepository;
 import com.awolity.trakr.repository.RoomTrackRepository;
 import com.awolity.trakr.repository.SettingsRepository;
 import com.awolity.trakr.repository.TrackRepository;
@@ -34,7 +34,7 @@ public interface AppComponent {
 
     void inject(RoomTrackRepository roomTrackRepository);
 
-    void inject(FirebaseTrackRepository firebaseTrackRepository);
+    void inject(FirestoreTrackRepository firestoreTrackRepository);
 
     void inject(MainActivityViewModel mainActivityViewModel);
 
