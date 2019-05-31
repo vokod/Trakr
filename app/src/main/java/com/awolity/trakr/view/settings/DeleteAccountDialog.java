@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.awolity.trakr.R;
 
-class DeleteAccountDialog extends DialogFragment {
+public class DeleteAccountDialog extends DialogFragment {
 
     public interface DeleteAccountDialogListener {
         void onPasswordEntered(char[] password);

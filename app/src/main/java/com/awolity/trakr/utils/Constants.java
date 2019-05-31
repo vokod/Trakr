@@ -14,6 +14,7 @@ public class Constants {
     public static final String DOCUMENT_GEOPOINTS = "pg";
     public static final String DOCUMENT_DISTANCES = "pd";
     public static final String DOCUMENT_ALTITUDES = "pa";
+    public static final String DOCUMENT_SPEEDS = "pv";
     public static final String DOCUMENT_TIMES = "pt";
     public static final String COLLECTION_POINTS = "points";
 

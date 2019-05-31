@@ -2,29 +2,25 @@ package com.awolity.trakr.repository.remote;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.data.entity.TrackEntity;
 import com.awolity.trakr.data.entity.TrackWithPoints;
 import com.awolity.trakr.repository.AppUserRepository;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.repository.remote.model.ConvertersKt;
-import com.awolity.trakr.repository.remote.model.FirestoreTrack;
 import com.awolity.trakr.repository.remote.model.FirestoreTrackData;
+import com.awolity.trakr.repository.remote.model.PointAltitudes;
 import com.awolity.trakr.repository.remote.model.PointDistances;
+import com.awolity.trakr.repository.remote.model.PointGeopoints;
+import com.awolity.trakr.repository.remote.model.PointSpeeds;
+import com.awolity.trakr.repository.remote.model.PointTimes;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.MyLog;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.Transaction;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,30 +59,40 @@ public class FirestoreTrackRepository {
     public void saveTrackToCloud(TrackWithPoints trackWithPoints, String trackFirebaseId) {
         refreshReferences();
 
-        FirestoreTrack firestoreTrack = ConvertersKt.trackWithPointsToFirestoreTrack(trackWithPoints);
-        final DocumentReference trackReference = userTracksReference.document(trackFirebaseId);
-        trackReference.set(firestoreTrack)
-               /* .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            DocumentReference distancesRef = userTracksReference
-                                    .document(trackFirebaseId)
-                                    .collection(Constants.COLLECTION_POINTS)
-                                    .document(Constants.DOCUMENT_DISTANCES);
-                            PointDistances pd = new PointDistances(
-                                    ConvertersKt.trackPointsToDistancesList(
-                                            trackWithPoints.getTrackPoints()));
-                            distancesRef.set(pd);
-                        } else {
-                            MyLog.e(TAG, "saveTrackToCloud - error: " + task.getException());
-                        }
-                    }
-                })*/;
+        FirestoreTrackData trackData = ConvertersKt.trackWithPointsToFirestoreTrackData(trackWithPoints);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        WriteBatch batch = db.batch();
 
-        final DocumentReference trackDataReference = userTrackdatasReference.document(trackFirebaseId);
-        trackDataReference.set(
-                ConvertersKt.trackEntityToFirestoreTrackData(trackWithPoints.getTrackEntity()));
+        final DocumentReference trackReference = userTracksReference.document(trackFirebaseId);
+        batch.set(trackReference, trackData);
+
+        final DocumentReference timesRef = trackReference.collection(Constants.COLLECTION_POINTS)
+                .document(Constants.DOCUMENT_TIMES);
+        batch.set(timesRef, ConvertersKt.trackPointsToTimesList(trackWithPoints.getTrackPoints()));
+
+        final DocumentReference speedsRef = trackReference.collection(Constants.COLLECTION_POINTS)
+                .document(Constants.DOCUMENT_SPEEDS);
+        batch.set(speedsRef, ConvertersKt.trackPointsToSpeedList(trackWithPoints.getTrackPoints()));
+
+        final DocumentReference altitudesRef = trackReference.collection(Constants.COLLECTION_POINTS)
+                .document(Constants.DOCUMENT_ALTITUDES);
+        batch.set(altitudesRef, ConvertersKt.trackPointsToAltitudeList(trackWithPoints.getTrackPoints()));
+
+        final DocumentReference geopointsRef = trackReference.collection(Constants.COLLECTION_POINTS)
+                .document(Constants.DOCUMENT_GEOPOINTS);
+        batch.set(geopointsRef, ConvertersKt.trackPointsToGeopointList(trackWithPoints.getTrackPoints()));
+
+        final DocumentReference distancesRef = trackReference.collection(Constants.COLLECTION_POINTS)
+                .document(Constants.DOCUMENT_DISTANCES);
+        batch.set(distancesRef, ConvertersKt.trackPointsToDistancesList(trackWithPoints.getTrackPoints()));
+
+        batch.commit().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                MyLog.d(TAG, "saveTrackToCloud - success");
+            } else {
+                MyLog.e(TAG, "saveTrackToCloud - error:" + task.getException());
+            }
+        });
     }
 
     public void updateTrackTitleToCloud(String firebaseId, String title) {
@@ -98,30 +104,10 @@ public class FirestoreTrackRepository {
         trackDataReference.update("t", title);
     }
 
-    public void getAllTracksFromCloud(
-            final TrackRepository.GetAllTracksFromCloudListener listener) {
-        refreshReferences();
-        userTracksReference.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                List<TrackWithPoints> tracksWithPoints = new ArrayList<>();
-                if (task.getResult() == null) return;
-                for (QueryDocumentSnapshot doc : task.getResult()) {
-                    FirestoreTrack firestoreTrack = doc.toObject(FirestoreTrack.class);
-                    tracksWithPoints.add(ConvertersKt.firestoreTrackToTrackWithPoints(firestoreTrack));
-                }
-                listener.onAllTracksLoaded(tracksWithPoints);
-            } else {
-                if (task.getException() == null) return;
-                MyLog.e(TAG, "Error in getAllTracksFromCloud "
-                        + task.getException().getLocalizedMessage());
-            }
-        });
-    }
-
     public void getAllTrackDatasFromCloud(
             final TrackRepository.GetAllTrackDatasFromCloudListener listener) {
         refreshReferences();
-        userTrackdatasReference.get().addOnCompleteListener(task -> {
+        userTracksReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<TrackEntity> tracks = new ArrayList<>();
                 if (task.getResult() == null) return;
@@ -132,21 +118,65 @@ public class FirestoreTrackRepository {
                 listener.onAllTrackdatasLoaded(tracks);
             } else {
                 if (task.getException() == null) return;
-                MyLog.e(TAG, "Error in getAllTracksFromCloudWithoutPoints "
+                MyLog.e(TAG, "Error in getAllTrackDatasFromCloud "
                         + task.getException().getLocalizedMessage());
             }
         });
     }
 
-    public void getTrackFromCloud(final String id,
-                                  final TrackRepository.GetTrackFromCloudListener listener) {
+    public void getTrackPointsFromCloud(final TrackEntity track,
+                                        final TrackRepository.GetTrackPointsFromCloudListener listener) {
+        refreshReferences();
+        final TrackWithPoints trackWithPoints = new TrackWithPoints();
+        trackWithPoints.setTrackEntity(track);
+        userTracksReference.document(track.getFirebaseId()).collection(Constants.COLLECTION_POINTS).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        PointAltitudes altitudes = null;
+                        PointDistances distances = null;
+                        PointTimes times = null;
+                        PointGeopoints geopoints = null;
+                        PointSpeeds speeds = null;
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            switch (document.getId()) {
+                                case Constants.DOCUMENT_ALTITUDES: //altitude
+                                    altitudes = document.toObject(PointAltitudes.class);
+                                    break;
+                                case Constants.DOCUMENT_DISTANCES: //distance
+                                    distances = document.toObject(PointDistances.class);
+                                    break;
+                                case Constants.DOCUMENT_TIMES: //time
+                                    times = document.toObject(PointTimes.class);
+                                    break;
+                                case Constants.DOCUMENT_GEOPOINTS: //points
+                                    geopoints = document.toObject(PointGeopoints.class);
+                                    break;
+                                case Constants.DOCUMENT_SPEEDS: //speed
+                                    speeds = document.toObject(PointSpeeds.class);
+                                    break;
+                            }
+                        }
+                        trackWithPoints.setTrackPoints(ConvertersKt.firestorePointsToTrackPointEntities(
+                                altitudes, distances, geopoints, speeds, times));
+                        listener.onTrackLoaded(trackWithPoints);
+
+                    } else {
+                        if (task.getException() == null) return;
+                        MyLog.e(TAG, "Error in getTrackPointsFromCloud "
+                                + task.getException().getLocalizedMessage());
+                    }
+                });
+    }
+
+    public void getTrackDataFromCloud(final String id,
+                                      final TrackRepository.GetTrackDataFromCloudListener listener) {
         refreshReferences();
         userTracksReference.document(id).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult() == null) return;
-                FirestoreTrack track = task.getResult().toObject(FirestoreTrack.class);
+                FirestoreTrackData track = task.getResult().toObject(FirestoreTrackData.class);
                 if (track == null) return;
-                listener.onTrackLoaded(ConvertersKt.firestoreTrackToTrackWithPoints(track));
+                listener.onTrackLoaded(ConvertersKt.firestoreTrackDataToTrackEntity(track));
             } else {
                 if (task.getException() == null) return;
                 MyLog.e(TAG, "Error in getTrackFromCloud "

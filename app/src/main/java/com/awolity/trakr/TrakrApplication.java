@@ -24,6 +24,8 @@ import com.instabug.library.invocation.InstabugInvocationEvent;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
+// TODO: check user az app indulasakor: ha törölve lett, akkor léptesse ki a usert
+
 public class TrakrApplication extends Application {
 
     private static final TrakrApplication instance = new TrakrApplication();

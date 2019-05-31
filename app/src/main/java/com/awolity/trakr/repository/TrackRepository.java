@@ -357,8 +357,10 @@ public class TrackRepository {
 
     public void saveTrackToLocalDbFromCloud(final TrackEntity onlineTrack) {
         onlineTrack.setTrackId(0);
-        firestoreTrackRepository.getTrackFromCloud(onlineTrack.getFirebaseId(),
-                this::saveTrackWithPointsToDb);
+        firestoreTrackRepository.getTrackDataFromCloud(onlineTrack.getFirebaseId(), trackEntity ->
+                firestoreTrackRepository.getTrackPointsFromCloud(trackEntity,
+                        this::saveTrackWithPointsToDb));
+
     }
 
     private void saveTrackWithPointsToDb(final TrackWithPoints track) {
@@ -376,15 +378,15 @@ public class TrackRepository {
         firestoreTrackRepository.deleteTrackFromCloud(firebaseId);
     }
 
-    public interface GetAllTracksFromCloudListener {
-        void onAllTracksLoaded(List<TrackWithPoints> tracks);
-    }
-
     public interface GetAllTrackDatasFromCloudListener {
         void onAllTrackdatasLoaded(List<TrackEntity> tracks);
     }
 
-    public interface GetTrackFromCloudListener {
-        void onTrackLoaded(TrackWithPoints trackWithPoints);
+    public interface GetTrackDataFromCloudListener {
+        void onTrackLoaded(TrackEntity track);
+    }
+
+    public interface GetTrackPointsFromCloudListener {
+        void onTrackLoaded(TrackWithPoints track);
     }
 }

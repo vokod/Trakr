@@ -64,4 +64,5 @@ public class TrackWithPoints  extends TrackEntity{
         result.setMetadata(getMetadata());
         return result;
     }
+
 }
