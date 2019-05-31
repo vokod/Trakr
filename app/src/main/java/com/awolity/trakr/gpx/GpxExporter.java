@@ -5,8 +5,8 @@ import android.os.Environment;
 import android.widget.Toast;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.repository.local.model.entity.TrackWithPoints;
+import com.awolity.trakr.repository.local.model.entity.TrackpointEntity;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.utils.IOUtils;
 import com.awolity.trakr.utils.StringUtils;

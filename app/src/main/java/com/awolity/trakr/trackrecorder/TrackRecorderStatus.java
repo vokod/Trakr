@@ -3,7 +3,7 @@ package com.awolity.trakr.trackrecorder;
 import android.location.Location;
 
 import com.awolity.trakr.TrakrApplication;
-import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.repository.local.model.entity.TrackpointEntity;
 import com.awolity.trakr.repository.SettingsRepository;
 import com.awolity.trakr.utils.RecordParameters;
 

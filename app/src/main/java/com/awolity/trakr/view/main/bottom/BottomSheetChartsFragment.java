@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.model.ChartPoint;
+import com.awolity.trakr.view.model.ChartPoint;
 import com.awolity.trakr.view.main.MainActivityViewModel;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;

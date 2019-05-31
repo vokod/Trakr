@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
-import com.awolity.trakr.model.TrackDataWithMapPoints;
+import com.awolity.trakr.view.model.TrackDataWithMapPoints;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;

@@ -1,4 +1,4 @@
-package com.awolity.trakr.data.entity;
+package com.awolity.trakr.repository.local.model.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

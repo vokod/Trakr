@@ -18,8 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.model.ChartPoint;
-import com.awolity.trakr.model.TrackData;
+import com.awolity.trakr.view.model.ChartPoint;
+import com.awolity.trakr.view.model.TrackData;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.utils.Utility;

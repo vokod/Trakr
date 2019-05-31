@@ -23,7 +23,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.model.MapPoint;
+import com.awolity.trakr.view.model.MapPoint;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;

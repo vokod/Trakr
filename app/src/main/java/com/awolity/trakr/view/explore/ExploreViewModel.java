@@ -5,8 +5,8 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.awolity.trakr.TrakrApplication;
-import com.awolity.trakr.model.MapPoint;
-import com.awolity.trakr.model.TrackData;
+import com.awolity.trakr.view.model.MapPoint;
+import com.awolity.trakr.view.model.TrackData;
 import com.awolity.trakr.repository.SettingsRepository;
 import com.awolity.trakr.repository.TrackRepository;
 import com.awolity.trakr.utils.Constants;

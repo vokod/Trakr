@@ -1,20 +1,18 @@
 package com.awolity.trakr.view.settings;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.widget.SeekBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.net.Uri;
-import android.os.Bundle;
-import android.widget.SeekBar;
-import android.widget.Toast;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.awolity.settingviews.ButtonSetting;
 import com.awolity.settingviews.RadiogroupSetting;
@@ -29,7 +27,6 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
@@ -183,7 +180,7 @@ public class SettingsActivity extends AppCompatActivity
     }
 
     private void showAccuracySetting() {
-        accuracySs.setSeekBar(settingsViewModel.getAccuracy(), Constants.ACCURACY_MAX_VALUE);
+        accuracySs.setSeekBar(Constants.ACCURACY_MAX_VALUE, settingsViewModel.getAccuracy());
     }
 
     private void showUnitSetting() {

@@ -1,4 +1,4 @@
-package com.awolity.trakr.model;
+package com.awolity.trakr.view.model;
 
 import com.awolity.trakr.utils.Constants;
 
@@ -70,7 +70,6 @@ public class ChartPoint {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(getTime(), getAltitude(), getSpeed(), getDistance());
     }
 }

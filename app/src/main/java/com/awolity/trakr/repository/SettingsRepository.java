@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 
 import com.awolity.trakr.TrakrApplication;
 import com.awolity.trakr.utils.Constants;
-import com.awolity.trakr.utils.MyLog;
 import com.awolity.trakr.utils.RecordParameters;
 
 import javax.inject.Inject;
@@ -17,7 +16,6 @@ public class SettingsRepository {
 
     private static final String KEY_LAST_RECORDED_TRACK_ID = "pref_key_last_recorded_track_id";
     private final static String KEY_ACCURACY = "key_accuracy";
-    private final static int VALUE_ACCURACY_HIGH_ACCURACY = 2;
 
     private final static String KEY_UNIT = "key_unit";
 
@@ -33,8 +31,7 @@ public class SettingsRepository {
     }
 
     public int getAccuracy() {
-        return sharedPreferences.getInt(KEY_ACCURACY,
-                VALUE_ACCURACY_HIGH_ACCURACY);
+        return sharedPreferences.getInt(KEY_ACCURACY, Constants.ACCURACY_MAX_VALUE);
     }
 
     public void setAccuracy(int accuracy) {

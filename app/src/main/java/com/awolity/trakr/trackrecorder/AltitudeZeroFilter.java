@@ -1,6 +1,6 @@
 package com.awolity.trakr.trackrecorder;
 
-import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.repository.local.model.entity.TrackpointEntity;
 
 @SuppressWarnings("WeakerAccess")
 public class AltitudeZeroFilter {

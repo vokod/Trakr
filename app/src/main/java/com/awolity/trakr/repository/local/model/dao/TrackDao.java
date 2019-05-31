@@ -1,4 +1,4 @@
-package com.awolity.trakr.data.dao;
+package com.awolity.trakr.repository.local.model.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -7,8 +7,8 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.data.entity.TrackWithPoints;
+import com.awolity.trakr.repository.local.model.entity.TrackEntity;
+import com.awolity.trakr.repository.local.model.entity.TrackWithPoints;
 
 import java.util.List;
 

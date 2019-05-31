@@ -35,7 +35,7 @@ import android.widget.LinearLayout;
 
 import com.awolity.trakr.BuildConfig;
 import com.awolity.trakr.R;
-import com.awolity.trakr.model.MapPoint;
+import com.awolity.trakr.view.model.MapPoint;
 import com.awolity.trakr.view.detail.TrackDetailActivity;
 import com.awolity.trakr.view.list.TrackListActivity;
 import com.awolity.trakr.view.main.bottom.BottomSheetBaseFragment;

@@ -1,10 +1,8 @@
 package com.awolity.trakr.view.detail;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.model.TrackData;
+import com.awolity.trakr.view.model.TrackData;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.utils.Utility;

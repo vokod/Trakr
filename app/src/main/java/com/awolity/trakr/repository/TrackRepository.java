@@ -9,16 +9,16 @@ import android.content.Intent;
 import androidx.annotation.WorkerThread;
 
 import com.awolity.trakr.TrakrApplication;
-import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.data.entity.TrackWithPoints;
-import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.repository.local.model.entity.TrackEntity;
+import com.awolity.trakr.repository.local.model.entity.TrackWithPoints;
+import com.awolity.trakr.repository.local.model.entity.TrackpointEntity;
 import com.awolity.trakr.gpx.GpxExporter;
-import com.awolity.trakr.model.ChartPoint;
-import com.awolity.trakr.model.MapPoint;
-import com.awolity.trakr.model.TrackData;
-import com.awolity.trakr.model.TrackDataTrackEntityConverter;
-import com.awolity.trakr.model.TrackDataWithMapPoints;
-import com.awolity.trakr.model.TrackPointMapPointConverter;
+import com.awolity.trakr.utils.ConvertersKt;
+import com.awolity.trakr.view.model.ChartPoint;
+import com.awolity.trakr.view.model.MapPoint;
+import com.awolity.trakr.view.model.TrackData;
+import com.awolity.trakr.view.model.TrackDataWithMapPoints;
+import com.awolity.trakr.repository.local.RoomTrackRepository;
 import com.awolity.trakr.repository.remote.FirestoreTrackRepository;
 import com.awolity.trakr.sync.SyncService;
 import com.awolity.trakr.utils.Constants;
@@ -88,7 +88,7 @@ public class TrackRepository {
                 transformationExecutor.execute(() -> {
                     List<TrackData> trackDataList = new ArrayList<>(trackEntities.size());
                     for (TrackEntity entity : trackEntities) {
-                        trackDataList.add(TrackDataTrackEntityConverter.toTrackData(entity));
+                        trackDataList.add(ConvertersKt.trackEntityToTrackData(entity));
                     }
                     result.postValue(trackDataList);
                 });
@@ -141,7 +141,7 @@ public class TrackRepository {
         final MediatorLiveData<TrackData> result = new MediatorLiveData<>();
         result.addSource(roomTrackRepository.getTrack(id), trackEntity -> {
             if (trackEntity != null) {
-                result.postValue(TrackDataTrackEntityConverter.toTrackData(trackEntity));
+                result.postValue(ConvertersKt.trackEntityToTrackData(trackEntity));
             }
         });
         return result;
@@ -257,11 +257,11 @@ public class TrackRepository {
                         long divider = numOfPoints / Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE + 1;
 
                         for (int i = 0; i < numOfPoints; i += divider) {
-                            result.add(TrackPointMapPointConverter.toMapPoint(trackpointEntities.get(i)));
+                            result.add(ConvertersKt.trackPointToMapPoint(trackpointEntities.get(i)));
                         }
                     } else {
                         for (TrackpointEntity trackpointEntity : trackpointEntities) {
-                            result.add(TrackPointMapPointConverter.toMapPoint(trackpointEntity));
+                            result.add(ConvertersKt.trackPointToMapPoint(trackpointEntity));
                         }
                     }
                     mapPoints.postValue(result);
@@ -286,10 +286,11 @@ public class TrackRepository {
                             continue;
                         }
 
-                        final TrackDataWithMapPoints trackDataWithMapPoints = new TrackDataWithMapPoints();
+                        final TrackDataWithMapPoints trackDataWithMapPoints =
+                                new TrackDataWithMapPoints();
 
-                        trackDataWithMapPoints.setTrackData(TrackDataTrackEntityConverter
-                                .toTrackData(trackWithPoints.getTrackEntity()));
+                        trackDataWithMapPoints.setTrackData(ConvertersKt.trackEntityToTrackData(
+                                trackWithPoints.getTrackEntity()));
 
                         long numOfPoints = trackWithPoints.getNumOfTrackPoints();
                         List<MapPoint> mapPoints;
@@ -299,18 +300,18 @@ public class TrackRepository {
                                 long divider = numOfPoints / maxNumOfMapPoints + 1;
 
                                 for (int i = 0; i < numOfPoints; i += divider) {
-                                    mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackWithPoints
+                                    mapPoints.add(ConvertersKt.trackPointToMapPoint(trackWithPoints
                                             .getTrackPoints().get(i)));
                                 }
                             } else {
                                 for (TrackpointEntity trackPoint : trackWithPoints.getTrackPoints()) {
-                                    mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackPoint));
+                                    mapPoints.add(ConvertersKt.trackPointToMapPoint(trackPoint));
                                 }
                             }
                         } else {
                             mapPoints = new ArrayList<>((int) numOfPoints);
                             for (TrackpointEntity trackpointEntity : trackWithPoints.getTrackPoints()) {
-                                mapPoints.add(TrackPointMapPointConverter.toMapPoint(trackpointEntity));
+                                mapPoints.add(ConvertersKt.trackPointToMapPoint(trackpointEntity));
                             }
                         }
 

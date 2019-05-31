@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 import com.awolity.trakr.R;
 import com.awolity.trakr.TrakrApplication;
-import com.awolity.trakr.data.entity.TrackEntity;
-import com.awolity.trakr.data.entity.TrackpointEntity;
+import com.awolity.trakr.repository.local.model.entity.TrackEntity;
+import com.awolity.trakr.repository.local.model.entity.TrackpointEntity;
 import com.awolity.trakr.location.LocationManager;
 import com.awolity.trakr.notification.NotificationUtils;
 import com.awolity.trakr.repository.SettingsRepository;

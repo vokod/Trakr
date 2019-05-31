@@ -13,15 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.model.TrackDataWithMapPoints;
+import com.awolity.trakr.view.model.TrackDataWithMapPoints;
 import com.awolity.trakr.view.MapUtils;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.utils.Utility;
 import com.awolity.trakrviews.PrimaryPropertyViewIcon;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Polyline;
 
 import java.util.ArrayList;

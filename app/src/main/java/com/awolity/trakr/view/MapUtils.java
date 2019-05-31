@@ -4,9 +4,9 @@ import android.content.Context;
 import androidx.core.content.ContextCompat;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.model.MapPoint;
-import com.awolity.trakr.model.TrackData;
-import com.awolity.trakr.model.TrackDataWithMapPoints;
+import com.awolity.trakr.view.model.MapPoint;
+import com.awolity.trakr.view.model.TrackData;
+import com.awolity.trakr.view.model.TrackDataWithMapPoints;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;

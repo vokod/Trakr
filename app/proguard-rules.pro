@@ -63,4 +63,4 @@
 -keep class com.instabug.**
 
 # Firebase realtime database
--keepclassmembers class com.awolity.trakr.data.entity.** {*;}
+-keepclassmembers class com.awolity.trakr.repository.local.data.entity.** {*;}

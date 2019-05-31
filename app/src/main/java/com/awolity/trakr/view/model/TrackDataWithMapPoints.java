@@ -1,8 +1,7 @@
-package com.awolity.trakr.model;
+package com.awolity.trakr.view.model;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;

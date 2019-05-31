@@ -16,7 +16,7 @@ import android.widget.TextView;
 import androidx.fragment.app.DialogFragment;
 
 import com.awolity.trakr.R;
-import com.awolity.trakr.model.TrackData;
+import com.awolity.trakr.view.model.TrackData;
 import com.awolity.trakr.utils.Constants;
 import com.awolity.trakr.utils.StringUtils;
 import com.awolity.trakr.utils.Utility;

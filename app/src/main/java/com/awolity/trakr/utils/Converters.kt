@@ -1,19 +1,14 @@
-package com.awolity.trakr.repository.remote.model
+package com.awolity.trakr.utils
 
-import com.awolity.trakr.data.entity.TrackEntity
-import com.awolity.trakr.data.entity.TrackWithPoints
-import com.awolity.trakr.data.entity.TrackpointEntity
+import com.awolity.trakr.repository.local.model.entity.TrackEntity
+import com.awolity.trakr.repository.local.model.entity.TrackWithPoints
+import com.awolity.trakr.repository.local.model.entity.TrackpointEntity
+import com.awolity.trakr.repository.remote.model.*
+import com.awolity.trakr.view.model.MapPoint
+import com.awolity.trakr.view.model.TrackData
 import com.google.firebase.firestore.GeoPoint
 
 fun trackWithPointsToFirestoreTrackData(input: TrackWithPoints): FirestoreTrackData {
-    return FirestoreTrackData(input.firebaseId, input.title, input.startTime, input.distance,
-            input.ascent, input.descent, input.elapsedTime, input.numOfTrackPoints,
-            input.northestPoint, input.southestPoint, input.westernPoint, input.easternPoint,
-            input.minAltitude, input.maxAltitude, input.maxSpeed, input.avgSpeed,
-            input.metadata)
-}
-
-fun trackEntityToFirestoreTrackData(input: TrackEntity):FirestoreTrackData{
     return FirestoreTrackData(input.firebaseId, input.title, input.startTime, input.distance,
             input.ascent, input.descent, input.elapsedTime, input.numOfTrackPoints,
             input.northestPoint, input.southestPoint, input.westernPoint, input.easternPoint,
@@ -85,4 +80,34 @@ fun trackPointsToGeopointList(input: List<TrackpointEntity>): PointGeopoints {
 fun trackPointsToDistancesList(input: List<TrackpointEntity>): PointDistances {
     val distances = input.map { it.distance }
     return PointDistances(distances)
+}
+
+fun trackEntityToTrackData(input:TrackEntity):TrackData{
+    val result = TrackData()
+    result.trackId = input.trackId
+    result.firebaseId = input.firebaseId
+    result.title = input.title
+    result.startTime = input.startTime
+    result.distance = input.distance
+    result.ascent = input.ascent
+    result.descent = input.descent
+    result.elapsedTime = input.elapsedTime
+    result.numOfTrackPoints = input.numOfTrackPoints
+    result.northestPoint = input.northestPoint
+    result.southestPoint = input.southestPoint
+    result.westernPoint = input.westernPoint
+    result.easternPoint = input.easternPoint
+    result.minAltitude = input.minAltitude
+    result.maxAltitude = input.maxAltitude
+    result.maxSpeed = input.maxSpeed
+    result.avgSpeed = input.avgSpeed
+    result.metadata = input.metadata
+    return result
+}
+
+fun trackPointToMapPoint(input:TrackpointEntity):MapPoint{
+    val result = MapPoint()
+    result.latitude = input.latitude
+    result.longitude = input.longitude
+    return result
 }

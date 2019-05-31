@@ -25,7 +25,7 @@ import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 // TODO: check user az app indulasakor: ha törölve lett, akkor léptesse ki a usert
-
+// TODO: a ket also pontossagi helyzetben ha az app hatterbe kerul akkor nincs location request
 public class TrakrApplication extends Application {
 
     private static final TrakrApplication instance = new TrakrApplication();
