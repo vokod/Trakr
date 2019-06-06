@@ -358,9 +358,15 @@ public class TrackRepository {
 
     public void saveTrackToLocalDbFromCloud(final TrackEntity onlineTrack) {
         onlineTrack.setTrackId(0);
-        firestoreTrackRepository.getTrackDataFromCloud(onlineTrack.getFirebaseId(), trackEntity ->
+        firestoreTrackRepository.getTrackDataFromCloud(onlineTrack.getFirebaseId(), new GetTrackDataFromCloudListener() {
+            @Override
+            public void onTrackLoaded(TrackEntity trackEntity) {
                 firestoreTrackRepository.getTrackPointsFromCloud(trackEntity,
-                        this::saveTrackWithPointsToDb));
+                        (TrackWithPoints track) -> {
+                            TrackRepository.this.saveTrackWithPointsToDb(track);
+                        });
+            }
+        });
 
     }
 

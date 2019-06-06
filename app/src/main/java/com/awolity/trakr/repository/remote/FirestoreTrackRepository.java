@@ -43,7 +43,6 @@ public class FirestoreTrackRepository {
 
     private static final String TAG = "FirestoreTrackRepository";
     private CollectionReference userTracksReference;
-    private CollectionReference userTrackdatasReference;
     private String appUserId;
 
     public FirestoreTrackRepository() {
@@ -98,10 +97,7 @@ public class FirestoreTrackRepository {
     public void updateTrackTitleToCloud(String firebaseId, String title) {
         refreshReferences();
         final DocumentReference trackReference = userTracksReference.document(firebaseId);
-        final DocumentReference trackDataReference = userTrackdatasReference.document(firebaseId);
-
         trackReference.update("t", title);
-        trackDataReference.update("t", title);
     }
 
     public void getAllTrackDatasFromCloud(
@@ -129,7 +125,9 @@ public class FirestoreTrackRepository {
         refreshReferences();
         final TrackWithPoints trackWithPoints = new TrackWithPoints();
         trackWithPoints.setTrackEntity(track);
-        userTracksReference.document(track.getFirebaseId()).collection(Constants.COLLECTION_POINTS).get()
+        final CollectionReference pointsCollectionRef =
+                userTracksReference.document(track.getFirebaseId()).collection(Constants.COLLECTION_POINTS);
+        pointsCollectionRef.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         PointAltitudes altitudes = null;
@@ -190,10 +188,6 @@ public class FirestoreTrackRepository {
         userTracksReference.document(firebaseTrackId).delete()
                 .addOnSuccessListener(aVoid -> MyLog.d(TAG, "deleteTrackFromCloud - success"))
                 .addOnFailureListener(e -> MyLog.e(TAG, "deleteTrackFromCloud - error: " + e.getLocalizedMessage()));
-
-        userTrackdatasReference.document(firebaseTrackId).delete()
-                .addOnSuccessListener(aVoid -> MyLog.d(TAG, "deleteTrackFromCloud - success"))
-                .addOnFailureListener(e -> MyLog.e(TAG, "deleteTrackFromCloud - error: " + e.getLocalizedMessage()));
     }
 
     private void refreshReferences() {
@@ -204,6 +198,5 @@ public class FirestoreTrackRepository {
         DocumentReference userReference = FirebaseFirestore.getInstance()
                 .collection(Constants.COLLECTION_USERS).document(appUserId);
         userTracksReference = userReference.collection(Constants.COLLECTION_TRACKS);
-        userTrackdatasReference = userReference.collection(Constants.COLLECTION_TRACKDATAS);
     }
 }
