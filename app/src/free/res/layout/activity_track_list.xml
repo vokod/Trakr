@@ -35,9 +35,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="@string/activity_track_list_no_tracks"
-        android:visibility="invisible"
+        android:visibility="visible"
+        android:gravity="center"
+        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="@+id/rv_track_list"
         app:layout_constraintStart_toStartOf="@+id/rv_track_list"
         app:layout_constraintTop_toTopOf="@+id/rv_track_list" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

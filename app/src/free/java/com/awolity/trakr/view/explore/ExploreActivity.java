@@ -52,8 +52,10 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
         setupAdview();
     }
 
+    SupportMapFragment mapFragment;
+
     private void setupMapView() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         //noinspection ConstantConditions
         mapFragment.getMapAsync(this);
@@ -86,10 +88,10 @@ public class ExploreActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void setupViewmodel() {
-        exploreViewModel = ViewModelProviders.of(this)
-                .get(ExploreViewModel.class);
+        exploreViewModel = ViewModelProviders.of(this).get(ExploreViewModel.class);
         exploreViewModel.getTracksData().observe(this, tracksData -> {
             if (tracksData != null && tracksData.size() > 0) {
+                placeholderTv.setVisibility(View.INVISIBLE);
                 for (TrackData trackData : tracksData) {
                     setBounds(trackData);
 
