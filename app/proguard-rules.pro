@@ -62,5 +62,15 @@
 # Instabug
 -keep class com.instabug.**
 
-# Firebase realtime database
--keepclassmembers class com.awolity.trakr.repository.local.data.entity.** {*;}
+# Firesotre
+-keepclassmembers class com.awolity.trakr.repository.remote.model.** {*;}
+# Needed for DNS resolution.  Present in OpenJDK, but not Android
+-dontwarn javax.naming.**
+-dontwarn org.checkerframework.**
+-dontwarn java.lang.ClassValue
+-dontwarn com.google.j2objc.annotations.Weak
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn javax.lang.model.element.Modifier
+
+-dontwarn okio.**
+-dontwarn com.google.j2objc.annotations.**
