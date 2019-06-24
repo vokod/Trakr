@@ -144,6 +144,7 @@ public class TrackListAdapter
                     trackDataWithMapPoints.getTrackData().getElapsedTime()));
 
             mapView.getMapAsync(googleMap -> {
+                googleMap.getUiSettings().setMapToolbarEnabled(false);
                 if (polyline != null) {
                     polyline.remove();
                 }
