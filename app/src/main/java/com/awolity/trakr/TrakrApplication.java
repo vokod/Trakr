@@ -25,7 +25,6 @@ import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 // TODO: check user az app indulasakor: ha törölve lett, akkor léptesse ki a usert
-// TODO: bug: configuration change-nél a track időtartam nullázódik (legalábbis ha még nincs pont)
 public class TrakrApplication extends Application {
 
     private static final TrakrApplication instance = new TrakrApplication();
