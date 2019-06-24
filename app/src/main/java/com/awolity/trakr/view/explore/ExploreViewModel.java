@@ -49,8 +49,8 @@ public class ExploreViewModel extends ViewModel {
                     for (TrackData trackData : trackDatas) {
                         trackData.convertToImperial();
                     }
-                    result.postValue(trackDatas);
                 }
+                result.postValue(trackDatas);
             }
         });
         return result;
