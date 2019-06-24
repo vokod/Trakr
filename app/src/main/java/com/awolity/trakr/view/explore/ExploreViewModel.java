@@ -2,6 +2,7 @@ package com.awolity.trakr.view.explore;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.awolity.trakr.TrakrApplication;
@@ -32,20 +33,27 @@ public class ExploreViewModel extends ViewModel {
     }
 
     LiveData<List<TrackData>> getTracksData() {
-        if (getUnit() == Constants.UNIT_METRIC) {
-            return trackRepository.getTracksData();
-        } else {
-            final MediatorLiveData<List<TrackData>> result = new MediatorLiveData<>();
-            result.addSource(trackRepository.getTracksData(), trackDataList -> {
-                if (trackDataList != null) {
-                    for (TrackData trackData : trackDataList) {
+        final MediatorLiveData<List<TrackData>> result = new MediatorLiveData<>();
+        result.addSource(trackRepository.getTracksData(), new Observer<List<TrackData>>() {
+            @Override
+            public void onChanged(List<TrackData> trackDatas) {
+                long lastRecordedTrackId = settingsRepository.getLastRecordedTrackId();
+                if (lastRecordedTrackId != Constants.NO_LAST_RECORDED_TRACK) {
+                    for (TrackData trackData : trackDatas) {
+                        if (trackData.getTrackId() == lastRecordedTrackId) {
+                            trackDatas.remove(trackData);
+                        }
+                    }
+                }
+                if (getUnit() == Constants.UNIT_IMPERIAL) {
+                    for (TrackData trackData : trackDatas) {
                         trackData.convertToImperial();
                     }
-                    result.postValue(trackDataList);
+                    result.postValue(trackDatas);
                 }
-            });
-            return result;
-        }
+            }
+        });
+        return result;
     }
 
     LiveData<List<MapPoint>> getMapPointsOfTrack(long id) {

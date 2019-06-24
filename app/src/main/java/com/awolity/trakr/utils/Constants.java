@@ -30,7 +30,7 @@ public class Constants {
     public static final RecordParameters RECORD_PARAMETERS_BALANCED = new RecordParameters(
             10,
             5,
-            LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY,
+            LocationRequest.PRIORITY_HIGH_ACCURACY,
             50,
             6,
             2);
@@ -38,7 +38,7 @@ public class Constants {
     public static final RecordParameters RECORD_PARAMETERS_LOW_POWER = new RecordParameters(
             25,
             10,
-            LocationRequest.PRIORITY_LOW_POWER,
+            LocationRequest.PRIORITY_HIGH_ACCURACY,
             100,
             3,
             1);
