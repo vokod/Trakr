@@ -4,6 +4,7 @@
 Android location tracking app with cloud sync, analytics and an easy to use interface
 
 https://trakrapp.github.io/
+
 https://play.google.com/store/apps/details?id=com.awolity.trakr.free
 
 ## Description 
