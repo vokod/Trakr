@@ -251,18 +251,9 @@ public class TrackRepository {
         mapPoints.addSource(roomTrackRepository.getTrackpointsByTrack(id), trackpointEntities -> {
             if (trackpointEntities != null && trackpointEntities.size() > 0) {
                 transformationExecutor.execute(() -> {
-                    List<MapPoint> result = new ArrayList<>(Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE);
-                    long numOfPoints = trackpointEntities.size();
-                    if (numOfPoints > Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE) {
-                        long divider = numOfPoints / Constants.MAP_POINT_MAX_NUMBER_FOR_EXPLORE + 1;
-
-                        for (int i = 0; i < numOfPoints; i += divider) {
-                            result.add(ConvertersKt.trackPointToMapPoint(trackpointEntities.get(i)));
-                        }
-                    } else {
-                        for (TrackpointEntity trackpointEntity : trackpointEntities) {
-                            result.add(ConvertersKt.trackPointToMapPoint(trackpointEntity));
-                        }
+                    List<MapPoint> result = new ArrayList<>(trackpointEntities.size());
+                    for (TrackpointEntity trackpointEntity : trackpointEntities) {
+                        result.add(ConvertersKt.trackPointToMapPoint(trackpointEntity));
                     }
                     mapPoints.postValue(result);
                 });

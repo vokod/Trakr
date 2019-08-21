@@ -14,7 +14,7 @@ public class Constants {
     public static final String DOCUMENT_TIMES = "pt";
     public static final String COLLECTION_POINTS = "points";
 
-    public static final int MAP_POINT_MAX_NUMBER_FOR_EXPLORE = 200;
+    // public static final int MAP_POINT_MAX_NUMBER_FOR_EXPLORE = 200;
     public static final int MAP_POINT_MAX_NUMBER_FOR_TRACK_LIST = 50;
     public static final int CHART_POINT_MAX_NUMBER_FOR_TRACK_DETAIL = 300;
     public static final int CHART_POINT_MAX_NUMBER_FOR_BOTTOM_SHEET_CHARTS_FRAGMENT = 100;
